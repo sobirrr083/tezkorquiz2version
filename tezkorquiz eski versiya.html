@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tezkor Quiz</title>
+    <link rel="icon" href="img/true.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /*new*/
+        .quiz-container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .toggle-btn {
+            display: block;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+         /*new*/
+        body {
+            background-color: #f4f6f9;
+            transition: background-color 0.5s ease;
+        }
+        .quiz-container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.5s ease;
+        }
+        .btn-option {
+            margin-bottom: 10px;
+            text-align: left;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        .confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+        .correct-background {
+            background-color: rgba(0, 255, 0, 0.1) !important;
+        }
+        .incorrect-background {
+            background-color: rgba(255, 0, 0, 0.1) !important;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+    <div class="container">
+        <a class="navbar-brand" href="index.html">
+            <img src="logo.jpg" alt="Logo" style="width:50px;" class="rounded-pill">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="quiztanlovi.html">Tezkor Quiz</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="test-boshqaruv-tizimi.html">Segment</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <canvas id="confetti-canvas" class="confetti-canvas"></canvas>
+    <div class="container">
+        <div class="quiz-container" id="quiz-container">
+            <div class="text-center mb-4">
+                <h1>Tezkor Quiz</h1>
+                <div id="quiz-info" class="text-muted"></div>
+            </div>
+
+            <div id="quiz-area">
+                <div class="mb-3">
+                    <h3 id="question-text" class="question-header"></h3>
+                </div>
+                <div id="options-container" class="d-grid gap-2"></div>
+            </div>
+
+            <div id="result-container" class="text-center mt-4" style="display:none;">
+                <h2>Quiz Tugadi!</h2>
+                <p>Sizning natijangiz: <span id="final-score"></span></p>
+                <button id="restart-btn" class="btn btn-success">Qayta Boshlash</button>
+            </div>
+        </div>
+
+
+        <div class="container mt-4">
+            <button id="toggle-btn" class="btn btn-primary toggle-btn">📂 Fayl yuklashni ko‘rsat</button>
+
+            <div id="file-upload-section" class="card" style="display: none;">
+                <div class="card-header"><b>Faylni yuklang .txt</b></div>
+                <div class="card-body">
+                    <input type="file" id="quiz-file" class="form-control" accept=".txt">
+                    <small class="text-muted">
+                        <span style="color: red">Test shu ko'rinishda bo'lishi shart:</span>
+                        <br>Savol
+                        <br>A. 1-Variant
+                        <br>B. 2-Variant
+                        <br>C. 3-Variant
+                        <br>D. 4-Variant
+                        <br>ANSWER: B (A,B,C,D to'g'ri javob belgilanadi)
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document.getElementById('toggle-btn').addEventListener('click', function() {
+                let fileSection = document.getElementById('file-upload-section');
+                if (fileSection.style.display === 'none') {
+                    fileSection.style.display = 'block';
+                    this.textContent = '❌ Fayl yuklashni yashirish';
+                } else {
+                    fileSection.style.display = 'none';
+                    this.textContent = '📂 Fayl yuklashni ko‘rsat';
+                }
+            });
+        </script>
+
+
+        <script>
+        class ConfettiGenerator {
+            constructor(canvas) {
+                this.canvas = canvas;
+                this.ctx = canvas.getContext('2d');
+                this.particles = [];
+            }
+
+            resize() {
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+            }
+
+            createConfetti(color) {
+                this.particles = [];
+                const colors = color === 'green'
+                    ? ['#26ccff', '#a25afd', '#ff5e7e', '#88ff5a', '#fcff42']
+                    : ['#ff0a54', '#ff477e', '#ff5d8f', '#ff7096', '#ff85a2'];
+
+                for (let i = 0; i < 200; i++) {
+                    this.particles.push({
+                        x: Math.random() * this.canvas.width,
+                        y: Math.random() * this.canvas.height,
+                        radius: Math.random() * 0 + 0,
+                        color: colors[Math.floor(Math.random() * colors.length)],
+                        speedY: Math.random() * 0 + 0,
+                        speedX: Math.random() * 0 - 0
+                    });
+                }
+
+                this.animateConfetti();
+            }
+
+            animateConfetti() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+                this.particles.forEach((particle, index) => {
+                    this.ctx.beginPath();
+                    this.ctx.fillStyle = particle.color;
+                    this.ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 1);
+                    this.ctx.fill();
+
+                    particle.y += particle.speedY;
+                    particle.x += particle.speedX;
+
+                    if (particle.y > this.canvas.height) {
+                        this.particles.splice(index, 1);
+                    }
+                });
+
+                if (this.particles.length > 0) {
+                    requestAnimationFrame(() => this.animateConfetti());
+                } else {
+                    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                }
+            }
+        }
+
+        class QuizApp {
+            constructor() {
+                this.questions = [];
+                this.currentQuestionIndex = 0;
+                this.score = 0;
+
+                this.initializeElements();
+                this.attachEventListeners();
+                this.confettiGenerator = new ConfettiGenerator(this.confettiCanvas);
+            }
+
+            initializeElements() {
+                this.quizArea = document.getElementById('quiz-area');
+                this.quizContainer = document.getElementById('quiz-container');
+                this.questionText = document.getElementById('question-text');
+                this.optionsContainer = document.getElementById('options-container');
+                this.resultContainer = document.getElementById('result-container');
+                this.finalScoreElement = document.getElementById('final-score');
+                this.restartButton = document.getElementById('restart-btn');
+                this.quizInfoElement = document.getElementById('quiz-info');
+                this.quizFileInput = document.getElementById('quiz-file');
+                this.confettiCanvas = document.getElementById('confetti-canvas');
+            }
+
+            attachEventListeners() {
+                this.restartButton.addEventListener('click', () => this.restartQuiz());
+                this.quizFileInput.addEventListener('change', (e) => this.loadQuizFile(e));
+                window.addEventListener('resize', () => this.confettiGenerator.resize());
+            }
+
+            loadQuizFile(event) {
+                const file = event.target.files[0];
+                const reader = new FileReader();
+
+                reader.onload = (e) => {
+                    const content = e.target.result;
+                    this.parseQuizContent(content);
+                };
+
+                reader.readAsText(file);
+            }
+
+            parseQuizContent(content) {
+                const lines = content.trim().split('\n');
+                this.questions = [];
+                let currentQuestion = null;
+
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i].trim();
+
+                    if (line && !line.match(/^[A-D]\.|ANSWER:/)) {
+                        if (currentQuestion) {
+                            this.questions.push(currentQuestion);
+                        }
+                        currentQuestion = {
+                            question: line,
+                            options: [],
+                            correctAnswer: null
+                        };
+                    } else if (line.match(/^[A-D]\./)) {
+                        currentQuestion.options.push(line);
+                    } else if (line.startsWith('ANSWER:')) {
+                        currentQuestion.correctAnswer = line.replace('ANSWER:', '').trim();
+                    }
+                }
+
+                if (currentQuestion) {
+                    this.questions.push(currentQuestion);
+                }
+
+                this.quizInfoElement.textContent = `Total Questions: ${this.questions.length}`;
+                this.startQuiz();
+            }
+
+            startQuiz() {
+                this.currentQuestionIndex = 0;
+                this.score = 0;
+                this.questions = this.questions.sort(() => Math.random() - 0.5); // Savollarni tasodifiy aralashtirish
+                document.body.style.backgroundColor = '#f4f6f9';
+                this.resultContainer.style.display = 'none';
+                this.quizArea.style.display = 'block';
+                this.displayQuestion();
+            }
+
+            displayQuestion() {
+                const currentQuestion = this.questions[this.currentQuestionIndex];
+                this.questionText.textContent = currentQuestion.question;
+
+                this.optionsContainer.innerHTML = '';
+                const shuffledOptions = [...currentQuestion.options].sort(() => Math.random() - 0.5); // Variantlarni tasodifiy aralashtirish
+                shuffledOptions.forEach((option) => {
+                    const optionButton = document.createElement('button');
+                    // Prefiksni yashirish uchun faqat matn qismini ko'rsatamiz
+                    const optionText = option.replace(/^[A-D]\.\s*/, '').trim();
+                    optionButton.textContent = optionText;
+                    optionButton.classList.add('btn', 'btn-outline-primary', 'btn-option');
+                    optionButton.addEventListener('click', () => this.selectOption(option)); // Asl variantni yuboramiz
+                    this.optionsContainer.appendChild(optionButton);
+                });
+
+                // Reset background
+                document.body.style.backgroundColor = '#f4f6f9';
+                this.quizContainer.style.backgroundColor = 'white';
+            }
+
+            selectOption(selectedOption) {
+                const buttons = this.optionsContainer.querySelectorAll('.btn');
+                buttons.forEach(btn => btn.disabled = true);
+
+                const currentQuestion = this.questions[this.currentQuestionIndex];
+                const selectedButton = Array.from(buttons).find(btn => 
+                    selectedOption.replace(/^[A-D]\.\s*/, '').trim() === btn.textContent
+                );
+
+                if (selectedOption.startsWith(currentQuestion.correctAnswer)) {
+                    // Correct answer
+                    selectedButton.classList.add('btn-success');
+                    document.body.style.backgroundColor = 'rgba(0, 255, 0, 0.1)';
+                    this.quizContainer.style.backgroundColor = 'rgba(0, 255, 0, 0.2)';
+                    this.confettiGenerator.createConfetti('green');
+                    this.score++;
+                } else {
+                    // Incorrect answer
+                    selectedButton.classList.add('btn-danger');
+                    document.body.style.backgroundColor = 'rgba(255, 0, 0, 0.1)';
+                    this.quizContainer.style.backgroundColor = 'rgba(255, 0, 0, 0.2)';
+                    this.confettiGenerator.createConfetti('red');
+
+                    // Highlight correct answer
+                    const correctButton = Array.from(buttons).find(btn => 
+                        currentQuestion.options.some(opt => 
+                            opt.startsWith(currentQuestion.correctAnswer) && 
+                            opt.replace(/^[A-D]\.\s*/, '').trim() === btn.textContent
+                        )
+                    );
+                    correctButton.classList.add('btn-success');
+                }
+
+                // Move to next question
+                setTimeout(() => {
+                    this.currentQuestionIndex++;
+
+                    if (this.currentQuestionIndex < this.questions.length) {
+                        this.displayQuestion();
+                    } else {
+                        this.showResults();
+                    }
+                }, 1500);
+            }
+
+            showResults() {
+                this.quizArea.style.display = 'none';
+                this.resultContainer.style.display = 'block';
+                this.finalScoreElement.textContent = `${this.score} / ${this.questions.length}`;
+                document.body.style.backgroundColor = '#f4f6f9';
+            }
+
+            restartQuiz() {
+                this.startQuiz();
+            }
+        }
+
+        // Initialize the quiz application
+        new QuizApp();
+    </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
