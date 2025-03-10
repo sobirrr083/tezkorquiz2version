@@ -125,26 +125,72 @@ Xususiyatlari
 <br>4. **Javob tekshirish:** Tanlangan javob faylda ko‘rsatilgan to‘g‘ri javob bilan taqqoslanadi.
 <br>5. **Natija:** Har bir javobdan keyin fon rangi o‘zgaradi, oxirida umumiy natija chiqadi.
 <br>
-<br>Namuna natija
-<br>Savol: "What is the capital of France?"
-<br>- Variantlar:
-        <br>- Paris
-  <br>- London
-  <br>- Berlin
-  <br>- Madrid
-<br>- "Paris" tanlansa, ekran yashil bo‘ladi
-<br>
-<br>Nima uchun ajoyib?
-<br>- Oddiy, lekin funksional: Har kim oson foydalana oladi.
-<br>- Moslashuvchan: Istalgan mavzudagi savollar bilan ishlaydi.
-<br>- Qiziqarli: Animatsiyalar foydalanuvchi tajribasini yaxshilaydi.
-<br>- Men buni yaratdim! Kodni noldan yozib, tasodifiy aralashtirish va prefiks yashirish kabi funksiyalarni qo‘shdim.
-<br>
-<br>Kelajakdagi rivojlanish
-<br>- Savollar bazasini onlayn saqlash.
-<br>- Taymer qo‘shish.
-<br>- Ko‘proq animatsiya variantlari.
+<b>1. Segment Qilish</b>
+Umumiy Tavsif:
+Testlar avtomatik tarzda segmentlarga bo‘linadi. Masalan, agar sizda 50 ta test mavjud bo‘lsa, tizim ushbu testlarni 25 tadan iborat bo‘lgan ikki ta faylga ajratadi. Bu yondashuv quyidagi afzalliklarni taqdim etadi:
 
+Ma'lumotlarni Boshqarish: Katta hajmdagi testlarni kichik segmentlarga bo‘lish orqali ularni tartibga solish va boshqarishni osonlashtiradi.
+Tez Yuklanish: Har bir segment alohida yuklanishi tufayli foydalanuvchilar testlarni tezroq va samaraliroq bajarish imkoniyatiga ega bo‘ladi.
+Qulay Navigatsiya: Segmentlarga bo‘lingan fayllar foydalanuvchilarga kerakli testlarni tanlashda qulaylik yaratadi va ma’lumotlar bazasini samarali boshqarishga yordam beradi.
+<br> <b></b>
+      <b>  2. Quiz Testlar Bo‘limi</b>
+Veb saytingizda testlar bir nechta uslublarda tashkil etilgan bo‘lib, har birining o‘ziga xos afzalliklari va interaktivligi mavjud. Quyida to‘rtta asosiy turdagi quizlar haqida batafsil ma’lumot berilgan:
+<b>
+A. Tezkor Quiz
+</b>Jarayon:
+<br>
+Foydalanuvchi avvalo .txt formatidagi faylni yuklaydi.
+Yuklangan fayl asosida test avtomatik ravishda ishga tushadi.
+Xususiyatlar:
+
+Avtomatik O‘tish: Har bir savolga javob tanlangan zahoti tizim avtomatik ravishda keyingi savolga o‘tadi. Bu foydalanuvchilarga vaqtni tejash va test jarayonini uzluksiz davom ettirish imkonini beradi.
+Yuqori Interaktivlik: Savollar orasida kechikish bo‘lmagani uchun testlar tez va interaktiv tarzda o'tkaziladi, bu esa foydalanuvchilarning e'tiborini doimiy ravishda saqlab turishga yordam beradi.
+Qulay Format: Matnli fayl yordamida testlar yaratilishi tufayli oddiy va samarali interfeys taqdim etiladi.
+
+        <b>B. Sekin Quiz</b>
+Jarayon:
+<br>
+Ushbu test turida har bir savol uchun qat’iy belgilangan vaqt (masalan, 3, 5 yoki 7 soniya) ajratiladi.
+Xususiyatlar:
+
+Vaqt Cheklovi: Savolga javob berish uchun belgilangan qisqa vaqt oralig‘i foydalanuvchilarga tez fikrlash va tezkor qarorlar qabul qilish imkoniyatini yaratadi.
+Stressni Sinash: Qisqa vaqtli testlar foydalanuvchining stressga chidamliligini va tezkor fikrlash qobiliyatini sinovdan o‘tkazadi.
+Aniqlik: Har bir savolga qat’iy vaqt ajratilishi tufayli testning samaradorligi va aniqligi oshadi.
+
+       <b> C. Telegram Quiz Style</b>
+Jarayon:
+
+Ushbu turdagi testlar Telegram platformasidagi quiz botlariga o‘xshash tarzda yaratilgan.
+Xususiyatlar:
+
+Interaktiv Dizayn: Savollar va javoblar Telegram chat interfeysi ko‘rinishida taqdim etiladi. Bu dizayn foydalanuvchilarga oddiy va tanish muhitda test o‘tkazishga imkon beradi.
+Foydalanuvchi Tajribasi: Chat uslubidagi interfeys interaktiv tugmalar va vizual elementlar yordamida foydalanuvchining test davomida qiziqishini oshiradi.
+Moslashuvchanlik: Telegram quiz uslubi mobil qurilmalarda ham samarali ishlaydi, bu esa keng auditoriyani qamrab olish imkonini beradi.
+
+        <b> D. Imtihon Quiz Testlari</b>
+Jarayon:
+
+Imtihon uslubidagi testlar qat’iy belgilangan vaqt chegaralari bilan o'tkaziladi.
+Xususiyatlar:
+
+Vaqt Cheklovi: Test davomida qat’iy vaqt belgilanishi (misol uchun, 5, 10, 15, 20, 25 yoki 30 daqiqa) foydalanuvchiga testni belgilangan muddat ichida yakunlash majburiyatini yuklaydi. Shuningdek, foydalanuvchi ixtiyoriy ravishda vaqtni o‘zi belgilashi mumkin.
+Majburiy Test Muhiti: Belgilangan vaqt chegaralari test ishtirokchilariga rejalashtirilgan va qat’iy imtihon muhitini yaratadi, bu esa natijalarning ishonchliligini oshiradi.
+Professional Sinov: Imtihon quiz testlari yuqori darajadagi professional sinov sifatida qaraladi, chunki u vaqtni to‘liq boshqarish va aniq me’yorlarga rioya qilishni talab qiladi.
+Moslashuvchanlik: Belgilangan vaqtdan tashqari, foydalanuvchilar o‘zlarining imkoniyatlariga qarab ixtiyoriy vaqtni tanlash imkoniga ega bo‘lishadi, bu esa testning moslashuvchanligini oshiradi.
+
+        <b>Umumiy Xulosa</b>
+Ushbu to‘rtta turdagi testlar har biri o‘ziga xos xususiyatlari va interaktivligi bilan farqlanadi. Segmentlash tizimi yordamida katta hajmdagi testlar qulay ravishda boshqarilib, tezkor va samarali test jarayoni ta’minlanadi. Har bir turdagi quiz foydalanuvchilarga o‘z ehtiyojlariga mos holda tanlov qilish imkonini beradi:
+<br>
+Tezkor Quiz – avtomatik o'tish va tez interaktivlik.
+<br>
+        Sekin Quiz – aniqlangan vaqt oralig‘i bilan tez fikrlashni talab qiluvchi testlar.
+<br>
+        Telegram Quiz Style – interaktiv, chat interfeysiga asoslangan tajriba.
+<br>
+        Imtihon Quiz Testlari – qat’iy vaqt cheklovi va professional test muhitini yaratish.
+<br>
+        Bunday ko‘p qirrali yondashuv veb saytingizning foydalanuvchilar orasida keng tarqalishi va ularning qiziqishini oshirishga katta hissa qo‘shadi. Har bir segment o‘ziga xos tajriba taqdim etib, test sinovini yanada qiziqarli va samarali qiladi.
+        
     </p>
 </span>
     <a style="padding: 20px" href="tezkorquiz.html">
