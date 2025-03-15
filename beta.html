@@ -1,1 +1,813 @@
-
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fayl Boshqaruvchisi</title>
+    <style>
+        /* Global styles */
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --danger-color: #e74c3c;
+            --dark-color: #34495e;
+            --light-color: #ecf0f1;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        
+        header h1 {
+            text-align: center;
+            font-size: 2.5rem;
+        }
+        
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        
+        .tab-button {
+            padding: 12px 24px;
+            background-color: var(--light-color);
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: var(--transition);
+        }
+        
+        .tab-button:first-child {
+            border-top-left-radius: var(--border-radius);
+            border-bottom-left-radius: var(--border-radius);
+        }
+        
+        .tab-button:last-child {
+            border-top-right-radius: var(--border-radius);
+            border-bottom-right-radius: var(--border-radius);
+        }
+        
+        .tab-button.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .upload-section {
+            background-color: white;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 30px;
+        }
+        
+        .upload-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .form-group label {
+            font-weight: bold;
+            color: var(--dark-color);
+        }
+        
+        .file-input {
+            padding: 15px;
+            border: 2px dashed var(--primary-color);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            text-align: center;
+            transition: var(--transition);
+        }
+        
+        .file-input:hover {
+            border-color: var(--secondary-color);
+            background-color: rgba(46, 204, 113, 0.1);
+        }
+        
+        .privacy-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: var(--transition);
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: var(--transition);
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: var(--secondary-color);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: bold;
+            transition: var(--transition);
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+        
+        .files-section {
+            background-color: white;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        
+        .files-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .search-box {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .search-input {
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+        }
+        
+        .files-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .file-card {
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .file-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--box-shadow);
+        }
+        
+        .file-privacy {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        
+        .private {
+            background-color: var(--danger-color);
+        }
+        
+        .public {
+            background-color: var(--secondary-color);
+        }
+        
+        .file-name {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            color: var(--dark-color);
+        }
+        
+        .file-date {
+            color: #777;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        
+        .file-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--primary-color);
+            font-weight: bold;
+            transition: var(--transition);
+        }
+        
+        .action-btn:hover {
+            color: var(--dark-color);
+        }
+        
+        .delete-btn {
+            color: var(--danger-color);
+        }
+        
+        .delete-btn:hover {
+            color: #c0392b;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px 0;
+            color: #777;
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #ddd;
+        }
+        
+        @media (max-width: 768px) {
+            .files-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .search-box {
+                width: 100%;
+            }
+            
+            .search-input {
+                flex-grow: 1;
+            }
+            
+            .file-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            max-width: 500px;
+            width: 100%;
+            animation: modalFadeIn 0.3s;
+        }
+        
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-title {
+            font-size: 1.5rem;
+            color: var(--dark-color);
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #777;
+        }
+        
+        .modal-body {
+            margin-bottom: 30px;
+        }
+        
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+        }
+        
+        /* Notification Styles */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: white;
+            padding: 15px 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 1001;
+        }
+        
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .notification.success {
+            border-left: 4px solid var(--secondary-color);
+        }
+        
+        .notification.error {
+            border-left: 4px solid var(--danger-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Fayl Boshqaruvchisi</h1>
+        </header>
+        
+        <div class="tabs">
+            <button class="tab-button active" id="public-tab">Ommaviy Fayllar</button>
+            <button class="tab-button" id="private-tab">Shaxsiy Fayllar</button>
+        </div>
+        
+        <section class="upload-section">
+            <form class="upload-form" id="upload-form">
+                <div class="form-group">
+                    <label for="file-upload">TXT Faylni Tanlang</label>
+                    <input type="file" id="file-upload" accept=".txt" class="file-input" required>
+                </div>
+                
+                <div class="form-group">
+                    <div class="privacy-toggle">
+                        <label class="switch">
+                            <input type="checkbox" id="privacy-toggle">
+                            <span class="slider"></span>
+                        </label>
+                        <span id="privacy-label">Ommaviy</span>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Faylni Yuklash</button>
+            </form>
+        </section>
+        
+        <section class="files-section">
+            <div class="files-header">
+                <h2 id="current-view-title">Ommaviy Fayllar</h2>
+                <div class="search-box">
+                    <input type="text" placeholder="Fayllarni qidirish..." class="search-input" id="search-input">
+                    <button class="btn btn-primary" id="search-btn">Qidirish</button>
+                </div>
+            </div>
+            
+            <div class="files-grid" id="files-grid">
+                <!-- Files will be displayed here dynamically -->
+                <div class="empty-state" id="empty-state">
+                    <i>📁</i>
+                    <p>Hozircha fayllar yo'q</p>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <!-- Delete Confirmation Modal -->
+    <div class="modal" id="delete-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Faylni o'chirishni tasdiqlang</h3>
+                <button class="close-modal" id="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Haqiqatan ham "<span id="delete-file-name"></span>" faylini o'chirishni xohlaysizmi? Bu amalni qaytarib bo'lmaydi.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" id="cancel-delete">Bekor qilish</button>
+                <button class="btn btn-danger" id="confirm-delete">O'chirish</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+    
+    <script>
+        // Simulated user data
+        const currentUser = {
+            id: 1,
+            name: "Foydalanuvchi"
+        };
+        
+        // Simulated file data
+        let files = [
+            {
+                id: 1,
+                name: "muhim_malumot.txt",
+                content: "Bu muhim ma'lumot fayli",
+                date: "2025-03-10",
+                isPublic: true,
+                userId: 1
+            },
+            {
+                id: 2,
+                name: "shaxsiy_qaydlar.txt",
+                content: "Bu shaxsiy faylim",
+                date: "2025-03-12",
+                isPublic: false,
+                userId: 1
+            },
+            {
+                id: 3,
+                name: "reja.txt",
+                content: "Keyingi oy rejasi",
+                date: "2025-03-14",
+                isPublic: true,
+                userId: 2
+            }
+        ];
+        
+        // DOM elements
+        const publicTab = document.getElementById('public-tab');
+        const privateTab = document.getElementById('private-tab');
+        const currentViewTitle = document.getElementById('current-view-title');
+        const filesGrid = document.getElementById('files-grid');
+        const emptyState = document.getElementById('empty-state');
+        const uploadForm = document.getElementById('upload-form');
+        const fileUpload = document.getElementById('file-upload');
+        const privacyToggle = document.getElementById('privacy-toggle');
+        const privacyLabel = document.getElementById('privacy-label');
+        const searchInput = document.getElementById('search-input');
+        const searchBtn = document.getElementById('search-btn');
+        
+        // Modal elements
+        const deleteModal = document.getElementById('delete-modal');
+        const closeModal = document.getElementById('close-modal');
+        const deleteFileName = document.getElementById('delete-file-name');
+        const cancelDelete = document.getElementById('cancel-delete');
+        const confirmDelete = document.getElementById('confirm-delete');
+        
+        // Notification element
+        const notification = document.getElementById('notification');
+        
+        // Track current view and file to delete
+        let currentView = 'public';
+        let fileToDelete = null;
+        
+        // Initialize
+        function init() {
+            renderFiles();
+            setupEventListeners();
+        }
+        
+        // Setup event listeners
+        function setupEventListeners() {
+            publicTab.addEventListener('click', () => switchTab('public'));
+            privateTab.addEventListener('click', () => switchTab('private'));
+            
+            uploadForm.addEventListener('submit', handleFileUpload);
+            
+            privacyToggle.addEventListener('change', updatePrivacyLabel);
+            
+            searchBtn.addEventListener('click', searchFiles);
+            searchInput.addEventListener('keyup', (e) => {
+                if (e.key === 'Enter') {
+                    searchFiles();
+                }
+            });
+            
+            closeModal.addEventListener('click', hideDeleteModal);
+            cancelDelete.addEventListener('click', hideDeleteModal);
+            confirmDelete.addEventListener('click', deleteFile);
+        }
+        
+        // Update privacy label
+        function updatePrivacyLabel() {
+            privacyLabel.textContent = privacyToggle.checked ? 'Shaxsiy' : 'Ommaviy';
+        }
+        
+        // Switch between public and private tabs
+        function switchTab(view) {
+            currentView = view;
+            
+            if (view === 'public') {
+                publicTab.classList.add('active');
+                privateTab.classList.remove('active');
+                currentViewTitle.textContent = 'Ommaviy Fayllar';
+            } else {
+                privateTab.classList.add('active');
+                publicTab.classList.remove('active');
+                currentViewTitle.textContent = 'Shaxsiy Fayllar';
+            }
+            
+            renderFiles();
+        }
+        
+        // Render files based on current view
+        function renderFiles(searchTerm = '') {
+            let filteredFiles = [];
+            
+            if (currentView === 'public') {
+                filteredFiles = files.filter(file => file.isPublic);
+            } else {
+                filteredFiles = files.filter(file => !file.isPublic && file.userId === currentUser.id);
+            }
+            
+            if (searchTerm) {
+                filteredFiles = filteredFiles.filter(file => 
+                    file.name.toLowerCase().includes(searchTerm.toLowerCase()));
+            }
+            
+            // Clear the files grid
+            filesGrid.innerHTML = '';
+            
+            if (filteredFiles.length === 0) {
+                filesGrid.appendChild(emptyState);
+                return;
+            }
+            
+            // Add file cards
+            filteredFiles.forEach(file => {
+                const fileCard = createFileCard(file);
+                filesGrid.appendChild(fileCard);
+            });
+        }
+        
+        // Create a file card element
+        function createFileCard(file) {
+            const fileCard = document.createElement('div');
+            fileCard.className = 'file-card';
+            
+            const privacyIndicator = document.createElement('div');
+            privacyIndicator.className = `file-privacy ${file.isPublic ? 'public' : 'private'}`;
+            fileCard.appendChild(privacyIndicator);
+            
+            const fileName = document.createElement('div');
+            fileName.className = 'file-name';
+            fileName.textContent = file.name;
+            fileCard.appendChild(fileName);
+            
+            const fileDate = document.createElement('div');
+            fileDate.className = 'file-date';
+            fileDate.textContent = formatDate(file.date);
+            fileCard.appendChild(fileDate);
+            
+            const fileActions = document.createElement('div');
+            fileActions.className = 'file-actions';
+            
+            const downloadBtn = document.createElement('button');
+            downloadBtn.className = 'action-btn';
+            downloadBtn.textContent = 'Yuklab olish';
+            downloadBtn.addEventListener('click', () => downloadFile(file));
+            fileActions.appendChild(downloadBtn);
+            
+            // Only show delete button for user's own files
+            if (file.userId === currentUser.id) {
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'action-btn delete-btn';
+                deleteBtn.textContent = 'O\'chirish';
+                deleteBtn.addEventListener('click', () => showDeleteModal(file));
+                fileActions.appendChild(deleteBtn);
+            }
+            
+            fileCard.appendChild(fileActions);
+            
+            return fileCard;
+        }
+        
+        // Handle file upload
+        function handleFileUpload(e) {
+            e.preventDefault();
+            
+            const file = fileUpload.files[0];
+            if (!file) {
+                showNotification('Iltimos, fayl tanlang', 'error');
+                return;
+            }
+            
+            if (file.type !== 'text/plain') {
+                showNotification('Faqat .txt fayllar qo\'llab-quvvatlanadi', 'error');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const content = event.target.result;
+                
+                // Create new file object
+                const newFile = {
+                    id: Date.now(),
+                    name: file.name,
+                    content: content,
+                    date: formatDateForStorage(new Date()),
+                    isPublic: !privacyToggle.checked,
+                    userId: currentUser.id
+                };
+                
+                // Add to files array
+                files.push(newFile);
+                
+                // Reset form
+                uploadForm.reset();
+                updatePrivacyLabel();
+                
+                // Render files
+                renderFiles();
+                
+                // Show success notification
+                showNotification('Fayl muvaffaqiyatli yuklandi', 'success');
+            };
+            
+            reader.readAsText(file);
+        }
+        
+        // Show delete confirmation modal
+        function showDeleteModal(file) {
+            fileToDelete = file;
+            deleteFileName.textContent = file.name;
+            deleteModal.style.display = 'flex';
+        }
+        
+        // Hide delete confirmation modal
+        function hideDeleteModal() {
+            deleteModal.style.display = 'none';
+            fileToDelete = null;
+        }
+        
+        // Delete file
+        function deleteFile() {
+            if (!fileToDelete) return;
+            
+            // Remove file from array
+            files = files.filter(file => file.id !== fileToDelete.id);
+            
+            // Hide modal
+            hideDeleteModal();
+            
+            // Render files
+            renderFiles();
+            
+            // Show success notification
+            showNotification('Fayl muvaffaqiyatli o\'chirildi', 'success');
+        }
+        
+        // Download file
+        function downloadFile(file) {
+            const blob = new Blob([file.content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = file.name;
+            document.body.appendChild(a);
+            a.click();
+            
+            // Clean up
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 100);
+            
+            // Show success notification
+            showNotification('Fayl muvaffaqiyatli yuklab olindi', 'success');
+        }
+        
+        // Search files
+        function searchFiles() {
+            const term = searchInput.value.trim();
+            renderFiles(term);
+        }
+        
+        // Show notification
+        function showNotification(message, type) {
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Format date for display
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('uz-UZ');
+        }
+        
+        // Format date for storage
+        function formatDateForStorage(date) {
+            return date.toISOString().split('T')[0];
+        }
+        
+        // Initialize the app
+        init();
+    </script>
+</body>
+</html>
