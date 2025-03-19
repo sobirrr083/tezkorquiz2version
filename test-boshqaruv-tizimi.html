@@ -1,19 +1,110 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Segment Qilish</title>
+    
+    <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Segment</title>
-    <link rel="icon" href="logo.jpg">
     <style>
+        /* Global stil */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            padding: 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
 
-/*!*new */
+        .container {
+            max-width: 850px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: slideIn 1s ease-out;
+        }
 
+        h1, h2 {
+            text-align: center;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
 
+        /* Fayl yuklash */
+        .upload-container {
+            margin: 20px 0;
+            padding: 25px;
+            border: 2px dashed rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+          text-align: center;
+            transition: all 0.3s;
+        }
+
+        .upload-container:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.02);
+        }
+
+        .file-label {
+            display: inline-block;
+            padding: 12px 25px;
+            background: #ff7e5f;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+             }
+
+        .file-label:hover {
+            background: #feb47b;
+        }
+
+        /* Test qutisi */
+        .test-container {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            transition: 0.3s ease-in-out;
+        }
+
+        .test-container:hover {
+            transform: scale(1.02);
+            box-shadow: 0px 5px 15px rgba(255, 255, 255, 0.2);
+        }
+
+        .test-question {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .test-options {
+            margin-left: 20px;
+        }
+
+        .test-answer {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #2a6b2a;
+        }
+
+        /* Animatsiyalar */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+  /*!*new */
 .content {
     height: 1500px; /* Sahifa uzun bo‘lishi uchun */
     padding: 20px;
@@ -51,158 +142,278 @@
 
 /*new*!*/
 
+/* bu yerdan yuqorga chiqish knopkasi*/
+        .button {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: rgb(20, 20, 20);
+  border: none;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 0px 0px 4px rgba(180, 160, 255, 0.253);
+  cursor: pointer;
+  transition-duration: 0.3s;
+  overflow: hidden;
+  position: relative;
+}
 
-        .footer button {
-            background: #007bff;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            font-size: 18px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
+.svgIcon {
+  width: 12px;
+  transition-duration: 0.3s;
+}
 
-        .footer button:hover {
-            background: #0056b3;
-            transform: scale(1.1);
-        }
+.svgIcon path {
+  fill: white;
+}
 
+.button:hover {
+  width: 140px;
+  border-radius: 50px;
+  transition-duration: 0.3s;
+  background-color: rgb(181, 160, 255);
+  align-items: center;
+}
 
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background-color: white;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        h1, h2 {
-            text-align: center;
-            color: #333;
-        }
-        .upload-container {
-            margin: 20px 0;
-            padding: 20px;
-            border: 2px dashed #ccc;
-            border-radius: 5px;
-            text-align: center;
-        }
-        .test-container {
-            margin-bottom: 20px;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        .test-question {
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        .test-options {
-            margin-left: 20px;
-        }
-        .test-answer {
-            margin-top: 10px;
-            font-weight: bold;
-            color: #2a6b2a;
-        }
-        .pagination {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-        }
-        .pagination button {
-            margin: 0 5px;
-            padding: 8px 15px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-        }
-        .pagination button:disabled {
-            background-color: #cccccc;
-            cursor: not-allowed;
-        }
-        .export-btn {
-            display: block;
-            margin: 20px auto;
-            padding: 10px 20px;
-            background-color: #2196F3;
-            color: white;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        .page-info {
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 16px;
-        }
-        #fileInput {
-            display: none;
-        }
-        .file-label {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #2196F3;
-            color: white;
-            border-radius: 3px;
-            cursor: pointer;
-        }
-        #testResults {
-            display: none;
-        }
-        #uploadStatus {
-            margin-top: 10px;
-            font-weight: bold;
-        }
+.button:hover .svgIcon {
+  /* width: 20px; */
+  transition-duration: 0.3s;
+  transform: translateY(-200%);
+}
+
+.button::before {
+  position: absolute;
+  bottom: -20px;
+  content: "Back to Top";
+  color: white;
+  /* transition-duration: .3s; */
+  font-size: 0px;
+}
+
+.button:hover::before {
+  font-size: 13px;
+  opacity: 1;
+  bottom: unset;
+  /* transform: translateY(-30px); */
+  transition-duration: 0.3s;
+}
+   /* bu yerdan yuqorga chiqish knopkasi tugadi*/     
     </style>
 </head>
 <body>
 
 <div class="container">
     <a href="index.html">
-        <button>Ortga Qaytish</button>
+        <button class="btn btn-danger mb-3">⬅ Ortga Qaytish</button>
     </a>
-    <br><br><br>
-    <h1>Barcha testlarni 25 ta savollarga ajratish</h1>
+
+    <h1>testlarni segment qilish</h1>
 
     <div class="upload-container">
-        <h2>Test faylini yuklang</h2>
-        <p>Men sizga Masalan: 150 ta .txt farmatdagi testlarni 25 ta testga bo'lib shu 6 (25*6=150) ta faylni yuklab olish imkoniyatini beraman. Bu orqali siz Quiz Testda bemolol ortiqcha vaqtsiz tezkor boshlashingiz mumkin. </p>
-        <label for="fileInput" class="file-label">Fayl tanlash</label>
-        <input type="file" id="fileInput" accept=".txt">
+        <h2 style="text-align: center;">Test faylini yuklang</h2>
+        <p style="text-align: center;"> <br>Testlarni standart formatga to'g'irlayman, Umumiy testni bo'laklarga bo'lib, 25 ta testdan yuklab olish va Quiz Testda boshlash imkoniyatini taklif qilaman.
+        </p>
+        
+        <p style="text-align: left;">
+        <b>STANDART FORMAT</b>
+            <br>Qanday tarmoq turi Narsalar interneti komponentlari o'rtasidagi aloqa uchun ishlatiladi?
+        <br>A. LAN
+        <br>B. WAN 
+        <br>C. WLAN
+        <br>D. PAN 
+        <br>ANSWER: A  
+        </p>
+     
+        <label  for="fileInput" class="file-label">📁 Fayl tanlash</label>
+        <input type="file" id="fileInput" accept=".txt" hidden>
         <div id="uploadStatus"></div>
     </div>
 
-    <div id="testResults">
-        <div class="page-info">
-            <span id="currentPage">1</span>-sahifa / <span id="totalPages">0</span> sahifa
-        </div>
-
+    <div id="testResults" style="display: none;">
         <div id="testContainer"></div>
-
-        <div class="pagination">
-            <button id="prevPage" disabled>Oldingi</button>
-            <button id="nextPage">Keyingi</button>
+        <div id="pagination" class="mt-3">
+            <button id="prevBtn" class="btn btn-secondary">← Oldingi</button>
+            <span id="pageInfo"></span>
+            <button id="nextBtn" class="btn btn-secondary">Keyingi →</button>
         </div>
-
-        <button id="exportBtn" class="export-btn">Shu sahifadagi (25) testni yuklab olish</button>
+        <button id="exportBtn" class="btn btn-primary mt-3">Shu sahifadagi testlarni yuklab olish</button>
     </div>
 </div>
 
-<!-- 🔼 Yuqoriga qaytish tugmasi -->
-<button id="backToTop" title="Yuqoriga qaytish">🔼</button>
+<button id="backToTop" title="Yuqoriga qaytish" class="button">
+  <svg class="svgIcon" viewBox="0 0 384 512">
+    <path
+      d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"
+    ></path>
+  </svg>
+</button>
+    
+<script>
+    let tests = [];
+    let currentPage = 1;           // Joriy sahifa (boshlang‘ich qiymati 1)
+    const testsPerPage = 25;       // Har bir sahifadagi testlar soni
+    let totalPages = 0;            // Umumiy sahifalar soni (keyinchalik hisoblanadi)
 
+    const fileInput = document.getElementById('fileInput');
+    const uploadStatus = document.getElementById('uploadStatus');
+    const testResults = document.getElementById('testResults');
+    const testContainer = document.getElementById('testContainer');
+    const exportBtn = document.getElementById('exportBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const pageInfo = document.getElementById('pageInfo');
+
+    // Variantlarni formatlash funksiyasi
+    function formatOption(option) {
+        return option.replace(/^([A-D])\)/, '$1.');
+    }
+
+    // Fayl yuklash
+    fileInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        uploadStatus.innerHTML = "<span style='color: yellow;'>⏳ Yuklanmoqda...</span>";
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            parseTestFile(e.target.result);
+        };
+        reader.readAsText(file);
+    });
+
+    // Test faylini tahlil qilish
+    function parseTestFile(content) {
+        tests = [];
+        let lines = content.split('\n');
+        let currentTest = null;
+        let questionNumber = 1;
+
+        for (let i = 0; i < lines.length; i++) {
+            let line = lines[i].trim();
+            if (line === '') continue;
+
+            // Javob qatorini aniqlash
+            if (/^(ANSWER:|JAVOB:)/i.test(line)) {
+                if (currentTest) {
+                    let answerPart = line.split(':')[1].trim();
+                    currentTest.answer = `ANSWER: ${answerPart}`;
+                    tests.push(currentTest);
+                    currentTest = null;
+                    questionNumber++;
+                }
+            }
+            // Yangi savol
+            else if (!currentTest) {
+                currentTest = {
+                    question: `${questionNumber}. ${line}`,
+                    options: [],
+                    answer: ''
+                };
+            }
+            // Variantlarni qo‘shish
+            else if (currentTest && !/^(ANSWER:|JAVOB:)/i.test(line)) {
+                currentTest.options.push(formatOption(line));
+            }
+        }
+
+        if (tests.length > 0) {
+            uploadStatus.innerHTML = `<span style='color: lightgreen;'>✅ ${tests.length} ta test yuklandi!</span>`;
+            totalPages = Math.ceil(tests.length / testsPerPage); // Umumiy sahifalar soni
+            currentPage = 1;                                     // Birinchi sahifadan boshlash
+            displayTests();
+            updatePageInfo();
+            testResults.style.display = 'block';
+        } else {
+            uploadStatus.innerHTML = "<span style='color: red;'>❌ Xatolik: Test ma'lumotlari topilmadi!</span>";
+        }
+    }
+
+    // Testlarni ko‘rsatish
+    function displayTests() {
+        const startIndex = (currentPage - 1) * testsPerPage; // Boshlang‘ich indeks
+        const endIndex = startIndex + testsPerPage;          // Yakuniy indeks
+        const testsToDisplay = tests.slice(startIndex, endIndex); // Joriy sahifa testlari
+        testContainer.innerHTML = '';
+        testsToDisplay.forEach(test => {
+            const testElement = document.createElement('div');
+            testElement.className = 'test-container';
+
+            const questionElement = document.createElement('div');
+            questionElement.className = 'test-question';
+            questionElement.textContent = test.question;
+            testElement.appendChild(questionElement);
+
+            const optionsElement = document.createElement('div');
+            optionsElement.className = 'test-options';
+            test.options.forEach(option => {
+                const optionElement = document.createElement('div');
+                optionElement.textContent = option;
+                optionsElement.appendChild(optionElement);
+            });
+            testElement.appendChild(optionsElement);
+
+            const answerElement = document.createElement('div');
+            answerElement.className = 'test-answer';
+            answerElement.textContent = test.answer;
+            testElement.appendChild(answerElement);
+
+            testContainer.appendChild(testElement);
+        });
+    }
+
+    // Sahifa ma’lumotlarini yangilash
+    function updatePageInfo() {
+        pageInfo.textContent = `Sahifa ${currentPage} / ${totalPages}`;
+        prevBtn.disabled = currentPage === 1;         // Birinchi sahifada "Oldingi" o‘chiriladi
+        nextBtn.disabled = currentPage === totalPages; // Oxirgi sahifada "Keyingi" o‘chiriladi
+    }
+
+    // Navigatsiya knopkalari uchun hodisalar
+    prevBtn.addEventListener('click', function() {
+        if (currentPage > 1) {
+            currentPage--;
+            displayTests();
+            updatePageInfo();
+        }
+    });
+
+    nextBtn.addEventListener('click', function() {
+        if (currentPage < totalPages) {
+            currentPage++;
+            displayTests();
+            updatePageInfo();
+        }
+    });
+
+    // Testlarni eksport qilish
+    exportBtn.addEventListener('click', function() {
+        const startIndex = (currentPage - 1) * testsPerPage;
+        const endIndex = startIndex + testsPerPage;
+        const testsToExport = tests.slice(startIndex, endIndex);
+        let content = '';
+        testsToExport.forEach(test => {
+            const questionText = test.question.replace(/^\d+\.\s*/, '');
+            content += questionText + '\n';
+            test.options.forEach(option => {
+                content += option + '\n';
+            });
+            content += test.answer + '\n\n';
+        });
+        const blob = new Blob([content], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Tezkor_Quiz ${currentPage}.txt`; // Fayl nomiga sahifa raqami qo‘shildi
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+    });
+</script>
+    
 <script>
     const backToTopButton = document.getElementById("backToTop");
 
@@ -224,205 +435,12 @@
     });
 </script>
 
-<script>
-    // Global o'zgaruvchilar
-    let tests = [];
-    let currentPage = 1;
-    let testsPerPage = 25;
-
-    // HTML elementlarni olish
-    const fileInput = document.getElementById('fileInput');
-    const uploadStatus = document.getElementById('uploadStatus');
-    const testResults = document.getElementById('testResults');
-    const testContainer = document.getElementById('testContainer');
-    const currentPageElement = document.getElementById('currentPage');
-    const totalPagesElement = document.getElementById('totalPages');
-    const prevPageButton = document.getElementById('prevPage');
-    const nextPageButton = document.getElementById('nextPage');
-    const exportButton = document.getElementById('exportBtn');
-
-    // Fayl yuklash
-    fileInput.addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (!file) {
-            return;
-        }
-
-        uploadStatus.textContent = "Fayl yuklanmoqda...";
-
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            parseTestFile(e.target.result);
-        };
-        reader.readAsText(file);
-    });
-
-    // Test faylini tahlil qilish
-    function parseTestFile(content) {
-        tests = [];
-        let lines = content.split('\n');
-        let currentTest = null;
-        let currentOption = '';
-        let questionNumber = 1;
-
-        for (let i = 0; i < lines.length; i++) {
-            let line = lines[i].trim();
-
-            // Bo'sh qatorlarni o'tkazib yuborish
-            if (line === '') continue;
-
-            // Javob variant harf emas
-            if (/^ANSWER:/.test(line)) {
-                if (currentTest) {
-                    currentTest.answer = line.substring(7).trim();
-
-                    // Test to'liq bo'lgach qo'shish
-                    tests.push(currentTest);
-
-                    // Yangi test uchun tayyorgarlik
-                    currentTest = null;
-                }
-            }
-            // Javob varianti (A, B, C, D)
-            else if (/^[A-D]\./.test(line)) {
-                if (currentTest) {
-                    currentOption = line;
-                    currentTest.options.push(currentOption);
-                }
-            }
-            // Agar oldingi qator ANSWER bilan tugagan bo'lsa va bu yangi qator bo'lsa - bu yangi savol
-            else if (!currentTest) {
-                // Yangi test ob'ektini yaratish
-                currentTest = {
-                    question: `${questionNumber}. ${line}`,
-                    options: [],
-                    answer: ''
-                };
-                questionNumber++;
-            }
-        }
-
-        if (tests.length > 0) {
-            uploadStatus.textContent = `${tests.length} ta test yuklandi!`;
-            displayTests();
-            testResults.style.display = 'block';
-        } else {
-            uploadStatus.textContent = "Xatolik: Test ma'lumotlari topilmadi yoki noto'g'ri formatda!";
-        }
-    }
-
-    // Testlarni ko'rsatish
-    function displayTests() {
-        // Sahifalar sonini hisoblash
-        const totalPages = Math.ceil(tests.length / testsPerPage);
-        totalPagesElement.textContent = totalPages;
-
-        // Joriy sahifadagi testlarni ko'rsatish
-        showTestsForPage(currentPage);
-
-        // Pagination tugmalarini yangilash
-        updatePaginationButtons();
-    }
-
-    // Berilgan sahifa uchun testlarni ko'rsatish
-    function showTestsForPage(page) {
-        // Testlar konteynerini tozalash
-        testContainer.innerHTML = '';
-
-        // Sahifa uchun testlarni hisoblash
-        const startIndex = (page - 1) * testsPerPage;
-        const endIndex = Math.min(startIndex + testsPerPage, tests.length);
-        const pageTests = tests.slice(startIndex, endIndex);
-
-        // Har bir testni ko'rsatish
-        pageTests.forEach((test, index) => {
-            const testElement = document.createElement('div');
-            testElement.className = 'test-container';
-
-            const questionElement = document.createElement('div');
-            questionElement.className = 'test-question';
-            questionElement.textContent = test.question;
-            testElement.appendChild(questionElement);
-
-            const optionsElement = document.createElement('div');
-            optionsElement.className = 'test-options';
-            test.options.forEach(option => {
-                const optionElement = document.createElement('div');
-                optionElement.textContent = option;
-                optionsElement.appendChild(optionElement);
-            });
-            testElement.appendChild(optionsElement);
-
-            const answerElement = document.createElement('div');
-            answerElement.className = 'test-answer';
-            answerElement.textContent = `ANSWER: ${test.answer}`;
-            testElement.appendChild(answerElement);
-
-            testContainer.appendChild(testElement);
-        });
-
-        // Joriy sahifani yangilash
-        currentPageElement.textContent = page;
-    }
-
-    // Pagination tugmalarini yangilash
-    function updatePaginationButtons() {
-        const totalPages = Math.ceil(tests.length / testsPerPage);
-
-        prevPageButton.disabled = currentPage === 1;
-        nextPageButton.disabled = currentPage === totalPages;
-    }
-
-    // Oldingi sahifaga o'tish
-    prevPageButton.addEventListener('click', function() {
-        if (currentPage > 1) {
-            currentPage--;
-            showTestsForPage(currentPage);
-            updatePaginationButtons();
-        }
-    });
-
-    // Keyingi sahifaga o'tish
-    nextPageButton.addEventListener('click', function() {
-        const totalPages = Math.ceil(tests.length / testsPerPage);
-        if (currentPage < totalPages) {
-            currentPage++;
-            showTestsForPage(currentPage);
-            updatePaginationButtons();
-        }
-    });
-
-    // Joriy sahifadagi testlarni TXT faylga eksport qilish
-    exportBtn.addEventListener('click', function() {
-        const startIndex = (currentPage - 1) * testsPerPage;
-        const endIndex = Math.min(startIndex + testsPerPage, tests.length);
-        const pageTests = tests.slice(startIndex, endIndex);
-
-        let content = '';
-        pageTests.forEach(test => {
-            // Raqamni olib tashlash uchun savolni ajratish
-            const questionText = test.question.replace(/^\d+\.\s*/, '');
-            content += questionText + '\n';
-            test.options.forEach(option => {
-                content += option + '\n';
-            });
-            content += 'ANSWER: ' + test.answer + '\n\n';
-        });
-
-        // Faylni yuklab olish
-        const blob = new Blob([content], { type: 'text/plain' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.style.display = 'none';
-        a.href = url;
-        a.download = `Test_${currentPage}_page.txt`;
-        document.body.appendChild(a);
-        a.click();
-
-        // Resurslarni tozalash
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(a);
-    });
-</script>
 </body>
 </html>
+
+
+
+
+
+
+
