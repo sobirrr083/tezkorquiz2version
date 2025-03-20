@@ -9,7 +9,7 @@
   <style>
     body {
       background-color: #f4f6f9;
-      overflow-x: hidden; /* Gorizontal siljishni oldini olish */
+      overflow-x: hidden;
     }
     .container {
       max-width: 900px;
@@ -39,7 +39,6 @@
     .options-container .form-check {
       margin-bottom: 8px;
     }
-    /* To'g'ri / noto'g'ri belgilash */
     .correct {
       background-color: #d1e7dd !important;
     }
@@ -50,7 +49,6 @@
       font-weight: bold;
       margin-left: 8px;
     }
-    /* Animatsiyalar */
     @keyframes correctPulse {
       0% { transform: scale(1); background-color: #d1e7dd; }
       50% { transform: scale(1.05); background-color: #bde0c8; }
@@ -70,17 +68,11 @@
     .incorrect-anim {
       animation: shake 0.5s ease;
     }
-    .content {
-      height: 1500px; /* Sahifa uzun bo‘lishi uchun */
-      padding: 20px;
-      background-color: #f8f9fa;
-    }
-    /* 🔼 Yuqoriga qaytish tugmasi */
     #backToTop {
       position: fixed;
       bottom: 20px;
       right: 20px;
-      display: none; /* Avval yashirin */
+      display: none;
       background: #007bff;
       color: white;
       border: none;
@@ -95,35 +87,6 @@
       background: #0056b3;
       transform: scale(1.1);
     }
-    /* 🔼 Tugmali to‘r shakli (rounded square) */
-    .square {
-      border-radius: 10px;
-      padding: 12px 24px;
-    }
-    /* Responsive dizayn uchun qo‘shimcha stillar */
-    @media (max-width: 576px) {
-      .container {
-        padding: 10px;
-      }
-      .question-container {
-        padding: 10px;
-      }
-      .form-check {
-        margin-bottom: 5px;
-      }
-      #backToTop {
-        padding: 8px 12px;
-        font-size: 16px;
-        bottom: 10px;
-        right: 10px;
-      }
-      .question-text {
-        font-size: 1.1em;
-      }
-      .form-check-label {
-        font-size: 1.1em;
-      }
-    }
     .form-check-input {
       transform: scale(1.2);
       margin-right: 10px;
@@ -137,14 +100,12 @@
 <body>
 <div class="container">
   <h1 class="text-center mb-4">Telegram Quiz Style</h1>
-  <!-- Fayl tanlash qismi -->
   <div class="mb-3" id="fileSection">
     <label for="fileInput" class="form-label file-label">Fayl tanlash (.txt)</label>
     <input type="file" class="form-control" id="fileInput" accept=".txt" />
     <div id="uploadStatus"></div>
-    <p>Fayl yuklangangach testlarni barchasi belgilanmaguncha fayl tanlash ochilmaydi</p>
+    <p>Fayl yuklangach testlarni barchasi belgilanmaguncha fayl tanlash ochilmaydi</p>
   </div>
-  <!-- Testlar ro'yxati chiqadigan joy -->
   <div id="quizList" style="display: none;">
     <p id="testCount" class="text-success fw-bold"></p>
     <div id="questionsContainer"></div>
@@ -155,8 +116,6 @@
 
 <script>
   const backToTopButton = document.getElementById("backToTop");
-
-  // Ekranda pastga tushganda tugmani chiqarish
   window.onscroll = function() {
     if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
       backToTopButton.style.display = "block";
@@ -164,8 +123,6 @@
       backToTopButton.style.display = "none";
     }
   };
-
-  // Tugmani bosganda sahifani yuqoriga ko'tarish
   backToTopButton.addEventListener("click", function() {
     window.scrollTo({
       top: 0,
@@ -182,7 +139,6 @@
   const testCount = document.getElementById("testCount");
   const questionsContainer = document.getElementById("questionsContainer");
 
-  // Fayl tanlash eventi
   fileInput.addEventListener("change", (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -195,13 +151,9 @@
     reader.readAsText(file);
   });
 
-  // Test faylini parse qilish
   function parseTestFile(content) {
     tests = [];
-    const lines = content
-            .split("\n")
-            .map((line) => line.trim())
-            .filter(Boolean);
+    const lines = content.split("\n").map(line => line.trim()).filter(Boolean);
     let currentTest = null;
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
@@ -211,14 +163,18 @@
           tests.push(currentTest);
           currentTest = null;
         }
-      } else if (/^[A-D]\./.test(line)) {
+      } else if (/^[A-D][\.\)]\s*/.test(line)) {
         if (currentTest) {
-          currentTest.options.push(line);
+          const optionText = line.replace(/^[A-D][\.\)]\s*/, "").trim();
+          currentTest.options.push(optionText);
+          currentTest.rawOptions = currentTest.rawOptions || [];
+          currentTest.rawOptions.push(line.trim());
         }
       } else {
         currentTest = {
-          question: line,
+          question: line.trim(),
           options: [],
+          rawOptions: [],
           answer: "",
         };
       }
@@ -232,7 +188,6 @@
     }
   }
 
-  // Testlarni ekranga chiqarish
   function showTests() {
     quizList.style.display = "block";
     testCount.textContent = tests.length + " ta test yuklandi!";
@@ -254,12 +209,10 @@
         input.type = "radio";
         input.name = "question_" + index;
         input.id = "question_" + index + "_option_" + optIndex;
-        const optionLetter = opt.split(".")[0].trim();
-        const optionText = opt.replace(/^[A-D]\.\s*/, "").trim();
         const label = document.createElement("label");
         label.className = "form-check-label";
         label.setAttribute("for", input.id);
-        label.textContent = optionLetter + ") " + optionText;
+        label.textContent = opt;
         input.addEventListener("change", () => {
           checkAnswer(index, optIndex);
         });
@@ -272,7 +225,6 @@
     });
   }
 
-  // Har bir savolni darhol tekshirish
   function checkAnswer(questionIndex, selectedOptIndex) {
     const test = tests[questionIndex];
     const correctLetter = test.answer;
@@ -281,21 +233,21 @@
       const lbl = document.querySelector(`label[for="${radio.id}"]`);
       lbl.classList.remove("correct", "incorrect", "correct-anim", "incorrect-anim");
       const checkIcon = lbl.querySelector(".check-icon");
-      if (checkIcon) {
-        checkIcon.remove();
-      }
+      if (checkIcon) checkIcon.remove();
     });
     const chosenRadioId = `question_${questionIndex}_option_${selectedOptIndex}`;
     const chosenLabel = document.querySelector(`label[for="${chosenRadioId}"]`);
     const chosenOptionText = test.options[selectedOptIndex];
-    const chosenLetter = chosenOptionText.split(".")[0].trim();
-    if (chosenLetter === correctLetter) {
+    const correctRawOption = test.rawOptions.find(opt => opt.startsWith(correctLetter + ".") || opt.startsWith(correctLetter + ")"));
+    const correctOptionText = correctRawOption.replace(/^[A-D][\.\)]\s*/, "").trim();
+
+    if (chosenOptionText === correctOptionText) {
       chosenLabel.classList.add("correct", "correct-anim");
       chosenLabel.innerHTML += '<span class="check-icon">✅</span>';
     } else {
       chosenLabel.classList.add("incorrect", "incorrect-anim");
       chosenLabel.innerHTML += '<span class="check-icon">❌</span>';
-      const correctIndex = test.options.findIndex((o) => o.startsWith(correctLetter + "."));
+      const correctIndex = test.options.indexOf(correctOptionText);
       if (correctIndex !== -1) {
         const correctRadioId = `question_${questionIndex}_option_${correctIndex}`;
         const correctLabel = document.querySelector(`label[for="${correctRadioId}"]`);
@@ -307,7 +259,6 @@
     checkAllAnswered();
   }
 
-  // Barcha savollar javoblanganligini tekshirish
   function checkAllAnswered() {
     const allAnswered = tests.every((test, index) => {
       const radios = document.querySelectorAll(`input[name="question_${index}"]`);
@@ -315,10 +266,9 @@
     });
     if (allAnswered) {
       fileInput.disabled = false;
-      uploadStatus.textContent = "Barcha testlar belgilangandi. Yangi fayl tanlang!";
+      uploadStatus.textContent = "Barcha testlar belgilandi. Yangi fayl tanlang!";
     }
   }
 </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'923600acd86432f9',t:'MTc0MjQ4MjAyNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>
