@@ -2,11 +2,14 @@
 <html lang="uz">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Telegram Quiz</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="icon" href="tg.png">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <style>
     body {
       background-color: #f4f6f9;
+      overflow-x: hidden; /* Gorizontal siljishni oldini olish */
     }
     .container {
       max-width: 900px;
@@ -36,6 +39,7 @@
     .options-container .form-check {
       margin-bottom: 8px;
     }
+    /* To'g'ri / noto'g'ri belgilash */
     .correct {
       background-color: #d1e7dd !important;
     }
@@ -46,19 +50,11 @@
       font-weight: bold;
       margin-left: 8px;
     }
+    /* Animatsiyalar */
     @keyframes correctPulse {
-      0% {
-        transform: scale(1);
-        background-color: #d1e7dd;
-      }
-      50% {
-        transform: scale(1.05);
-        background-color: #bde0c8;
-      }
-      100% {
-        transform: scale(1);
-        background-color: #d1e7dd;
-      }
+      0% { transform: scale(1); background-color: #d1e7dd; }
+      50% { transform: scale(1.05); background-color: #bde0c8; }
+      100% { transform: scale(1); background-color: #d1e7dd; }
     }
     .correct-anim {
       animation: correctPulse 0.5s ease;
@@ -79,6 +75,7 @@
       padding: 20px;
       background-color: #f8f9fa;
     }
+    /* 🔼 Yuqoriga qaytish tugmasi */
     #backToTop {
       position: fixed;
       bottom: 20px;
@@ -98,58 +95,59 @@
       background: #0056b3;
       transform: scale(1.1);
     }
-    /* Result display */
-    #resultAnimation {
-      display: none;
-      text-align: center;
-      margin-top: 20px;
+    /* 🔼 Tugmali to‘r shakli (rounded square) */
+    .square {
+      border-radius: 10px;
+      padding: 12px 24px;
     }
-    .result-summary {
-      margin-top: 20px;
+    /* Responsive dizayn uchun qo‘shimcha stillar */
+    @media (max-width: 576px) {
+      .container {
+        padding: 10px;
+      }
+      .question-container {
+        padding: 10px;
+      }
+      .form-check {
+        margin-bottom: 5px;
+      }
+      #backToTop {
+        padding: 8px 12px;
+        font-size: 16px;
+        bottom: 10px;
+        right: 10px;
+      }
+      .question-text {
+        font-size: 1.1em;
+      }
+      .form-check-label {
+        font-size: 1.1em;
+      }
+    }
+    .form-check-input {
+      transform: scale(1.2);
+      margin-right: 10px;
+    }
+    .form-check-label {
+      word-wrap: break-word;
+      white-space: normal;
     }
   </style>
 </head>
 <body>
 <div class="container">
   <h1 class="text-center mb-4">Telegram Quiz Style</h1>
-
+  <!-- Fayl tanlash qismi -->
   <div class="mb-3" id="fileSection">
     <label for="fileInput" class="form-label file-label">Fayl tanlash (.txt)</label>
     <input type="file" class="form-control" id="fileInput" accept=".txt" />
     <div id="uploadStatus"></div>
-    <p>Fayl yuklangandan so'ng testlarni barchasi belgilanmaguncha fayl tanlash ochilmaydi</p>
+    <p>Fayl yuklangangach testlarni barchasi belgilanmaguncha fayl tanlash ochilmaydi</p>
   </div>
-
+  <!-- Testlar ro'yxati chiqadigan joy -->
   <div id="quizList" style="display: none;">
     <p id="testCount" class="text-success fw-bold"></p>
     <div id="questionsContainer"></div>
-  </div>
-
-  <div id="resultAnimation">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-      <circle cx="100" cy="100" r="80" fill="#FFD700" opacity="0.2">
-        <animate attributeName="r" values="75;85;75" dur="2s" repeatCount="indefinite"/>
-      </circle>
-      <path d="M100 20 L116 68 L168 68 L127 98 L142 146 L100 120 L58 146 L73 98 L32 68 L84 68 Z"
-        fill="#FFD700" stroke="#FFA500" stroke-width="2">
-        <animate attributeName="fill" values="#FFD700;#FFC800;#FFD700" dur="1.5s" repeatCount="indefinite"/>
-      </path>
-      <circle cx="60" cy="60" r="3" fill="white">
-        <animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/>
-      </circle>
-      <circle cx="140" cy="60" r="3" fill="white">
-        <animate attributeName="opacity" values="0;1;0" dur="1.2s" repeatCount="indefinite"/>
-      </circle>
-      <circle cx="100" cy="140" r="3" fill="white">
-        <animate attributeName="opacity" values="0.5;1;0.5" dur="0.8s" repeatCount="indefinite"/>
-      </circle>
-    </svg>
-    <h2 class="text-success">Natijangiz tayyor!</h2>
-    <div class="result-summary" id="resultSummary" style="display: none;">
-      <h4 id="correctCount" class="text-success"></h4>
-      <h4 id="incorrectCount" class="text-danger"></h4>
-      <h4 id="motivationMessage" class="text-primary"></h4>
-    </div>
   </div>
 </div>
 
@@ -158,6 +156,7 @@
 <script>
   const backToTopButton = document.getElementById("backToTop");
 
+  // Ekranda pastga tushganda tugmani chiqarish
   window.onscroll = function() {
     if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
       backToTopButton.style.display = "block";
@@ -166,27 +165,24 @@
     }
   };
 
+  // Tugmani bosganda sahifani yuqoriga ko'tarish
   backToTopButton.addEventListener("click", function() {
     window.scrollTo({
       top: 0,
       behavior: "smooth"
     });
   });
+</script>
 
+<script>
   let tests = [];
-  let correctAnswers = 0;
-  let incorrectAnswers = 0;
   const fileInput = document.getElementById("fileInput");
   const uploadStatus = document.getElementById("uploadStatus");
   const quizList = document.getElementById("quizList");
   const testCount = document.getElementById("testCount");
   const questionsContainer = document.getElementById("questionsContainer");
-  const resultAnimation = document.getElementById("resultAnimation");
-  const resultSummary = document.getElementById("resultSummary");
-  const correctCount = document.getElementById("correctCount");
-  const incorrectCount = document.getElementById("incorrectCount");
-  const motivationMessage = document.getElementById("motivationMessage");
 
+  // Fayl tanlash eventi
   fileInput.addEventListener("change", (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -199,9 +195,13 @@
     reader.readAsText(file);
   });
 
+  // Test faylini parse qilish
   function parseTestFile(content) {
     tests = [];
-    const lines = content.split("\n").map((line) => line.trim()).filter(Boolean);
+    const lines = content
+            .split("\n")
+            .map((line) => line.trim())
+            .filter(Boolean);
     let currentTest = null;
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
@@ -232,14 +232,12 @@
     }
   }
 
+  // Testlarni ekranga chiqarish
   function showTests() {
     quizList.style.display = "block";
     testCount.textContent = tests.length + " ta test yuklandi!";
     questionsContainer.innerHTML = "";
-    
-    const shuffledTests = tests.sort(() => Math.random() - 0.5);
-    
-    shuffledTests.forEach((test, index) => {
+    tests.forEach((test, index) => {
       const questionDiv = document.createElement("div");
       questionDiv.className = "question-container";
       const qText = document.createElement("div");
@@ -248,9 +246,7 @@
       questionDiv.appendChild(qText);
       const optionsDiv = document.createElement("div");
       optionsDiv.className = "options-container";
-
-      const shuffledOptions = test.options.sort(() => Math.random() - 0.5);
-      shuffledOptions.forEach((opt, optIndex) => {
+      test.options.forEach((opt, optIndex) => {
         const formCheck = document.createElement("div");
         formCheck.className = "form-check";
         const input = document.createElement("input");
@@ -258,16 +254,15 @@
         input.type = "radio";
         input.name = "question_" + index;
         input.id = "question_" + index + "_option_" + optIndex;
+        const optionLetter = opt.split(".")[0].trim();
         const optionText = opt.replace(/^[A-D]\.\s*/, "").trim();
         const label = document.createElement("label");
         label.className = "form-check-label";
         label.setAttribute("for", input.id);
-        label.textContent = optionText;
-
+        label.textContent = optionLetter + ") " + optionText;
         input.addEventListener("change", () => {
           checkAnswer(index, optIndex);
         });
-        
         formCheck.appendChild(input);
         formCheck.appendChild(label);
         optionsDiv.appendChild(formCheck);
@@ -277,6 +272,7 @@
     });
   }
 
+  // Har bir savolni darhol tekshirish
   function checkAnswer(questionIndex, selectedOptIndex) {
     const test = tests[questionIndex];
     const correctLetter = test.answer;
@@ -293,11 +289,9 @@
     const chosenLabel = document.querySelector(`label[for="${chosenRadioId}"]`);
     const chosenOptionText = test.options[selectedOptIndex];
     const chosenLetter = chosenOptionText.split(".")[0].trim();
-    
     if (chosenLetter === correctLetter) {
       chosenLabel.classList.add("correct", "correct-anim");
       chosenLabel.innerHTML += '<span class="check-icon">✅</span>';
-      correctAnswers++;
     } else {
       chosenLabel.classList.add("incorrect", "incorrect-anim");
       chosenLabel.innerHTML += '<span class="check-icon">❌</span>';
@@ -308,12 +302,12 @@
         correctLabel.classList.add("correct", "correct-anim");
         correctLabel.innerHTML += '<span class="check-icon">✅</span>';
       }
-      incorrectAnswers++;
     }
     radios.forEach((r) => (r.disabled = true));
     checkAllAnswered();
   }
 
+  // Barcha savollar javoblanganligini tekshirish
   function checkAllAnswered() {
     const allAnswered = tests.every((test, index) => {
       const radios = document.querySelectorAll(`input[name="question_${index}"]`);
@@ -322,19 +316,9 @@
     if (allAnswered) {
       fileInput.disabled = false;
       uploadStatus.textContent = "Barcha testlar belgilangandi. Yangi fayl tanlang!";
-      showResultAnimation();
     }
   }
-
-  function showResultAnimation() {
-    resultAnimation.style.display = "block";
-    resultSummary.style.display = "block";
-    correctCount.textContent = `To'g'ri javoblar: ${correctAnswers}`;
-    incorrectCount.textContent = `Noto'g'ri javoblar: ${incorrectAnswers}`;
-    motivationMessage.textContent = correctAnswers >= tests.length / 2 
-      ? "Ajoyib! Siz juda yaxshi ishladingiz!" 
-      : "O'zingizni yanada yaxshilashingiz mumkin!";
-  }
 </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'923600acd86432f9',t:'MTc0MjQ4MjAyNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>
