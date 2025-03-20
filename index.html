@@ -2,10 +2,16 @@
 <html lang="en">
 <head>
     <title>Tezkor Quiz</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- AOS Animation CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+
     <link rel="icon" href="img/logo.jpg">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <style>
         /* Rasmlar moslashuvchan bo'lishi uchun */
@@ -25,22 +31,151 @@
                 font-size: 14px;
             }
         }
+        
+        /* New card styles */
+        .card {
+          position: relative;
+          width: 100%;
+          height: 300px;
+          background-color: #f2f2f2;
+          border-radius: 10px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
+          perspective: 1000px;
+          box-shadow: 0 0 0 5px #ffffff80;
+          transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .card svg {
+          width: 48px;
+          fill: #333;
+          transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .card:hover {
+          transform: scale(1.05);
+          box-shadow: 0 8px 16px rgba(255, 255, 255, 0.2);
+        }
+
+        .card__content {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          padding: 20px;
+          box-sizing: border-box;
+          background-color: #f2f2f2;
+          transform: rotateX(-90deg);
+          transform-origin: bottom;
+          transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .card:hover .card__content {
+          transform: rotateX(0deg);
+        }
+
+        .card__title {
+          margin: 0;
+          font-size: 24px;
+          color: #000000;
+          font-weight: 700;
+        }
+
+        .card:hover svg {
+          scale: 0;
+        }
+
+        .card__description {
+          margin: 10px 0 0;
+          font-size: 14px;
+          color: #000000;
+          line-height: 1.4;
+        }
+        
+        .card-image {
+          width: 100%;
+          height: auto;
+          transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .card:hover .card-image {
+          scale: 0;
+        }
+
+        
+        /* Navbar styling */
+        .navbar {
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            background-color: #fff;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 26px;
+            color: #3a56e4 !important;
+            letter-spacing: 0.5px;
+        }
+        
+        .nav-link {
+            font-weight: 500;
+            font-size: 16px;
+            margin: 0 15px;
+            color: #333 !important;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: #3a56e4 !important;
+        }
+        
+        .nav-link.active {
+            color: #3a56e4 !important;
+            font-weight: 600;
+        }
+        
+        .beta-badge {
+            font-size: 12px;
+            background-color: #ff6b6b;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+        
+        .navbar-toggler {
+            border: none;
+            padding: 0;
+            outline: none;
+        }
+        
+        .navbar-toggler:focus {
+            box-shadow: none;
+        }
+
     </style>
 </head>
 <body>
-
-<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+  <!-- Simple Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top">
     <div class="container">
-        <a class="navbar-brand" href="index.html">
-            <img src="img/logo.jpg" alt="Logo" style="width:50px;" class="rounded-pill">
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+        <!-- Site Name -->
+        <a class="navbar-brand" href="index.html">Tezkor Quiz</a>
+        
+        <!-- Mobile Toggle Button -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        
+        <!-- Navbar Links -->
+        <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="quiztanlovi.html">Quiz Test</a>
+                    <a class="nav-link active" href="index.html">Bosh sahifa</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="test-boshqaruv-tizimi.html">Segment</a>
@@ -49,48 +184,68 @@
                     <a class="nav-link" href="faylyuklash.html">Fayllarni Saqlash</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="beta.html">Beta versiysi</a>
-                </li>
-                
-               <li class="nav-item">
                     <a class="nav-link" href="yordam.html">Yordam</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="quizDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Quiz Test
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="quizDropdown">
+                        <li><a class="dropdown-item" href="tezkorquiz.html">Tezkor Quiz</a></li>
+                        <li><a class="dropdown-item" href="sekinquiz.html">Sekin Quiz</a></li>
+                        <li><a class="dropdown-item" href="telegramquiz.html">Telegram Quiz</a></li>
+                        <li><a class="dropdown-item" href="imtihon.html">Imtihon Quiz</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="Beta.html">Beta <span class="beta-badge">yangi</span></a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
 
+<br><br> <br> 
 <div class="container mt-3">
     <div class="row">
         <div class="col-lg-6 mb-4">
-
-            <h2 class="text-center"></h2>
-            <div class="ima">
-                <a href="test-boshqaruv-tizimi.html">
-                <img src="img/segment%20(2).png" class="rounded" alt="rasm">
-                </a>
-
-            </div>
-            <div class="card mt-2">
-                <div class="card-body text-center text-danger">
-                   Masalan: 50 ta testni 25 tadan 2 ta .txt fayl qilish, yuklab olib quiz testda boshlash imkoniyati
+            <a href="test-boshqaruv-tizimi.html" class="text-decoration-none">
+                <div class="card">
+                    <img src="img/Segment.webp" class="card-image rounded" alt="rasm">
+                    <div class="card__content">
+                        <p class="card__title">Segment</p>
+                        <p class="card__description text-black">Men sizga masalan: 150 ta test bo'lsa shuni 25 (25*6=150) tadan bo'laklarga bo'lib beraman va yuklab olish imkoniyati bilan. 
+                        <br>
+                        <br>Agar xatolik yoki format noto'g'ri bo'lsa buni ham to'g'irlash imkoniyati mavjud.
+                        <br>
+                        <br>
+                        Quiz Test faqat satandart formatni qo'llab quvvatlaydi. 
+                        <br>
+                        </p>
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
+
         <div class="col-lg-6 mb-4">
-                <h2 class="text-center"></h2>
-            <div class="ima">
-                <a href="quiztanlovi.html">
-            <span style="size: 150px;">
-                <img src="img/01.png" class="rounded" alt="rasm">
-            </span>
-                </a>
-            </div>
-            <div class="card mt-2">
-                <div class="card-body text-center text-danger">
-                    Testning bazasini .txt formatda menga yuboring va darhol shu testni boshlang!
+            <a href="book quiztanlovi online.html" class="text-decoration-none">
+                <div class="card">
+                    <img src="img/quiztest.webp" class="card-image rounded" alt="rasm">
+                    <div class="card__content">
+                        <p class="card__title">Quiz Test</p>
+                        <p class="card__description text-black">Testning bazasini .txt formatda menga yuboring va darhol shu testni boshlang!
+                         <br>
+                         <br>Tezkor Quiz   
+                         <br>    
+                         <br>Sekin Quiz
+                         <br> 
+                         <br>Telegram Quiz
+                         <br>
+                         <br>Imtihon Quiz
+                        </p>
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
     </div>
 </div>
