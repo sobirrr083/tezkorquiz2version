@@ -16,81 +16,113 @@
     }
     
     .container {
-      width: 50%;
-      min-width: 320px;
+      width: 70%;
       margin: 20px auto;
       background-color: #fff;
-      padding: 20px;
+      padding: 30px;
       border-radius: 6px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      max-width: 1200px;
     }
-    @media (max-width: 992px) {
+    
+    /* Kompyuter ekranlari uchun kengaytirilgan ko'rinish */
+    @media (min-width: 1200px) {
       .container {
         width: 70%;
+        padding: 40px;
       }
     }
+    
+    /* Kichik kompyuter ekranlari */
+    @media (max-width: 992px) {
+      .container {
+        width: 80%;
+      }
+    }
+    
+    /* Tablet va telefon uchun eskidek qolsin */
     @media (max-width: 768px) {
       .container {
         width: 90%;
+        padding: 20px;
       }
     }
+    
     .file-label {
       margin-bottom: 10px;
+      font-size: 18px;
     }
+    
     #uploadStatus {
       font-weight: bold;
       margin-top: 10px;
+      font-size: 16px;
     }
+    
     .question-container {
       border: 1px solid #ddd;
       border-radius: 6px;
-      padding: 15px;
-      margin-bottom: 15px;
+      padding: 20px;
+      margin-bottom: 20px;
+      scroll-margin-top: 20px; /* Added for smooth scrolling */
     }
+    
     .question-text {
       font-weight: bold;
-      margin-bottom: 10px;
+      margin-bottom: 15px;
+      font-size: 18px;
     }
+    
     .options-container .option-item {
-      margin-bottom: 8px;
-      padding: 8px;
+      margin-bottom: 12px;
+      padding: 12px;
       border-radius: 4px;
       display: flex;
       align-items: flex-start;
       cursor: pointer;
       transition: all 0.2s ease;
+      font-size: 16px;
     }
+    
     .options-container .option-item:hover {
       background-color: #f8f9fa;
     }
+    
     .options-container .option-item.correct {
       background-color: #d1e7dd;
       border-left: 4px solid #198754;
     }
+    
     .options-container .option-item.incorrect {
       background-color: #f8d7da;
       border-left: 4px solid #dc3545;
     }
+    
     .option-checkbox {
       margin-right: 10px;
       flex-shrink: 0;
     }
+    
     .option-text {
       flex-grow: 1;
     }
+    
     .check-icon {
       margin-right: 8px;
       font-weight: bold;
       margin-left: 8px;
     }
+    
     @keyframes correctPulse {
       0% { transform: scale(1); background-color: #d1e7dd; }
       50% { transform: scale(1.01); background-color: #bde0c8; }
       100% { transform: scale(1); background-color: #d1e7dd; }
     }
+    
     .correct-anim {
       animation: correctPulse 0.5s ease;
     }
+    
     @keyframes shake {
       0% { transform: translateX(0); }
       20% { transform: translateX(-5px); }
@@ -99,24 +131,27 @@
       80% { transform: translateX(5px); }
       100% { transform: translateX(0); }
     }
+    
     .incorrect-anim {
       animation: shake 0.5s ease;
     }
+    
     #backToTop {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
+      bottom: 30px;
+      right: 30px;
       display: none;
       background: #007bff;
       color: white;
       border: none;
-      padding: 12px 18px;
-      font-size: 18px;
+      padding: 15px 20px;
+      font-size: 20px;
       border-radius: 50%;
       cursor: pointer;
       transition: all 0.3s;
       box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
     }
+    
     #backToTop:hover {
       background: #0056b3;
       transform: scale(1.1);
@@ -124,30 +159,34 @@
     
     /* Custom checkbox styles */
     .custom-checkbox {
-      width: 18px;
-      height: 18px;
+      width: 22px;
+      height: 22px;
       border-radius: 3px;
       border: 1px solid #9098a9;
-      margin-right: 8px;
+      margin-right: 12px;
       position: relative;
       margin-top: 3px;
       transition: all 0.2s ease;
     }
+    
     .custom-checkbox.checked {
       background-color: #506eec;
       border-color: #506eec;
     }
+    
     .custom-checkbox .checkmark {
       display: none;
       color: white;
       position: absolute;
-      top: -1px;
-      left: 3px;
-      font-size: 12px;
+      top: 0px;
+      left: 5px;
+      font-size: 14px;
     }
+    
     .custom-checkbox.checked .checkmark {
       display: block;
     }
+    
     .option-item:hover .custom-checkbox {
       border-color: #506eec;
     }
@@ -155,64 +194,73 @@
     /* Statistics styles */
     #quizCompletionSection {
       display: none;
-      margin-top: 30px;
+      margin-top: 40px;
       text-align: center;
     }
+    
     .stats-container {
-      margin-top: 20px;
-      padding: 20px;
+      margin-top: 30px;
+      padding: 30px;
       border-radius: 8px;
       background-color: #f8f9fa;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
+    
     .progress-bar-container {
-      margin-top: 15px;
-      height: 20px;
+      margin-top: 20px;
+      height: 24px;
       background-color: #e9ecef;
-      border-radius: 10px;
+      border-radius: 12px;
       overflow: hidden;
       position: relative;
     }
+    
     .progress-bar {
       height: 100%;
-      border-radius: 10px;
+      border-radius: 12px;
       transition: width 1s ease-in-out;
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
       font-weight: bold;
+      font-size: 16px;
     }
+    
     .progress-correct {
       background-color: #28a745;
     }
+    
     .progress-incorrect {
       background-color: #dc3545;
     }
     
     /* Celebration animation container */
     #celebrationAnimation {
-      width: 200px;
-      height: 200px;
-      margin: 0 auto 20px auto;
+      width: 250px;
+      height: 250px;
+      margin: 0 auto 30px auto;
     }
+    
     .celebration-title {
-      font-size: 24px;
+      font-size: 32px;
       font-weight: bold;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
       color: #506eec;
     }
+    
     .stat-number {
-      font-size: 18px;
+      font-size: 24px;
       font-weight: bold;
     }
+    
     .dual-progress {
       position: relative;
-      height: 20px;
+      height: 24px;
       background-color: #e9ecef;
-      border-radius: 10px;
+      border-radius: 12px;
       overflow: hidden;
-      margin: 10px 0 20px 0;
+      margin: 15px 0 30px 0;
     }
     
     /* New Button Styles */
@@ -220,93 +268,54 @@
       background-color: #506eec;
       color: white;
       border: none;
-      padding: 10px 20px;
+      padding: 12px 25px;
       border-radius: 5px;
       font-weight: bold;
+      font-size: 18px;
       cursor: pointer;
       transition: all 0.3s ease;
-      margin-top: 15px;
+      margin-top: 20px;
     }
+    
     .action-button:hover {
       background-color: #3a5ad9;
       transform: translateY(-2px);
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
+    
     .action-button:active {
       transform: translateY(0);
     }
-
-    /* Auto-scroll toggle switch style */
-    .toggle-container {
-      display: flex;
-      align-items: center;
-      margin-top: 10px;
+    
+    h1 {
+      font-size: 32px;
+      margin-bottom: 30px;
     }
-    .toggle-switch {
-      position: relative;
-      display: inline-block;
-      width: 48px;
-      height: 24px;
-      margin-right: 8px;
+    
+    #fileInput {
+      font-size: 16px;
+      padding: 10px;
     }
-    .toggle-switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
+    
+    p {
+      font-size: 16px;
     }
-    .toggle-slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: #ccc;
-      transition: .4s;
-      border-radius: 24px;
-    }
-    .toggle-slider:before {
-      position: absolute;
-      content: "";
-      height: 18px;
-      width: 18px;
-      left: 3px;
-      bottom: 3px;
-      background-color: white;
-      transition: .4s;
-      border-radius: 50%;
-    }
-    input:checked + .toggle-slider {
-      background-color: #506eec;
-    }
-    input:checked + .toggle-slider:before {
-      transform: translateX(24px);
-    }
-    .toggle-label {
-      font-size: 14px;
-      color: #555;
+    
+    #testCount {
+      font-size: 18px;
+      margin-bottom: 20px;
     }
   </style>
 </head>
 <body>
 <div class="container">
   <h1 class="text-center mb-4">Telegram Quiz</h1>
-  <div class="mb-3" id="fileSection">
+  <div class="mb-4" id="fileSection">
     <label for="fileInput" class="form-label file-label">Fayl tanlash (.txt)</label>
     <input type="file" class="form-control" id="fileInput" accept=".txt" />
     <div id="uploadStatus"></div>
     <p>Fayl yuklangach testlarni barchasi belgilanmaguncha fayl tanlash ochilmaydi</p>
-    
-    <!-- Auto-scroll toggle switch -->
-    <div class="toggle-container">
-      <label class="toggle-switch">
-        <input type="checkbox" id="autoScrollToggle" checked>
-        <span class="toggle-slider"></span>
-      </label>
-      <span class="toggle-label">Avtomatik pastga siljish</span>
-    </div>
   </div>
-  
   <div id="quizList" style="display: none;">
     <p id="testCount" class="text-success fw-bold"></p>
     <div id="questionsContainer"></div>
@@ -338,7 +347,7 @@
     </div>
     <div class="celebration-title">Test Yakunlandi!</div>
     <div class="stats-container">
-      <div class="mb-3">
+      <div class="mb-4">
         <span class="fw-bold">Jami savollar: </span>
         <span class="stat-number" id="totalQuestions">0</span>
       </div>
@@ -369,19 +378,6 @@
 <script>
   const backToTopButton = document.getElementById("backToTop");
   const startNewTestButton = document.getElementById("startNewTest");
-  const autoScrollToggle = document.getElementById("autoScrollToggle");
-  
-  // Save auto-scroll preference to localStorage
-  if (localStorage.getItem("autoScrollEnabled") === null) {
-    localStorage.setItem("autoScrollEnabled", "true");
-  } else {
-    autoScrollToggle.checked = localStorage.getItem("autoScrollEnabled") === "true";
-  }
-  
-  // Update localStorage when toggle changes
-  autoScrollToggle.addEventListener("change", function() {
-    localStorage.setItem("autoScrollEnabled", this.checked);
-  });
   
   window.onscroll = function() {
     if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
@@ -432,7 +428,7 @@
   const correctBarEl = document.getElementById("correctBar");
   const incorrectBarEl = document.getElementById("incorrectBar");
   const percentageCorrectEl = document.getElementById("percentageCorrect");
-
+  
   fileInput.addEventListener("change", (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -448,15 +444,6 @@
     stats = { correct: 0, incorrect: 0, total: 0 };
     quizCompletionSection.style.display = "none";
   });
-
-  // Helper function to shuffle arrays (Fisher-Yates algorithm)
-  function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-  }
 
   function parseTestFile(content) {
     tests = [];
@@ -487,62 +474,37 @@
       }
     }
     if (tests.length > 0) {
-      // Shuffle the tests array to randomize question order
-      tests = shuffleArray(tests);
-      
-      // For each test, create a shuffled version with the correct answer tracked
-      tests = tests.map(test => {
-        // Create pairs of options and their letter identifiers
-        const optionPairs = test.options.map((option, idx) => {
-          const letter = test.rawOptions[idx].charAt(0);
-          return { letter, option };
-        });
-        
-        // Find the correct answer letter
-        const correctLetter = test.answer;
-        
-        // Shuffle the option pairs
-        const shuffledPairs = shuffleArray([...optionPairs]);
-        
-        // Create new rawOptions and options arrays in the shuffled order
-        const shuffledRawOptions = shuffledPairs.map((pair, idx) => {
-          // Convert to A, B, C, D format based on new position
-          const newLetter = String.fromCharCode(65 + idx); // A=65, B=66, etc.
-          return `${newLetter}. ${pair.option}`;
-        });
-        
-        const shuffledOptions = shuffledPairs.map(pair => pair.option);
-        
-        // Update the answer to point to the new position of the correct option
-        const correctPairIndex = shuffledPairs.findIndex(pair => pair.letter === correctLetter);
-        const newCorrectLetter = String.fromCharCode(65 + correctPairIndex);
-        
-        return {
-          question: test.question,
-          options: shuffledOptions,
-          rawOptions: shuffledRawOptions,
-          answer: newCorrectLetter,
-          originalAnswer: correctLetter // Keep for reference if needed
-        };
-      });
-
       uploadStatus.textContent = "Fayl yuklandi!";
       fileInput.disabled = true;
       stats.total = tests.length;
+      
+      // Randomize the order of questions
+      shuffleArray(tests);
+      
       showTests();
     } else {
       uploadStatus.textContent = "Xatolik: Test ma'lumotlari topilmadi yoki noto'g'ri format!";
     }
   }
 
+  // Fisher-Yates shuffle algorithm to randomize arrays
+  function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+
   function showTests() {
     quizList.style.display = "block";
     testCount.textContent = tests.length + " ta test yuklandi!";
     questionsContainer.innerHTML = "";
+    
     tests.forEach((test, index) => {
       const questionDiv = document.createElement("div");
       questionDiv.className = "question-container";
-      questionDiv.id = `question-${index}`;
+      questionDiv.id = `question-${index}`; // Add unique ID for scrolling
       const qText = document.createElement("div");
       qText.className = "question-text";
       qText.textContent = (index + 1) + ". " + test.question;
@@ -550,12 +512,27 @@
       const optionsDiv = document.createElement("div");
       optionsDiv.className = "options-container";
       
-      test.options.forEach((opt, optIndex) => {
+      // Create an array of indices for randomizing options
+      const optionIndices = [...Array(test.options.length).keys()];
+      shuffleArray(optionIndices);
+      
+      // Create a mapping from randomized indices to original indices
+      const indexMap = {};
+      optionIndices.forEach((originalIndex, randomIndex) => {
+        indexMap[randomIndex] = originalIndex;
+      });
+      
+      // Store the mapping for later use when checking answers
+      test.indexMap = indexMap;
+      
+      // Use shuffled indices to display options in random order
+      optionIndices.forEach((originalIndex, randomIndex) => {
         // Create option item with custom styling
         const optionItem = document.createElement("div");
         optionItem.className = "option-item";
         optionItem.dataset.questionIndex = index;
-        optionItem.dataset.optionIndex = optIndex;
+        optionItem.dataset.optionIndex = randomIndex; // Use the randomized index
+        optionItem.dataset.originalIndex = originalIndex; // Store original index for answer checking
         
         // Custom checkbox element
         const customCheckbox = document.createElement("div");
@@ -568,8 +545,7 @@
         // Option text
         const optionText = document.createElement("div");
         optionText.className = "option-text";
-        // Display with the letter prefix from rawOptions
-        optionText.textContent = test.rawOptions[optIndex];
+        optionText.textContent = test.options[originalIndex]; // Get text using original index
         
         // Add checkbox and text to option item
         optionItem.appendChild(customCheckbox);
@@ -594,20 +570,12 @@
           });
           
           // Process the answer
-          checkAnswer(index, optIndex);
+          checkAnswer(index, randomIndex, originalIndex);
           
-          // Auto-scroll to next question if enabled and not the last question
-          if (autoScrollToggle.checked && index < tests.length - 1) {
-            setTimeout(() => {
-              const nextQuestion = document.getElementById(`question-${index + 1}`);
-              if (nextQuestion) {
-                nextQuestion.scrollIntoView({ 
-                  behavior: 'smooth', 
-                  block: 'start'
-                });
-              }
-            }, 800); // Delay to allow user to see the result
-          }
+          // Scroll to next question after a short delay
+          setTimeout(() => {
+            scrollToNextQuestion(index);
+          }, 800); // Delay to allow animations to complete
         });
         
         optionsDiv.appendChild(optionItem);
@@ -618,7 +586,33 @@
     });
   }
 
-  function checkAnswer(questionIndex, selectedOptIndex) {
+  // Function to scroll to the next question
+  function scrollToNextQuestion(currentIndex) {
+    const nextIndex = currentIndex + 1;
+    if (nextIndex < tests.length) {
+      const nextQuestion = document.getElementById(`question-${nextIndex}`);
+      if (nextQuestion) {
+        nextQuestion.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'start'
+        });
+      }
+    } else {
+      // If this was the last question, scroll to completion stats if all answered
+      const allAnswered = tests.every((test, index) => {
+        const optionItems = document.querySelectorAll(`.option-item[data-question-index="${index}"]`);
+        return Array.from(optionItems).some(item => 
+          item.classList.contains("correct") || item.classList.contains("incorrect")
+        );
+      });
+      
+      if (allAnswered && quizCompletionSection.style.display === "block") {
+        quizCompletionSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }
+
+  function checkAnswer(questionIndex, selectedRandomIndex, originalIndex) {
     const test = tests[questionIndex];
     const correctLetter = test.answer;
     const optionItems = document.querySelectorAll(`.option-item[data-question-index="${questionIndex}"]`);
@@ -631,14 +625,26 @@
     });
     
     // Get selected option
-    const selectedItem = document.querySelector(`.option-item[data-question-index="${questionIndex}"][data-option-index="${selectedOptIndex}"]`);
+    const selectedItem = document.querySelector(`.option-item[data-question-index="${questionIndex}"][data-option-index="${selectedRandomIndex}"]`);
     
-    // Find correct option index based on the answer letter
-    const correctOptionIndex = correctLetter.charCodeAt(0) - 65; // A=0, B=1, etc.
-    const correctItem = document.querySelector(`.option-item[data-question-index="${questionIndex}"][data-option-index="${correctOptionIndex}"]`);
+    // Find correct option - note we're working with the original ordering
+    const correctRawOption = test.rawOptions.find(opt => opt.startsWith(correctLetter + ".") || opt.startsWith(correctLetter + ")"));
+    const correctOptionText = correctRawOption.replace(/^[A-D][\.\)]\s*/, "").trim();
+    const correctOriginalIndex = test.options.indexOf(correctOptionText);
+    
+    // Find the correct item in the randomized display
+    let correctRandomIndex = null;
+    for (let i = 0; i < optionItems.length; i++) {
+      if (parseInt(optionItems[i].dataset.originalIndex) === correctOriginalIndex) {
+        correctRandomIndex = parseInt(optionItems[i].dataset.optionIndex);
+        break;
+      }
+    }
+    
+    const correctItem = document.querySelector(`.option-item[data-question-index="${questionIndex}"][data-option-index="${correctRandomIndex}"]`);
 
     // Apply styling based on whether the answer is correct
-    if (selectedOptIndex === correctOptionIndex) {
+    if (originalIndex === correctOriginalIndex) {
       selectedItem.classList.add("correct", "correct-anim");
       const checkIcon = document.createElement("span");
       checkIcon.className = "check-icon";
