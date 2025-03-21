@@ -8,16 +8,32 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <style>
     body {
+
       background-color: #f4f6f9;
       overflow-x: hidden;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
     }
+    
     .container {
-      max-width: 900px;
+      width: 50%;
+      min-width: 320px;
       margin: 20px auto;
       background-color: #fff;
       padding: 20px;
       border-radius: 6px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    @media (max-width: 992px) {
+      .container {
+        width: 70%;
+      }
+    }
+    @media (max-width: 768px) {
+      .container {
+        width: 90%;
+      }
     }
     .file-label {
       margin-bottom: 10px;
@@ -27,31 +43,53 @@
       margin-top: 10px;
     }
     .question-container {
+      
       border: 1px solid #ddd;
       border-radius: 6px;
       padding: 15px;
       margin-bottom: 15px;
     }
     .question-text {
+      
       font-weight: bold;
       margin-bottom: 10px;
     }
-    .options-container .form-check {
+    .options-container .option-item {
       margin-bottom: 8px;
+      padding: 8px;
+      border-radius: 4px;
+      display: flex;
+      align-items: flex-start;
+      cursor: pointer;
+      transition: all 0.2s ease;
     }
-    .correct {
-      background-color: #d1e7dd !important;
+    .options-container .option-item:hover {
+      background-color: #f8f9fa;
     }
-    .incorrect {
-      background-color: #f8d7da !important;
+    .options-container .option-item.correct {
+      background-color: #d1e7dd;
+      border-left: 4px solid #198754;
+    }
+    .options-container .option-item.incorrect {
+      background-color: #f8d7da;
+      border-left: 4px solid #dc3545;
+    }
+    .option-checkbox {
+      
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+    .option-text {
+      flex-grow: 1;
     }
     .check-icon {
+      margin-right: 8px;
       font-weight: bold;
       margin-left: 8px;
     }
     @keyframes correctPulse {
       0% { transform: scale(1); background-color: #d1e7dd; }
-      50% { transform: scale(1.05); background-color: #bde0c8; }
+      50% { transform: scale(1.01); background-color: #bde0c8; }
       100% { transform: scale(1); background-color: #d1e7dd; }
     }
     .correct-anim {
@@ -87,13 +125,119 @@
       background: #0056b3;
       transform: scale(1.1);
     }
-    .form-check-input {
-      transform: scale(1.2);
-      margin-right: 10px;
+    
+    /* Custom checkbox styles */
+    .custom-checkbox {
+      width: 18px;
+      height: 18px;
+      border-radius: 3px;
+      border: 1px solid #9098a9;
+      margin-right: 8px;
+      position: relative;
+      margin-top: 3px;
+      transition: all 0.2s ease;
     }
-    .form-check-label {
-      word-wrap: break-word;
-      white-space: normal;
+    .custom-checkbox.checked {
+      background-color: #506eec;
+      border-color: #506eec;
+    }
+    .custom-checkbox .checkmark {
+      display: none;
+      color: white;
+      position: absolute;
+      top: -1px;
+      left: 3px;
+      font-size: 12px;
+    }
+    .custom-checkbox.checked .checkmark {
+      display: block;
+    }
+    .option-item:hover .custom-checkbox {
+      border-color: #506eec;
+    }
+    
+    /* Statistics styles */
+    #quizCompletionSection {
+      display: none;
+      margin-top: 30px;
+      text-align: center;
+    }
+    .stats-container {
+      margin-top: 20px;
+      padding: 20px;
+      border-radius: 8px;
+      background-color: #f8f9fa;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .progress-bar-container {
+      margin-top: 15px;
+      height: 20px;
+      background-color: #e9ecef;
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+    }
+    .progress-bar {
+      height: 100%;
+      border-radius: 10px;
+      transition: width 1s ease-in-out;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+    }
+    .progress-correct {
+      background-color: #28a745;
+    }
+    .progress-incorrect {
+      background-color: #dc3545;
+    }
+    
+    /* Celebration animation container */
+    #celebrationAnimation {
+      width: 200px;
+      height: 200px;
+      margin: 0 auto 20px auto;
+    }
+    .celebration-title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #506eec;
+    }
+    .stat-number {
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .dual-progress {
+      position: relative;
+      height: 20px;
+      background-color: #e9ecef;
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 10px 0 20px 0;
+    }
+    
+    /* New Button Styles */
+    .action-button {
+      background-color: #506eec;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 15px;
+    }
+    .action-button:hover {
+      background-color: #3a5ad9;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .action-button:active {
+      transform: translateY(0);
     }
   </style>
 </head>
@@ -110,12 +254,65 @@
     <p id="testCount" class="text-success fw-bold"></p>
     <div id="questionsContainer"></div>
   </div>
+  
+  <!-- Quiz completion section with statistics -->
+  <div id="quizCompletionSection">
+    <div id="celebrationAnimation">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+        <!-- Background circle -->
+        <circle cx="100" cy="100" r="80" fill="#FFD700" opacity="0.2">
+          <animate attributeName="r" values="75;85;75" dur="2s" repeatCount="indefinite" />
+        </circle>
+        <!-- Main star -->
+        <path d="M100 20 L116 68 L168 68 L127 98 L142 146 L100 120 L58 146 L73 98 L32 68 L84 68 Z" fill="#FFD700" stroke="#FFA500" stroke-width="2">
+          <animate attributeName="fill" values="#FFD700;#FFC800;#FFD700" dur="1.5s" repeatCount="indefinite" />
+        </path>
+        <!-- Sparkles -->
+        <circle cx="60" cy="60" r="3" fill="white">
+          <animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="140" cy="60" r="3" fill="white">
+          <animate attributeName="opacity" values="0;1;0" dur="1.2s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="100" cy="140" r="3" fill="white">
+          <animate attributeName="opacity" values="0.5;1;0.5" dur="0.8s" repeatCount="indefinite" />
+        </circle>
+      </svg>
+    </div>
+    <div class="celebration-title">Test Yakunlandi!</div>
+    <div class="stats-container">
+      <div class="mb-3">
+        <span class="fw-bold">Jami savollar: </span>
+        <span class="stat-number" id="totalQuestions">0</span>
+      </div>
+      <div class="row mb-3">
+        <div class="col-6 text-end">
+          <span class="stat-number text-success" id="correctAnswers">0</span> to'g'ri
+        </div>
+        <div class="col-6 text-start">
+          <span class="stat-number text-danger" id="incorrectAnswers">0</span> xato
+        </div>
+      </div>
+      <div class="dual-progress">
+        <div class="progress-bar progress-correct" id="correctBar" style="width: 0%"></div>
+        <div class="progress-bar progress-incorrect" id="incorrectBar" style="width: 0%; position: absolute; right: 0; top: 0;"></div>
+      </div>
+      <div class="text-center">
+        <span class="stat-number" id="percentageCorrect">0%</span> to'g'ri javob
+      </div>
+      <button id="startNewTest" class="action-button mt-4">
+        <i class="bi bi-arrow-repeat"></i> Yangi Testni Boshlang
+      </button>
+    </div>
+  </div>
 </div>
 
 <button id="backToTop" title="Yuqoriga qaytish">🔼</button>
 
 <script>
   const backToTopButton = document.getElementById("backToTop");
+  const startNewTestButton = document.getElementById("startNewTest");
+  
   window.onscroll = function() {
     if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
       backToTopButton.style.display = "block";
@@ -123,21 +320,48 @@
       backToTopButton.style.display = "none";
     }
   };
+  
   backToTopButton.addEventListener("click", function() {
     window.scrollTo({
       top: 0,
       behavior: "smooth"
     });
   });
+  
+  startNewTestButton.addEventListener("click", function() {
+    // Reset and scroll to top
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+    // Hide completion section
+    quizCompletionSection.style.display = "none";
+    // Reset file input to encourage new file selection
+    fileInput.value = "";
+    uploadStatus.textContent = "Yangi test uchun fayl tanlang";
+  });
 </script>
 
 <script>
   let tests = [];
+  let stats = {
+    correct: 0,
+    incorrect: 0,
+    total: 0
+  };
+  
   const fileInput = document.getElementById("fileInput");
   const uploadStatus = document.getElementById("uploadStatus");
   const quizList = document.getElementById("quizList");
   const testCount = document.getElementById("testCount");
   const questionsContainer = document.getElementById("questionsContainer");
+  const quizCompletionSection = document.getElementById("quizCompletionSection");
+  const correctAnswersEl = document.getElementById("correctAnswers");
+  const incorrectAnswersEl = document.getElementById("incorrectAnswers");
+  const totalQuestionsEl = document.getElementById("totalQuestions");
+  const correctBarEl = document.getElementById("correctBar");
+  const incorrectBarEl = document.getElementById("incorrectBar");
+  const percentageCorrectEl = document.getElementById("percentageCorrect");
 
   fileInput.addEventListener("change", (e) => {
     const file = e.target.files[0];
@@ -149,6 +373,10 @@
       parseTestFile(content);
     };
     reader.readAsText(file);
+    
+    // Reset stats and hide completion section when new file is loaded
+    stats = { correct: 0, incorrect: 0, total: 0 };
+    quizCompletionSection.style.display = "none";
   });
 
   function parseTestFile(content) {
@@ -182,6 +410,7 @@
     if (tests.length > 0) {
       uploadStatus.textContent = "Fayl yuklandi!";
       fileInput.disabled = true;
+      stats.total = tests.length;
       showTests();
     } else {
       uploadStatus.textContent = "Xatolik: Test ma'lumotlari topilmadi yoki noto'g'ri format!";
@@ -201,25 +430,56 @@
       questionDiv.appendChild(qText);
       const optionsDiv = document.createElement("div");
       optionsDiv.className = "options-container";
+      
       test.options.forEach((opt, optIndex) => {
-        const formCheck = document.createElement("div");
-        formCheck.className = "form-check";
-        const input = document.createElement("input");
-        input.className = "form-check-input";
-        input.type = "radio";
-        input.name = "question_" + index;
-        input.id = "question_" + index + "_option_" + optIndex;
-        const label = document.createElement("label");
-        label.className = "form-check-label";
-        label.setAttribute("for", input.id);
-        label.textContent = opt;
-        input.addEventListener("change", () => {
+        // Create option item with custom styling
+        const optionItem = document.createElement("div");
+        optionItem.className = "option-item";
+        optionItem.dataset.questionIndex = index;
+        optionItem.dataset.optionIndex = optIndex;
+        
+        // Custom checkbox element
+        const customCheckbox = document.createElement("div");
+        customCheckbox.className = "custom-checkbox";
+        const checkmark = document.createElement("span");
+        checkmark.className = "checkmark";
+        checkmark.innerHTML = "✓";
+        customCheckbox.appendChild(checkmark);
+        
+        // Option text
+        const optionText = document.createElement("div");
+        optionText.className = "option-text";
+        optionText.textContent = opt;
+        
+        // Add checkbox and text to option item
+        optionItem.appendChild(customCheckbox);
+        optionItem.appendChild(optionText);
+        
+        // Add click event to the entire option item
+        optionItem.addEventListener("click", function() {
+          // If already answered, do nothing
+          if (optionItem.classList.contains("correct") || optionItem.classList.contains("incorrect")) {
+            return;
+          }
+          
+          // Check this option
+          customCheckbox.classList.add("checked");
+          
+          // Uncheck all other options in this question
+          const siblingOptions = optionsDiv.querySelectorAll(".option-item");
+          siblingOptions.forEach(sibling => {
+            if (sibling !== optionItem) {
+              sibling.querySelector(".custom-checkbox").classList.remove("checked");
+            }
+          });
+          
+          // Process the answer
           checkAnswer(index, optIndex);
         });
-        formCheck.appendChild(input);
-        formCheck.appendChild(label);
-        optionsDiv.appendChild(formCheck);
+        
+        optionsDiv.appendChild(optionItem);
       });
+      
       questionDiv.appendChild(optionsDiv);
       questionsContainer.appendChild(questionDiv);
     });
@@ -228,46 +488,105 @@
   function checkAnswer(questionIndex, selectedOptIndex) {
     const test = tests[questionIndex];
     const correctLetter = test.answer;
-    const radios = document.querySelectorAll(`input[name="question_${questionIndex}"]`);
-    radios.forEach((radio) => {
-      const lbl = document.querySelector(`label[for="${radio.id}"]`);
-      lbl.classList.remove("correct", "incorrect", "correct-anim", "incorrect-anim");
-      const checkIcon = lbl.querySelector(".check-icon");
+    const optionItems = document.querySelectorAll(`.option-item[data-question-index="${questionIndex}"]`);
+    
+    // Reset all option styling first
+    optionItems.forEach(item => {
+      item.classList.remove("correct", "incorrect", "correct-anim", "incorrect-anim");
+      const checkIcon = item.querySelector(".check-icon");
       if (checkIcon) checkIcon.remove();
     });
-    const chosenRadioId = `question_${questionIndex}_option_${selectedOptIndex}`;
-    const chosenLabel = document.querySelector(`label[for="${chosenRadioId}"]`);
-    const chosenOptionText = test.options[selectedOptIndex];
+    
+    // Get selected option
+    const selectedItem = document.querySelector(`.option-item[data-question-index="${questionIndex}"][data-option-index="${selectedOptIndex}"]`);
+    const selectedOptionText = test.options[selectedOptIndex];
+    
+    // Find correct option
     const correctRawOption = test.rawOptions.find(opt => opt.startsWith(correctLetter + ".") || opt.startsWith(correctLetter + ")"));
     const correctOptionText = correctRawOption.replace(/^[A-D][\.\)]\s*/, "").trim();
+    const correctOptionIndex = test.options.indexOf(correctOptionText);
+    const correctItem = document.querySelector(`.option-item[data-question-index="${questionIndex}"][data-option-index="${correctOptionIndex}"]`);
 
-    if (chosenOptionText === correctOptionText) {
-      chosenLabel.classList.add("correct", "correct-anim");
-      chosenLabel.innerHTML += '<span class="check-icon">✅</span>';
+    // Apply styling based on whether the answer is correct
+    if (selectedOptionText === correctOptionText) {
+      selectedItem.classList.add("correct", "correct-anim");
+      const checkIcon = document.createElement("span");
+      checkIcon.className = "check-icon";
+      checkIcon.textContent = "✅";
+      selectedItem.appendChild(checkIcon);
+      stats.correct++;
     } else {
-      chosenLabel.classList.add("incorrect", "incorrect-anim");
-      chosenLabel.innerHTML += '<span class="check-icon">❌</span>';
-      const correctIndex = test.options.indexOf(correctOptionText);
-      if (correctIndex !== -1) {
-        const correctRadioId = `question_${questionIndex}_option_${correctIndex}`;
-        const correctLabel = document.querySelector(`label[for="${correctRadioId}"]`);
-        correctLabel.classList.add("correct", "correct-anim");
-        correctLabel.innerHTML += '<span class="check-icon">✅</span>';
-      }
+      selectedItem.classList.add("incorrect", "incorrect-anim");
+      const wrongIcon = document.createElement("span");
+      wrongIcon.className = "check-icon";
+      wrongIcon.textContent = "❌";
+      selectedItem.appendChild(wrongIcon);
+      
+      // Show the correct answer
+      correctItem.classList.add("correct");
+      const correctIcon = document.createElement("span");
+      correctIcon.className = "check-icon";
+      correctIcon.textContent = "✅";
+      correctItem.appendChild(correctIcon);
+      
+      stats.incorrect++;
     }
-    radios.forEach((r) => (r.disabled = true));
+    
+    // Disable all options in this question
+    optionItems.forEach(item => {
+      item.style.pointerEvents = "none";
+    });
+    
+    // Check if all questions have been answered
     checkAllAnswered();
   }
 
   function checkAllAnswered() {
     const allAnswered = tests.every((test, index) => {
-      const radios = document.querySelectorAll(`input[name="question_${index}"]`);
-      return Array.from(radios).some(radio => radio.checked);
+      const optionItems = document.querySelectorAll(`.option-item[data-question-index="${index}"]`);
+      return Array.from(optionItems).some(item => 
+        item.classList.contains("correct") || item.classList.contains("incorrect")
+      );
     });
+    
     if (allAnswered) {
       fileInput.disabled = false;
-      uploadStatus.textContent = "Barcha testlar belgilandi. Yangi fayl tanlang!";
+      uploadStatus.textContent = "Barcha testlar belgilandi. Yangi fayl tanlash mumkin!";
+      
+      // Show completion section with animation and statistics
+      showCompletionStats();
     }
+  }
+  
+  function showCompletionStats() {
+    // Update statistics
+    correctAnswersEl.textContent = stats.correct;
+    incorrectAnswersEl.textContent = stats.incorrect;
+    totalQuestionsEl.textContent = stats.total;
+    
+    const percentCorrect = Math.round((stats.correct / stats.total) * 100) || 0;
+    percentageCorrectEl.textContent = percentCorrect + "%";
+    
+    // Calculate width percentages for the progress bars
+    const correctWidth = (stats.correct / stats.total) * 100;
+    const incorrectWidth = (stats.incorrect / stats.total) * 100;
+    
+    // Show the completion section first
+    quizCompletionSection.style.display = "block";
+    
+    // Animate progress bars with a slight delay
+    setTimeout(() => {
+      correctBarEl.style.width = correctWidth + "%";
+      incorrectBarEl.style.width = incorrectWidth + "%";
+    }, 200);
+    
+    // Scroll to the completion section
+    setTimeout(() => {
+      quizCompletionSection.scrollIntoView({ behavior: 'smooth' });
+    }, 300);
+    
+    // Show back to top button
+    backToTopButton.style.display = "block";
   }
 </script>
 </body>
