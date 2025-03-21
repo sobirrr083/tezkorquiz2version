@@ -476,16 +476,30 @@
       uploadStatus.textContent = "Fayl yuklandi!";
       fileInput.disabled = true;
       stats.total = tests.length;
+      
+      // Randomize the order of questions
+      shuffleArray(tests);
+      
       showTests();
     } else {
       uploadStatus.textContent = "Xatolik: Test ma'lumotlari topilmadi yoki noto'g'ri format!";
     }
   }
 
+  // Fisher-Yates shuffle algorithm to randomize arrays
+  function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+
   function showTests() {
     quizList.style.display = "block";
     testCount.textContent = tests.length + " ta test yuklandi!";
     questionsContainer.innerHTML = "";
+    
     tests.forEach((test, index) => {
       const questionDiv = document.createElement("div");
       questionDiv.className = "question-container";
@@ -496,12 +510,27 @@
       const optionsDiv = document.createElement("div");
       optionsDiv.className = "options-container";
       
-      test.options.forEach((opt, optIndex) => {
+      // Create an array of indices for randomizing options
+      const optionIndices = [...Array(test.options.length).keys()];
+      shuffleArray(optionIndices);
+      
+      // Create a mapping from randomized indices to original indices
+      const indexMap = {};
+      optionIndices.forEach((originalIndex, randomIndex) => {
+        indexMap[randomIndex] = originalIndex;
+      });
+      
+      // Store the mapping for later use when checking answers
+      test.indexMap = indexMap;
+      
+      // Use shuffled indices to display options in random order
+      optionIndices.forEach((originalIndex, randomIndex) => {
         // Create option item with custom styling
         const optionItem = document.createElement("div");
         optionItem.className = "option-item";
         optionItem.dataset.questionIndex = index;
-        optionItem.dataset.optionIndex = optIndex;
+        optionItem.dataset.optionIndex = randomIndex; // Use the randomized index
+        optionItem.dataset.originalIndex = originalIndex; // Store original index for answer checking
         
         // Custom checkbox element
         const customCheckbox = document.createElement("div");
@@ -514,7 +543,7 @@
         // Option text
         const optionText = document.createElement("div");
         optionText.className = "option-text";
-        optionText.textContent = opt;
+        optionText.textContent = test.options[originalIndex]; // Get text using original index
         
         // Add checkbox and text to option item
         optionItem.appendChild(customCheckbox);
@@ -539,7 +568,7 @@
           });
           
           // Process the answer
-          checkAnswer(index, optIndex);
+          checkAnswer(index, randomIndex, originalIndex);
         });
         
         optionsDiv.appendChild(optionItem);
@@ -550,7 +579,7 @@
     });
   }
 
-  function checkAnswer(questionIndex, selectedOptIndex) {
+  function checkAnswer(questionIndex, selectedRandomIndex, originalIndex) {
     const test = tests[questionIndex];
     const correctLetter = test.answer;
     const optionItems = document.querySelectorAll(`.option-item[data-question-index="${questionIndex}"]`);
@@ -563,17 +592,26 @@
     });
     
     // Get selected option
-    const selectedItem = document.querySelector(`.option-item[data-question-index="${questionIndex}"][data-option-index="${selectedOptIndex}"]`);
-    const selectedOptionText = test.options[selectedOptIndex];
+    const selectedItem = document.querySelector(`.option-item[data-question-index="${questionIndex}"][data-option-index="${selectedRandomIndex}"]`);
     
-    // Find correct option
+    // Find correct option - note we're working with the original ordering
     const correctRawOption = test.rawOptions.find(opt => opt.startsWith(correctLetter + ".") || opt.startsWith(correctLetter + ")"));
     const correctOptionText = correctRawOption.replace(/^[A-D][\.\)]\s*/, "").trim();
-    const correctOptionIndex = test.options.indexOf(correctOptionText);
-    const correctItem = document.querySelector(`.option-item[data-question-index="${questionIndex}"][data-option-index="${correctOptionIndex}"]`);
+    const correctOriginalIndex = test.options.indexOf(correctOptionText);
+    
+    // Find the correct item in the randomized display
+    let correctRandomIndex = null;
+    for (let i = 0; i < optionItems.length; i++) {
+      if (parseInt(optionItems[i].dataset.originalIndex) === correctOriginalIndex) {
+        correctRandomIndex = parseInt(optionItems[i].dataset.optionIndex);
+        break;
+      }
+    }
+    
+    const correctItem = document.querySelector(`.option-item[data-question-index="${questionIndex}"][data-option-index="${correctRandomIndex}"]`);
 
     // Apply styling based on whether the answer is correct
-    if (selectedOptionText === correctOptionText) {
+    if (originalIndex === correctOriginalIndex) {
       selectedItem.classList.add("correct", "correct-anim");
       const checkIcon = document.createElement("span");
       checkIcon.className = "check-icon";
