@@ -64,6 +64,7 @@
       border-radius: 6px;
       padding: 20px;
       margin-bottom: 20px;
+      scroll-margin-top: 20px; /* Added for smooth scrolling */
     }
     
     .question-text {
@@ -503,6 +504,7 @@
     tests.forEach((test, index) => {
       const questionDiv = document.createElement("div");
       questionDiv.className = "question-container";
+      questionDiv.id = `question-${index}`; // Add unique ID for scrolling
       const qText = document.createElement("div");
       qText.className = "question-text";
       qText.textContent = (index + 1) + ". " + test.question;
@@ -569,6 +571,11 @@
           
           // Process the answer
           checkAnswer(index, randomIndex, originalIndex);
+          
+          // Scroll to next question after a short delay
+          setTimeout(() => {
+            scrollToNextQuestion(index);
+          }, 800); // Delay to allow animations to complete
         });
         
         optionsDiv.appendChild(optionItem);
@@ -577,6 +584,32 @@
       questionDiv.appendChild(optionsDiv);
       questionsContainer.appendChild(questionDiv);
     });
+  }
+
+  // Function to scroll to the next question
+  function scrollToNextQuestion(currentIndex) {
+    const nextIndex = currentIndex + 1;
+    if (nextIndex < tests.length) {
+      const nextQuestion = document.getElementById(`question-${nextIndex}`);
+      if (nextQuestion) {
+        nextQuestion.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'start'
+        });
+      }
+    } else {
+      // If this was the last question, scroll to completion stats if all answered
+      const allAnswered = tests.every((test, index) => {
+        const optionItems = document.querySelectorAll(`.option-item[data-question-index="${index}"]`);
+        return Array.from(optionItems).some(item => 
+          item.classList.contains("correct") || item.classList.contains("incorrect")
+        );
+      });
+      
+      if (allAnswered && quizCompletionSection.style.display === "block") {
+        quizCompletionSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
   }
 
   function checkAnswer(questionIndex, selectedRandomIndex, originalIndex) {
