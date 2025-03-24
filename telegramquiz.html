@@ -6,7 +6,6 @@
   <title>Telegram Quiz</title>
   <link rel="icon" href="tg.png">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <!-- Lottie kutubxonasi uchun script -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.10.0/lottie.min.js"></script>
   <style>
     body {
@@ -113,7 +112,7 @@
       color: white;
       border: none;
       padding: 12px 18px;
-      font-size: 18px;
+      font-size:  Analysis of the code stopped here due to character limit18px;
       border-radius: 50%;
       cursor: pointer;
       transition: all 0.3s;
@@ -123,8 +122,22 @@
       background: #0056b3;
       transform: scale(1.1);
     }
-    
-    /* Custom checkbox styles */
+    #backToTop.recommend {
+      padding: 12px 24px;
+      border-radius: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 120px;
+    }
+    #backToTop.recommend .count {
+      margin-left: 8px;
+      font-size: 16px;
+    }
+    #backToTop.recommend .text {
+      margin-left: 8px;
+      font-size: 14px;
+    }
     .custom-checkbox {
       width: 18px;
       height: 18px;
@@ -153,8 +166,6 @@
     .option-item:hover .custom-checkbox {
       border-color: #506eec;
     }
-    
-    /* Statistics styles */
     #quizCompletionSection {
       display: none;
       margin-top: 30px;
@@ -191,8 +202,6 @@
     .progress-incorrect {
       background-color: #dc3545;
     }
-    
-    /* Celebration animation container */
     #celebrationAnimation {
       width: 200px;
       height: 200px;
@@ -216,8 +225,6 @@
       overflow: hidden;
       margin: 10px 0 20px 0;
     }
-    
-    /* New Button Styles */
     .action-button {
       background-color: #506eec;
       color: white;
@@ -237,8 +244,6 @@
     .action-button:active {
       transform: translateY(0);
     }
-
-    /* Auto-scroll toggle switch style */
     .toggle-container {
       display: flex;
       align-items: center;
@@ -288,17 +293,13 @@
       font-size: 14px;
       color: #555;
     }
-    
-    /* Lottie animatsiya konteyner */
     #lottieContainer {
       width: 200px;
       height: 200px;
       margin: 0 auto 20px auto;
     }
-    
-    /* Option letter styling - now hidden */
     .option-letter {
-      display: none; /* Hide letter prefixes */
+      display: none;
     }
   </style>
 </head>
@@ -310,8 +311,6 @@
     <input type="file" class="form-control" id="fileInput" accept=".txt" />
     <div id="uploadStatus"></div>
     <p>Fayl yuklangach testlarni barchasi belgilanmaguncha fayl tanlash ochilmaydi</p>
-    
-    <!-- Auto-scroll toggle switch -->
     <div class="toggle-container">
       <label class="toggle-switch">
         <input type="checkbox" id="autoScrollToggle" checked>
@@ -320,15 +319,11 @@
       <span class="toggle-label">Avtomatik pastga siljish</span>
     </div>
   </div>
-  
   <div id="quizList" style="display: none;">
     <p id="testCount" class="text-success fw-bold"></p>
     <div id="questionsContainer"></div>
   </div>
-  
-  <!-- Quiz completion section with statistics -->
   <div id="quizCompletionSection">
-    <!-- SVG o'rniga Lottie uchun container -->
     <div id="lottieContainer"></div>
     <div class="celebration-title">Test Yakunlandi!</div>
     <div class="stats-container">
@@ -361,7 +356,6 @@
 <button id="backToTop" title="Yuqoriga qaytish">🔼</button>
 
 <script>
-  // DOM elementlarini olish
   const backToTopButton = document.getElementById("backToTop");
   const startNewTestButton = document.getElementById("startNewTest");
   const autoScrollToggle = document.getElementById("autoScrollToggle");
@@ -378,11 +372,10 @@
   const incorrectBarEl = document.getElementById("incorrectBar");
   const percentageCorrectEl = document.getElementById("percentageCorrect");
 
-  let lottieAnimation = null; // Lottie animatsiyasi uchun o'zgaruvchi
-  let tests = []; // Testlar ro'yxati
-  let stats = { correct: 0, incorrect: 0, total: 0 }; // Statistika
+  let lottieAnimation = null;
+  let tests = [];
+  let stats = { correct: 0, incorrect: 0, total: 0 };
 
-  // JSON animatsiyalar ro'yxati
   const animationFiles = [
     './json/buy.json',
     './json/marketing.json',
@@ -394,13 +387,10 @@
     './json/ani4.json',
     './json/ani5.json',
     './json/ani6.json',
-
   ];
 
-  // Ishlatilgan animatsiyalarni saqlash uchun massiv
   let usedAnimations = [];
 
-  // Avtomatik siljish sozlamasi
   if (localStorage.getItem("autoScrollEnabled") === null) {
     localStorage.setItem("autoScrollEnabled", "true");
   } else {
@@ -411,42 +401,25 @@
     localStorage.setItem("autoScrollEnabled", this.checked);
   });
 
-  // Sahifa siljishi bo'yicha "Yuqoriga qaytish" tugmasini boshqarish
   window.onscroll = function() {
-    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
-      backToTopButton.style.display = "block";
-    } else {
-      backToTopButton.style.display = "none";
-    }
+    updateBackToTopButton();
   };
 
-  backToTopButton.addEventListener("click", function() {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
-  });
-
-  // Tasodifiy, takrorlanmaydigan animatsiyani tanlash funksiyasi
   function getRandomAnimation() {
     if (usedAnimations.length >= animationFiles.length) {
-      usedAnimations = []; // Barchasi ishlatilgan bo'lsa, ro'yxatni tozalash
+      usedAnimations = [];
     }
-
     const availableAnimations = animationFiles.filter(anim => !usedAnimations.includes(anim));
     const randomIndex = Math.floor(Math.random() * availableAnimations.length);
     const selectedAnimation = availableAnimations[randomIndex];
-
     usedAnimations.push(selectedAnimation);
     return selectedAnimation;
   }
 
-  // Lottie animatsiyasini yuklash funksiyasi
   function loadLottieAnimation(jsonPath) {
     if (lottieAnimation) {
-      lottieAnimation.destroy(); // Eski animatsiyani o'chirish
+      lottieAnimation.destroy();
     }
-
     lottieAnimation = lottie.loadAnimation({
       container: document.getElementById('lottieContainer'),
       renderer: 'svg',
@@ -456,7 +429,6 @@
     });
   }
 
-  // "Yangi Testni Boshlash" tugmasi
   startNewTestButton.addEventListener("click", function() {
     window.scrollTo({
       top: 0,
@@ -465,24 +437,13 @@
     quizCompletionSection.style.display = "none";
     fileInput.value = "";
     uploadStatus.textContent = "Yangi test uchun fayl tanlang";
-    quizList.style.display = "none"; // Testlar ro'yxatini yashirish
-    questionsContainer.innerHTML = ""; // Savollarni tozalash
-    stats = { correct: 0, incorrect: 0, total: 0 }; // Statistikani qayta tiklash
-
+    quizList.style.display = "none";
+    questionsContainer.innerHTML = "";
+    stats = { correct: 0, incorrect: 0, total: 0 };
     const selectedAnimation = getRandomAnimation();
-    loadLottieAnimation('./json/buy.json'); // JSON fayl manzilini ko'rsating
-    loadLottieAnimation('./json/marketing.json'); // JSON fayl manzilini ko'rsating
-    loadLottieAnimation('./json/target.json'); // JSON fayl manzilini ko'rsating
-    loadLottieAnimation('./json/work.json'); // JSON fayl manzilini ko'rsating
-    loadLottieAnimation('./json/ani1.json'); // JSON fayl manzilini ko'rsating
-    loadLottieAnimation('./json/ani2.json'); // JSON fayl manzilini ko'rsating
-    loadLottieAnimation('./json/ani3.json'); // JSON fayl manzilini ko'rsating
-    loadLottieAnimation('./json/ani4.json'); // JSON fayl manzilini ko'rsating
-    loadLottieAnimation('./json/ani5.json'); // JSON fayl manzilini ko'rsating
-    loadLottieAnimation('./json/ani6.json'); // JSON fayl manzilini ko'rsating
+    loadLottieAnimation(selectedAnimation);
   });
 
-  // Fayl yuklash hodisasi
   fileInput.addEventListener("change", (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -493,12 +454,10 @@
       parseTestFile(content);
     };
     reader.readAsText(file);
-
     stats = { correct: 0, incorrect: 0, total: 0 };
     quizCompletionSection.style.display = "none";
   });
 
-  // Massivni aralashtirish (Fisher-Yates algoritmi)
   function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -507,7 +466,6 @@
     return array;
   }
 
-  // Test faylini tahlil qilish
   function parseTestFile(content) {
     tests = [];
     const lines = content.split("\n").map(line => line.trim()).filter(Boolean);
@@ -543,19 +501,15 @@
           const letter = test.rawOptions[idx].charAt(0);
           return { letter, option };
         });
-
         const correctLetter = test.answer;
         const shuffledPairs = shuffleArray([...optionPairs]);
-
         const shuffledRawOptions = shuffledPairs.map((pair, idx) => {
           const newLetter = String.fromCharCode(65 + idx);
           return `${newLetter}. ${pair.option}`;
         });
-
         const shuffledOptions = shuffledPairs.map(pair => pair.option);
         const correctPairIndex = shuffledPairs.findIndex(pair => pair.letter === correctLetter);
         const newCorrectLetter = String.fromCharCode(65 + correctPairIndex);
-
         return {
           question: test.question,
           options: shuffledOptions,
@@ -564,7 +518,6 @@
           originalAnswer: correctLetter
         };
       });
-
       uploadStatus.textContent = "Fayl yuklandi!";
       fileInput.disabled = true;
       stats.total = tests.length;
@@ -574,7 +527,6 @@
     }
   }
 
-  // Testlarni ko'rsatish
   function showTests() {
     quizList.style.display = "block";
     testCount.textContent = tests.length + " ta test yuklandi!";
@@ -618,7 +570,6 @@
           if (optionItem.classList.contains("correct") || optionItem.classList.contains("incorrect")) {
             return;
           }
-
           customCheckbox.classList.add("checked");
           const siblingOptions = optionsDiv.querySelectorAll(".option-item");
           siblingOptions.forEach(sibling => {
@@ -626,9 +577,7 @@
               sibling.querySelector(".custom-checkbox").classList.remove("checked");
             }
           });
-
           checkAnswer(index, optIndex);
-
           if (autoScrollToggle.checked && index < tests.length - 1) {
             setTimeout(() => {
               const nextQuestion = document.getElementById(`question-${index + 1}`);
@@ -638,16 +587,14 @@
             }, 800);
           }
         });
-
         optionsDiv.appendChild(optionItem);
       });
-
       questionDiv.appendChild(optionsDiv);
       questionsContainer.appendChild(questionDiv);
     });
+    updateBackToTopButton();
   }
 
-  // Javobni tekshirish
   function checkAnswer(questionIndex, selectedOptIndex) {
     const test = tests[questionIndex];
     const correctLetter = test.answer;
@@ -676,13 +623,11 @@
       wrongIcon.className = "check-icon";
       wrongIcon.textContent = "❌";
       selectedItem.appendChild(wrongIcon);
-
       correctItem.classList.add("correct");
       const correctIcon = document.createElement("span");
       correctIcon.className = "check-icon";
       correctIcon.textContent = "✅";
       correctItem.appendChild(correctIcon);
-
       stats.incorrect++;
     }
 
@@ -690,9 +635,9 @@
       item.style.pointerEvents = "none";
     });
     checkAllAnswered();
+    updateBackToTopButton();
   }
 
-  // Barcha savollar javob berilganligini tekshirish
   function checkAllAnswered() {
     const allAnswered = tests.every((test, index) => {
       const optionItems = document.querySelectorAll(`.option-item[data-question-index="${index}"]`);
@@ -700,7 +645,6 @@
               item.classList.contains("correct") || item.classList.contains("incorrect")
       );
     });
-
     if (allAnswered) {
       fileInput.disabled = false;
       uploadStatus.textContent = "Barcha testlar belgilandi. Yangi fayl tanlash mumkin!";
@@ -708,42 +652,80 @@
     }
   }
 
-  // Yakunlash statistikasini ko'rsatish
+  function updateBackToTopButton() {
+    const unanswered = tests.map((test, index) => {
+        const optionItems = document.querySelectorAll(`.option-item[data-question-index="${index}"]`);
+        return !Array.from(optionItems).some(item => 
+            item.classList.contains("correct") || item.classList.contains("incorrect")
+        );
+    }).filter(Boolean).length;
+
+    if (unanswered > 0 && unanswered <= 5) {
+        backToTopButton.classList.add("recommend");
+        backToTopButton.innerHTML = `
+            🔼
+            <span class="count">${unanswered}</span>
+            <span class="text">ta qoldi</span>
+        `;
+        backToTopButton.title = `${unanswered} ta javob berilmagan savol bor`;
+        backToTopButton.onclick = function() {
+            const firstUnansweredIndex = tests.findIndex((test, index) => {
+                const optionItems = document.querySelectorAll(`.option-item[data-question-index="${index}"]`);
+                return !Array.from(optionItems).some(item => 
+                    item.classList.contains("correct") || item.classList.contains("incorrect")
+                );
+            });
+            if (firstUnansweredIndex !== -1) {
+                document.getElementById(`question-${firstUnansweredIndex}`).scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+            }
+        };
+    } else {
+        backToTopButton.classList.remove("recommend");
+        backToTopButton.innerHTML = "🔼";
+        backToTopButton.title = "Yuqoriga qaytish";
+        backToTopButton.onclick = function() {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        };
+    }
+    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+        backToTopButton.style.display = "block";
+    } else {
+        backToTopButton.style.display = "none";
+    }
+  }
+
   function showCompletionStats() {
     correctAnswersEl.textContent = stats.correct;
     incorrectAnswersEl.textContent = stats.incorrect;
     totalQuestionsEl.textContent = stats.total;
-
     const percentCorrect = Math.round((stats.correct / stats.total) * 100) || 0;
     percentageCorrectEl.textContent = percentCorrect + "%";
-
     const correctWidth = (stats.correct / stats.total) * 100;
     const incorrectWidth = (stats.incorrect / stats.total) * 100;
-
     quizCompletionSection.style.display = "block";
-
     const selectedAnimation = getRandomAnimation();
     loadLottieAnimation(selectedAnimation);
-
     setTimeout(() => {
       correctBarEl.style.width = correctWidth + "%";
       incorrectBarEl.style.width = incorrectWidth + "%";
     }, 200);
-
     setTimeout(() => {
       quizCompletionSection.scrollIntoView({ behavior: 'smooth' });
     }, 300);
-
     backToTopButton.style.display = "block";
+    updateBackToTopButton();
   }
 
-  // Dastlabki animatsiyani yuklash
   document.addEventListener("DOMContentLoaded", function() {
     const initialAnimation = getRandomAnimation();
     loadLottieAnimation(initialAnimation);
   });
 </script>
-
-
 </body>
 </html>
