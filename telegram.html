@@ -124,7 +124,7 @@
       <span class="toggle-label">Avtomatik pastga tushish</span>
     </div>
     <div class="history-section" id="historySection">
-      <button class="history-toggle" id="historyToggle">Oxirgi 10 ta Fayl Tarixi </button>
+      <button class="history-toggle" id="historyToggle">Fayl Tarixi ▾</button>
       <div class="history-list" id="historyList"></div>
     </div>
   </div>
@@ -183,9 +183,18 @@
   const incorrectBarEl = document.getElementById("incorrectBar");
   const percentageCorrectEl = document.getElementById("percentageCorrect");
 
+  // Lottie animatsiya qismi Telegram Quizdan ko'chirildi
   const animationFiles = [
-    'https://assets.lottiefiles.com/packages/lf20_usmfx6.json', // Placeholder Lottie fayllari
-    'https://assets.lottiefiles.com/packages/lf20_vpmsry.json',
+    './json/buy.json',
+    './json/marketing.json',
+    './json/target.json',
+    './json/work.json',
+    './json/ani1.json',
+    './json/ani2.json',
+    './json/ani3.json',
+    './json/ani4.json',
+    './json/ani5.json',
+    './json/ani6.json',
   ];
   let usedAnimations = [];
   let lottieAnimation = null;
@@ -559,5 +568,6 @@
     loadFileHistory();
   });
 </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9263f5b18d1f7bc3',t:'MTc0Mjk2MzkxOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>
