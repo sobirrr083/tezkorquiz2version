@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Testlarni O'qish</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 850px;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        /* Theme styles remain unchanged */
+        body.theme-default { background: linear-gradient(135deg, #1e3c72, #2a5298); color: white; }
+        body.theme-default .container { background: rgba(255, 255, 255, 0.1); }
+        body.theme-dark { background: #1c2526; color: #e0e0e0; }
+        body.theme-dark .container { background: #2d3839; }
+        body.theme-light { background: #f4f4f4; color: #333; }
+        body.theme-light .container { background: #fff; }
+        body.theme-nature { background: linear-gradient(135deg, #d4e4bc, #a9c7a0); color: #2d5a27; }
+        body.theme-nature .container { background: #a9c7a0; }
+        body.theme-ocean { background: linear-gradient(135deg, #2c5364, #203a43, #0f2027); color: #d4f1f9; }
+        body.theme-ocean .container { background: rgba(44, 83, 100, 0.8); }
+        body.theme-sunset { background: linear-gradient(135deg, #ff5e62, #ff9966); color: #fff; }
+        body.theme-sunset .container { background: rgba(255, 94, 98, 0.7); }
+        body.theme-forest { background: linear-gradient(135deg, #2f4f4f, #3b5e5e); color: #d2b48c; }
+        body.theme-forest .container { background: rgba(47, 79, 79, 0.8); }
+        body.theme-minimal { background: #eceff1; color: #37474f; }
+        body.theme-minimal .container { background: #fff; }
+        body.theme-retro { background: linear-gradient(135deg, #f4a261, #e9c46a); color: #2a2a2a; }
+        body.theme-retro .container { background: #e9c46a; }
+        body.theme-tech { background: linear-gradient(135deg, #0d1b2a, #1b263b, #415a77); color: #00d4ff; }
+        body.theme-tech .container { background: rgba(13, 27, 42, 0.9); }
+
+        /* Answer colors remain unchanged */
+        body.theme-default .test-answer { color: #0FFF50; }
+        body.theme-dark .test-answer { color: #00ff9d; }
+        body.theme-light .test-answer { color: #008000; }
+        body.theme-nature .test-answer { color: #228b22; }
+        body.theme-ocean .test-answer { color: #00ced1; }
+        body.theme-sunset .test-answer { color: #ff4500; }
+        body.theme-forest .test-answer { color: #8b4513; }
+        body.theme-minimal .test-answer { color: #4682b4; }
+        body.theme-retro .test-answer { color: #ff6347; }
+        body.theme-tech .test-answer { color: #00bfff; }
+
+        /* Clipboard styles remain unchanged */
+        .clipboard {
+            position: fixed;
+            bottom: 90px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .clipboard.expanded {
+            width: 350px;
+            height: auto;
+            min-height: 150px;
+            max-height: 500px;
+            border-radius: 15px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .clipboard-content {
+            display: none;
+            flex-grow: 1;
+            max-height: 400px;
+            overflow-y: auto;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .clipboard.expanded .clipboard-content {
+            display: block;
+        }
+
+        .clipboard-content p {
+            white-space: pre-wrap;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+        }
+
+        .clipboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            flex-shrink: 0;
+        }
+
+        .clipboard-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            line-height: 24px;
+        }
+
+        .clipboard-close:hover {
+            color: #ff4444;
+        }
+
+        .clipboard-buttons {
+            margin-top: 10px;
+            flex-shrink: 0;
+        }
+
+        /* Notification styles remain unchanged */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #28a745, #218838);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            opacity: 0;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(-10px);
+        }
+
+        .clipboard-saved-notification {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #28a745;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
+            animation: slideIn 0.5s ease-out;
+            z-index: 1100;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Back to top button styles remain unchanged */
+        .back-to-top {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgb(20, 20, 20);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0px 0px 0px 2px rgba(180, 160, 255, 0.253);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 99;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            width: 50px;
+            background-color: rgb(181, 160, 255);
+        }
+
+        .back-to-top::before {
+            content: "Yuqorga";
+            position: absolute;
+            bottom: -20px;
+            color: white;
+            font-size: 10px;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .back-to-top:hover::before {
+            opacity: 1;
+            bottom: -25px;
+        }
+
+        /* Test container styles with hover toggle */
+        h1 { text-align: center; font-weight: bold; text-transform: uppercase; }
+        .upload-container { margin: 20px 0; padding: 25px; border: 2px dashed rgba(255, 255, 255, 0.5); border-radius: 10px; text-align: center; transition: all 0.3s; }
+        .upload-container:hover { background: rgba(255, 255, 255, 0.2); transform: scale(1.02); }
+        .file-label { padding: 12px 25px; background: #ff7e5f; color: white; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .file-label:hover { background: #feb47b; }
+        .test-container { position: relative; padding: 15px; margin-bottom: 15px; border-radius: 8px; transition: 0.3s ease-in-out; background: rgba(255, 255, 255, 0.2); animation: fadeIn 0.5s ease-in-out; }
+        .test-container.hover-enabled:hover { transform: scale(1.02); box-shadow: 0px 5px 15px rgba(255, 255, 255, 0.2); }
+        .test-question { font-weight: bold; margin-bottom: 10px; cursor: pointer; position: relative; padding-right: 30px; }
+        .test-question.starred::after { content: '★'; position: absolute; right: 5px; top: 50%; transform: translateY(-50%); color: yellow; }
+        .test-options { margin-left: 20px; }
+        .test-answer { margin-top: 10px; font-weight: bold; }
+        .copy-btn { background: none; border: none; font-size: 20px; cursor: pointer; position: absolute; bottom: 10px; right: 10px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Toggle switch styles */
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            margin-bottom: 15px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+            margin-left: 10px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+    </style>
+</head>
+<body class="theme-default">
+
+<div class="container">
+    <h1>Testlarni O'qish</h1>
+
+    <div class="mb-3">
+        <label for="themeSelect" class="form-label">Mavzuni tanlang:</label>
+        <select id="themeSelect" class="form-select w-25">
+            <option value="theme-default">Oddiy</option>
+            <option value="theme-dark">Tun</option>
+            <option value="theme-light">Yorug'</option>
+            <option value="theme-nature">Tabiat</option>
+            <option value="theme-ocean">Okean</option>
+            <option value="theme-sunset">Quyosh botishi</option>
+            <option value="theme-forest">Oy</option>
+            <option value="theme-minimal">Oq</option>
+            <option value="theme-retro">Retro</option>
+            <option value="theme-tech">Texnologiya</option>
+        </select>
+    </div>
+
+    <!-- Toggle switch for hover effect -->
+    <div class="toggle-container">
+        <span>Hover effekt:</span>
+        <label class="toggle-switch">
+            <input type="checkbox" id="hoverToggle" checked>
+            <span class="slider"></span>
+        </label>
+    </div>
+
+    <div class="upload-container">
+        <h2>Test faylini yuklang</h2>
+        <p>Testlarni yuklab, ularni o'qish, test savolni (o'ng burchakni) 1 marotaba bosgan holda savolga yulduzcha qo'yish orqali alohida  ajratish va nusxa olish imkoniyatiga egasiz.</p>
+        <p style="text-align: left;">
+            <b>STANDART FORMAT</b><br>
+            Qanday tarmoq turi Narsalar interneti komponentlari o'rtasidagi aloqa uchun ishlatiladi?<br>
+            A. LAN<br>
+            B. WAN<br>
+            C. WLAN<br>
+            D. PAN<br>
+            ANSWER: A
+        </p>
+        <label for="fileInput" class="file-label">📁 Fayl tanlash</label>
+        <input type="file" id="fileInput" accept=".txt" hidden>
+        <div id="uploadStatus"></div>
+    </div>
+
+    <div id="testResults" style="display: none;">
+        <div id="testContainer"></div>
+    </div>
+</div>
+
+<button class="back-to-top" id="backToTopBtn">
+    <svg class="svgIcon" viewBox="0 0 384 512" width="20" height="20">
+        <path d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0 --12.5-32.8 0-45.3l-160-160z"></path>
+    </svg>
+</button>
+
+<div class="clipboard" id="clipboard">
+    <span id="clipboardIcon">📋</span>
+    <div class="clipboard-content" id="clipboardContent"></div>
+</div>
+
+<div id="clipboardSavedNotification" class="clipboard-saved-notification">
+    ✅ Savoldan nusxa olindi va tezkor saqlagichga saqlandi!
+</div>
+
+<div class="notification" id="copyNotification">✅ Nusxa olindi</div>
+
+<script>
+    let tests = [];
+    let clipboardItems = [];
+
+    const fileInput = document.getElementById('fileInput');
+    const uploadStatus = document.getElementById('uploadStatus');
+    const testResults = document.getElementById('testResults');
+    const testContainer = document.getElementById('testContainer');
+    const backToTopBtn = document.getElementById('backToTopBtn');
+    const clipboard = document.getElementById('clipboard');
+    const clipboardContent = document.getElementById('clipboardContent');
+    const themeSelect = document.getElementById('themeSelect');
+    const copyNotification = document.getElementById('copyNotification');
+    const clipboardSavedNotification = document.getElementById('clipboardSavedNotification');
+    const hoverToggle = document.getElementById('hoverToggle');
+
+    // Theme selection
+    themeSelect.addEventListener('change', function() {
+        document.body.className = this.value;
+    });
+
+    // Toggle hover effect
+    hoverToggle.addEventListener('change', function() {
+        const containers = document.querySelectorAll('.test-container');
+        containers.forEach(container => {
+            if (this.checked) {
+                container.classList.add('hover-enabled');
+            } else {
+                container.classList.remove('hover-enabled');
+            }
+        });
+    });
+
+    // File upload
+    fileInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        uploadStatus.innerHTML = "<span style='color: yellow;'>⏳ Yuklanmoqda...</span>";
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            parseTestFile(e.target.result);
+        };
+        reader.readAsText(file);
+    });
+
+    // Parse test file
+    function parseTestFile(content) {
+        tests = [];
+        let lines = content.split('\n');
+        let currentTest = null;
+        let questionLines = [];
+        let optionLines = [];
+        let answerRegex = /^(ANSWER:|ANS:|JAVOB:|javob:)/i;
+
+        for (let i = 0; i < lines.length; i++) {
+            let line = lines[i].trim();
+            if (line === '') continue;
+
+            if (answerRegex.test(line)) {
+                if (currentTest) {
+                    currentTest.question = questionLines.join(' ');
+                    currentTest.options = optionLines;
+                    let answerPart = line.split(':')[1]?.trim();
+                    if (answerPart) {
+                        currentTest.answer = `ANSWER: ${answerPart}`;
+                        tests.push(currentTest);
+                    }
+                    currentTest = null;
+                    questionLines = [];
+                    optionLines = [];
+                }
+            } else if (!currentTest) {
+                currentTest = { question: '', options: [], answer: '' };
+                questionLines.push(line);
+            } else if (!/^[A-D]\./.test(line) && optionLines.length === 0) {
+                questionLines.push(line);
+            } else {
+                optionLines.push(line);
+            }
+        }
+
+        if (tests.length > 0) {
+            uploadStatus.innerHTML = `<span style='color: lightgreen;'>✅ ${tests.length} ta test yuklandi!</span>`;
+            displayTests();
+            testResults.style.display = 'block';
+        } else {
+            uploadStatus.innerHTML = "<span style='color: red;'>❌ Xatolik: Test ma'lumotlari topilmadi!</span>";
+        }
+    }
+
+    // Display all tests
+    function displayTests() {
+        testContainer.innerHTML = '';
+        tests.forEach((test, index) => {
+            const testElement = document.createElement('div');
+            testElement.className = 'test-container hover-enabled';
+
+            const copyBtn = document.createElement('button');
+            copyBtn.className = 'copy-btn';
+            copyBtn.title = 'Nusxa olish';
+            copyBtn.textContent = '📋';
+            testElement.appendChild(copyBtn);
+
+            const questionElement = document.createElement('div');
+            questionElement.className = 'test-question';
+            questionElement.textContent = `${index + 1}. ${test.question}`;
+            questionElement.addEventListener('click', function(e) {
+                if (e.target !== copyBtn) {  // Prevent toggle when clicking copy button
+                    this.classList.toggle('starred');
+                }
+            });
+            testElement.appendChild(questionElement);
+
+            const optionsElement = document.createElement('div');
+            optionsElement.className = 'test-options';
+            test.options.forEach(option => {
+                const optionElement = document.createElement('div');
+                optionElement.textContent = option;
+                optionsElement.appendChild(optionElement);
+            });
+            testElement.appendChild(optionsElement);
+
+            const answerElement = document.createElement('div');
+            answerElement.className = 'test-answer';
+            answerElement.textContent = test.answer;
+            testElement.appendChild(answerElement);
+
+            testContainer.appendChild(testElement);
+        });
+
+        setupCopyButtons();
+    }
+
+    // Setup copy buttons
+    function setupCopyButtons() {
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const testContainer = this.parentElement;
+                const question = testContainer.querySelector('.test-question').textContent;
+                const options = Array.from(testContainer.querySelectorAll('.test-options div')).map(opt => opt.textContent).join('\n');
+                const answer = testContainer.querySelector('.test-answer').textContent;
+                const fullText = `${question}\n${options}\n${answer}`;
+                
+                navigator.clipboard.writeText(fullText).then(() => {
+                    copyNotification.textContent = '✅ Nusxa olindi';
+                    copyNotification.classList.add('show');
+                    setTimeout(() => copyNotification.classList.remove('show'), 3000);
+
+                    clipboardSavedNotification.style.display = 'block';
+                    setTimeout(() => {
+                        clipboardSavedNotification.style.display = 'none';
+                    }, 2000);
+
+                    clipboardItems.push(fullText);
+                    clipboard.classList.add('expanded');
+                    updateClipboard();
+                });
+            });
+        });
+    }
+
+    // Update clipboard
+    function updateClipboard() {
+        clipboardContent.innerHTML = '';
+
+        const clipboardHeader = document.createElement('div');
+        clipboardHeader.className = 'clipboard-header';
+        
+        const clipboardTitle = document.createElement('span');
+        clipboardTitle.textContent = 'Tezkor Saqlagich';
+        clipboardTitle.style.fontWeight = 'bold';
+
+        const closeBtn = document.createElement('button');
+        closeBtn.innerHTML = '✖';
+        closeBtn.className = 'clipboard-close';
+        closeBtn.addEventListener('click', function() {
+            clipboard.classList.remove('expanded');
+        });
+
+        clipboardHeader.appendChild(clipboardTitle);
+        clipboardHeader.appendChild(closeBtn);
+        clipboardContent.appendChild(clipboardHeader);
+
+        const itemsContainer = document.createElement('div');
+        itemsContainer.style.flexGrow = '1';
+        itemsContainer.style.overflowY = 'auto';
+        itemsContainer.innerHTML = clipboardItems.length > 0 
+            ? clipboardItems.map(item => `<p>${item}</p>`).join('') 
+            : '<p style="text-align: center; padding: 20px 0;">Hech narsa saqlanmagan</p>';
+        clipboardContent.appendChild(itemsContainer);
+        
+        if (clipboardItems.length > 0) {
+            const btnContainer = document.createElement('div');
+            btnContainer.className = 'clipboard-buttons d-flex justify-content-between mt-2';
+
+            const copyAllBtn = document.createElement('button');
+            copyAllBtn.innerHTML = '📋 Umumiy nusxa olish';
+            copyAllBtn.className = 'btn btn-sm btn-primary';
+            copyAllBtn.onclick = () => {
+                const allText = clipboardItems.join('\n\n');
+                navigator.clipboard.writeText(allText).then(() => {
+                    copyNotification.textContent = '✅ Nusxa olindi';
+                    copyNotification.classList.add('show');
+                    setTimeout(() => copyNotification.classList.remove('show'), 3000);
+                });
+            };
+
+            const saveBtn = document.createElement('button');
+            saveBtn.innerHTML = '💾 TXT yuklash';
+            saveBtn.className = 'btn btn-sm btn-secondary';
+            saveBtn.onclick = () => {
+                const blob = new Blob([clipboardItems.join('\n\n')], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'saqlangan_matnlar.txt';
+                a.click();
+                URL.revokeObjectURL(url);
+            };
+
+            btnContainer.appendChild(copyAllBtn);
+            btnContainer.appendChild(saveBtn);
+            clipboardContent.appendChild(btnContainer);
+        }
+    }
+
+    // Open clipboard
+    clipboard.addEventListener('click', function(e) {
+        if (e.target.className === 'clipboard-close') return;
+
+        if (!this.classList.contains('expanded')) {
+            this.classList.add('expanded');
+            updateClipboard();
+        }
+    });
+
+    // Back to top button
+    window.onscroll = function() {
+        if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+            backToTopBtn.classList.add('visible');
+        } else {
+            backToTopBtn.classList.remove('visible');
+        }
+    };
+    
+    backToTopBtn.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Warning before leaving
+    window.onbeforeunload = function() {
+        if (clipboardItems.length > 0) {
+            return "Haqiqatdan ham bu oynadan chiqmoqchimisiz? Agar chiqsangiz, vaqtinchalik xotiradagi elementlar o'chib ketadi.";
+        }
+    };
+</script>
+</body>
+</html>
