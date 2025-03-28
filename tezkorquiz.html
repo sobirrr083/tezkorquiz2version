@@ -7,7 +7,6 @@
   <link rel="icon" href="img/true.png" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <style>
-    /*new*/
     .quiz-container {
       max-width: 800px;
       margin: 50px auto;
@@ -32,6 +31,12 @@
       width: 100%;
       transition: all 0.3s ease;
     }
+    .btn-option:hover {
+      background-color: #000000; /* Black hover effect */
+      color: white; /* White text on hover for contrast */
+      transform: translateX(5px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2); /* Subtle shadow animation */
+    }
     .confetti-canvas {
       position: fixed;
       top: 0;
@@ -40,6 +45,46 @@
       height: 100%;
       pointer-events: none;
       z-index: 1000;
+    }
+    .progress-container {
+      margin-bottom: 20px;
+    }
+    .progress {
+      height: 20px;
+      background-color: #e9ecef;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .progress-bar {
+      background: linear-gradient(to right, #4dabf7, #339af0);
+      transition: width 0.6s ease-in-out;
+    }
+    .question-counter {
+      font-size: 1.1rem;
+      color: #666;
+      margin-top: 5px;
+    }
+    .timer {
+      font-size: 1rem;
+      margin-top: 5px;
+      transition: color 0.3s ease; /* Smooth color transition for timer */
+    }
+    .question-header {
+      min-height: 80px; /* Fixed height for question area */
+      max-height: 80px;
+      overflow-y: auto; /* Scroll if content exceeds height */
+      margin-bottom: 15px;
+    }
+    .options-container {
+      min-height: 200px; /* Fixed height for options area */
+    }
+    .fade-in {
+      animation: fadeIn 0.5s ease-in;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
   </style>
 </head>
@@ -54,10 +99,17 @@
       </div>
 
       <div id="quiz-area">
+        <div class="progress-container">
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" id="quiz-progress"></div>
+          </div>
+        </div>
         <div class="mb-3">
           <h3 id="question-text" class="question-header"></h3>
+          <div id="question-counter" class="question-counter"></div>
+          <div id="timer" class="timer"></div>
         </div>
-        <div id="options-container" class="d-grid gap-2"></div>
+        <div id="options-container" class="d-grid gap-2 options-container"></div>
       </div>
 
       <div id="result-container" class="text-center mt-4" style="display:none;">
@@ -162,6 +214,8 @@
         this.questions = [];
         this.currentQuestionIndex = 0;
         this.score = 0;
+        this.timeLeft = 30;
+        this.timerInterval = null;
 
         this.initializeElements();
         this.attachEventListeners();
@@ -179,6 +233,9 @@
         this.quizInfoElement = document.getElementById('quiz-info');
         this.quizFileInput = document.getElementById('quiz-file');
         this.confettiCanvas = document.getElementById('confetti-canvas');
+        this.progressBar = document.getElementById('quiz-progress');
+        this.questionCounter = document.getElementById('question-counter');
+        this.timerElement = document.getElementById('timer');
       }
 
       attachEventListeners() {
@@ -233,11 +290,34 @@
       startQuiz() {
         this.currentQuestionIndex = 0;
         this.score = 0;
-        this.questions = this.questions.sort(() => Math.random() - 0.5); // Savollarni tasodifiy aralashtirish
+        this.questions = this.questions.sort(() => Math.random() - 0.5);
         document.body.style.backgroundColor = '#f4f6f9';
         this.resultContainer.style.display = 'none';
         this.quizArea.style.display = 'block';
+        this.quizArea.classList.add('fade-in');
         this.displayQuestion();
+      }
+
+      startTimer() {
+        this.timeLeft = 30;
+        this.timerElement.textContent = `Qolgan vaqt: ${this.timeLeft} soniya`;
+        clearInterval(this.timerInterval);
+        this.timerInterval = setInterval(() => {
+          this.timeLeft--;
+          this.timerElement.textContent = `Qolgan vaqt: ${this.timeLeft} soniya`;
+          // Dynamic timer color change
+          if (this.timeLeft <= 10) {
+            this.timerElement.style.color = '#ff0000'; // Red when time is low
+          } else if (this.timeLeft <= 20) {
+            this.timerElement.style.color = '#ffa500'; // Orange for warning
+          } else {
+            this.timerElement.style.color = '#888'; // Default color
+          }
+          if (this.timeLeft <= 0) {
+            clearInterval(this.timerInterval);
+            this.selectOption('');
+          }
+        }, 1000);
       }
 
       displayQuestion() {
@@ -245,7 +325,15 @@
         this.questionText.textContent = currentQuestion.question;
         this.optionsContainer.innerHTML = '';
 
-        const shuffledOptions = [...currentQuestion.options].sort(() => Math.random() - 0.5); // Variantlarni tasodifiy aralashtirish
+        this.questionCounter.textContent = `Savol ${this.currentQuestionIndex + 1} / ${this.questions.length}`;
+
+        const progressPercentage = ((this.currentQuestionIndex + 1) / this.questions.length) * 100;
+        this.progressBar.style.width = `${progressPercentage}%`;
+        this.progressBar.setAttribute('aria-valuenow', progressPercentage);
+
+        this.startTimer();
+
+        const shuffledOptions = [...currentQuestion.options].sort(() => Math.random() - 0.5);
         shuffledOptions.forEach((option) => {
           const optionButton = document.createElement('button');
           const optionText = option.replace(/^[A-D]\.\s*/, '').trim();
@@ -255,12 +343,12 @@
           this.optionsContainer.appendChild(optionButton);
         });
 
-        // Reset background
         document.body.style.backgroundColor = '#f4f6f9';
         this.quizContainer.style.backgroundColor = 'white';
       }
 
       selectOption(selectedOption) {
+        clearInterval(this.timerInterval);
         const buttons = this.optionsContainer.querySelectorAll('.btn');
         buttons.forEach(btn => btn.disabled = true);
 
@@ -269,8 +357,7 @@
           selectedOption.replace(/^[A-D]\.\s*/, '').trim() === btn.textContent
         );
 
-        if (selectedOption.startsWith(currentQuestion.correctAnswer)) {
-          // To'g'ri javob
+        if (selectedOption && selectedOption.startsWith(currentQuestion.correctAnswer)) {
           selectedButton.classList.remove('btn-outline-primary');
           selectedButton.classList.add('btn-success');
           selectedButton.innerHTML += ' ✔️';
@@ -279,15 +366,15 @@
           this.confettiGenerator.createConfetti('green');
           this.score++;
         } else {
-          // Xato javob
-          selectedButton.classList.remove('btn-outline-primary');
-          selectedButton.classList.add('btn-danger');
-          selectedButton.innerHTML += ' ❌';
+          if (selectedButton) {
+            selectedButton.classList.remove('btn-outline-primary');
+            selectedButton.classList.add('btn-danger');
+            selectedButton.innerHTML += ' ❌';
+          }
           document.body.style.backgroundColor = 'rgba(255, 0, 0, 0.1)';
           this.quizContainer.style.backgroundColor = 'rgba(255, 0, 0, 0.2)';
           this.confettiGenerator.createConfetti('red');
 
-          // To'g'ri variantni aniqlash va belgilash
           const correctButton = Array.from(buttons).find(btn => 
             currentQuestion.options.some(opt => 
               opt.startsWith(currentQuestion.correctAnswer) &&
@@ -301,10 +388,12 @@
           }
         }
 
-        // Keyingi savolga o'tish
         setTimeout(() => {
           this.currentQuestionIndex++;
           if (this.currentQuestionIndex < this.questions.length) {
+            this.quizArea.classList.remove('fade-in');
+            void this.quizArea.offsetWidth;
+            this.quizArea.classList.add('fade-in');
             this.displayQuestion();
           } else {
             this.showResults();
@@ -324,7 +413,6 @@
       }
     }
 
-    // Quiz ilovasini ishga tushurish
     new QuizApp();
   </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
