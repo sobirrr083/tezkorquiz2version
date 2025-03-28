@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="quiz.png">
+  <title>Yopiq Quiz</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+  <style>
+    body {
+      background-color: #f4f6f9;
+      overflow-x: hidden;
+    }
+    .container {
+      max-width: 900px;
+      margin: 20px auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 6px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .question-container {
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+    .question-text {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .options-container .form-check {
+      margin-bottom: 8px;
+    }
+    .correct {
+      background-color: #d1e7dd !important;
+    }
+    .incorrect {
+      background-color: #f8d7da !important;
+    }
+    .check-icon {
+      font-weight: bold;
+      margin-left: 8px;
+    }
+    .score-container {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: bold;
+      opacity: 0;
+      transition: opacity 1s ease-in;
+    }
+    .show-feedback {
+      opacity: 1 !important;
+    }
+    .feedback-text {
+      font-size: 1.1rem;
+      margin-top: 10px;
+      color: #444;
+    }
+    .feedback-text span {
+      font-weight: bold;
+      color: #2c7fbb;
+    }
+    .timer-container {
+      background-color: #f8f9fa;
+      border-radius: 6px;
+      padding: 10px 15px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .timer {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #333;
+    }
+    .timer.warning {
+      color: #dc3545;
+      animation: pulse 1s infinite;
+    }
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.7; }
+      100% { opacity: 1; }
+    }
+    .time-settings {
+      margin-top: 15px;
+      margin-bottom: 15px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      background-color: #f8f9fa;
+    }
+    .confetti-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 999;
+    }
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: #f00;
+      border-radius: 50%;
+      animation: fall 5s ease-in-out;
+    }
+    @keyframes fall {
+      0% {
+        top: -10px;
+        transform: translateX(0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        top: 100vh;
+        transform: translateX(100px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+    .sad-emoji {
+      font-size: 3rem;
+      margin: 10px 0;
+      animation: shake 0.5s ease-in-out;
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      50% { transform: translateX(10px); }
+      75% { transform: translateX(-10px); }
+    }
+    .neutral-emoji {
+      font-size: 3rem;
+      margin: 10px 0;
+      animation: bounce 1s ease-in-out;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+    .new-test-btn {
+      margin-top: 20px;
+    }
+    .start-btn {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      padding: 10px 30px;
+    }
+    /* Responsiv dizayn uchun qo'shimcha stillar */
+    @media (max-width: 576px) {
+      .container {
+        padding: 10px;
+        margin: 10px;
+      }
+      .question-container {
+        padding: 10px;
+      }
+      .form-check {
+        margin-bottom: 5px;
+      }
+      .timer-container {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .timer {
+        font-size: 1.2rem;
+      }
+      .question-text {
+        font-size: 1rem;
+      }
+      .form-check-label {
+        font-size: 1rem;
+        word-wrap: break-word;
+        white-space: normal;
+      }
+      .feedback-text {
+        font-size: 1rem;
+      }
+      .sad-emoji, .neutral-emoji {
+        font-size: 2.5rem;
+      }
+      .time-settings {
+        padding: 10px;
+      }
+      .btn-group {
+        display: flex;
+        flex-wrap: wrap;
+      }
+      .btn-group button {
+        flex: 1 0 45%;
+        margin: 2px;
+      }
+    }
+    .form-check-input {
+      transform: scale(1.2);
+      margin-right: 10px;
+    }
+    .form-check-label {
+      word-wrap: break-word;
+      white-space: normal;
+    }
+    .intro-section {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1 class="text-center mb-4">Siz oldin tinglang! (Taqdimotga e'tibor bering) Keyin belgilaysiz!</h1>
+
+  <div id="introSection" class="intro-section">
+    <p class="lead">Testni boshlashga tayyormisiz?</p>
+    <p>Test savollari va javoblaringiz tekshiriladi, faqat test yakunida natijalar ko'rsatiladi.</p>
+    <button id="startExamBtn" class="btn btn-primary start-btn">Testni boshlash</button>
+  </div>
+
+  <!-- Timer -->
+  <div id="timerContainer" class="timer-container" style="display: none;">
+    <div>
+      <i class="fas fa-clock me-2"></i>
+      <span>Qolgan vaqt:</span>
+    </div>
+    <div id="timer" class="timer">10:00</div>
+  </div>
+
+  <!-- Testlar ro'yxati chiqadigan joy -->
+  <div id="quizList" style="display: none;">
+    <p id="testCount" class="text-success fw-bold"></p>
+    <div id="questionsContainer"></div>
+
+    <!-- Test yakunlash tugmasi -->
+    <button id="finishBtn" class="btn btn-primary">Testni yakunlash</button>
+
+    <!-- To'plangan ballni ko'rsatish + tavsiya -->
+    <div id="scoreContainer" class="score-container">
+      <div id="scoreText"></div>
+      <div id="emojiContainer"></div>
+      <div id="feedbackText" class="feedback-text"></div>
+    </div>
+
+    <!-- Yangi test -->
+    <button id="newTestBtn" class="btn btn-success new-test-btn" style="display: none; text-align: center">
+      Yangi test boshlamoq
+    </button>
+  </div>
+
+  <!-- Confetti effekti uchun -->
+  <div id="confettiContainer" class="confetti-container"></div>
+</div>
+
+<script>
+  // Built-in test ma'lumotlari
+  const testData = [
+  {
+    question: "PHP funksiyasi sintaksisi. Quyidagi PHP kodining to'g'ri ishlashini tanlang:",
+    code: `function greet() {
+    echo "Salom, PHP!";
+}
+greet();`,
+    options: [
+      { letter: "A", text: "Salom, PHP! chiqadi" },
+      { letter: "B", text: "Echo not defined xatolik chiqadi" },
+      { letter: "C", text: "Funksiya chaqirilmaydi" },
+      { letter: "D", text: "Salom matnini chiqaradi" }
+    ],
+    answer: "A"
+  },
+  {
+    question: "PHP funksiyasiga argument uzatish. Quyidagi PHP kodi nima natija beradi?",
+    code: `function familyName($fname) {
+    echo "$fname Refsnes.<br>";
+}
+
+familyName("Jani");`,
+    options: [
+      { letter: "A", text: "Jani Refsnes." },
+      { letter: "B", text: "Jani" },
+      { letter: "C", text: "Jani Refsnes" },
+      { letter: "D", text: "Xato, funksiyaga argument berilmagan" }
+    ],
+    answer: "A"
+  },
+  {
+    question: "Standart argument qiymati. Quyidagi kodni ishlatganda qanday natija olinadi?",
+    code: `function setHeight($minheight = 50) {
+    echo "Balandlik: $minheight <br>";
+}
+setHeight();`,
+    options: [
+      { letter: "A", text: "Balandlik: 50" },
+      { letter: "B", text: "Balandlik: 0" },
+      { letter: "C", text: "Balandlik: $minheight" },
+      { letter: "D", text: "Balandlik: 100" }
+    ],
+    answer: "A"
+  },
+  {
+    question: "Funksiyadan qaytish. Quyidagi kodning natijasi nima bo'ladi?",
+    code: `function sum($x, $y) {
+    return $x + $y;
+}
+
+echo sum(5, 10);`,
+    options: [
+      { letter: "A", text: "510" },
+      { letter: "B", text: "5 + 10" },
+      { letter: "C", text: "15" },
+      { letter: "D", text: "Xato, natija qaytarilmaydi" }
+    ],
+    answer: "C"
+  },
+  {
+    question: "Referens orqali argument uzatish. Quyidagi kodning natijasi nima?",
+    code: `function add_five(&$value) {
+    $value += 5;
+}
+
+$num = 2;
+add_five($num);
+echo $num;`,
+    options: [
+      { letter: "A", text: "2" },
+      { letter: "B", text: "5" },
+      { letter: "C", text: "7" },
+      { letter: "D", text: "7 xatolik chiqadi" }
+    ],
+    answer: "C"
+  }
+];
+
+  let originalTests = [...testData];
+  let randomizedTests = [];
+  let timerInterval;
+  let totalSeconds = 600; // 10 daqiqa = 600 sekund
+  let examStarted = false;
+
+  const introSection = document.getElementById("introSection");
+  const startExamBtn = document.getElementById("startExamBtn");
+  const quizList = document.getElementById("quizList");
+  const testCount = document.getElementById("testCount");
+  const questionsContainer = document.getElementById("questionsContainer");
+  const finishBtn = document.getElementById("finishBtn");
+  const scoreContainer = document.getElementById("scoreContainer");
+  const scoreText = document.getElementById("scoreText");
+  const feedbackText = document.getElementById("feedbackText");
+  const emojiContainer = document.getElementById("emojiContainer");
+  const newTestBtn = document.getElementById("newTestBtn");
+  const timerContainer = document.getElementById("timerContainer");
+  const timerElement = document.getElementById("timer");
+  const confettiContainer = document.getElementById("confettiContainer");
+
+  // Imtihonni boshlash tugmasi
+  startExamBtn.addEventListener("click", () => {
+    introSection.style.display = "none";
+    startExam();
+  });
+
+  // Massivni randomizatsiya qilish uchun funksiya
+  function shuffleArray(array) {
+    const newArray = [...array];
+    for (let i = newArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+    }
+    return newArray;
+  }
+
+  // Testlar va variantlarni randomizatsiya qilish
+  function randomizeTests() {
+    const shuffledTests = shuffleArray(originalTests);
+    randomizedTests = shuffledTests.map(test => {
+      const shuffledOptions = shuffleArray(test.options);
+      const correctOptionIndex = shuffledOptions.findIndex(option => option.letter === test.answer);
+      return { question: test.question, options: shuffledOptions, correctOptionIndex };
+    });
+  }
+
+  // Imtihonni boshlash
+  function startExam() {
+    examStarted = true;
+    timerContainer.style.display = "flex";
+    updateTimerDisplay();
+    startTimer();
+    randomizeTests();
+    showTests();
+  }
+
+  // Testlarni ekranga chiqarish
+  function showTests() {
+  quizList.style.display = "block";
+  testCount.textContent = randomizedTests.length + " ta test yuklandi!";
+  questionsContainer.innerHTML = "";
+  randomizedTests.forEach((test, index) => {
+    const questionDiv = document.createElement("div");
+    questionDiv.className = "question-container";
+    questionDiv.dataset.correctOptionIndex = test.correctOptionIndex;
+
+    const qText = document.createElement("div");
+    qText.className = "question-text";
+    qText.textContent = (index + 1) + ". " + test.question;
+    questionDiv.appendChild(qText);
+
+    // Add code block if exists
+    if (test.code) {
+      const codeBlock = document.createElement("pre");
+      codeBlock.className = "code-block";
+      codeBlock.style.backgroundColor = "#f4f4f4";
+      codeBlock.style.padding = "10px";
+      codeBlock.style.borderRadius = "4px";
+      codeBlock.style.margin = "10px 0";
+      codeBlock.style.overflowX = "auto";
+      codeBlock.textContent = test.code;
+      questionDiv.appendChild(codeBlock);
+    }
+
+    const optionsDiv = document.createElement("div");
+    optionsDiv.className = "options-container";
+    test.options.forEach((opt, optIndex) => {
+      const formCheck = document.createElement("div");
+      formCheck.className = "form-check";
+      const input = document.createElement("input");
+      input.className = "form-check-input";
+      input.type = "radio";
+      input.name = "question_" + index;
+      input.id = "question_" + index + "_option_" + optIndex;
+      input.dataset.originalLetter = opt.letter;
+      const label = document.createElement("label");
+      label.className = "form-check-label";
+      label.setAttribute("for", input.id);
+      label.textContent = opt.text;
+      formCheck.appendChild(input);
+      formCheck.appendChild(label);
+      optionsDiv.appendChild(formCheck);
+    });
+    questionDiv.appendChild(optionsDiv);
+    questionsContainer.appendChild(questionDiv);
+  });
+  }
+  // Timer funksiyalari
+  function startTimer() {
+    timerInterval = setInterval(() => {
+      if (totalSeconds > 0) {
+        totalSeconds--;
+        updateTimerDisplay();
+        if (totalSeconds < 60) timerElement.classList.add("warning");
+      } else {
+        clearInterval(timerInterval);
+        endExam("Vaqt tugadi!");
+      }
+    }, 1000);
+  }
+
+  function updateTimerDisplay() {
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  }
+
+  function stopTimer() {
+    clearInterval(timerInterval);
+  }
+
+  // Imtihon tugadi
+  function endExam(message = "") {
+    stopTimer();
+    checkAnswers();
+    if (message) alert(message);
+    newTestBtn.style.display = "block";
+  }
+
+  // "Testni yakunlash" tugmasi bosilganda
+  finishBtn.addEventListener("click", () => {
+    endExam("Test yakunlandi!");
+  });
+
+  // checkAnswers funktsiyasidagi o'zgartirilgan qism:
+  // checkAnswers funktsiyasidagi o'zgartirilgan qism:
+  function checkAnswers() {
+  scoreText.textContent = "";
+  feedbackText.textContent = "";
+  emojiContainer.innerHTML = "";
+  scoreContainer.classList.remove("show-feedback");
+
+  let correctCount = 0;
+  randomizedTests.forEach((test, index) => {
+    const correctOptionIndex = test.correctOptionIndex;
+    const radios = document.querySelectorAll(`input[name="question_${index}"]`);
+    radios.forEach(radio => {
+      const label = document.querySelector(`label[for="${radio.id}"]`);
+      label.classList.remove("correct", "incorrect");
+      const checkIcon = label.querySelector(".check-icon");
+      if (checkIcon) checkIcon.remove();
+    });
+
+    let selectedOptionIndex = -1;
+    radios.forEach((radio, idx) => { if (radio.checked) selectedOptionIndex = idx; });
+
+    if (selectedOptionIndex >= 0) {
+      const chosenLabel = document.querySelector(`label[for="question_${index}_option_${selectedOptionIndex}"]`);
+      if (selectedOptionIndex === correctOptionIndex) {
+        chosenLabel.classList.add("correct");
+        chosenLabel.innerHTML += '<span class="check-icon">✅</span>';
+        correctCount++;
+      } else {
+        chosenLabel.classList.add("incorrect");
+        chosenLabel.innerHTML += '<span class="check-icon">❌</span>';
+        const correctLabel = document.querySelector(`label[for="question_${index}_option_${correctOptionIndex}"]`);
+        correctLabel.classList.add("correct");
+        correctLabel.innerHTML += '<span class="check-icon">✅</span>';
+      }
+    } else {
+      const correctLabel = document.querySelector(`label[for="question_${index}_option_${correctOptionIndex}"]`);
+      correctLabel.classList.add("correct");
+      correctLabel.innerHTML += '<span class="check-icon">✅</span>';
+    }
+  });
+
+  const totalQuestions = randomizedTests.length;
+  scoreText.textContent = `To'g'ri javoblar: ${correctCount} / ${totalQuestions}`;
+  
+  // Natija asosida ranglarni belgilash va to'liq ekranni bo'yash
+  if (correctCount <= 2) {
+    // To'q qizil rang uchun
+    scoreText.style.color = "#FFFFFF"; // oq rang matn uchun
+    emojiContainer.innerHTML = '<div class="sad-emoji">😔</div>';
+    document.body.style.transition = "background-color 1s ease";
+    document.body.style.backgroundColor = "#8B0000"; // dark red
+    
+    // Container foni ham o'zgarsin
+    document.querySelector('.container').style.transition = "background-color 1s ease, color 1s ease";
+    document.querySelector('.container').style.backgroundColor = "#A52A2A"; // qizilroq
+    document.querySelector('.container').style.color = "#FFFFFF"; // oq rang matn uchun
+  } else if (correctCount === 3) {
+    // To'q sariq rang uchun
+    scoreText.style.color = "#000000"; // qora rang matn uchun
+    emojiContainer.innerHTML = '<div class="neutral-emoji">😊</div>';
+    document.body.style.transition = "background-color 1s ease";
+    document.body.style.backgroundColor = "#B8860B"; // dark goldenrod
+    
+    // Container foni ham o'zgarsin
+    document.querySelector('.container').style.transition = "background-color 1s ease";
+    document.querySelector('.container').style.backgroundColor = "#DAA520"; // sariqroq
+    document.querySelector('.container').style.color = "#000000"; // qora rang matn uchun
+  } else if (correctCount >= 4) {
+    // To'q yashil rang uchun
+    scoreText.style.color = "#FFFFFF"; // oq rang matn uchun
+    createConfetti();
+    emojiContainer.innerHTML = '<div class="neutral-emoji">🎉</div>';
+    document.body.style.transition = "background-color 1s ease";
+    document.body.style.backgroundColor = "#006400"; // dark green
+    
+    // Container foni ham o'zgarsin
+    document.querySelector('.container').style.transition = "background-color 1s ease, color 1s ease";
+    document.querySelector('.container').style.backgroundColor = "#228B22"; // yashilroq
+    document.querySelector('.container').style.color = "#FFFFFF"; // oq rang matn uchun
+  }
+
+  // Barcha qolgan elementlar uchun matn rangini o'zgartirish
+  const allLabels = document.querySelectorAll('.form-check-label');
+  const allQuestionText = document.querySelectorAll('.question-text');
+  
+  if (correctCount <= 2 || correctCount >= 4) {
+    // Qizil va yashil fon uchun oq matn
+    allLabels.forEach(label => {
+      if (!label.classList.contains('correct') && !label.classList.contains('incorrect')) {
+        label.style.color = "#FFFFFF";
+      }
+    });
+    
+    allQuestionText.forEach(qt => {
+      qt.style.color = "#FFFFFF";
+    });
+    
+    document.querySelector('h1').style.color = "#FFFFFF";
+    document.querySelectorAll('p, button').forEach(el => {
+      el.style.color = "#FFFFFF";
+    });
+  } else {
+    // Sariq fon uchun qora matn
+    allLabels.forEach(label => {
+      if (!label.classList.contains('correct') && !label.classList.contains('incorrect')) {
+        label.style.color = "#000000";
+      }
+    });
+    
+    allQuestionText.forEach(qt => {
+      qt.style.color = "#000000";
+    });
+  }
+
+  scoreContainer.classList.add("show-feedback");
+  document.querySelectorAll('input[type="radio"]').forEach(radio => radio.disabled = true);
+  finishBtn.disabled = true;
+}
+</script>
+</body>
+</html>
