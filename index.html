@@ -2,325 +2,40 @@
 <html lang="en">
 <head>
     <title>Tezkor Quiz</title>
-     <link rel="icon" href="aga/logoyangi.png">
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- AOS Animation CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
-    <!-- Audio elements for sound effects -->
-    <audio id="openSound" preload="auto">
-        <source src="https://cdnjs.cloudflare.com/ajax/libs/simple-sounds/1.0.0/sounds/pop-up.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="messageSound" preload="auto">
-        <source src="https://cdnjs.cloudflare.com/ajax/libs/simple-sounds/1.0.0/sounds/notification.mp3" type="audio/mpeg">
-    </audio>
-  
+    <link rel="icon" href="aga/iconcha.png">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+       
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- AOS Animation CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <meta name="description" content="Tezkor Quiz - testlarni yaratish, boshqarish va yechish uchun qulay platforma">
+    
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <style>
-   body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            height: 100vh;
+       :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3a0ca3;
+            --accent-color: #f72585;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #4cc9f0;
+            --warning-color: #f8961e;
         }
-
-        /* Chat Button Style */
-        .chat-button {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(145deg, #4d93ff, #2e6cd7);
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            box-shadow: 0 4px 20px rgba(66, 133, 244, 0.4);
-            z-index: 1000;
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-            overflow: hidden;
-        }
-
-        .chat-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 25px rgba(66, 133, 244, 0.6);
-        }
-
-        .chat-button.active {
-            transform: scale(1.2);
-            opacity: 0;
-        }
-
-        .chat-icon {
-            font-size: 24px;
-            transition: all 0.3s ease;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-        }
-
-        /* Chat Window Style */
-        .chat-container {
-            position: fixed;
-            bottom: 90px;
-            right: 20px;
-            width: 350px;
-            height: 450px;
-            background-color: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            display: none;
-            flex-direction: column;
-            z-index: 999;
-            overflow: hidden;
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-            transform-origin: bottom right;
-            opacity: 0;
-            transform: scale(0.1);
-        }
-
-        .chat-container.visible {
-            display: flex;
-            opacity: 1;
-            transform: scale(1);
-            animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
-        }
-
-        .chat-container.closing {
-            opacity: 0;
-            transform: scale(0.1);
-        }
-
-        .chat-container.expanded {
-            width: 100%;
-            height: 100vh;
-            bottom: 0;
-            right: 0;
-            border-radius: 0;
-            animation: expandFull 0.5s ease forwards;
-        }
-
-        @keyframes popIn {
-            0% { transform: scale(0.1); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        @keyframes expandFull {
-            0% { border-radius: 20px; }
-            100% { border-radius: 0; }
-        }
-
-        .chat-header {
-            background: linear-gradient(145deg, #4d93ff, #2e6cd7);
-            color: white;
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .chat-title {
-            font-weight: bold;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .chat-title::before {
-            content: '';
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            background-color: #4eff4e;
-            border-radius: 50%;
-            animation: blink 1.5s infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
-        }
-
-        .chat-controls {
-            display: flex;
-            gap: 15px;
-        }
-
-        .control-button {
-            background: none;
-            border: none;
-            color: white;
-            cursor: pointer;
-            font-size: 16px;
-            width: 25px;
-            height: 25px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-        }
-
-        .control-button:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-            transform: scale(1.1);
-        }
-
-        .chat-messages {
-            flex-grow: 1;
-            padding: 20px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            background-color: #f9fafc;
-        }
-
-        .message {
-            max-width: 80%;
-            padding: 12px 18px;
-            border-radius: 18px;
-            margin-bottom: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
-            animation: messageIn 0.3s ease forwards;
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        @keyframes messageIn {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        .assistant-message {
-            background: linear-gradient(145deg, #f1f1f1, #ffffff);
-            color: #333;
-            align-self: flex-start;
-            border-bottom-left-radius: 5px;
-        }
-
-        .user-message {
-            background: linear-gradient(145deg, #4d93ff, #2e6cd7);
-            color: white;
-            align-self: flex-end;
-            border-bottom-right-radius: 5px;
-        }
-
-        .chat-input-container {
-            display: flex;
-            padding: 15px;
-            background-color: white;
-            border-top: 1px solid #eaeaea;
-            transition: all 0.3s ease;
-        }
-
-        .chat-input {
-            flex-grow: 1;
-            padding: 12px 18px;
-            border: 1px solid #e0e0e0;
-            border-radius: 25px;
-            outline: none;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-
-        .chat-input:focus {
-            border-color: #4285f4;
-            box-shadow: 0 2px 15px rgba(66, 133, 244, 0.15);
-        }
-
-        .send-button {
-            background: linear-gradient(145deg, #4d93ff, #2e6cd7);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 45px;
-            height: 45px;
-            margin-left: 10px;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 4px 10px rgba(66, 133, 244, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .send-button:hover {
-            transform: scale(1.05) rotate(5deg);
-            box-shadow: 0 6px 15px rgba(66, 133, 244, 0.4);
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .email-form {
-            display: none;
-            padding: 20px;
-            background-color: #f9fafc;
-        }
-
-        .email-form.active {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            animation: fadeIn 0.5s ease forwards;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .form-input {
-            padding: 12px 15px;
-            border: 1px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
-        }
-
-        .form-input:focus {
-            border-color: #4285f4;
-            box-shadow: 0 2px 15px rgba(66, 133, 244, 0.1);
-            outline: none;
-        }
-
-        .form-button {
-            padding: 12px 20px;
-            background: linear-gradient(145deg, #4d93ff, #2e6cd7);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(66, 133, 244, 0.2);
-        }
-
-        .form-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(66, 133, 244, 0.3);
-        }
-        
-        
-        /* Rasmlar moslashuvchan bo'lishi uchun */
+       
+      /* Rasmlar moslashuvchan bo'lishi uchun */
         .ima img {
             max-width: 100%;
             height: auto;
@@ -462,10 +177,127 @@
         .navbar-toggler:focus {
             box-shadow: none;
         }
-
+     /* Hero section */
+     .hero-section {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            padding: 70px 0;
+            border-radius: 15px;
+            margin-bottom: 50px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: "";
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            top: -100px;
+            right: -100px;
+        }
+        
+        .hero-title {
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .hero-text {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+        
+        .hero-btn {
+            padding: 12px 30px;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            margin-right: 15px;
+        }
+        
+        .btn-light {
+            background: white;
+            color: var(--primary-color);
+            border: none;
+        }
+        
+        .btn-light:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-outline-light {
+            border: 2px solid white;
+            color: white;
+        }
+        
+        .btn-outline-light:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+        }
+        /* Footer */
+        .footer {
+            padding: 50px 0 20px;
+            background-color: var(--dark-color);
+            color: white;
+            margin-top: 50px;
+        }
+        
+        .footer-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .footer-link {
+            display: block;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .footer-link:hover {
+            color: white;
+            padding-left: 5px;
+        }
+        
+        .social-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icon:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+   
     </style>
 </head>
 <body>
+
   <!-- Simple Navbar -->
   <nav class="navbar navbar-expand-lg navbar-light fixed-top">
     <div class="container">
@@ -510,8 +342,33 @@
         </div>
     </div>
 </nav>
+<br> <br> 
+  <!-- Hero Section -->
+  <section class="container mt-5" data-aos="fade-up" data-aos-duration="1000">
+    <div class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-7">
+                    <h1 class="hero-title">Tezkor Quiz bilan bilimlaringizni sinovdan o'tkazing</h1>
+                    <p class="hero-text">Testlarni yaratish, boshqarish va yechish uchun eng qulay platforma. 
+                    O'z bilimlaringizni sinab ko'ring va yangi ma'lumotlarni o'rganing.</p>
+                    <div class="d-flex flex-wrap">
+                        <a href="quiztanlovi.html" class="btn btn-light hero-btn mb-3 mb-md-0">
+                            <i class="fas fa-play me-2"></i>Testni boshlash
+                        </a>
+                        <a href="javascript:void(0)" class="btn btn-outline-light hero-btn disabled" style="pointer-events: none; opacity: 0.6;">
+                            <i class="fas fa-file-alt me-2"></i>Test yaratish
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-5 d-none d-md-block">
+                    <img src="kamlogo.webp" alt="Quiz illyustratsiyasi" class="img-fluid rounded">
+                </div>
+            </div>
+        </div>
+    </div>
+  </section>
 
-<br><br> <br> 
 <div class="container mt-3">
     <div class="row">
         <div class="col-lg-6 mb-4">
@@ -580,202 +437,62 @@
         </div>
     </div>
 </div>
-  <!-- Chat Button -->
-    <div class="chat-button" id="chatButton">
-        <div class="chat-icon">💬</div>
-    </div>
 
-    <!-- Chat Container -->
-    <div class="chat-container" id="chatContainer">
-        <div class="chat-header">
-            <div class="chat-title">Onlayn Yordamchi</div>
-            <div class="chat-controls">
-                <button class="control-button" id="closeButton">✕</button>
+ <!-- Footer -->
+ <footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 mb-4 mb-lg-0">
+                <h5 class="footer-title">Tezkor Quiz</h5>
+                <p>Testlarni yaratish, boshqarish va yechish uchun eng qulay platforma. O'z bilimlaringizni sinab ko'ring va yangi ma'lumotlarni o'rganing.</p>
+                <div class="mt-4">
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://t.me/quiztezkor" class="social-icon"><i class="fab fa-telegram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.youtube.com/@QuizTezkor" class="social-icon"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
+                <h5 class="footer-title">Havolalar</h5>
+                <a href="index.html" class="footer-link">Bosh sahifa</a>
+                <a href="test-boshqaruv-tizimi.html" class="footer-link">Segment</a>
+                <a href="faylyuklash.html" class="footer-link">Fayllarni Saqlash</a>
+                <a href="yordam.html" class="footer-link">Yordam</a>
+                <a href="beta.html" class="footer-link">Beta</a>
+            </div>
+            <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
+                <h5 class="footer-title">Quiz Testlar</h5>
+                <a href="tezkorquiz.html" class="footer-link">Tezkor Quiz</a>
+                <a href="sekinquiz.html" class="footer-link">Sekin Quiz</a>
+                <a href="telegramquiz.html" class="footer-link">Telegram Quiz</a>
+                <a href="Imtihon.html" class="footer-link">Imtihon Quiz</a>
+            </div>
+            <div class="col-lg-4 col-md-4">
+                <h5 class="footer-title">Biz bilan bog'laning</h5>
+                <p class="mb-2"><i class="fas fa-envelope me-2"></i> tezkorquiz@gmail.com</p>
+                <p class="mb-2"><i class="fas fa-phone me-2"></i> +998 90 577 08 32</p>
+                <p><i class="fas fa-map-marker-alt me-2"></i> O'zbekiston</p>
             </div>
         </div>
-        
-        <div class="chat-messages" id="chatMessages">
-            <div class="message assistant-message">
-                Salom! Bugun sizga qanday yordam bera olaman? Siz men bilan suhbatlashishingiz yoki menga elektron xat yuborishingiz mumkin.
-            </div>
-        </div>
-        
-        <div class="email-form" id="emailForm">
-            <input type="email" class="form-input" id="emailInput" placeholder="Elektron pochta manzilingiz">
-            <textarea class="form-input" id="messageInput" rows="4" placeholder="Xabaringiz"></textarea>
-            <button class="form-button" id="sendEmailButton">Xat yuborish</button>
-            <button class="form-button" id="backToChatButton">Chatga qaytish</button>
-        </div>
-        
-        <div class="chat-input-container" id="chatInputContainer">
-            <input type="text" class="chat-input" id="chatInput" placeholder="Xabaringizni yozing...">
-            <button class="send-button" id="sendButton">➤</button>
+        <div class="copyright">
+            <p>© 2025 Tezkor Quiz. Barcha huquqlar himoyalangan.</p>
         </div>
     </div>
-  <script>
-        // DOM Elements
-        const chatButton = document.getElementById('chatButton');
-        const chatContainer = document.getElementById('chatContainer');
-        const chatMessages = document.getElementById('chatMessages');
-        const chatInput = document.getElementById('chatInput');
-        const sendButton = document.getElementById('sendButton');
-
-        
-        const closeButton = document.getElementById('closeButton');
-        const emailForm = document.getElementById('emailForm');
-        const chatInputContainer = document.getElementById('chatInputContainer');
-        const emailInput = document.getElementById('emailInput');
-        const messageInput = document.getElementById('messageInput');
-        const sendEmailButton = document.getElementById('sendEmailButton');
-        const backToChatButton = document.getElementById('backToChatButton');
-        const openSound = document.getElementById('openSound');
-        const messageSound = document.getElementById('messageSound');
-
-        // Pre-written responses
-        const preWrittenResponses = [
-            "Xabaringiz uchun rahmat. Sizga qanday yordam berа olаman?",
-            "Men sizga yordam berish uchun shu yerdaman. Savollaringiz bormi?",
-            "Bizning xizmatlarimiz haqida ko'proq ma'lumot olishni xohlaysizmi?",
-            "Biron bir aniq narsani izlayapsizmi?",
-            "Agar xohlasangiz, menga elektron xat ham yuborishingiz mumkin. Buning uchun 'email' deb yozing.",
-            "Murojaat qilganingiz uchun rahmat! Kuningizni qanday yaxshiroq qila olaman?",
-            "Doimo yordam berishdan xursandman. Bugun sizga nimada yordam bera olaman?",
-            "Bizning mahsulot yoki xizmatlarimiz bo'yicha yordam kerak bo'lsa, xabar bering.",
-            "Istalgan savolni berishingiz mumkin. Men yordam berish uchun shu yerdaman!"
-        ];
-
-        // Toggle chat window
-        chatButton.addEventListener('click', () => {
-            if (chatContainer.style.display !== 'flex') {
-                // Open the chat window
-                chatButton.classList.add('active');
-                chatContainer.style.display = 'flex';
-                
-                // Give time for the display:flex to take effect before adding the visible class
-                setTimeout(() => {
-                    chatContainer.classList.add('visible');
-                    openSound.play(); // Play opening sound
-                }, 10);
-            } else {
-                // Close the chat window with animation
-                chatContainer.classList.remove('visible');
-                chatContainer.classList.add('closing');
-                chatButton.classList.remove('active');
-                
-                // Wait for animation to complete before hiding
-                setTimeout(() => {
-                    chatContainer.style.display = 'none';
-                    chatContainer.classList.remove('closing');
-                }, 500);
-            }
+  </footer>
+<!-- Initialize AOS -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        AOS.init({
+            duration: 800,
+            once: true
         });
-
-       
-
-        // Close chat window
-        closeButton.addEventListener('click', () => {
-            chatContainer.classList.remove('visible');
-            chatContainer.classList.add('closing');
-            chatButton.classList.remove('active');
-            
-            // Wait for animation to complete before hiding
-            setTimeout(() => {
-                chatContainer.style.display = 'none';
-                chatContainer.classList.remove('closing');
-            }, 500);
-        });
-
-        // Send message
-        function sendMessage() {
-            const message = chatInput.value.trim();
-            if (message) {
-                // Play message sound
-                messageSound.play();
-                
-                // Add user message
-                addMessage(message, 'user');
-                chatInput.value = '';
-
-                // Check for special commands
-                if (message.toLowerCase() === 'email') {
-                    showEmailForm();
-                } else {
-                    // Respond with pre-written message after a slight delay
-                    setTimeout(() => {
-                        const randomIndex = Math.floor(Math.random() * preWrittenResponses.length);
-                        addMessage(preWrittenResponses[randomIndex], 'assistant');
-                        // Play sound for assistant message too
-                        messageSound.play();
-                    }, 800);
-                }
-            }
-        }
-
-        // Add message to chat
-        function addMessage(text, sender) {
-            const messageDiv = document.createElement('div');
-            messageDiv.classList.add('message', `${sender}-message`);
-            messageDiv.textContent = text;
-            
-            // Initially set opacity to 0 for animation
-            messageDiv.style.opacity = '0';
-            messageDiv.style.transform = 'translateY(20px)';
-            
-            chatMessages.appendChild(messageDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-            
-            // Trigger animation after a small delay
-            setTimeout(() => {
-                messageDiv.style.opacity = '1';
-                messageDiv.style.transform = 'translateY(0)';
-            }, 10);
-        }
-
-        // Show email form
-        function showEmailForm() {
-            emailForm.classList.add('active');
-            chatInputContainer.style.display = 'none';
-            addMessage("Iltimos, elektron xat shaklini to'ldiring", 'assistant');
-        }
-
-        // Back to chat from email form
-        backToChatButton.addEventListener('click', () => {
-            emailForm.classList.remove('active');
-            chatInputContainer.style.display = 'flex';
-        });
-
-        // Send email
-        sendEmailButton.addEventListener('click', () => {
-            const email = emailInput.value.trim();
-            const message = messageInput.value.trim();
-            
-            if (email && message) {
-                // Play message sound
-                messageSound.play();
-                
-                // In a real implementation, you would send this to your server
-                // Here we'll just simulate a success response
-                addMessage(`Elektron xat ushbu manzilga yuboriladi: ${email}`, 'assistant');
-                addMessage("Xabaringiz uchun rahmat. Tez orada sizga javob beramiz.", 'assistant');
-                
-                // Clear form and go back to chat
-                emailInput.value = '';
-                messageInput.value = '';
-                emailForm.classList.remove('active');
-                chatInputContainer.style.display = 'flex';
-            } else {
-                addMessage("Iltimos, elektron xat shaklining barcha maydonlarini to'ldiring", 'assistant');
-            }
-        });
-
-        // Event listeners for sending messages
-        sendButton.addEventListener('click', sendMessage);
-        chatInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
-        });
-    </script>
-    
+    });
+  </script>
+  <!-- Bootstrap Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- AOS Animation JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  
 </body>
 </html>
