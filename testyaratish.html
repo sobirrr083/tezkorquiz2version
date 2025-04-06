@@ -662,66 +662,50 @@
       }
     });
 
-    downloadAllBtn.addEventListener('click', () => {
-  try {
-    const currentTestName = testNameInput.value.trim();
-    
-    if (!currentTestName) {
-      showMessage('Test nomini kiriting!', 'error');
-      return;
-    }
-    
-    // Joriy test nomi bo'yicha savollarni filtrlash
-    const currentTestQuestions = quizItems.filter(item => item.testName === currentTestName);
-    
-    if (currentTestQuestions.length === 0) {
-      showMessage(`"${currentTestName}" nomli testlar topilmadi`, 'error');
-      return;
-    }
-    
-    generateTxtFile([...currentTestQuestions], `${currentTestName}.txt`);
-    showMessage(`"${currentTestName}" testlari muvaffaqiyatli yuklab olindi!`, 'success');
-  } catch (error) {
-    showMessage(`Yuklab olishda xatolik: ${error.message}`, 'error');
-  }
-});
-
-    function generateTxtFile(items, filename) {
-      // Testlar bo'yicha guruhlab olish
-      const testGroups = {};
-      items.forEach(item => {
-        if (!testGroups[item.testName]) {
-          testGroups[item.testName] = [];
-        }
-        testGroups[item.testName].push(item);
-      });
-
-      let content = '';
-      // Har bir test uchun
-      for (const [testName, questions] of Object.entries(testGroups)) {
-        content += `${testName}\n\n`;
-        
-        // Test ichidagi har bir savol uchun
-        questions.forEach((item, questionIndex) => {
-          content += `${item.question}\n`;
-          
-          // Variantlarni A, B, C... ko'rinishida yozish
-          const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
-          item.options.forEach((option, optionIndex) => {
-            content += `${letters[optionIndex]}. ${option}\n`;
-          });
-          
-          // To'g'ri javobni belgilash
-          content += `ANSWER: ${letters[item.correctIndex]}\n\n`;
-        });
-        
-        content += '\n';
+      downloadAllBtn.addEventListener('click', () => {
+    try {
+      const currentTestName = testNameInput.value.trim();
+      
+      if (!currentTestName) {
+        showMessage('Test nomini kiriting!', 'error');
+        return;
       }
-
-      const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-      downloadFile(blob, filename);
+      
+      // Joriy test nomi bo'yicha savollarni filtrlash
+      const currentTestQuestions = quizItems.filter(item => item.testName === currentTestName);
+      
+      if (currentTestQuestions.length === 0) {
+        showMessage(`"${currentTestName}" nomli testlar topilmadi`, 'error');
+        return;
+      }
+      
+      generateTxtFile([...currentTestQuestions], `${currentTestName}.txt`);
+      showMessage(`"${currentTestName}" testlari muvaffaqiyatli yuklab olindi!`, 'success');
+    } catch (error) {
+      showMessage(`Yuklab olishda xatolik: ${error.message}`, 'error');
     }
+  });
 
+  function generateTxtFile(items, filename) {
+    let content = '';
+    
+    // Har bir savol uchun
+    items.forEach((item, questionIndex) => {
+      content += `${item.question}\n`;
+      
+      // Variantlarni A, B, C... ko'rinishida yozish
+      const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
+      item.options.forEach((option, optionIndex) => {
+        content += `${letters[optionIndex]}. ${option}\n`;
+      });
+      
+      // To'g'ri javobni belgilash
+      content += `ANSWER: ${letters[item.correctIndex]}\n\n`;
+    });
+
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+    downloadFile(blob, filename);
+  }
     function downloadFile(blob, filename) {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
