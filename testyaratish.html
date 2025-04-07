@@ -160,6 +160,9 @@
     .preview-container h2 {
       color: var(--primary-color);
       margin-bottom: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .question-preview {
@@ -318,6 +321,16 @@
       background-color: #218838;
     }
 
+    .finish-test-btn {
+      background-color: #17a2b8;
+      color: white;
+      margin-top: 10px;
+    }
+
+    .finish-test-btn:hover {
+      background-color: #138496;
+    }
+
     .test-group {
       background-color: white;
       border-radius: 8px;
@@ -335,6 +348,11 @@
       align-items: center;
       cursor: pointer;
       border-bottom: 1px solid var(--border-color);
+    }
+
+    .test-header-actions {
+      display: flex;
+      gap: 10px;
     }
 
     .test-content {
@@ -359,15 +377,37 @@
       padding: 10px;
       background-color: var(--light-gray);
       border-radius: 5px;
+      animation: fadeIn 0.5s ease-out;
     }
 
-    .download-all-btn {
-      background-color: #17a2b8;
-      color: white;
+    .question-list li.removing {
+      animation: fadeOut 0.5s ease-out forwards;
     }
 
-    .download-all-btn:hover {
-      background-color: #138496;
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeOut {
+      from { opacity: 1; transform: translateY(0); }
+      to { opacity: 0; transform: translateY(-20px); }
+    }
+
+    .active-test-info {
+      background-color: rgba(69, 96, 229, 0.1);
+      padding: 10px 15px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      border-left: 4px solid var(--primary-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .active-test-name {
+      font-weight: 600;
+      color: var(--primary-color);
     }
 
     .message-container {
@@ -377,9 +417,84 @@
       z-index: 1000;
       max-width: 300px;
     }
+    
+    .added-question {
+      animation: slideDown 0.5s ease-out;
+    }
+    
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .test-name-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .test-name-display {
+      font-weight: 600;
+      color: var(--primary-color);
+    }
+    
+    .hidden {
+      display: none !important;
+    }
+    
+    .preview-questions {
+      margin-top: 15px;
+    }
+    
+    .preview-question-item {
+      background-color: white;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      animation: fadeIn 0.5s ease-out;
+    }
+    /* yuqordagi bildirishnoma uchun kod */
+        
+        .conicha {
+            width: 100%;
+            overflow: hidden;
+            background-color: #4660e5;
+            padding: 12px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .moving-text {
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            white-space: nowrap;
+            animation: moveLeftToRight 15s linear infinite;
+            padding: 5px;
+        }
+        
+        @keyframes moveLeftToRight {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+
   </style>
 </head>
 <body>
+
+<div class="container conicha">
+    <div class="moving-text">
+        Bu sahifa sinov tariqasida ishlayapti. Tez orada to'liq versiya bilan qaytamiz!   
+    </div>
+</div>
+
+
+</br>
   <div class="container">
     <header>
       <h1>Tezkor Savol Qo'shish</h1>
@@ -395,10 +510,18 @@
     </div>
 
     <div id="create-tab" class="tab-content active">
+      <div id="activeTestInfo" class="active-test-info hidden">
+        <div class="test-name-container">
+          <span>Joriy test:</span>
+          <span class="active-test-name" id="activeTestName"></span>
+        </div>
+        <button id="finishTestBtn" class="finish-test-btn">Testni yakunlash</button>
+      </div>
+      
       <div class="form-container">
         <h2>Yangi savol qo'shish</h2>
         <form class="quiz-form" id="quizForm">
-          <div class="form-group">
+          <div id="testNameGroup" class="form-group">
             <label for="testName">Test nomi</label>
             <input type="text" id="testName" placeholder="Test nomini kiriting" required>
             <div id="testNameError" class="error"></div>
@@ -423,34 +546,32 @@
               <div class="option">
                 <input type="radio" name="correctAnswer" value="0" required>
                 <input type="text" placeholder="Variant 1" required>
-                <button type="button" class="remove-btn" disabled>Olib tashlash</button>
               </div>
               <div class="option">
                 <input type="radio" name="correctAnswer" value="1">
                 <input type="text" placeholder="Variant 2" required>
-                <button type="button" class="remove-btn" disabled>Olib tashlash</button>
               </div>
               <div class="option">
                 <input type="radio" name="correctAnswer" value="2">
                 <input type="text" placeholder="Variant 3" required>
-                <button type="button" class="remove-btn">Olib tashlash</button>
               </div>
               <div class="option">
                 <input type="radio" name="correctAnswer" value="3">
                 <input type="text" placeholder="Variant 4" required>
-                <button type="button" class="remove-btn">Olib tashlash</button>
               </div>
             </div>
             <div id="optionsError" class="error"></div>
           </div>
 
           <button type="submit" id="submitBtn">Saqlash</button>
-          <button type="button" id="downloadAllBtn" class="download-all-btn" style="margin-top: 10px;">Kiritilgan testni yuklab olish</button>
         </form>
       </div>
 
       <div class="preview-container">
-        <h2>Oldindan ko'rish</h2>
+        <h2>
+          <span>Oldindan ko'rish</span>
+          <span id="previewTestName" class="test-name-display"></span>
+        </h2>
         <div class="question-preview" id="questionPreview">
           <div class="question-text">Savol matni bu yerda ko'rinadi</div>
           <div id="optionsPreview">
@@ -472,6 +593,10 @@
             </div>
           </div>
         </div>
+        
+        <div class="preview-questions" id="previewQuestions">
+          <!-- Saqlangan savollar ro'yxati -->
+        </div>
       </div>
     </div>
 
@@ -479,7 +604,6 @@
       <div class="form-container">
         <div class="list-header">
           <h2>Testlar ro'yxati</h2>
-          <button id="downloadBtn" class="download-btn">.txt formatda yuklab olish</button>
         </div>
         <div id="quizListLoader" class="loading"></div>
         <div id="testGroups">
@@ -493,14 +617,14 @@
     const API_BASE_URL = 'http://localhost:3000/api/quizzes';
     const quizForm = document.getElementById('quizForm');
     const testNameInput = document.getElementById('testName');
+    const testNameGroup = document.getElementById('testNameGroup');
     const questionInput = document.getElementById('question');
     const optionsContainer = document.getElementById('optionsContainer');
     const optionCountSelect = document.getElementById('optionCountSelect');
     const tabs = document.querySelectorAll('.tab');
     const tabContents = document.querySelectorAll('.tab-content');
     const submitBtn = document.getElementById('submitBtn');
-    const downloadBtn = document.getElementById('downloadBtn');
-    const downloadAllBtn = document.getElementById('downloadAllBtn');
+    const finishTestBtn = document.getElementById('finishTestBtn');
     const testNameError = document.getElementById('testNameError');
     const questionError = document.getElementById('questionError');
     const optionsError = document.getElementById('optionsError');
@@ -509,11 +633,18 @@
     const testGroups = document.getElementById('testGroups');
     const quizListLoader = document.getElementById('quizListLoader');
     const messageContainer = document.getElementById('messageContainer');
+    const activeTestInfo = document.getElementById('activeTestInfo');
+    const activeTestName = document.getElementById('activeTestName');
+    const previewTestName = document.getElementById('previewTestName');
+    const previewQuestions = document.getElementById('previewQuestions');
     const STORAGE_KEY = 'menda_quiz_items';
+    const ACTIVE_TEST_KEY = 'menda_active_test';
     let quizItems = [];
+    let activeTest = null;
 
     document.addEventListener('DOMContentLoaded', () => {
       loadQuizItems();
+      loadActiveTest();
       updateOptionIndexes();
       updatePreview();
       updateTestGroupList();
@@ -521,6 +652,38 @@
         input.addEventListener('input', updatePreview);
       });
       adjustOptions(4); // Default 4 ta variant
+    });
+
+    // Joriy testni saqlash
+    function saveActiveTest(testName) {
+      activeTest = testName;
+      localStorage.setItem(ACTIVE_TEST_KEY, testName);
+      activeTestName.textContent = testName;
+      previewTestName.textContent = testName;
+      activeTestInfo.classList.remove('hidden');
+      testNameGroup.classList.add('hidden');
+      updatePreviewQuestions();
+    }
+
+    // Joriy testni yuklash
+    function loadActiveTest() {
+      const savedTest = localStorage.getItem(ACTIVE_TEST_KEY);
+      if (savedTest) {
+        saveActiveTest(savedTest);
+        testNameInput.value = savedTest;
+      }
+    }
+
+    // Testni yakunlash
+    finishTestBtn.addEventListener('click', () => {
+      activeTest = null;
+      localStorage.removeItem(ACTIVE_TEST_KEY);
+      activeTestInfo.classList.add('hidden');
+      testNameGroup.classList.remove('hidden');
+      testNameInput.value = '';
+      previewTestName.textContent = '';
+      previewQuestions.innerHTML = '';
+      showMessage('Test yakunlandi!', 'success');
     });
 
     tabs.forEach(tab => {
@@ -560,18 +723,8 @@
         textInput.type = 'text';
         textInput.placeholder = `Variant ${optionIndex + 1}`;
         textInput.required = true;
-        const removeBtn = document.createElement('button');
-        removeBtn.type = 'button';
-        removeBtn.className = 'remove-btn';
-        removeBtn.textContent = 'Olib tashlash';
-        removeBtn.addEventListener('click', () => {
-          optionDiv.remove();
-          updateOptionIndexes();
-          updatePreview();
-        });
         optionDiv.appendChild(radioInput);
         optionDiv.appendChild(textInput);
-        optionDiv.appendChild(removeBtn);
         optionsContainer.appendChild(optionDiv);
         textInput.addEventListener('input', updatePreview);
       }
@@ -586,8 +739,6 @@
         radio.value = index;
         const textInput = option.querySelector('input[type="text"]');
         textInput.placeholder = `Variant ${index + 1}`;
-        const removeBtn = option.querySelector('.remove-btn');
-        removeBtn.disabled = options.length <= 2;
       });
     }
 
@@ -618,6 +769,51 @@
       });
     }
 
+    // Saqlangan savollar ro'yxatini yangilash
+    function updatePreviewQuestions() {
+      if (!activeTest) {
+        previewQuestions.innerHTML = '';
+        return;
+      }
+      
+      const testQuestions = quizItems.filter(item => item.testName === activeTest);
+      previewQuestions.innerHTML = '';
+      
+      if (testQuestions.length === 0) {
+        return;
+      }
+      
+      const questionsList = document.createElement('h3');
+      questionsList.textContent = 'Saqlangan savollar:';
+      questionsList.style.marginTop = '20px';
+      questionsList.style.marginBottom = '10px';
+      previewQuestions.appendChild(questionsList);
+      
+      testQuestions.forEach((item, index) => {
+        const questionItem = document.createElement('div');
+        questionItem.className = 'preview-question-item';
+        
+        const questionNumber = document.createElement('div');
+        questionNumber.style.fontWeight = 'bold';
+        questionNumber.textContent = `${index + 1}. ${item.question}`;
+        
+        const optionsList = document.createElement('div');
+        optionsList.style.marginTop = '10px';
+        
+        const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
+        item.options.forEach((option, optIndex) => {
+          const optionItem = document.createElement('div');
+          optionItem.style.margin = '5px 0';
+          optionItem.innerHTML = `${letters[optIndex]}. ${option} ${optIndex === item.correctIndex ? '<strong>(✓)</strong>' : ''}`;
+          optionsList.appendChild(optionItem);
+        });
+        
+        questionItem.appendChild(questionNumber);
+        questionItem.appendChild(optionsList);
+        previewQuestions.appendChild(questionItem);
+      });
+    }
+
     questionInput.addEventListener('input', updatePreview);
     optionsContainer.addEventListener('change', (e) => {
       if (e.target.type === 'radio') {
@@ -638,90 +834,36 @@
       
       try {
         await createQuizItem(formData);
+        
+        // Aktiv test yo'q bo'lsa, yangi saqlayapmiz
+        if (!activeTest) {
+          saveActiveTest(formData.testName);
+        }
+        
+        // Yangi qo'shilgan savolni ko'rsatish effekti
+        const newQuestion = document.createElement('div');
+        newQuestion.className = 'preview-question-item added-question';
+        newQuestion.innerHTML = `
+          <div style="font-weight: bold">${formData.question}</div>
+          <div style="margin-top: 10px;">Savol muvaffaqiyatli qo'shildi!</div>
+        `;
+        
+        previewQuestions.appendChild(newQuestion);
+        setTimeout(() => {
+          updatePreviewQuestions();
+        }, 1000);
+        
         showMessage('Savol muvaffaqiyatli saqlandi!', 'success');
-        resetForm();
+        resetFormExceptTestName();
       } catch (error) {
         showMessage(`Xatolik: ${error.message || 'Nomalum xatolik'}`, 'error');
       }
     });
 
-    downloadBtn.addEventListener('click', () => {
-      try {
-        const selectedTestName = document.querySelector('.test-header.selected')?.textContent.split(' (')[0];
-        
-        if (selectedTestName) {
-          // Faqat tanlangan testni yuklab olish
-          const testQuestions = quizItems.filter(item => item.testName === selectedTestName);
-          generateTxtFile(testQuestions, `${selectedTestName}.txt`);
-        } else {
-          // Barcha testlarni yuklab olish
-          generateTxtFile(quizItems, 'barcha-testlar.txt');
-        }
-      } catch (error) {
-        showMessage(`Yuklab olishda xatolik: ${error.message}`, 'error');
-      }
-    });
-
-      downloadAllBtn.addEventListener('click', () => {
-    try {
-      const currentTestName = testNameInput.value.trim();
-      
-      if (!currentTestName) {
-        showMessage('Test nomini kiriting!', 'error');
-        return;
-      }
-      
-      // Joriy test nomi bo'yicha savollarni filtrlash
-      const currentTestQuestions = quizItems.filter(item => item.testName === currentTestName);
-      
-      if (currentTestQuestions.length === 0) {
-        showMessage(`"${currentTestName}" nomli testlar topilmadi`, 'error');
-        return;
-      }
-      
-      generateTxtFile([...currentTestQuestions], `${currentTestName}.txt`);
-      showMessage(`"${currentTestName}" testlari muvaffaqiyatli yuklab olindi!`, 'success');
-    } catch (error) {
-      showMessage(`Yuklab olishda xatolik: ${error.message}`, 'error');
-    }
-  });
-
-  function generateTxtFile(items, filename) {
-    let content = '';
-    
-    // Har bir savol uchun
-    items.forEach((item, questionIndex) => {
-      content += `${item.question}\n`;
-      
-      // Variantlarni A, B, C... ko'rinishida yozish
-      const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
-      item.options.forEach((option, optionIndex) => {
-        content += `${letters[optionIndex]}. ${option}\n`;
-      });
-      
-      // To'g'ri javobni belgilash
-      content += `ANSWER: ${letters[item.correctIndex]}\n\n`;
-    });
-
-    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-    downloadFile(blob, filename);
-  }
-    function downloadFile(blob, filename) {
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.style.display = 'none';
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-    }
-
     function validateForm() {
       let isValid = true;
       
-      if (!testNameInput.value.trim()) {
+      if (!activeTest && !testNameInput.value.trim()) {
         testNameError.textContent = 'Test nomini kiriting';
         isValid = false;
       } else {
@@ -768,201 +910,95 @@
       
       return {
         id: Date.now(),
-        testName: testNameInput.value.trim(),
+        testName: activeTest || testNameInput.value.trim(),
         question: questionInput.value.trim(),
         options: optionValues,
         correctIndex: parseInt(correctAnswer.value)
       };
     }
 
+    function resetFormExceptTestName() {
+      // Test nomini saqlab qolish va faqat savol va variantlarni tozalash
+      const testName = testNameInput.value;
+      
+      // Forma tozalash
+      questionInput.value = '';
+      document.querySelectorAll('.option input[type="text"]').forEach(input => {
+        input.value = '';
+      });
+      document.querySelectorAll('.option input[type="radio"]').forEach((radio, index) => {
+        radio.checked = index === 0; // Birinchi variantni tanlash
+      });
+      
+      // Test nomi inputni avvalgi qiymatini tiklash
+      testNameInput.value = testName;
+      
+      // Tahrirlash rejimidan chiqish
+      delete quizForm.dataset.editId;
+      submitBtn.textContent = 'Saqlash';
+      
+      // Xatolik xabarlarini tozalash
+      questionError.textContent = '';
+      optionsError.textContent = '';
+      
+      updatePreview();
+    }
+
     function resetForm() {
+      // To'liq formani tozalash
       quizForm.reset();
       delete quizForm.dataset.editId;
       adjustOptions(parseInt(optionCountSelect.value));
-      updatePreview();
-      testNameError.textContent = '';
+      submitBtn.textContent = 'Saqlash';
       questionError.textContent = '';
       optionsError.textContent = '';
+      testNameError.textContent = '';
+      updatePreview();
     }
 
-    function showMessage(message, type = 'success') {
-      const messageElement = document.createElement('div');
-      messageElement.className = type === 'success' ? 'success-message' : 'error-message';
-      messageElement.textContent = message;
-      messageContainer.appendChild(messageElement);
-      
-      setTimeout(() => {
-        messageElement.remove();
-      }, 3000);
+    // Savollarni API orqali yaratish
+    async function createQuizItem(formData) {
+      try {
+        // Local storageda saqlash
+        quizItems.push(formData);
+        saveQuizItems();
+        return formData;
+      } catch (error) {
+        console.error('Error creating quiz item:', error);
+        throw error;
+      }
     }
 
-    function loadQuizItems() {
-      const storedItems = localStorage.getItem(STORAGE_KEY);
-      quizItems = storedItems ? JSON.parse(storedItems) : [];
-    }
-
+    // Quiz elementlarini saqlash
     function saveQuizItems() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(quizItems));
     }
 
+    // Quiz elementlarini yuklash
+    function loadQuizItems() {
+      const items = localStorage.getItem(STORAGE_KEY);
+      quizItems = items ? JSON.parse(items) : [];
+    }
+
+    // Savollarni fetch qilish
     async function fetchQuestions() {
+      quizListLoader.style.display = 'flex';
       try {
-        testGroups.innerHTML = '';
-        quizListLoader.style.display = 'flex';
-        
-        try {
-          const response = await fetch(API_BASE_URL);
-          if (!response.ok) {
-            throw new Error(`Server javob bermadi: ${response.status}`);
-          }
-          quizItems = await response.json();
-        } catch (error) {
-          console.warn('API bilan xatolik, local storage ishlatilmoqda:', error);
-          loadQuizItems();
-        }
-        
-        updateTestGroupList();
+        // Mahalliy saqlangan ma'lumotlarni ishlatamiz
+        await updateTestGroupList();
       } catch (error) {
-        console.error('Savollarni yuklashda xatolik:', error);
-        testGroups.innerHTML = '<div>Testlarni yuklashda xatolik yuz berdi</div>';
+        console.error('Error fetching questions:', error);
+        showMessage('Savollarni yuklashda xatolik yuz berdi', 'error');
       } finally {
         quizListLoader.style.display = 'none';
       }
     }
 
-    async function createQuizItem(quizData) {
-      try {
-        const response = await fetch(API_BASE_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(quizData),
-        });
-        
-        if (!response.ok) {
-          throw new Error(`Server xatoligi: ${response.status}`);
-        }
-        
-        const createdItem = await response.json();
-        quizItems.push(createdItem);
-        saveQuizItems();
-        return createdItem;
-      } catch (error) {
-        console.warn('API orqali saqlashda xatolik:', error);
-        quizItems.push(quizData);
-        saveQuizItems();
-        return quizData;
-      }
-    }
-
-    async function updateQuizItem(quizData) {
-      try {
-        const response = await fetch(`${API_BASE_URL}/${quizData.id}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(quizData),
-        });
-        
-        if (!response.ok) {
-          throw new Error(`Server xatoligi: ${response.status}`);
-        }
-        
-        const updatedItem = await response.json();
-        const index = quizItems.findIndex(item => item.id === quizData.id);
-        if (index !== -1) {
-          quizItems[index] = updatedItem;
-          saveQuizItems();
-        }
-        return updatedItem;
-      } catch (error) {
-        console.warn('API orqali yangilashda xatolik:', error);
-        const index = quizItems.findIndex(item => item.id === quizData.id);
-        if (index !== -1) {
-          quizItems[index] = quizData;
-          saveQuizItems();
-        }
-        return quizData;
-      }
-    }
-
-    async function deleteQuizItem(id) {
-      try {
-        const response = await fetch(`${API_BASE_URL}/${id}`, {
-          method: 'DELETE'
-        });
-        
-        if (!response.ok) {
-          throw new Error(`Server xatoligi: ${response.status}`);
-        }
-        
-        quizItems = quizItems.filter(item => item.id !== id);
-        saveQuizItems();
-        return true;
-      } catch (error) {
-        console.warn('API orqali o\'chirishda xatolik:', error);
-        quizItems = quizItems.filter(item => item.id !== id);
-        saveQuizItems();
-        return true;
-      }
-    }
-
-    function editQuizItem(id) {
-      const item = quizItems.find(item => item.id === id);
-      if (!item) return;
-      
-      // Create tabiga o'tish
-      tabs.forEach(tab => {
-        tab.classList.remove('active');
-        if (tab.getAttribute('data-tab') === 'create') {
-          tab.classList.add('active');
-        }
-      });
-      
-      tabContents.forEach(content => {
-        content.classList.remove('active');
-        if (content.id === 'create-tab') {
-          content.classList.add('active');
-        }
-      });
-      
-      // Formani to'ldirish
-      testNameInput.value = item.testName;
-      questionInput.value = item.question;
-      
-      // Variantlarni sozlash
-      optionCountSelect.value = item.options.length;
-      adjustOptions(item.options.length);
-      
-      const optionElements = optionsContainer.querySelectorAll('.option');
-      item.options.forEach((option, index) => {
-        const optionElement = optionElements[index];
-        if (optionElement) {
-          const textInput = optionElement.querySelector('input[type="text"]');
-          const radioInput = optionElement.querySelector('input[type="radio"]');
-          textInput.value = option;
-          radioInput.checked = index === item.correctIndex;
-        }
-      });
-      
-      quizForm.dataset.editId = id;
-      submitBtn.textContent = 'Yangilash';
-      
-      updatePreview();
-      showMessage('Test tahrirlash uchun yuklandi', 'success');
-    }
-
-    function updateTestGroupList() {
+    // Test guruhlar ro'yxatini yangilash
+    async function updateTestGroupList() {
       testGroups.innerHTML = '';
       
-      if (quizItems.length === 0) {
-        testGroups.innerHTML = '<div>Hozircha saqlangan testlar yo\'q</div>';
-        return;
-      }
-      
-      // Testlar bo'yicha guruhlab olish
+      // Testlar bo'yicha guruhlaymiz
       const groupedByTest = {};
       quizItems.forEach(item => {
         if (!groupedByTest[item.testName]) {
@@ -970,96 +1006,282 @@
         }
         groupedByTest[item.testName].push(item);
       });
-      
-      // Har bir test guruhini yaratish
-      for (const [testName, questions] of Object.entries(groupedByTest)) {
+
+      // Agar test yo'q bo'lsa
+      if (Object.keys(groupedByTest).length === 0) {
+        const noTestsMessage = document.createElement('div');
+        noTestsMessage.textContent = 'Hozircha testlar mavjud emas';
+        noTestsMessage.style.padding = '20px';
+        noTestsMessage.style.textAlign = 'center';
+        testGroups.appendChild(noTestsMessage);
+        return;
+      }
+
+      // Har bir test uchun guruh yaratamiz
+      Object.entries(groupedByTest).forEach(([testName, questions]) => {
         const testGroup = document.createElement('div');
         testGroup.className = 'test-group';
         
         const testHeader = document.createElement('div');
         testHeader.className = 'test-header';
-        testHeader.textContent = `${testName} (${questions.length} ta savol)`;
-        testHeader.addEventListener('click', function() {
-          const isActive = this.nextElementSibling.classList.contains('active');
-          document.querySelectorAll('.test-content').forEach(content => {
-            content.classList.remove('active');
-          });
-          document.querySelectorAll('.test-header').forEach(header => {
-            header.classList.remove('selected');
-          });
-          if (!isActive) {
-            this.nextElementSibling.classList.add('active');
-            this.classList.add('selected');
-          }
-        });
+        testHeader.innerHTML = `
+          <span>${testName} (${questions.length} ta savol)</span>
+          <div class="test-header-actions">
+            <button class="edit-btn continue-test" data-test="${testName}">Davom ettirish</button>
+            <button class="download-btn" data-test="${testName}">Yuklab olish</button>
+            <button class="remove-btn" data-test="${testName}">O'chirish</button>
+          </div>
+        `;
         
         const testContent = document.createElement('div');
         testContent.className = 'test-content';
         
+        // Savollar ro'yxatini yaratish
         const questionList = document.createElement('ol');
         questionList.className = 'question-list';
         
-        questions.forEach((question, idx) => {
-          const listItem = document.createElement('li');
+        questions.forEach(question => {
+          const li = document.createElement('li');
+          li.dataset.id = question.id;
+          
           const questionText = document.createElement('div');
           questionText.textContent = question.question;
+          questionText.style.fontWeight = 'bold';
           
-          const optionsList = document.createElement('ul');
-          optionsList.style.listStyleType = 'none';
+          const optionsContainer = document.createElement('div');
+          optionsContainer.style.marginTop = '10px';
           
+          // Variantlarni ko'rsatish
           const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
-          question.options.forEach((option, optionIdx) => {
-            const optionItem = document.createElement('li');
-            const isCorrect = optionIdx === question.correctIndex;
-            optionItem.innerHTML = `${letters[optionIdx]}. ${option} ${isCorrect ? '<strong>(✓)</strong>' : ''}`;
-            if (isCorrect) {
-              optionItem.style.color = '#4caf50';
-            }
-            optionsList.appendChild(optionItem);
+          question.options.forEach((option, index) => {
+            const optionElement = document.createElement('div');
+            optionElement.style.margin = '5px 0';
+            optionElement.innerHTML = `${letters[index]}. ${option} ${index === question.correctIndex ? '<strong>(✓)</strong>' : ''}`;
+            optionsContainer.appendChild(optionElement);
           });
           
-          const actionBtns = document.createElement('div');
-          actionBtns.className = 'action-buttons';
+          // Amallar tugmalari
+          const actions = document.createElement('div');
+          actions.className = 'action-buttons';
+          actions.style.marginTop = '10px';
           
           const editBtn = document.createElement('button');
           editBtn.className = 'edit-btn';
           editBtn.textContent = 'Tahrirlash';
-          editBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            editQuizItem(question.id);
-          });
+          editBtn.dataset.id = question.id;
           
           const deleteBtn = document.createElement('button');
           deleteBtn.className = 'remove-btn';
           deleteBtn.textContent = 'O\'chirish';
-          deleteBtn.addEventListener('click', async (e) => {
-            e.stopPropagation();
-            if (confirm('Rostdan ham bu savolni o\'chirmoqchimisiz?')) {
-              try {
-                await deleteQuizItem(question.id);
-                listItem.remove();
-                showMessage('Savol muvaffaqiyatli o\'chirildi', 'success');
-                updateTestGroupList();
-              } catch (error) {
-                showMessage(`O'chirishda xatolik: ${error.message}`, 'error');
-              }
-            }
-          });
+          deleteBtn.dataset.id = question.id;
           
-          actionBtns.appendChild(editBtn);
-          actionBtns.appendChild(deleteBtn);
+          actions.appendChild(editBtn);
+          actions.appendChild(deleteBtn);
           
-          listItem.appendChild(questionText);
-          listItem.appendChild(optionsList);
-          listItem.appendChild(actionBtns);
-          questionList.appendChild(listItem);
+          li.appendChild(questionText);
+          li.appendChild(optionsContainer);
+          li.appendChild(actions);
+          questionList.appendChild(li);
         });
         
         testContent.appendChild(questionList);
         testGroup.appendChild(testHeader);
         testGroup.appendChild(testContent);
         testGroups.appendChild(testGroup);
+        
+        // Test header click harakatini qo'shish
+        testHeader.addEventListener('click', (e) => {
+          // Tugmalarni bosgan holda ochilmasligi uchun
+          if (e.target.tagName === 'BUTTON') return;
+          
+          testContent.classList.toggle('active');
+        });
+      });
+      
+      // Yaratish va o'chirish tugmalariga hodisalar biriktirish
+      attachEventListeners();
+    }
+
+    // Tugmalar uchun hodisalar biriktirish
+    function attachEventListeners() {
+      // Tahrirlash tugmalari
+      document.querySelectorAll('.edit-btn').forEach(btn => {
+        if (btn.classList.contains('continue-test')) {
+          btn.addEventListener('click', function() {
+            const testName = this.dataset.test;
+            saveActiveTest(testName);
+            tabs[0].click(); // Savollar yaratish oynasiga o'tish
+            showMessage(`"${testName}" testiga savollar qo'shishni davom ettirasiz`, 'success');
+          });
+        } else {
+          btn.addEventListener('click', function() {
+            const id = parseInt(this.dataset.id);
+            const question = quizItems.find(item => item.id === id);
+            if (!question) return;
+            
+            populateFormWithQuestion(question);
+            tabs[0].click(); // Savollar yaratish oynasiga o'tish
+          });
+        }
+      });
+      
+      // O'chirish tugmalari
+      document.querySelectorAll('.remove-btn').forEach(btn => {
+        if (btn.dataset.test) {
+          // Test guruhini o'chirish
+          btn.addEventListener('click', function() {
+            const testName = this.dataset.test;
+            if (confirm(`"${testName}" testini o'chirishni xohlaysizmi?`)) {
+              deleteTestGroup(testName);
+            }
+          });
+        } else {
+          // Alohida savolni o'chirish
+          btn.addEventListener('click', function() {
+            const id = parseInt(this.dataset.id);
+            if (confirm('Savolni o\'chirishni xohlaysizmi?')) {
+              deleteQuestion(id);
+            }
+          });
+        }
+      });
+      
+      // Yuklab olish tugmalari
+      document.querySelectorAll('.download-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const testName = this.dataset.test;
+          downloadTest(testName);
+        });
+      });
+    }
+
+    // Formani savol ma'lumotlari bilan to'ldirish
+    function populateFormWithQuestion(question) {
+      quizForm.dataset.editId = question.id;
+      
+      // Savol ma'lumotlarini to'ldirish
+      testNameInput.value = question.testName;
+      questionInput.value = question.question;
+      
+      // Variantlarni to'g'rilash
+      adjustOptions(question.options.length);
+      
+      // Variantlar qiymatlarini o'rnatish
+      const optionInputs = document.querySelectorAll('.option input[type="text"]');
+      question.options.forEach((option, index) => {
+        optionInputs[index].value = option;
+      });
+      
+      // To'g'ri javobni belgilash
+      document.querySelectorAll('input[name="correctAnswer"]')[question.correctIndex].checked = true;
+      
+      submitBtn.textContent = 'Yangilash';
+      updatePreview();
+      
+      // Forma qismiga scroll qilish
+      quizForm.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Savolni o'chirish
+    function deleteQuestion(id) {
+      const questionIndex = quizItems.findIndex(item => item.id === id);
+      if (questionIndex === -1) return;
+      
+      const question = quizItems[questionIndex];
+      
+      // Animatsiya effekti bilan o'chirish
+      const questionElement = document.querySelector(`li[data-id="${id}"]`);
+      if (questionElement) {
+        questionElement.classList.add('removing');
+        setTimeout(() => {
+          // Ma'lumotlarni o'chirish
+          quizItems.splice(questionIndex, 1);
+          saveQuizItems();
+          
+          // Agar joriy test savoli bo'lsa, preview ro'yxatidan ham o'chirish
+          if (question.testName === activeTest) {
+            updatePreviewQuestions();
+          }
+          
+          updateTestGroupList();
+          showMessage('Savol muvaffaqiyatli o\'chirildi', 'success');
+        }, 500);
+      } else {
+        // Element topilmagan bo'lsa, shunchaki o'chiramiz
+        quizItems.splice(questionIndex, 1);
+        saveQuizItems();
+        updateTestGroupList();
+        if (question.testName === activeTest) {
+          updatePreviewQuestions();
+        }
+        showMessage('Savol muvaffaqiyatli o\'chirildi', 'success');
       }
+    }
+
+    // Test guruhini o'chirish
+    function deleteTestGroup(testName) {
+      // Test guruhidagi barcha savollarni filtrlash
+      quizItems = quizItems.filter(item => item.testName !== testName);
+      saveQuizItems();
+      
+      // Agar joriy test bo'lsa, uni ham o'chiramiz
+      if (activeTest === testName) {
+        finishTestBtn.click();
+      }
+      
+      updateTestGroupList();
+      showMessage(`"${testName}" testi muvaffaqiyatli o'chirildi`, 'success');
+    }
+
+        // Testni yuklab olish
+    function downloadTest(testName) {
+      const testQuestions = quizItems.filter(item => item.testName === testName);
+      if (testQuestions.length === 0) return;
+      
+      // Test ma'lumotlarni formatlash - test nomini olib tashlaymiz
+      let content = '';
+      
+      testQuestions.forEach((question) => {
+        // Tartib raqami olib tashlandi
+        content += `${question.question}\n`;
+        
+        // Variantlarni qo'shish
+        const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
+        question.options.forEach((option, optIndex) => {
+          content += `${letters[optIndex]}. ${option}\n`;
+        });
+        
+        // To'g'ri javobni ko'rsatish
+        content += `ANSWER: ${letters[question.correctIndex]}\n\n`;
+      });
+      
+      // Yuklab olish mexanizmi
+      const blob = new Blob([content], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${testName}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      
+      showMessage(`"${testName}" testi muvaffaqiyatli yuklab olindi`, 'success');
+    }
+    // Xabarlarni ko'rsatish
+    function showMessage(message, type = 'info') {
+      const messageElement = document.createElement('div');
+      messageElement.className = `${type}-message`;
+      messageElement.textContent = message;
+      messageContainer.appendChild(messageElement);
+      
+      // 3 soniyadan keyin xabarni o'chirish
+      setTimeout(() => {
+        messageElement.style.opacity = '0';
+        setTimeout(() => {
+          messageContainer.removeChild(messageElement);
+        }, 300);
+      }, 3000);
     }
   </script>
 </body>
