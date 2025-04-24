@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 40px;
+            position: relative;
+        }
+        
+        .text-section {
+            flex: 1;
+            min-width: 300px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #4660e5;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .title::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background-color: #4660e5;
+        }
+        
+        .description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #444;
+            margin-bottom: 30px;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: #4660e5;
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(70, 96, 229, 0.3);
+            align-self: flex-start;
+        }
+        
+        .cta-button:hover {
+            background-color: #3a4ebf;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(70, 96, 229, 0.4);
+        }
+        
+        .cards-section {
+            flex: 1;
+            min-width: 300px;
+            height: 500px;
+            position: relative;
+            perspective: 1000px;
+        }
+        
+        .card-stack {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        
+        .card {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+            background-color: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            transform-origin: center bottom;
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
+        }
+        
+        .card:not(.active) {
+            transform: translateY(15px) scale(0.9) rotateX(5deg);
+            filter: brightness(0.9);
+            pointer-events: none;
+        }
+        
+        .card:nth-child(2):not(.active) {
+            transform: translateY(30px) scale(0.8) rotateX(10deg);
+            filter: brightness(0.8);
+        }
+        
+        .card:nth-child(3):not(.active) {
+            transform: translateY(45px) scale(0.7) rotateX(15deg);
+            filter: brightness(0.7);
+        }
+        
+        .card:nth-child(4):not(.active) {
+            transform: translateY(60px) scale(0.6) rotateX(20deg);
+            filter: brightness(0.6);
+        }
+        
+        .card.active {
+            z-index: 5;
+            transform: translateY(0) scale(1) rotateX(0);
+            filter: brightness(1);
+        }
+        
+        .card-image {
+            width: 100%;
+            height: 55%;
+            overflow: hidden;
+        }
+        
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s ease;
+        }
+        
+        .card.active:hover .card-image img {
+            transform: scale(1.1);
+        }
+        
+        .card-content {
+            padding: 20px;
+            height: 45%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .card-title {
+            color: #4660e5;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.5s ease 0.2s;
+        }
+        
+        .card-description {
+            color: #555;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.5s ease 0.4s;
+        }
+        
+        .card-button {
+            display: inline-block;
+            padding: 8px 20px;
+            background-color: #4660e5;
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            align-self: flex-start;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.5s ease 0.6s;
+        }
+        
+        .card.active .card-title,
+        .card.active .card-description,
+        .card.active .card-button {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .card-button:hover {
+            background-color: #3a4ebf;
+        }
+        
+        .card-nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 10px;
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            right: 0;
+        }
+        
+        .card-nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(70, 96, 229, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .card-nav-dot.active {
+            background-color: #4660e5;
+            transform: scale(1.3);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .text-section, .cards-section {
+                width: 100%;
+            }
+            
+            .cards-section {
+                height: 450px;
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="text-section">
+            <h1 class="title">QUIZ TEST haqida ma'lumot</h1>
+            <p class="description">Bizning saytimizda quiyidagilarda testlarni boshlash imkoniyatiga egasiz. Bularda bar bittasiga alohida yondashuv bilan qilingan.</p>
+            <a href="#" class="cta-button">Batafsil ma'lumot</a>
+        </div>
+        
+        <div class="cards-section">
+            <div class="card-stack">
+                <div class="card active" data-index="0">
+                    <div class="card-image">
+                        <img src="Segment (1).webp" alt="Digital Innovation">
+                    </div>
+                    <div class="card-content">
+                        <div>
+                            <h3 class="card-title">Tezkor Quiz</h3>
+                            <p class="card-description">Bunda yuklangan testni darhol boshlash va tezkor keyingi testga o'tish imkoniyati mavjud va har bir test uchun 30 sekund berilgan.</p>
+                        </div>
+                        <a href="#" class="card-button">Boshlash</a>
+                    </div>
+                </div>
+                
+                <div class="card" data-index="1">
+                    <div class="card-image">
+                        <img src="segy02 (1).png" alt="Smart Solutions">
+                    </div>
+                    <div class="card-content">
+                        <div>
+                            <h3 class="card-title">Sekin Quiz</h3>
+                            <p class="card-description">Bunda testlarda  variantni belgilagandan keyin kechikishni sozlash mumkin 3-5-7 soniyagacha kechiktirish mumkin.</p>
+                        </div>
+                        <a href="#" class="card-button">Boshlash</a>
+                    </div>
+                </div>
+                
+                <div class="card" data-index="2">
+                    <div class="card-image">
+                        <img src="segy01 (1).png" alt="Creative Design">
+                    </div>
+                    <div class="card-content">
+                        <div>
+                            <h3 class="card-title">Telegram Quiz Mobile</h3>
+                            <p class="card-description">Bunda Telegram Quiz botdan ilhomlangan holda tuzilgan zamonaviy qulay interfeys va indidual dizayndan foydalanilgan, telefon uchun moslashtirilgan va ko'piroq savol,variantlar uchun qulay.</p>
+                        </div>
+                        <a href="#" class="card-button">Boshlash</a>
+                    </div>
+                </div>
+                
+                <div class="card" data-index="3">
+                    <div class="card-image">
+                        <img src="/api/placeholder/400/320" alt="Cloud Solutions">
+                    </div>
+                    <div class="card-content">
+                        <div>
+                            <h3 class="card-title">Telegram Quiz Desktop</h3>
+                            <p class="card-description">Bunda Telegram Quiz botdan ilhomlangan holda tuzilgan zamonaviy qulay interfeys va indidual dizayndan foydalanilgan, telefon, kampyuter uchun moslashtirilgan qisqa savol, variantlar uchun moslashtirilgan variantlarni belgilash qulay.</p>
+                        </div>
+                        <a href="#" class="card-button">Boshlash</a>
+                    </div>
+                </div>
+                
+                <div class="card" data-index="4">
+                    <div class="card-image">
+                        <img src="/api/placeholder/400/320" alt="Global Network">
+                    </div>
+                    <div class="card-content">
+                        <div>
+                            <h3 class="card-title">Imtihon Quiz</h3>
+                            <p class="card-description">Bunda siz o'zingizni haqiqiy imtihonda o'tirgandek his qilishingiz uchun moslashtirilgan va haqiqiy tizimdagidek ishlaydi.</p>
+                        </div>
+                        <a href="#" class="card-button">Boshlash</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-nav">
+                <div class="card-nav-dot active" data-index="0"></div>
+                <div class="card-nav-dot" data-index="1"></div>
+                <div class="card-nav-dot" data-index="2"></div>
+                <div class="card-nav-dot" data-index="3"></div>
+                <div class="card-nav-dot" data-index="4"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const cards = document.querySelectorAll('.card');
+        const navDots = document.querySelectorAll('.card-nav-dot');
+        let activeIndex = 0;
+        
+        // Initialize with first card active
+        updateActiveCard();
+        
+        // Set up click events for cards
+        cards.forEach(card => {
+            card.addEventListener('click', () => {
+                if (!card.classList.contains('active')) {
+                    activeIndex = parseInt(card.dataset.index);
+                    updateActiveCard();
+                }
+            });
+        });
+        
+        // Set up click events for navigation dots
+        navDots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                activeIndex = parseInt(dot.dataset.index);
+                updateActiveCard();
+            });
+        });
+        
+        function updateActiveCard() {
+            // Update cards
+            cards.forEach(card => {
+                card.classList.remove('active');
+                if (parseInt(card.dataset.index) === activeIndex) {
+                    card.classList.add('active');
+                }
+            });
+            
+            // Update navigation dots
+            navDots.forEach(dot => {
+                dot.classList.remove('active');
+                if (parseInt(dot.dataset.index) === activeIndex) {
+                    dot.classList.add('active');
+                }
+            });
+        }
+        
+        // Auto rotation
+        let autoRotate = setInterval(() => {
+            activeIndex = (activeIndex + 1) % cards.length;
+            updateActiveCard();
+        }, 5000);
+        
+        // Pause auto rotation when hovering over cards section
+        const cardsSection = document.querySelector('.cards-section');
+        cardsSection.addEventListener('mouseenter', () => {
+            clearInterval(autoRotate);
+        });
+        
+        cardsSection.addEventListener('mouseleave', () => {
+            autoRotate = setInterval(() => {
+                activeIndex = (activeIndex + 1) % cards.length;
+                updateActiveCard();
+            }, 5000);
+        });
+        
+        // Touch swipe functionality
+        let touchStartY = 0;
+        let touchEndY = 0;
+        
+        cardsSection.addEventListener('touchstart', (e) => {
+            touchStartY = e.changedTouches[0].screenY;
+        });
+        
+        cardsSection.addEventListener('touchend', (e) => {
+            touchEndY = e.changedTouches[0].screenY;
+            handleSwipe();
+        });
+        
+        function handleSwipe() {
+            const swipeDistance = touchStartY - touchEndY;
+            
+            if (Math.abs(swipeDistance) > 50) {
+                clearInterval(autoRotate);
+                
+                if (swipeDistance > 0) {
+                    // Swipe up - next card
+                    activeIndex = (activeIndex + 1) % cards.length;
+                } else {
+                    // Swipe down - previous card
+                    activeIndex = (activeIndex - 1 + cards.length) % cards.length;
+                }
+                
+                updateActiveCard();
+                
+                autoRotate = setInterval(() => {
+                    activeIndex = (activeIndex + 1) % cards.length;
+                    updateActiveCard();
+                }, 5000);
+            }
+        }
+    </script>
+</body>
+</html>
