@@ -1,439 +1,521 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+
     <style>
+        :root {
+            --primary-color: #3f3bcd;
+            --light-primary: rgba(63, 59, 205, 0.1);
+            --white: #ffffff;
+            --text-color: #333333;
+            --transition: all 0.3s ease;
+        }
+        
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            background-color: #f5f5f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 1rem;
-            overflow-x: hidden;
+            background-color: var(--white);
+            color: var(--text-color);
+            line-height: 1.6;
         }
         
         .container {
-            width: 100%;
             max-width: 1200px;
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            gap: 40px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .faq-header {
+            text-align: center;
+            margin-bottom: 50px;
             position: relative;
         }
         
-        .text-section {
-            flex: 1;
-            min-width: 300px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        
-        .title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #4660e5;
-            margin-bottom: 20px;
-            position: relative;
-        }
-        
-        .title::after {
-            content: "";
-            position: absolute;
-            bottom: -10px;
-            left: 0;
-            width: 60px;
-            height: 4px;
-            background-color: #4660e5;
-        }
-        
-        .description {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            color: #444;
-            margin-bottom: 30px;
-        }
-        
-        .cta-button {
-            display: inline-block;
-            padding: 12px 30px;
-            background-color: #4660e5;
-            color: white;
-            text-decoration: none;
-            border-radius: 30px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(70, 96, 229, 0.3);
-            align-self: flex-start;
-        }
-        
-        .cta-button:hover {
-            background-color: #3a4ebf;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(70, 96, 229, 0.4);
-        }
-        
-        .cards-section {
-            flex: 1;
-            min-width: 300px;
-            height: 500px;
-            position: relative;
-            perspective: 1000px;
-        }
-        
-        .card-stack {
-            width: 100%;
-            height: 100%;
-            position: relative;
-        }
-        
-        .card {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 20px;
-            background-color: white;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
-            transform-origin: center bottom;
-            transform-style: preserve-3d;
-            backface-visibility: hidden;
-        }
-        
-        .card:not(.active) {
-            transform: translateY(15px) scale(0.9) rotateX(5deg);
-            filter: brightness(0.9);
-            pointer-events: none;
-        }
-        
-        .card:nth-child(2):not(.active) {
-            transform: translateY(30px) scale(0.8) rotateX(10deg);
-            filter: brightness(0.8);
-        }
-        
-        .card:nth-child(3):not(.active) {
-            transform: translateY(45px) scale(0.7) rotateX(15deg);
-            filter: brightness(0.7);
-        }
-        
-        .card:nth-child(4):not(.active) {
-            transform: translateY(60px) scale(0.6) rotateX(20deg);
-            filter: brightness(0.6);
-        }
-        
-        .card.active {
-            z-index: 5;
-            transform: translateY(0) scale(1) rotateX(0);
-            filter: brightness(1);
-        }
-        
-        .card-image {
-            width: 100%;
-            height: 55%;
-            overflow: hidden;
-        }
-        
-        .card-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.8s ease;
-        }
-        
-        .card.active:hover .card-image img {
-            transform: scale(1.1);
-        }
-        
-        .card-content {
-            padding: 20px;
-            height: 45%;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        
-        .card-title {
-            color: #4660e5;
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-            transform: translateY(20px);
-            opacity: 0;
-            transition: all 0.5s ease 0.2s;
-        }
-        
-        .card-description {
-            color: #555;
-            font-size: 0.95rem;
-            line-height: 1.5;
+        .faq-header h1 {
+            color: var(--primary-color);
+            font-size: 36px;
             margin-bottom: 15px;
-            transform: translateY(20px);
-            opacity: 0;
-            transition: all 0.5s ease 0.4s;
-        }
-        
-        .card-button {
+            position: relative;
             display: inline-block;
-            padding: 8px 20px;
-            background-color: #4660e5;
-            color: white;
-            text-decoration: none;
-            border-radius: 30px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            align-self: flex-start;
-            transform: translateY(20px);
+        }
+        
+        .faq-header h1::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--primary-color);
+            border-radius: 2px;
+        }
+        
+        .faq-header p {
+            color: var(--text-color);
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .faq-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+            gap: 30px;
+        }
+        
+        .faq-item {
+            background-color: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .faq-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(63, 59, 205, 0.15);
+        }
+        
+        .faq-question {
+            padding: 20px 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--white);
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .faq-question h3 {
+            font-size: 18px;
+            color: var(--primary-color);
+            transition: var(--transition);
+        }
+        
+        .faq-icon {
+            width: 24px;
+            height: 24px;
+            position: relative;
+            transition: var(--transition);
+        }
+        
+        .faq-icon::before,
+        .faq-icon::after {
+            content: '';
+            position: absolute;
+            background-color: var(--primary-color);
+            transition: var(--transition);
+        }
+        
+        .faq-icon::before {
+            width: 2px;
+            height: 24px;
+            left: 11px;
+            top: 0;
+        }
+        
+        .faq-icon::after {
+            width: 24px;
+            height: 2px;
+            left: 0;
+            top: 11px;
+        }
+        
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+            background-color: var(--white);
+            padding: 0 25px;
             opacity: 0;
-            transition: all 0.5s ease 0.6s;
         }
         
-        .card.active .card-title,
-        .card.active .card-description,
-        .card.active .card-button {
-            transform: translateY(0);
+        .faq-answer p {
+            padding-bottom: 20px;
+            color: var(--text-color);
+        }
+        
+        .faq-item.active .faq-question {
+            background-color: var(--light-primary);
+        }
+        
+        .faq-item.active .faq-answer {
+            max-height: 1000px;
             opacity: 1;
+            transition: max-height 0.5s ease, opacity 0.5s ease 0.2s;
         }
         
-        .card-button:hover {
-            background-color: #3a4ebf;
+        .faq-item.active .faq-icon::before {
+            transform: rotate(90deg);
+            opacity: 0;
         }
         
-        .card-nav {
+        .search-box {
+            margin-bottom: 40px;
+            position: relative;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 15px 50px 15px 25px;
+            border: 2px solid #e0e0e0;
+            border-radius: 50px;
+            font-size: 16px;
+            transition: var(--transition);
+            outline: none;
+        }
+        
+        .search-box input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 15px rgba(63, 59, 205, 0.1);
+        }
+        
+        .search-box i {
+            position: absolute;
+            right: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary-color);
+            font-size: 20px;
+        }
+        
+        .faq-category {
             display: flex;
             justify-content: center;
-            margin-top: 20px;
-            gap: 10px;
-            position: absolute;
-            bottom: -50px;
-            left: 0;
-            right: 0;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 40px;
         }
         
-        .card-nav-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background-color: rgba(70, 96, 229, 0.3);
+        .category-btn {
+            padding: 10px 25px;
+            background-color: var(--white);
+            border: 2px solid var(--primary-color);
+            border-radius: 50px;
+            color: var(--primary-color);
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: var(--transition);
         }
         
-        .card-nav-dot.active {
-            background-color: #4660e5;
-            transform: scale(1.3);
+        .category-btn:hover, 
+        .category-btn.active {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+        
+        .not-found {
+            text-align: center;
+            padding: 30px;
+            color: var(--primary-color);
+            font-size: 18px;
+            display: none;
         }
         
         @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
+            .faq-container {
+                grid-template-columns: 1fr;
             }
             
-            .text-section, .cards-section {
-                width: 100%;
+            .faq-header h1 {
+                font-size: 28px;
             }
             
-            .cards-section {
-                height: 450px;
-                margin-top: 20px;
+            .faq-header p {
+                font-size: 16px;
+            }
+            
+            .faq-question h3 {
+                font-size: 16px;
             }
         }
+        
+        /* Animatsiyalar */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate {
+            animation: fadeIn 0.6s ease forwards;
+        }
+        
+        .faq-item {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .faq-item:nth-child(1) { animation-delay: 0.1s; }
+        .faq-item:nth-child(2) { animation-delay: 0.2s; }
+        .faq-item:nth-child(3) { animation-delay: 0.3s; }
+        .faq-item:nth-child(4) { animation-delay: 0.4s; }
+        .faq-item:nth-child(5) { animation-delay: 0.5s; }
+        .faq-item:nth-child(6) { animation-delay: 0.6s; }
+        .faq-item:nth-child(7) { animation-delay: 0.7s; }
+        .faq-item:nth-child(8) { animation-delay: 0.8s; }
     </style>
-</head>
-<body>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    
     <div class="container">
-        <div class="text-section">
-            <h1 class="title">QUIZ TEST haqida ma'lumot</h1>
-            <p class="description">Bizning saytimizda quiyidagilarda testlarni boshlash imkoniyatiga egasiz. Bularda bar bittasiga alohida yondashuv bilan qilingan.</p>
-            <a href="#" class="cta-button">Batafsil ma'lumot</a>
+        <div class="faq-header animate">
+            <h1>Ko'p beriladigan savollar</h1>
+            <p>Mijozlarimiz tomonidan eng ko'p beriladigan savollar va ularga batafsil javoblar</p>
         </div>
         
-        <div class="cards-section">
-            <div class="card-stack">
-                <div class="card active" data-index="0">
-                    <div class="card-image">
-                        <img src="Segment (1).webp" alt="Digital Innovation">
-                    </div>
-                    <div class="card-content">
-                        <div>
-                            <h3 class="card-title">Tezkor Quiz</h3>
-                            <p class="card-description">Bunda yuklangan testni darhol boshlash va tezkor keyingi testga o'tish imkoniyati mavjud va har bir test uchun 30 sekund berilgan.</p>
-                        </div>
-                        <a href="tezkorquiz.html" class="card-button">Boshlash</a>
-                    </div>
+        <div class="search-box animate">
+            <input type="text" id="searchInput" placeholder="Savol bo'yicha qidirish...">
+            <i class="fas fa-search"></i>
+        </div>
+        
+        <div class="faq-category animate">
+            <button class="category-btn active" data-category="all">Barchasi</button>
+            <button class="category-btn" data-category="sayt">Sayt bo'limlari</button>
+            <button class="category-btn" data-category="xizmat">Xizmatlar</button>
+            <button class="category-btn" data-category="bot">Telegram bot</button>
+            <button class="category-btn" data-category="boshqa">Boshqalar</button> 
+        </div>
+        
+        <div class="faq-container">
+            <div class="faq-item animate" data-category="xizmat">
+                <div class="faq-question">
+                    <h3>Sizning xizmatlaringiz boshqa Quiz saytlardan nimasi bilan farq qiladi?</h3>
+                    <div class="faq-icon"></div>
                 </div>
-                
-                <div class="card" data-index="1">
-                    <div class="card-image">
-                        <img src="aga/asosiy (1).png" alt="Smart Solutions">
-                    </div>
-                    <div class="card-content">
-                        <div>
-                            <h3 class="card-title">Sekin Quiz</h3>
-                            <p class="card-description">Bunda testlarda  variantni belgilagandan keyin kechikishni sozlash mumkin 3-5-7 soniyagacha kechiktirish mumkin.</p>
-                        </div>
-                        <a href="#" class="card-button">Boshlash</a>
-                    </div>
-                </div>
-                
-                <div class="card" data-index="2">
-                    <div class="card-image">
-                        <img src="aga/tgmb.png" alt="Creative Design">
-                    </div>
-                    <div class="card-content">
-                        <div>
-                            <h3 class="card-title">Telegram Quiz Mobile</h3>
-                            <p class="card-description">Bunda Telegram Quiz botdan ilhomlangan holda tuzilgan zamonaviy qulay interfeys va indidual dizayndan foydalanilgan, telefon uchun moslashtirilgan va ko'piroq savol,variantlar uchun qulay.</p>
-                        </div>
-                        <a href="#" class="card-button">Boshlash</a>
-                    </div>
-                </div>
-                
-                <div class="card" data-index="3">
-                    <div class="card-image">
-                        <img src="aga/tgds.png" alt="Cloud Solutions">
-                    </div>
-                    <div class="card-content">
-                        <div>
-                            <h3 class="card-title">Telegram Quiz Desktop</h3>
-                            <p class="card-description">Bunda Telegram Quiz botdan ilhomlangan holda tuzilgan zamonaviy qulay interfeys va indidual dizayndan foydalanilgan, telefon, kampyuter uchun moslashtirilgan qisqa savol, variantlar uchun moslashtirilgan variantlarni belgilash qulay.</p>
-                        </div>
-                        <a href="#" class="card-button">Boshlash</a>
-                    </div>
-                </div>
-                
-                <div class="card" data-index="4">
-                    <div class="card-image">
-                        <img src="aga/asosiy (3).png" alt="Global Network">
-                    </div>
-                    <div class="card-content">
-                        <div>
-                            <h3 class="card-title">Imtihon Quiz</h3>
-                            <p class="card-description">Bunda siz o'zingizni haqiqiy imtihonda o'tirgandek his qilishingiz uchun moslashtirilgan va haqiqiy tizimdagidek ishlaydi.</p>
-                        </div>
-                        <a href="#" class="card-button">Boshlash</a>
-                    </div>
+                <div class="faq-answer">
+                    <p>Bizning xizmatlarimiz yuqori sifatli, individual yondashuv va zamonaviy dizayndan foydalanish bilan ajralib turadi. Eng muhim qismi testlarni tezkor boshlash va ortiqcha vaqtni olmaslikka harakat qilganmiz.</p>
                 </div>
             </div>
             
-            <div class="card-nav">
-                <div class="card-nav-dot active" data-index="0"></div>
-                <div class="card-nav-dot" data-index="1"></div>
-                <div class="card-nav-dot" data-index="2"></div>
-                <div class="card-nav-dot" data-index="3"></div>
-                <div class="card-nav-dot" data-index="4"></div>
+            <div class="faq-item animate" data-category="xizmat">
+                <div class="faq-question">
+                    <h3>Xizmatlar bepulmi?</h3>
+                    <div class="faq-icon"></div>
+                </div>
+                <div class="faq-answer">
+                    <p>Bizning barcha xizmatlarimiz mutlaqo bepul</p>
+                </div>
             </div>
+            
+            <div class="faq-item animate" data-category="bot">
+                <div class="faq-question">
+                    <h3>Telegram bot nimaga kerak? </h3>
+                    <div class="faq-icon"></div>
+                </div>
+                <div class="faq-answer">
+                    <p>Bizning telegram botimiz orqali bemalol sunniy intelekt bilan hech qanday chegarasiz foydalanishingiz mumkin.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item animate" data-category="boshqa">
+                <div class="faq-question">
+                    <h3>Mijozlar bilan qaysi tillarda muloqot qilasiz?</h3>
+                    <div class="faq-icon"></div>
+                </div>
+                <div class="faq-answer">
+                    <p>Xodimlarimiz o'zbek tilda muloqot qilishadi.</p>
+                </div>
+            </div>
+         
+            <div class="faq-item animate" data-category="sayt">
+                <div class="faq-question">
+                    <h3>Segment 25 nima qiladi?</h3>
+                    <div class="faq-icon"></div>
+                </div>
+                <div class="faq-answer">
+                    <p>Segment 25 bu umumiy testlarni masalan 150 ta testni 25 tadan .txt (Oddiy teskt fayl) ga ajratish va yuklab olishga yordam beradi, kichik xatolar A) ANS: answer: Javob: JAVOB: va shunga o'xshagan kichik xatolarni avtomatik to'g'irlash imkoniyati mavjud. 
+                    <br>Yuklab olish uchun barcha sahifadagi yuklab olish tugmasini bosish yetarli <br>
+
+                        E'tibor bering bizning QUIZ TEST bo'limimiz faqat shu formatni qollab-quvvatlaydi. 
+                    savol
+                    <br>A. variant
+                    <br>B. variant
+                    <br>C. variant
+                    <br>D. variant
+                    </p>
+                </div>
+            </div>
+            
+            <div class="faq-item animate" data-category="sayt">
+                <div class="faq-question">
+                    <h3>Segment Umumiy nima qiladi?</h3>
+                    <div class="faq-icon"></div>
+                </div>
+                <div class="faq-answer">
+                    <p>Segment Umumiy bu umumiy testlarni masalan 150 ta testni hammasini bittada standart formatga to'g'irlaydi (Standart format pasda berilgan).txt (Oddiy teskt fayl) ga ajratish va yuklab olishga yordam beradi, kichik xatolar A) ANS: answer: Javob: JAVOB: va shunga o'xshagan kichik xatolarni avtomatik to'g'irlash imkoniyati mavjud. 
+                        <br>Yuklab olish uchun barcha sahifadagi yuklab olish tugmasini bosish yetarli <br>
+                            E'tibor bering bizning QUIZ TEST bo'limimiz faqat shu formatni qollab-quvvatlaydi. 
+                        <br>Savol
+                        <br>A. variant
+                        <br>B. variant
+                        <br>C. variant
+                        <br>D. variant                </div>
+            </div>
+            
+            <div class="faq-item animate" data-category="sayt">
+                <div class="faq-question">
+                    <h3>Test Yartish nima qildi?</h3>
+                    <div class="faq-icon"></div>
+                </div>
+                <div class="faq-answer">
+                    <p>Bu yerda test yaratish (tuzish) mumkin. 
+                        <br>
+                        1. Test nomini kiriting 2. Savolni kiriting 3. Variantlarni kiriting 4. Javobni tanlang 5. Saqlash tugmasini bosing 6. Shu ko'rinishda davom eting va testni yakunlash tugmasini bosing 7. Yaratilgan testni yuklab oling.
+                        <br>
+                     </p>
+                </div>
+            </div>
+            
+            <div class="faq-item animate" data-category="sayt">
+                <div class="faq-question">
+                    <h3>QUIZ TEST haqida ma'lumot bering?</h3>
+                    <div class="faq-icon"></div>
+                </div>
+                <div class="faq-answer">
+                    <p>Ha, albatta. Quiz Test bo'limida testlarni boshlash imkoniyatiga egasiz! O'QISH REJIMI, TEZKOR, SEKIN, TELEGRAM QUIZ MOBILE, TELEGRAM QUIZ DESKTOP, IMTIHON QUIZ kabi quiz turlari mavjud. Batafsil ma'lumot keyingi savol javoblarda...</p>
+                </div>
+            </div>
+  
+
+        <div class="faq-item animate" data-category="sayt">
+            <div class="faq-question">
+                <h3>TEZKOR QUIZ haqida ma'lumot bering?</h3>
+                <div class="faq-icon"></div>
+            </div>
+            <div class="faq-answer">
+                <p>Tezkor Quizda siz testlarni tez ishlashingiz mumkin .txt faylni tanlaysiz va darhol testni boshlaysiz variantlardan bittasini tanlasangiz tezda keyini savolga o'tadi.</p>
+            </div>
+        </div>
+  
+
+    <div class="faq-item animate" data-category="sayt">
+        <div class="faq-question">
+            <h3>SEKIN QUIZ haqida ma'lumot bering?</h3>
+            <div class="faq-icon"></div>
+        </div>
+        <div class="faq-answer">
+            <p>Sekin Quizda siz testlarni sekin ishlashingiz mumkin .txt faylni tanlaysiz va darhol testni boshlaysiz variantlardan bittasini tanlasangiz sekin (3-5-7 soniyagacha kechiktirish mumkin) keyini savolga o'tadi.</p>
+        </div>
+    </div>
+
+
+<div class="faq-item animate" data-category="sayt">
+    <div class="faq-question">
+        <h3>TELEGRAM MOBILE QUIZ haqida ma'lumot bering?</h3>
+        <div class="faq-icon"></div>
+    </div>
+    <div class="faq-answer">
+        <p>Bu Telegram Quiz botdan ilhomlanilgan holda siz uchun qulay ko'rinishda tuzilgan, asosan telefon ekrani uchun moslashtirilgan va savollar ko'p bo'lsa shularga tayyorlanish uchun qulay. </p>
+    </div>
+</div>
+
+
+    <div class="faq-item animate" data-category="sayt">
+    <div class="faq-question">
+        <h3>TELEGRAM DESKTOP QUIZ haqida ma'lumot bering?</h3>
+        <div class="faq-icon"></div>
+    </div>
+    <div class="faq-answer">
+        <p>Bu Telegram Quiz botdan ilhomlanilgan holda siz uchun qulay ko'rinishda tuzilgan, asosan Kampyuter ekrani uchun moslashtirilgan va savollar kam bo'lsa telefen planshetda ham foydalanish qulay shularga tayyorlanish qulay. </p>
+    </div>
+        <div class="not-found">
+            <p>Afsuski, so'rovingiz bo'yicha hech narsa topilmadi. Iltimos, boshqa so'rov bilan urinib ko'ring.</p>
         </div>
     </div>
     
+
+    <div class="faq-item animate" data-category="sayt">
+        <div class="faq-question">
+            <h3>IMTIHON QUIZ haqida ma'lumot bering?</h3>
+            <div class="faq-icon"></div>
+        </div>
+        <div class="faq-answer">
+            <p>Bu testga tayyorlanganlar va bilimini huddi imtihon (SESSIYA) dagi atmasferani berishi uchun moslashtirilgan. Savollarda variantlarini belgilaysiz va testni yyakunlashni bosasiz shundan keyin natija e'lon qilinadi.</p>
+        </div>
+            <div class="not-found">
+                <p>Afsuski, so'rovingiz bo'yicha hech narsa topilmadi. Iltimos, boshqa so'rov bilan urinib ko'ring.</p>
+            </div>
+        </div>
+    </div>        
+</div>
+
     <script>
-        const cards = document.querySelectorAll('.card');
-        const navDots = document.querySelectorAll('.card-nav-dot');
-        let activeIndex = 0;
-        
-        // Initialize with first card active
-        updateActiveCard();
-        
-        // Set up click events for cards
-        cards.forEach(card => {
-            card.addEventListener('click', () => {
-                if (!card.classList.contains('active')) {
-                    activeIndex = parseInt(card.dataset.index);
-                    updateActiveCard();
-                }
-            });
-        });
-        
-        // Set up click events for navigation dots
-        navDots.forEach(dot => {
-            dot.addEventListener('click', () => {
-                activeIndex = parseInt(dot.dataset.index);
-                updateActiveCard();
-            });
-        });
-        
-        function updateActiveCard() {
-            // Update cards
-            cards.forEach(card => {
-                card.classList.remove('active');
-                if (parseInt(card.dataset.index) === activeIndex) {
-                    card.classList.add('active');
-                }
+        document.addEventListener('DOMContentLoaded', function() {
+            // FAQlarni ochish/yopish
+            const faqItems = document.querySelectorAll('.faq-item');
+            
+            faqItems.forEach(item => {
+                item.querySelector('.faq-question').addEventListener('click', function() {
+                    // Avval ochiq bo'lganlarni yopish (alohida kommentdan o'chiring)
+                    // document.querySelectorAll('.faq-item.active').forEach(activeItem => {
+                    //     if (activeItem !== item) {
+                    //         activeItem.classList.remove('active');
+                    //     }
+                    // });
+                    
+                    item.classList.toggle('active');
+                });
+                
+                // Animatsiya qo'shish
+                item.classList.add('animate');
             });
             
-            // Update navigation dots
-            navDots.forEach(dot => {
-                dot.classList.remove('active');
-                if (parseInt(dot.dataset.index) === activeIndex) {
-                    dot.classList.add('active');
-                }
-            });
-        }
-        
-        // Auto rotation
-        let autoRotate = setInterval(() => {
-            activeIndex = (activeIndex + 1) % cards.length;
-            updateActiveCard();
-        }, 5000);
-        
-        // Pause auto rotation when hovering over cards section
-        const cardsSection = document.querySelector('.cards-section');
-        cardsSection.addEventListener('mouseenter', () => {
-            clearInterval(autoRotate);
-        });
-        
-        cardsSection.addEventListener('mouseleave', () => {
-            autoRotate = setInterval(() => {
-                activeIndex = (activeIndex + 1) % cards.length;
-                updateActiveCard();
-            }, 5000);
-        });
-        
-        // Touch swipe functionality
-        let touchStartY = 0;
-        let touchEndY = 0;
-        
-        cardsSection.addEventListener('touchstart', (e) => {
-            touchStartY = e.changedTouches[0].screenY;
-        });
-        
-        cardsSection.addEventListener('touchend', (e) => {
-            touchEndY = e.changedTouches[0].screenY;
-            handleSwipe();
-        });
-        
-        function handleSwipe() {
-            const swipeDistance = touchStartY - touchEndY;
+            // Qidiruv funksiyasi
+            const searchInput = document.getElementById('searchInput');
+            const notFound = document.querySelector('.not-found');
             
-            if (Math.abs(swipeDistance) > 50) {
-                clearInterval(autoRotate);
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                let hasResults = false;
                 
-                if (swipeDistance > 0) {
-                    // Swipe up - next card
-                    activeIndex = (activeIndex + 1) % cards.length;
-                } else {
-                    // Swipe down - previous card
-                    activeIndex = (activeIndex - 1 + cards.length) % cards.length;
-                }
+                faqItems.forEach(item => {
+                    const question = item.querySelector('h3').textContent.toLowerCase();
+                    const answer = item.querySelector('.faq-answer p').textContent.toLowerCase();
+                    
+                    if (question.includes(searchTerm) || answer.includes(searchTerm)) {
+                        item.style.display = 'block';
+                        hasResults = true;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
                 
-                updateActiveCard();
-                
-                autoRotate = setInterval(() => {
-                    activeIndex = (activeIndex + 1) % cards.length;
-                    updateActiveCard();
-                }, 5000);
-            }
-        }
+                notFound.style.display = hasResults ? 'none' : 'block';
+            });
+            
+            // Kategoriya filtri
+            const categoryButtons = document.querySelectorAll('.category-btn');
+            
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const category = this.getAttribute('data-category');
+                    
+                    // Aktiv tugmani belgilash
+                    categoryButtons.forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    
+                    // FAQlarni filtrlash
+                    faqItems.forEach(item => {
+                        if (category === 'all' || item.getAttribute('data-category') === category) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                    
+                    // Qidiruv natijasi bo'sh bo'lganda
+                    notFound.style.display = 'none';
+                });
+            });
+        });
     </script>
-</body>
-</html>
