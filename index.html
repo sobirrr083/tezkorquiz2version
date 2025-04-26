@@ -800,6 +800,24 @@
             <iframe src="cards.html" width="100%" height="100%" frameborder="0"></iframe>
         </div>
      -->
+    <!--      bu yerdan faq html qo'shilgan  -->
+  <section id="my-section"></section>
+
+  <script>
+    // HTML qismni yuklaymiz
+    fetch('cards.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('my-section').innerHTML = data;
+
+        // Tugma yuklanganidan so‘ng hodisa biriktiramiz
+        document.getElementById('my-btn').addEventListener('click', function () {
+          alert('Tugma bosildi va asosiy HTMLdan ishladi!');
+          // Yoki boshqa funksiyani chaqiring bu yerda
+        });
+      });
+  </script>
+     <!--      bu yerdan faq html tugagan  -->
 <!-- Footer -->
  <footer class="footer">
     <div class="container">
@@ -842,24 +860,6 @@
             <p>© 2025 Tezkor Quiz. Barcha huquqlar himoyalangan.</p>
         </div>
     </div>
-<!--      bu yerdan faq html qo'shilgan  -->
-  <section id="my-section"></section>
-
-  <script>
-    // HTML qismni yuklaymiz
-    fetch('cards.html')
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById('my-section').innerHTML = data;
-
-        // Tugma yuklanganidan so‘ng hodisa biriktiramiz
-        document.getElementById('my-btn').addEventListener('click', function () {
-          alert('Tugma bosildi va asosiy HTMLdan ishladi!');
-          // Yoki boshqa funksiyani chaqiring bu yerda
-        });
-      });
-  </script>
-     <!--      bu yerdan faq html tugagan  -->
   </footer>
 <!-- Initialize AOS -->
 <script>
