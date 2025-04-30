@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <title>Ro'yxatdan o'tish - TezkorQuiz</title>
+  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js"></script>
+</head>
+<body>
+  <h2>Ro'yxatdan o'tish</h2>
+  <input type="email" id="email" placeholder="Email">
+  <input type="password" id="password" placeholder="Parol">
+  <button onclick="register()">Ro'yxatdan o'tish</button>
+  <p>Hisobingiz bormi? <a href="login.html">Kirish</a></p>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAYz2BA-iCfHOgbCzSAMrnxVaXgvAHC0Xg",
+      authDomain: "tezkorquiz-3a66d.firebaseapp.com",
+      projectId: "tezkorquiz-3a66d",
+      appId: "1:899112345856:web:57e70f914bb691670253e5",
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    function register() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      auth.createUserWithEmailAndPassword(email, password)
+        .then(() => {
+          alert("Ro'yxatdan muvaffaqiyatli o'tdingiz!");
+          window.location.href = "login.html";
+        })
+        .catch(error => alert("Xatolik: " + error.message));
+    }
+  </script>
+</body>
+</html>
