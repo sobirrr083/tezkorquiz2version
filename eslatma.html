@@ -393,7 +393,7 @@
   
   <div class="checklist-container" id="checklistContainer">
     <div class="checklist-header">
-      <span>Eslatmalar</span>
+      <span>Eslatmalar (O'zbekiston vaqti)</span>
       <button class="close-btn" id="closeChecklist">&times;</button>
     </div>
     
@@ -427,8 +427,10 @@
       let activeNotifications = 0;
       let checkInterval;
       
-      // Set min date to today
-      const today = new Date();
+      // Set min date to today (O'zbekiston vaqti bilan)
+      const options = { timeZone: 'Asia/Tashkent' };
+      const uzTimeStr = new Date().toLocaleString('en-US', options);
+      const today = new Date(uzTimeStr);
       const yyyy = today.getFullYear();
       const mm = String(today.getMonth() + 1).padStart(2, '0');
       const dd = String(today.getDate()).padStart(2, '0');
@@ -464,8 +466,19 @@
         
         if (text) {
           const itemId = 'item' + itemCounter++;
-          const now = new Date();
-          const reminderDate = date && time ? new Date(`${date}T${time}`) : null;
+          
+          // O'zbekiston vaqtini olish
+          const options = { timeZone: 'Asia/Tashkent' };
+          const uzTimeStr = new Date().toLocaleString('en-US', options);
+          const now = new Date(uzTimeStr);
+          
+          // Eslatma vaqtini to'g'ri vaqt mintaqasida yaratish
+          let reminderDate = null;
+          if (date && time) {
+            // Mahalliy sana/vaqtni O'zbekiston vaqtida yaratish
+            reminderDate = new Date(`${date}T${time}`);
+          }
+          
           const timestamp = now.getTime();
           
           addItemToList({
@@ -576,12 +589,14 @@
       function formatDateTime(date) {
         if (!date) return '';
         
+        // O'zbekiston vaqtiga moslash (GMT+5)
         return new Intl.DateTimeFormat('uz-UZ', {
           year: 'numeric',
           month: 'short',
           day: 'numeric',
           hour: '2-digit',
-          minute: '2-digit'
+          minute: '2-digit',
+          timeZone: 'Asia/Tashkent'
         }).format(date);
       }
       
@@ -646,7 +661,11 @@
           startCheckingReminders();
         } else {
           // Add default items if no saved checklist
-          const now = new Date();
+          // O'zbekiston vaqtini olish
+          const options = { timeZone: 'Asia/Tashkent' };
+          const uzTimeStr = new Date().toLocaleString('en-US', options);
+          const now = new Date(uzTimeStr);
+          
           const tomorrow = new Date(now);
           tomorrow.setDate(tomorrow.getDate() + 1);
           tomorrow.setHours(9, 0, 0, 0);
@@ -686,7 +705,10 @@
       
       // Check for due reminders
       function checkReminders() {
-        const now = Date.now();
+        // O'zbekiston vaqtini olish
+        const options = { timeZone: 'Asia/Tashkent' };
+        const uzTimeStr = new Date().toLocaleString('en-US', options);
+        const now = new Date(uzTimeStr).getTime();
         let hasNotifications = false;
         
         document.querySelectorAll('.checklist-item').forEach(item => {
