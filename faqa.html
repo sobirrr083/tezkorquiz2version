@@ -1,0 +1,663 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ko'p beriladigan savollar</title>
+    <style>
+        :root {
+            --primary-color: #3f3bcd;
+            --light-primary: rgba(63, 59, 205, 0.1);
+            --white: #ffffff;
+            --text-color: #333333;
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--white);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 15px;
+        }
+        
+        .faq-header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .faq-header h1 {
+            color: var(--primary-color);
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .faq-header h1::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background-color: var(--primary-color);
+            border-radius: 2px;
+        }
+        
+        .faq-header p {
+            color: var(--text-color);
+            font-size: 1rem;
+            max-width: 90%;
+            margin: 0 auto;
+        }
+        
+        .faq-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .faq-item {
+            background-color: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            transition: var(--transition);
+            border-left: 4px solid var(--primary-color);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .faq-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(63, 59, 205, 0.12);
+        }
+        
+        .faq-question {
+            padding: 15px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--white);
+            transition: var(--transition);
+        }
+        
+        .faq-question h3 {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            transition: var(--transition);
+        }
+        
+        .faq-icon {
+            width: 20px;
+            height: 20px;
+            position: relative;
+            transition: var(--transition);
+        }
+        
+        .faq-icon::before,
+        .faq-icon::after {
+            content: '';
+            position: absolute;
+            background-color: var(--primary-color);
+            transition: var(--transition);
+        }
+        
+        .faq-icon::before {
+            width: 2px;
+            height: 20px;
+            left: 9px;
+            top: 0;
+        }
+        
+        .faq-icon::after {
+            width: 20px;
+            height: 2px;
+            left: 0;
+            top: 9px;
+        }
+        
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+            background-color: var(--white);
+            padding: 0 20px;
+            opacity: 0;
+        }
+        
+        .faq-answer p {
+            padding-bottom: 15px;
+            color: var(--text-color);
+            font-size: 0.95rem;
+        }
+        
+        .faq-item.active .faq-question {
+            background-color: var(--light-primary);
+        }
+        
+        .faq-item.active .faq-answer {
+            max-height: 1000px;
+            opacity: 1;
+            transition: max-height 0.5s ease, opacity 0.5s ease 0.2s;
+        }
+        
+        .faq-item.active .faq-icon::before {
+            transform: rotate(90deg);
+            opacity: 0;
+        }
+        
+        .search-box {
+            margin-bottom: 30px;
+            position: relative;
+            max-width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 12px 40px 12px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            outline: none;
+        }
+        
+        .search-box input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 10px rgba(63, 59, 205, 0.1);
+        }
+        
+        .search-box i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary-color);
+            font-size: 1rem;
+        }
+        
+        .faq-category {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .category-btn {
+            padding: 8px 20px;
+            background-color: var(--white);
+            border: 2px solid var(--primary-color);
+            border-radius: 25px;
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .category-btn:hover, 
+        .category-btn.active {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+        
+        .not-found {
+            text-align: center;
+            padding: 20px;
+            color: var(--primary-color);
+            font-size: 1rem;
+            display: none;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px 10px;
+            }
+            
+            .faq-container {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .faq-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .faq-header p {
+                font-size: 0.9rem;
+            }
+            
+            .faq-question h3 {
+                font-size: 1rem;
+            }
+            
+            .faq-answer p {
+                font-size: 0.9rem;
+            }
+            
+            .search-box {
+                max-width: 100%;
+            }
+            
+            .search-box input {
+                padding: 10px 35px 10px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .search-box i {
+                right: 12px;
+                font-size: 0.9rem;
+            }
+            
+            .faq-category {
+                gap: 8px;
+            }
+            
+            .category-btn {
+                padding: 7px 15px;
+                font-size: 0.85rem;
+            }
+            
+            .faq-item {
+                border-radius: 6px;
+            }
+            
+            .faq-question {
+                padding: 12px 15px;
+            }
+            
+            .faq-answer {
+                padding: 0 15px;
+            }
+            
+            .faq-icon {
+                width: 18px;
+                height: 18px;
+            }
+            
+            .faq-icon::before {
+                height: 18px;
+                left: 8px;
+            }
+            
+            .faq-icon::after {
+                width: 18px;
+                top: 8px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .faq-header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .faq-header p {
+                font-size: 0.85rem;
+            }
+            
+            .faq-question h3 {
+                font-size: 0.95rem;
+            }
+            
+            .faq-answer p {
+                font-size: 0.85rem;
+            }
+            
+            .search-box input {
+                padding: 8px 30px 8px 12px;
+                font-size: 0.85rem;
+            }
+            
+            .search-box i {
+                right: 10px;
+                font-size: 0.85rem;
+            }
+            
+            .category-btn {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+            
+            .faq-item {
+                box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
+            }
+            
+            .faq-question {
+                padding: 10px 12px;
+            }
+            
+            .faq-answer {
+                padding: 0 12px;
+            }
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate {
+            animation: fadeIn 0.6s ease forwards;
+        }
+        
+        .faq-item:nth-child(1) { animation-delay: 0.1s; }
+        .faq-item:nth-child(2) { animation-delay: 0.2s; }
+        .faq-item:nth-child(3) { animation-delay: 0.3s; }
+        .faq-item:nth-child(4) { animation-delay: 0.4s; }
+        .faq-item:nth-child(5) { animation-delay: 0.5s; }
+        .faq-item:nth-child(6) { animation-delay: 0.6s; }
+        .faq-item:nth-child(7) { animation-delay: 0.7s; }
+        .faq-item:nth-child(8) { animation-delay: 0.8s; }
+        .faq-item:nth-child(9) { animation-delay: 0.9s; }
+        .faq-item:nth-child(10) { animation-delay: 1.0s; }
+        .faq-item:nth-child(11) { animation-delay: 1.1s; }
+        .faq-item:nth-child(12) { animation-delay: 1.2s; }
+        .faq-item:nth-child(13) { animation-delay: 1.3s; }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="faq-header animate">
+            <h1>Ko'p beriladigan savollar</h1>
+            <p>Mijozlarimiz tomonidan eng ko'p beriladigan savollar va ularga batafsil javoblar</p>
+        </div>
+        
+        <div class="search-box animate">
+            <input type="text" id="searchInput" placeholder="Savol bo'yicha qidirish...">
+            <i class="fas fa-search"></i>
+        </div>
+        
+        <div class="faq-category animate">
+            <button class="category-btn active" data-category="all">Barchasi</button>
+            <button class="category-btn" data-category="sayt">Sayt bo'limlari</button>
+            <button class="category-btn" data-category="xizmat">Xizmatlar</button>
+            <button class="category-btn" data-category="bot">Telegram bot</button>
+            <button class="category-btn" data-category="boshqa">Boshqalar</button> 
+        </div>
+        
+        <div class="faq-container">
+            <div class="faq-item animate" data-category="xizmat">
+                <div class="faq-question">
+                    <h3>Sizning xizmatlaringiz boshqa Quiz saytlardan nimasi bilan farq qiladi?</h3>
+                    <div class="faq-icon"></div>
+                </div>
+                <div class="faq-answer">
+                    <p>Bizning xizmatlarimiz yuqori sifatli, individual yondashuv va zamonaviy dizayndan foydalanish bilan ajralib turadi. Eng muhim qismi testlarni tezkor boshlash va ortiqcha vaqtni olmaslikka harakat qilganmiz.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item animate" data-category="xizmat">
+                <div class="faq-question">
+                    <h3>Xizmatlar bepulmi?</h3>
+                    <div class="faq-icon"></div>
+                </div>
+                <div class="faq-answer">
+                    <p>Bizning barcha xizmatlarimiz mutlaqo bepul</p>
+                </div>
+            </div>
+            
+            <div class="faq-item animate" data-category="bot">
+                <div class="faq-question">
+                    <h3>Telegram bot nimaga kerak? </h3>
+                    <div class="faq-icon"></div>
+                </div>
+                <div class="faq-answer">
+                    <p>Bizning telegram botimiz orqali bemalol sunniy intelekt bilan hech qanday chegarasiz foydalanishingiz mumkin.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item animate" data-category="boshqa">
+                <div class="faq-question">
+                    <h3>Mijozlar bilan qaysi tillarda muloqot qilasiz?</h3>
+                    <div class="faq-icon"></div>
+                </div>
+                <div class="faq-answer">
+                    <p>Xodimlarimiz o'zbek tilda muloqot qilishadi.</p>
+                </div>
+            </div>
+         
+            <div class="faq-item animate" data-category="sayt">
+                <div class="faq-question">
+                    <h3>Segment 25 nima qiladi?</h3>
+                    <div class="faq-icon"></div>
+                </div>
+                <div class="faq-answer">
+                    <p>Segment 25 bu umumiy testlarni masalan 150 ta testni 25 tadan .txt (Oddiy teskt fayl) ga ajratish va yuklab olishga yordam beradi, kichik xatolar A) ANS: answer: Javob: JAVOB: va shunga o'xshagan kichik xatolarni avtomatik to'g'irlash imkoniyati mavjud. 
+                    <br>Yuklab olish uchun barcha sahifadagi yuklab olish tugmasini bosish yetarli <br>
+
+                        E'tibor bering bizning QUIZ TEST bo'limimiz faqat shu formatni qollab-quvvatlaydi. 
+                    savol
+                    <br>A. variant
+                    <br>B. variant
+                    <br>C. variant
+                    <br>D. variant
+                    </p>
+                </div>
+            </div>
+            
+            <div class="faq-item animate" data-category="sayt">
+                <div class="faq-question">
+                    <h3>Segment Umumiy nima qiladi?</h3>
+                    <div class="faq-icon"></div>
+                </div>
+                <div class="faq-answer">
+                    <p>Segment Umumiy bu umumiy testlarni masalan 150 ta testni hammasini bittada standart formatga to'g'irlaydi (Standart format pasda berilgan).txt (Oddiy teskt fayl) ga ajratish va yuklab olishga yordam beradi, kichik xatolar A) ANS: answer: Javob: JAVOB: va shunga o'xshagan kichik xatolarni avtomatik to'g'irlash imkoniyati mavjud. 
+                        <br>Yuklab olish uchun barcha sahifadagi yuklab olish tugmasini bosish yetarli <br>
+                            E'tibor bering bizning QUIZ TEST bo'limimiz faqat shu formatni qollab-quvvatlaydi. 
+                        <br>Savol
+                        <br>A. variant
+                        <br>B. variant
+                        <br>C. variant
+                        <br>D. variant
+                    </p>
+                </div>
+            </div>
+            
+            <div class="faq-item animate" data-category="sayt">
+                <div class="faq-question">
+                    <h3>Test Yartish nima qildi?</h3>
+                    <div class="faq-icon"></div>
+                </div>
+                <div class="faq-answer">
+                    <p>Bu yerda test yaratish (tuzish) mumkin. 
+                        <br>
+                        1. Test nomini kiriting 2. Savolni kiriting 3. Variantlarni kiriting 4. Javobni tanlang 5. Saqlash tugmasini bosing 6. Shu ko'rinishda davom eting va testni yakunlash tugmasini bosing 7. Yaratilgan testni yuklab oling.
+                        <br>
+                    </p>
+                </div>
+            </div>
+            
+            <div class="faq-item animate" data-category="sayt">
+                <div class="faq-question">
+                    <h3>QUIZ TEST haqida ma'lumot bering?</h3>
+                    <div class="faq-icon"></div>
+                </div>
+                <div class="faq-answer">
+                    <p>Ha, albatta. Quiz Test bo'limida testlarni boshlash imkoniyatiga egasiz! O'QISH REJIMI, TEZKOR, SEKIN, TELEGRAM QUIZ MOBILE, TELEGRAM QUIZ DESKTOP, IMTIHON QUIZ kabi quiz turlari mavjud. Batafsil ma'lumot keyingi savol javoblarda...</p>
+                </div>
+            </div>
+  
+            <div class="faq-item animate" data-category="sayt">
+                <div class="faq-question">
+                    <h3>TEZKOR QUIZ haqida ma'lumot bering?</h3>
+                    <div class="faq-icon"></div>
+                </div>
+                <div class="faq-answer">
+                    <p>Tezkor Quizda siz testlarni tez ishlashingiz mumkin .txt faylni tanlaysiz va darhol testni boshlaysiz variantlardan bittasini tanlasangiz tezda keyini savolga o'tadi.</p>
+                </div>
+            </div>
+  
+            <div class="faq-item animate" data-category="sayt">
+                <div class="faq-question">
+                    <h3>SEKIN QUIZ haqida ma'lumot bering?</h3>
+                    <div class="faq-icon"></div>
+                </div>
+                <div class="faq-answer">
+                    <p>Sekin Quizda siz testlarni sekin ishlashingiz mumkin .txt faylni tanlaysiz va darhol testni boshlaysiz variantlardan bittasini tanlasangiz sekin (3-5-7 soniyagacha kechiktirish mumkin) keyini savolga o'tadi.</p>
+                </div>
+            </div>
+
+            <div class="faq-item animate" data-category="sayt">
+                <div class="faq-question">
+                    <h3>TELEGRAM MOBILE QUIZ haqida ma'lumot bering?</h3>
+                    <div class="faq-icon"></div>
+                </div>
+                <div class="faq-answer">
+                    <p>Bu Telegram Quiz botdan ilhomlanilgan holda siz uchun qulay ko'rinishda tuzilgan, asosan telefon ekrani uchun moslashtirilgan va savollar ko'p bo'lsa shularga tayyorlanish uchun qulay.</p>
+                </div>
+            </div>
+
+            <div class="faq-item animate" data-category="sayt">
+                <div class="faq-question">
+                    <h3>TELEGRAM DESKTOP QUIZ haqida ma'lumot bering?</h3>
+                    <div class="faq-icon"></div>
+                </div>
+                <div class="faq-answer">
+                    <p>Bu Telegram Quiz botdan ilhomlanilgan holda siz uchun qulay ko'rinishda tuzilgan, asosan Kampyuter ekrani uchun moslashtirilgan va savollar kam bo'lsa telefen planshetda ham foydalanish qulay shularga tayyorlanish qulay.</p>
+                </div>
+            </div>
+    
+            <div class="faq-item animate" data-category="sayt">
+                <div class="faq-question">
+                    <h3>IMTIHON QUIZ haqida ma'lumot bering?</h3>
+                    <div class="faq-icon"></div>
+                </div>
+                <div class="faq-answer">
+                    <p>Bu testga tayyorlanganlar va bilimini huddi imtihon (SESSIYA) dagi atmasferani berishi uchun moslashtirilgan. Savollarda variantlarini belgilaysiz va testni yyakunlashni bosasiz shundan keyin natija e'lon qilinadi.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="not-found">
+            <p>Afsuski, so'rovingiz bo'yicha hech narsa topilmadi. Iltimos, boshqa so'rov bilan urinib ko'ring.</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // FAQlarni ochish/yopish
+            const faqItems = document.querySelectorAll('.faq-item');
+            
+            faqItems.forEach(item => {
+                item.querySelector('.faq-question').addEventListener('click', function() {
+                    item.classList.toggle('active');
+                });
+                
+                // Animatsiya qo'shish
+                item.classList.add('animate');
+            });
+            
+            // Qidiruv funksiyasi
+            const searchInput = document.getElementById('searchInput');
+            const notFound = document.querySelector('.not-found');
+            
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                let hasResults = false;
+                
+                faqItems.forEach(item => {
+                    const question = item.querySelector('h3').textContent.toLowerCase();
+                    const answer = item.querySelector('.faq-answer p').textContent.toLowerCase();
+                    
+                    if (question.includes(searchTerm) || answer.includes(searchTerm)) {
+                        item.style.display = 'block';
+                        hasResults = true;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+                
+                notFound.style.display = hasResults ? 'none' : 'block';
+            });
+            
+            // Kategoriya filtri
+            const categoryButtons = document.querySelectorAll('.category-btn');
+            
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const category = this.getAttribute('data-category');
+                    
+                    // Aktiv tugmani belgilash
+                    categoryButtons.forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    
+                    // FAQlarni filtrlash
+                    faqItems.forEach(item => {
+                        if (category === 'all' || item.getAttribute('data-category') === category) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                    
+                    // Qidiruv natijasi bo'sh bo'lganda
+                    notFound.style.display = 'none';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
