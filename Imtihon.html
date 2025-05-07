@@ -154,7 +154,7 @@
     .new-test-btn {
       margin-top: 20px;
     }
-    /* Responsiv dizayn uchun qo‘shimcha stillar */
+    /* Responsiv dizayn uchun qo'shimcha stillar */
     @media (max-width: 576px) {
       .container {
         padding: 10px;
@@ -206,6 +206,146 @@
     .form-check-label {
       word-wrap: break-word;
       white-space: normal;
+    }
+    
+    /* Yangi qo'shilgan stillar */
+    .results-card {
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 20px;
+      background-color: #fff;
+      margin-top: 30px;
+      text-align: center;
+    }
+    
+    .progress-container {
+      margin: 25px 0;
+    }
+    
+    .progress-bar {
+      height: 20px;
+      border-radius: 10px;
+      background-color: #f0f0f0;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #4CAF50, #8BC34A);
+      transition: width 1.5s ease-in-out;
+      border-radius: 10px;
+    }
+    
+    .progress-fill.low {
+      background: linear-gradient(90deg, #FF5252, #FF8A80);
+    }
+    
+    .stats-container {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      margin: 20px 0;
+    }
+    
+    .stat-item {
+      padding: 10px 20px;
+      border-radius: 8px;
+      margin: 5px;
+      font-weight: bold;
+      min-width: 150px;
+    }
+    
+    .total-questions {
+      background-color: #E3F2FD;
+      color: #1976D2;
+    }
+    
+    .correct-answers {
+      background-color: #E8F5E9;
+      color: #388E3C;
+    }
+    
+    .wrong-answers {
+      background-color: #FFEBEE;
+      color: #D32F2F;
+    }
+    
+    .gif-container {
+      margin: 20px auto;
+      text-align: center;
+      max-width: 300px;
+      height: 200px;
+      overflow: hidden;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .salute {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      animation: salute 2s forwards;
+      opacity: 0;
+    }
+    
+    @keyframes salute {
+      0% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      50% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh);
+        opacity: 0;
+      }
+    }
+    
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      visibility: hidden;
+      opacity: 0;
+      transition: all 0.3s;
+    }
+    
+    .modal-overlay.show {
+      visibility: visible;
+      opacity: 1;
+    }
+    
+    .confirm-modal {
+      background-color: white;
+      border-radius: 10px;
+      padding: 20px;
+      max-width: 450px;
+      width: 90%;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      text-align: center;
+      transform: translateY(-20px);
+      transition: transform 0.3s;
+    }
+    
+    .modal-overlay.show .confirm-modal {
+      transform: translateY(0);
+    }
+    
+    .confirm-btn-group {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
     }
   </style>
 </head>
@@ -262,21 +402,69 @@
 
     <!-- To'plangan ballni ko'rsatish + tavsiya -->
     <div id="scoreContainer" class="score-container">
-      <div id="scoreText"></div>
-      <div id="emojiContainer"></div>
-      <div id="feedbackText" class="feedback-text"></div>
+      <!-- Yangi zamonaviy natijalar ko'rinishi -->
+      <div class="results-card">
+        <h3 class="mb-3">Imtihon Natijalari</h3>
+        
+        <div class="progress-container">
+          <div class="progress-bar">
+            <div id="progressFill" class="progress-fill" style="width: 0%"></div>
+          </div>
+          <div id="progressText" class="mt-2">0%</div>
+        </div>
+        
+        <div class="stats-container">
+          <div class="stat-item total-questions">
+            <i class="fas fa-clipboard-list"></i>
+            <div>Jami savollar</div>
+            <div id="totalQuestions">0</div>
+          </div>
+          
+          <div class="stat-item correct-answers">
+            <i class="fas fa-check-circle"></i>
+            <div>To'g'ri javoblar</div>
+            <div id="correctAnswers">0</div>
+          </div>
+          
+          <div class="stat-item wrong-answers">
+            <i class="fas fa-times-circle"></i>
+            <div>Noto'g'ri javoblar</div>
+            <div id="wrongAnswers">0</div>
+          </div>
+        </div>
+        
+        <div id="gifContainer" class="gif-container">
+          <!-- GIF bu yerda ko'rsatiladi -->
+        </div>
+        
+        <div id="feedbackText" class="feedback-text mt-3"></div>
+      </div>
     </div>
 
     <!-- Yangi test -->
-    <button id="newTestBtn" class="btn btn-success new-test-btn" style="display: none; text-align: center">
+    <button id="newTestBtn" class="btn btn-success new-test-btn" style="display: none; text-align: center; width: 100%;">
       Yangi test boshlamoq
     </button>
   </div>
 
   <!-- Confetti effekti uchun -->
   <div id="confettiContainer" class="confetti-container"></div>
+  
+  <!-- Salyut effekti uchun -->
+  <div id="saluteContainer"></div>
+  
+  <!-- Tasdiqlow modali -->
+  <div id="confirmModal" class="modal-overlay">
+    <div class="confirm-modal">
+      <h4 class="mb-3">Diqqat!</h4>
+      <p id="confirmMessage">Barcha savollarga javob berdingizmi?</p>
+      <div class="confirm-btn-group">
+        <button id="cancelFinish" class="btn btn-secondary">Bekor qilish</button>
+        <button id="confirmFinish" class="btn btn-primary">Tasdiqlash</button>
+      </div>
+    </div>
+  </div>
 </div>
-
 <script>
   let originalTests = [];
   let randomizedTests = [];
@@ -291,9 +479,7 @@
   const questionsContainer = document.getElementById("questionsContainer");
   const finishBtn = document.getElementById("finishBtn");
   const scoreContainer = document.getElementById("scoreContainer");
-  const scoreText = document.getElementById("scoreText");
   const feedbackText = document.getElementById("feedbackText");
-  const emojiContainer = document.getElementById("emojiContainer");
   const newTestBtn = document.getElementById("newTestBtn");
   const timeSettings = document.getElementById("timeSettings");
   const timerContainer = document.getElementById("timerContainer");
@@ -303,6 +489,17 @@
   const minutesInput = document.getElementById("minutesInput");
   const confettiContainer = document.getElementById("confettiContainer");
   const timeButtons = document.querySelectorAll(".btn-group button");
+  const confirmModal = document.getElementById("confirmModal");
+  const confirmMessage = document.getElementById("confirmMessage");
+  const cancelFinish = document.getElementById("cancelFinish");
+  const confirmFinish = document.getElementById("confirmFinish");
+  const progressFill = document.getElementById("progressFill");
+  const progressText = document.getElementById("progressText");
+  const totalQuestionsEl = document.getElementById("totalQuestions");
+  const correctAnswersEl = document.getElementById("correctAnswers");
+  const wrongAnswersEl = document.getElementById("wrongAnswers");
+  const gifContainer = document.getElementById("gifContainer");
+  const saluteContainer = document.getElementById("saluteContainer");
 
   // Vaqt sozlamalari
   timeButtons.forEach(button => {
@@ -365,7 +562,7 @@
     }
   });
 
-  // Test faylini parse qilish
+  // Test faylini parse qilish Facials qilish
   function parseTestFile(content) {
     originalTests = [];
     const lines = content.split("\n").map(line => line.trim()).filter(Boolean);
@@ -491,21 +688,48 @@
     checkAnswers();
     if (message) uploadStatus.textContent = message;
     newTestBtn.style.display = "block";
+    // NEW: Disable all radio buttons to prevent further changes
+    const allRadios = document.querySelectorAll('input[type="radio"]');
+    allRadios.forEach(radio => {
+      radio.disabled = true;
+    });
   }
 
   // "Testni yakunlash" tugmasi bosilganda
   finishBtn.addEventListener("click", () => {
+    const totalQuestions = randomizedTests.length;
+    let answeredCount = 0;
+    
+    randomizedTests.forEach((test, index) => {
+      const radios = document.querySelectorAll(`input[name="question_${index}"]`);
+      let answered = false;
+      radios.forEach(radio => {
+        if (radio.checked) answered = true;
+      });
+      if (answered) answeredCount++;
+    });
+    
+    confirmMessage.innerHTML = `<strong>${answeredCount}</strong> ta savolga javob berildi, <strong>${totalQuestions - answeredCount}</strong> ta savol javobsiz. <br><br>Testni yakunlashni tasdiqlaysizmi?`;
+    confirmModal.classList.add("show");
+  });
+  
+  // Modal tugmalari uchun eventlar
+  cancelFinish.addEventListener("click", () => {
+    confirmModal.classList.remove("show");
+  });
+  
+  confirmFinish.addEventListener("click", () => {
+    confirmModal.classList.remove("show");
     endExam("Test yakunlandi!");
   });
 
   // Javoblarni tekshirish
   function checkAnswers() {
-    scoreText.textContent = "";
-    feedbackText.textContent = "";
-    emojiContainer.innerHTML = "";
-    scoreContainer.classList.remove("show-feedback");
-
     let correctCount = 0;
+    let wrongCount = 0;
+    let unansweredCount = 0;
+    const totalQuestions = randomizedTests.length;
+    
     randomizedTests.forEach((test, index) => {
       const correctOptionIndex = test.correctOptionIndex;
       const radios = document.querySelectorAll(`input[name="question_${index}"]`);
@@ -528,90 +752,145 @@
         } else {
           chosenLabel.classList.add("incorrect");
           chosenLabel.innerHTML += '<span class="check-icon">❌</span>';
+          wrongCount++;
           const correctLabel = document.querySelector(`label[for="question_${index}_option_${correctOptionIndex}"]`);
           correctLabel.classList.add("correct");
           correctLabel.innerHTML += '<span class="check-icon">✅</span>';
         }
       } else {
+        unansweredCount++;
         const correctLabel = document.querySelector(`label[for="question_${index}_option_${correctOptionIndex}"]`);
         correctLabel.classList.add("correct");
         correctLabel.innerHTML += '<span class="check-icon">✅</span>';
       }
     });
 
-    const totalQuestions = randomizedTests.length;
-    scoreText.textContent = `To'g'ri javoblar: ${correctCount} / ${totalQuestions}`;
-
-    let feedback = "";
     const ratio = correctCount / totalQuestions;
+    const percentage = Math.round(ratio * 100);
+    
+    // Progress bar va statistikani yangilash
+    progressFill.style.width = `${percentage}%`;
+    progressFill.classList.toggle('low', ratio < 0.6);
+    progressText.textContent = `${percentage}%`;
+    
+    totalQuestionsEl.textContent = totalQuestions;
+    correctAnswersEl.textContent = correctCount;
+    wrongAnswersEl.textContent = (wrongCount + unansweredCount);
+    
+    // GIF va animatsiyalarni ko'rsatish
+    if (ratio >= 0.6) {
+      // Yaxshi natija uchun animatsiyalar
+      gifContainer.innerHTML = `
+        <img src="/api/placeholder/250/180" alt="Muvaffaqiyatli" style="width: 100%; height: 180px; object-fit: cover;">
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 32px;">
+          🎉 🥳 🎊
+        </div>
+      `;
+      createConfetti();
+      createSalute();
+    } else {
+      // Yaxshi bo'lmagan natija uchun animatsiyalar
+      gifContainer.innerHTML = `
+        <img src="/api/placeholder/250/180" alt="Xafa" style="width: 100%; height: 180px; object-fit: cover;">
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 32px;">
+          😔 😢 📚
+        </div>
+      `;
+    }
+    // Natija haqida xabar
+    let feedback = "";
     if (ratio < 0.6) {
       feedback = `
-          Natijangiz <span>qoniqarli</span>.
-          <br>Hali hammasi oldinda! Ko'proq amaliy mashqlar qilib, bilimlaringizni mustahkamlashga harakat qiling.
-          <br>Yangi savollarni yechish, darsliklarni o'qib va online manbalardan foydalanish o'z samarasini beradi!
-        `;
-      emojiContainer.innerHTML = '<div class="sad-emoji">😔</div>';
-    } else if (ratio < 0.8) {
+          Natijangiz <span>qoniqarli emas</span>.
+          <br>Hali hammasi oldinda! Ko'proq o'qib, mashq qiling va qayta urinib ko'ring!
+      `;
+    } else if (ratio >= 0.6 && ratio < 0.8) {
       feedback = `
           Natijangiz <span>yaxshi</span>!
-          <br>Bilimlaringiz yetarli darajada ekanligini ko'rsatdingiz, lekin yana biroz harakat bilan yuqoriroq cho'qqilarni zabt etish mumkin.
-          <br>Izlanishni to'xtatmang, doim yangi ma'lumotlar o'rganing va amaliyot bilan mustahkamlang.
-        `;
-      emojiContainer.innerHTML = '<div class="neutral-emoji">😊</div>';
+          <br>Siz yaxshi bilimga egasiz, lekin yanada yaxshiroq bo'lishingiz mumkin.
+      `;
     } else {
       feedback = `
-          Natijangiz <span>a'lo</span> darajada!
-          <br>Juda yaxshi tayyorgarlik ko'rgansiz. Bunday yuqori natija uchun sizni tabriklaymiz!
-          <br>Yangi, murakkabroq savollarga o'z kuchingizni sinab ko'ring va bilimingizni yanada boyiting.
-        `;
-      createConfetti();
-      emojiContainer.innerHTML = '<div class="neutral-emoji">🎉</div>';
+          Natijangiz <span>a'lo darajada</span>!
+          <br>Siz mavzuni chuqur o'zlashtirgan ko'rinasiz. Tabriklaymiz!
+      `;
     }
 
     feedbackText.innerHTML = feedback;
     scoreContainer.classList.add("show-feedback");
-    document.querySelectorAll('input[type="radio"]').forEach(radio => radio.disabled = true);
-    finishBtn.disabled = true;
+    finishBtn.style.display = "none";
   }
 
-  // Yangi test tugmasi bosilganda
-  newTestBtn.addEventListener("click", resetTest);
+  // Yangi test boshlash
+  newTestBtn.addEventListener("click", () => {
+    resetTest();
+  });
 
-  // Confetti effekti uchun
-  function createConfetti() {
-    confettiContainer.innerHTML = '';
-    const colors = ['#f00', '#0f0', '#00f', '#ff0', '#0ff', '#f0f', '#fff'];
-    for (let i = 0; i < 100; i++) {
-      const confetti = document.createElement('div');
-      confetti.className = 'confetti';
-      confetti.style.left = Math.random() * 100 + 'vw';
-      confetti.style.animationDelay = Math.random() * 3 + 's';
-      confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-      confettiContainer.appendChild(confetti);
-    }
-    setTimeout(() => confettiContainer.innerHTML = '', 5000);
-  }
-
-  // Testni qayta boshlash uchun
+  // Testni qayta boshlash
   function resetTest() {
-    originalTests = [];
-    randomizedTests = [];
     examStarted = false;
-    totalSeconds = 0;
-    timerElement.classList.remove("warning");
-    timerContainer.style.display = "none";
-    timeSettings.style.display = "block";
-    quizList.style.display = "none";
+    stopTimer();
     fileInput.disabled = false;
     fileInput.value = "";
     uploadStatus.textContent = "";
-    finishBtn.disabled = false;
-    newTestBtn.style.display = "none";
+    quizList.style.display = "none";
     scoreContainer.classList.remove("show-feedback");
-    confettiContainer.innerHTML = '';
+    timerElement.classList.remove("warning");
+    timerContainer.style.display = "none";
+    newTestBtn.style.display = "none";
+    finishBtn.style.display = "block";
+    timeSettings.style.display = "block";
+    // NEW: Reset time selection
     timeButtons.forEach(btn => btn.classList.remove("active"));
+    customTimeCheck.checked = false;
+    customTimeInput.style.display = "none";
+    totalSeconds = 0;
+    minutesInput.value = "15"; // Reset custom input to default
+  }
+
+  // Confetti effektini yaratish
+  function createConfetti() {
+    confettiContainer.innerHTML = '';
+    const colors = ["#fd5e53", "#3cc47c", "#1e1f26", "#df678c", "#3d8eb9", "#f9c80e"];
+    
+    for (let i = 0; i < 100; i++) {
+      const confetti = document.createElement('div');
+      confetti.className = 'confetti';
+      confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+      confetti.style.left = Math.random() * 100 + 'vw';
+      confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+      confetti.style.animationDelay = (Math.random() * 5) + 's';
+      confetti.style.width = (Math.random() * 10 + 5) + 'px';
+      confetti.style.height = (Math.random() * 10 + 5) + 'px';
+      confettiContainer.appendChild(confetti);
+    }
+    
+    setTimeout(() => {
+      confettiContainer.innerHTML = '';
+    }, 8000);
+  }
+  
+  // Salyut effektini yaratish
+  function createSalute() {
+    saluteContainer.innerHTML = '';
+    const colors = ["#ff4136", "#0074d9", "#2ecc40", "#ffdc00", "#f012be", "#ff851b"];
+    
+    for (let i = 0; i < 50; i++) {
+      setTimeout(() => {
+        const salute = document.createElement('div');
+        salute.className = 'salute';
+        salute.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        salute.style.left = Math.random() * 100 + 'vw';
+        salute.style.bottom = Math.random() * 20 + 'vh';
+        saluteContainer.appendChild(salute);
+        
+        setTimeout(() => {
+          salute.remove();
+        }, 2000);
+      }, Math.random() * 3000);
+    }
   }
 </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'923644390d1f4c2d',t:'MTc0MjQ4NDc5MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
-</body>
-</html>
+
+  </body>
+  </html>
