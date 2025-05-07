@@ -10,7 +10,7 @@
   <style>
     body {
       background-color: #f4f6f9;
-      overflow-x: hidden; /* Gorizontal siljishni oldini olish */
+      overflow-x: hidden;
     }
     .container {
       max-width: 900px;
@@ -45,6 +45,9 @@
     }
     .incorrect {
       background-color: #f8d7da !important;
+    }
+    .unanswered-correct {
+      background-color: #fff3e0 !important; /* Yellow for unanswered correct */
     }
     .check-icon {
       font-weight: bold;
@@ -154,7 +157,6 @@
     .new-test-btn {
       margin-top: 20px;
     }
-    /* Responsiv dizayn uchun qo'shimcha stillar */
     @media (max-width: 576px) {
       .container {
         padding: 10px;
@@ -207,8 +209,6 @@
       word-wrap: break-word;
       white-space: normal;
     }
-    
-    /* Yangi qo'shilgan stillar */
     .results-card {
       border-radius: 10px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
@@ -217,11 +217,9 @@
       margin-top: 30px;
       text-align: center;
     }
-    
     .progress-container {
       margin: 25px 0;
     }
-    
     .progress-bar {
       height: 20px;
       border-radius: 10px;
@@ -229,25 +227,21 @@
       overflow: hidden;
       margin-bottom: 10px;
     }
-    
     .progress-fill {
       height: 100%;
       background: linear-gradient(90deg, #4CAF50, #8BC34A);
       transition: width 1.5s ease-in-out;
       border-radius: 10px;
     }
-    
     .progress-fill.low {
       background: linear-gradient(90deg, #FF5252, #FF8A80);
     }
-    
     .stats-container {
       display: flex;
       justify-content: space-around;
       flex-wrap: wrap;
       margin: 20px 0;
     }
-    
     .stat-item {
       padding: 10px 20px;
       border-radius: 8px;
@@ -255,22 +249,22 @@
       font-weight: bold;
       min-width: 150px;
     }
-    
     .total-questions {
       background-color: #E3F2FD;
       color: #1976D2;
     }
-    
     .correct-answers {
       background-color: #E8F5E9;
       color: #388E3C;
     }
-    
-    .wrong-answers {
+    .incorrect-answers {
       background-color: #FFEBEE;
       color: #D32F2F;
     }
-    
+    .unanswered {
+      background-color: #FFF3E0;
+      color: #F57C00;
+    }
     .gif-container {
       margin: 20px auto;
       text-align: center;
@@ -280,7 +274,6 @@
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
-    
     .salute {
       position: fixed;
       width: 10px;
@@ -289,7 +282,6 @@
       animation: salute 2s forwards;
       opacity: 0;
     }
-    
     @keyframes salute {
       0% {
         transform: translateY(0);
@@ -303,7 +295,6 @@
         opacity: 0;
       }
     }
-    
     .modal-overlay {
       position: fixed;
       top: 0;
@@ -319,12 +310,10 @@
       opacity: 0;
       transition: all 0.3s;
     }
-    
     .modal-overlay.show {
       visibility: visible;
       opacity: 1;
     }
-    
     .confirm-modal {
       background-color: white;
       border-radius: 10px;
@@ -336,11 +325,9 @@
       transform: translateY(-20px);
       transition: transform 0.3s;
     }
-    
     .modal-overlay.show .confirm-modal {
       transform: translateY(0);
     }
-    
     .confirm-btn-group {
       margin-top: 20px;
       display: flex;
@@ -402,7 +389,6 @@
 
     <!-- To'plangan ballni ko'rsatish + tavsiya -->
     <div id="scoreContainer" class="score-container">
-      <!-- Yangi zamonaviy natijalar ko'rinishi -->
       <div class="results-card">
         <h3 class="mb-3">Imtihon Natijalari</h3>
         
@@ -426,16 +412,20 @@
             <div id="correctAnswers">0</div>
           </div>
           
-          <div class="stat-item wrong-answers">
+          <div class="stat-item incorrect-answers">
             <i class="fas fa-times-circle"></i>
-            <div>Noto'g'ri javoblar</div>
-            <div id="wrongAnswers">0</div>
+            <div>Xato tanlanganlar</div>
+            <div id="incorrectAnswers">0</div>
+          </div>
+          
+          <div class="stat-item unanswered">
+            <i class="fas fa-question-circle"></i>
+            <div>Javobsiz qoldirilganlar</div>
+            <div id="unanswered">0</div>
           </div>
         </div>
         
-        <div id="gifContainer" class="gif-container">
-          <!-- GIF bu yerda ko'rsatiladi -->
-        </div>
+        <div id="gifContainer" class="gif-container"></div>
         
         <div id="feedbackText" class="feedback-text mt-3"></div>
       </div>
@@ -453,7 +443,7 @@
   <!-- Salyut effekti uchun -->
   <div id="saluteContainer"></div>
   
-  <!-- Tasdiqlow modali -->
+  <!-- Tasdiqlash modali (Testni yakunlash uchun) -->
   <div id="confirmModal" class="modal-overlay">
     <div class="confirm-modal">
       <h4 class="mb-3">Diqqat!</h4>
@@ -464,13 +454,139 @@
       </div>
     </div>
   </div>
+
+  <!-- Chiqish tasdiqlash modali -->
+  <div id="exitModal" class="modal-overlay">
+    <div class="confirm-modal">
+      <h4 class="mb-3">Diqqat!</h4>
+      <p id="exitMessage">Imtihondan chiqishni hohlaysizmi (yiqilmoqchimisiz)?</p>
+      <div class="confirm-btn-group">
+        <button id="cancelExit" class="btn btn-secondary">Yo'q</button>
+        <button id="confirmExit" class="btn btn-primary">Ha</button>
+      </div>
+    </div>
+  </div>
 </div>
+
+<script type="text/javascript">
+  var gk_isXlsx = false;
+  var gk_xlsxFileLookup = {};
+  var gk_fileData = {};
+  function filledCell(cell) {
+    return cell !== '' && cell != null;
+  }
+  function loadFileData(filename) {
+    if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+      try {
+        var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+        var firstSheetName = workbook.SheetNames[0];
+        var worksheet = workbook.Sheets[firstSheetName];
+
+        var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+        var filteredData = jsonData.filter(row => row.some(filledCell));
+
+        var headerRowIndex = filteredData.findIndex((row, index) =>
+          row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+        );
+        if (headerRowIndex === -1 || headerRowIndex > 25) {
+          headerRowIndex = 0;
+        }
+
+        var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex));
+        csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+        return csv;
+      } catch (e) {
+        console.error(e);
+        return "";
+      }
+    }
+    return gk_fileData[filename] || "";
+  }
+</script>
+<script type="text/javascript">
+  var gk_isXlsx = false;
+  var gk_xlsxFileLookup = {};
+  var gk_fileData = {};
+  function filledCell(cell) {
+    return cell !== '' && cell != null;
+  }
+  function loadFileData(filename) {
+  if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+      try {
+          var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+          var firstSheetName = workbook.SheetNames[0];
+          var worksheet = workbook.Sheets[firstSheetName];
+
+          // Convert sheet to JSON to filter blank rows
+          var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+          // Filter out blank rows (rows where all cells are empty, null, or undefined)
+          var filteredData = jsonData.filter(row => row.some(filledCell));
+
+          // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+          var headerRowIndex = filteredData.findIndex((row, index) =>
+            row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+          );
+          // Fallback
+          if (headerRowIndex === -1 || headerRowIndex > 25) {
+            headerRowIndex = 0;
+          }
+
+          // Convert filtered JSON back to CSV
+          var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+          csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+          return csv;
+      } catch (e) {
+          console.error(e);
+          return "";
+      }
+  }
+  return gk_fileData[filename] || "";
+  }
+  </script>
 <script>
   let originalTests = [];
   let randomizedTests = [];
   let timerInterval;
   let totalSeconds = 0;
   let examStarted = false;
+  let allowExit = false;
+  let lastExitAttempt = 0;
+
+  // GIFlar ro'yxati va ketma-ketlikni boshqarish
+  const gifGroups = {
+    veryLow: [ // 0-29%
+      { url: "https://media.giphy.com/media/26ufnwz3wDUli7GU0/giphy.gif", alt: "Xafa 1" },
+      { url: "https://media.giphy.com/media/l0Iyl55kTeh71nTWw/giphy.gif", alt: "Xafa 2" },
+      { url: "https://media.giphy.com/media/3o7bu8sRnYp0kA6tY4/giphy.gif", alt: "Xafa 3" }
+    ],
+    low: [ // 30-59%
+      { url: "https://media.giphy.com/media/3o7TKtnuHOHzL7S7yM/giphy.gif", alt: "O'rtacha 1" },
+      { url: "https://media.giphy.com/media/26xBwdIu2iuc6bF7O/giphy.gif", alt: "O'rtacha 2" },
+      { url: "https://media.giphy.com/media/3o7TKsQ8ZgPBLgqL8Q/giphy.gif", alt: "O'rtacha 3" }
+    ],
+    medium: [ // 60-70%
+      { url: "https://media.giphy.com/media/3o7btPCcdNniyf0ArS/giphy.gif", alt: "Yaxshi 1" },
+      { url: "https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif", alt: "Yaxshi 2" },
+      { url: "https://media.giphy.com/media/26tPplGWjN0xLybiU/giphy.gif", alt: "Yaxshi 3" }
+    ],
+    high: [ // 71-81%
+      { url: "https://media.giphy.com/media/3o6ZtaO9BZHcOjmErm/giphy.gif", alt: "Juda yaxshi 1" },
+      { url: "https://media.giphy.com/media/3o7aDcz0L7lZ3X1e8w/giphy.gif", alt: "Juda yaxshi 2" },
+      { url: "https://media.giphy.com/media/26FPy3QZQqGtDcrja/giphy.gif", alt: "Juda yaxshi 3" }
+    ],
+    excellent: [ // 82-100%
+      { url: "https://media.giphy.com/media/3o7bu3V1aG3Y4jZ7JC/giphy.gif", alt: "A'lo 1" },
+      { url: "https://media.giphy.com/media/3o7aD4dKz8QzC6zO4w/giphy.gif", alt: "A'lo 2" },
+      { url: "https://media.giphy.com/media/l0MYC0LdjMM6x5RwA/giphy.gif", alt: "A'lo 3" }
+    ]
+  };
+  let gifIndices = {
+    veryLow: 0,
+    low: 0,
+    medium: 0,
+    high: 0,
+    excellent: 0
+  };
 
   const fileInput = document.getElementById("fileInput");
   const uploadStatus = document.getElementById("uploadStatus");
@@ -497,9 +613,13 @@
   const progressText = document.getElementById("progressText");
   const totalQuestionsEl = document.getElementById("totalQuestions");
   const correctAnswersEl = document.getElementById("correctAnswers");
-  const wrongAnswersEl = document.getElementById("wrongAnswers");
+  const incorrectAnswersEl = document.getElementById("incorrectAnswers");
+  const unansweredEl = document.getElementById("unanswered");
   const gifContainer = document.getElementById("gifContainer");
   const saluteContainer = document.getElementById("saluteContainer");
+  const exitModal = document.getElementById("exitModal");
+  const cancelExit = document.getElementById("cancelExit");
+  const confirmExit = document.getElementById("confirmExit");
 
   // Vaqt sozlamalari
   timeButtons.forEach(button => {
@@ -527,6 +647,36 @@
     if (customTimeCheck.checked) {
       totalSeconds = parseInt(minutesInput.value) * 60;
     }
+  });
+
+  // Prevent accidental exit with debouncing
+  window.addEventListener("beforeunload", (e) => {
+    const now = Date.now();
+    if (examStarted && !allowExit && now - lastExitAttempt > 200) {
+      lastExitAttempt = now;
+      e.preventDefault();
+      e.returnValue = "Imtihondan chiqishni hohlaysizmi?";
+      showExitModal();
+      return "Imtihondan chiqishni hohlaysizmi?";
+    }
+  });
+
+  // Show exit confirmation modal with modal overlap prevention
+  function showExitModal() {
+    if (examStarted && !confirmModal.classList.contains("show")) {
+      exitModal.classList.add("show");
+    }
+  }
+
+  // Handle exit modal actions
+  cancelExit.addEventListener("click", () => {
+    exitModal.classList.remove("show");
+  });
+
+  confirmExit.addEventListener("click", () => {
+    allowExit = true;
+    exitModal.classList.remove("show");
+    window.location.reload();
   });
 
   // Massivni randomizatsiya qilish uchun funksiya
@@ -562,7 +712,7 @@
     }
   });
 
-  // Test faylini parse qilish Facials qilish
+  // Test faylini parse qilish
   function parseTestFile(content) {
     originalTests = [];
     const lines = content.split("\n").map(line => line.trim()).filter(Boolean);
@@ -688,11 +838,11 @@
     checkAnswers();
     if (message) uploadStatus.textContent = message;
     newTestBtn.style.display = "block";
-    // NEW: Disable all radio buttons to prevent further changes
     const allRadios = document.querySelectorAll('input[type="radio"]');
     allRadios.forEach(radio => {
       radio.disabled = true;
     });
+    allowExit = true;
   }
 
   // "Testni yakunlash" tugmasi bosilganda
@@ -710,6 +860,7 @@
     });
     
     confirmMessage.innerHTML = `<strong>${answeredCount}</strong> ta savolga javob berildi, <strong>${totalQuestions - answeredCount}</strong> ta savol javobsiz. <br><br>Testni yakunlashni tasdiqlaysizmi?`;
+    exitModal.classList.remove("show");
     confirmModal.classList.add("show");
   });
   
@@ -726,7 +877,7 @@
   // Javoblarni tekshirish
   function checkAnswers() {
     let correctCount = 0;
-    let wrongCount = 0;
+    let incorrectCount = 0;
     let unansweredCount = 0;
     const totalQuestions = randomizedTests.length;
     
@@ -735,7 +886,7 @@
       const radios = document.querySelectorAll(`input[name="question_${index}"]`);
       radios.forEach(radio => {
         const label = document.querySelector(`label[for="${radio.id}"]`);
-        label.classList.remove("correct", "incorrect");
+        label.classList.remove("correct", "incorrect", "unanswered-correct");
         const checkIcon = label.querySelector(".check-icon");
         if (checkIcon) checkIcon.remove();
       });
@@ -752,7 +903,7 @@
         } else {
           chosenLabel.classList.add("incorrect");
           chosenLabel.innerHTML += '<span class="check-icon">❌</span>';
-          wrongCount++;
+          incorrectCount++;
           const correctLabel = document.querySelector(`label[for="question_${index}_option_${correctOptionIndex}"]`);
           correctLabel.classList.add("correct");
           correctLabel.innerHTML += '<span class="check-icon">✅</span>';
@@ -760,7 +911,7 @@
       } else {
         unansweredCount++;
         const correctLabel = document.querySelector(`label[for="question_${index}_option_${correctOptionIndex}"]`);
-        correctLabel.classList.add("correct");
+        correctLabel.classList.add("unanswered-correct");
         correctLabel.innerHTML += '<span class="check-icon">✅</span>';
       }
     });
@@ -775,39 +926,67 @@
     
     totalQuestionsEl.textContent = totalQuestions;
     correctAnswersEl.textContent = correctCount;
-    wrongAnswersEl.textContent = (wrongCount + unansweredCount);
+    incorrectAnswersEl.textContent = incorrectCount;
+    unansweredEl.textContent = unansweredCount;
     
-    // GIF va animatsiyalarni ko'rsatish
-    if (ratio >= 0.6) {
-      // Yaxshi natija uchun animatsiyalar
-      gifContainer.innerHTML = `
-        <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExZnBxZjd0d3UzcDBsYmt0bzRhZzFmMGVocjhtdmZuamt6bTNxYTBiZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/zaqclXyLz3Uoo/giphy.gif" alt="Muvaffaqiyatli" style="width: 100%; height: 180px; object-fit: cover;">
-        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 32px;">
-          🎉 🥳 🎊
-        </div>
-      `;
+    // GIFni tanlash
+    let gifGroupKey, emoji;
+    if (percentage <= 29) {
+      gifGroupKey = "veryLow";
+      emoji = "😔 😢 📚";
+    } else if (percentage <= 59) {
+      gifGroupKey = "low";
+      emoji = "😐 📖";
+    } else if (percentage <= 70) {
+      gifGroupKey = "medium";
+      emoji = "🙂 👍";
+    } else if (percentage <= 81) {
+      gifGroupKey = "high";
+      emoji = "😊 🎉";
+    } else {
+      gifGroupKey = "excellent";
+      emoji = "🎉 🥳 🎊";
+    }
+
+    const currentIndex = gifIndices[gifGroupKey];
+    const selectedGif = gifGroups[gifGroupKey][currentIndex];
+    gifContainer.innerHTML = `
+      <img src="${selectedGif.url}" alt="${selectedGif.alt}" style="width: 100%; height: 180px; object-fit: cover;">
+      <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 32px;">
+        ${emoji}
+      </div>
+    `;
+    
+    // Keyingi test uchun indeksni yangilash
+    gifIndices[gifGroupKey] = (currentIndex + 1) % gifGroups[gifGroupKey].length;
+
+    // Animatsiyalar
+    if (percentage >= 60) {
       createConfetti();
       createSalute();
-    } else {
-      // Yaxshi bo'lmagan natija uchun animatsiyalar
-      gifContainer.innerHTML = `
-        <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExMWl2eDNib3Y0NGh1dzQ4ZW0zb3l6ZDZ5cDUydDB1YXJ3cmRqanRjdiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/c6WsAjyVl9xJa4T8Rq/giphy.gif" alt="Xafa" style="width: 100%; height: 180px; object-fit: cover;">
-        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 32px;">
-          😔 😢 📚
-        </div>
-      `;
     }
+
     // Natija haqida xabar
     let feedback = "";
-    if (ratio < 0.6) {
+    if (percentage < 30) {
       feedback = `
           Natijangiz <span>qoniqarli emas</span>.
           <br>Hali hammasi oldinda! Ko'proq o'qib, mashq qiling va qayta urinib ko'ring!
       `;
-    } else if (ratio >= 0.6 && ratio < 0.8) {
+    } else if (percentage < 60) {
+      feedback = `
+          Natijangiz <span>o'rtacha</span>.
+          <br>Yana biroz harakat qilsangiz, yaxshi natijaga erishasiz!
+      `;
+    } else if (percentage <= 70) {
       feedback = `
           Natijangiz <span>yaxshi</span>!
           <br>Siz yaxshi bilimga egasiz, lekin yanada yaxshiroq bo'lishingiz mumkin.
+      `;
+    } else if (percentage <= 81) {
+      feedback = `
+          Natijangiz <span>juda yaxshi</span>!
+          <br>Siz mavzuni yaxshi o'zlashtirgansiz. Ajoyib!
       `;
     } else {
       feedback = `
@@ -829,6 +1008,8 @@
   // Testni qayta boshlash
   function resetTest() {
     examStarted = false;
+    allowExit = false;
+    lastExitAttempt = 0;
     stopTimer();
     fileInput.disabled = false;
     fileInput.value = "";
@@ -840,12 +1021,11 @@
     newTestBtn.style.display = "none";
     finishBtn.style.display = "block";
     timeSettings.style.display = "block";
-    // NEW: Reset time selection
     timeButtons.forEach(btn => btn.classList.remove("active"));
     customTimeCheck.checked = false;
     customTimeInput.style.display = "none";
     totalSeconds = 0;
-    minutesInput.value = "15"; // Reset custom input to default
+    minutesInput.value = "15";
   }
 
   // Confetti effektini yaratish
@@ -891,6 +1071,6 @@
     }
   }
 </script>
-
-  </body>
-  </html>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93c00001fb5353b1',t:'MTc0NjYxMzM4Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body>
+</html>
