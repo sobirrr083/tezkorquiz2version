@@ -7,74 +7,133 @@
   <link rel="icon" href="tg.png">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.10.0/lottie.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
+    :root {
+      --body-bg: #f4f6f9;
+      --container-bg: #fff;
+      --text-color: #333;
+      --shadow-color: rgba(0, 0, 0, 0.1);
+      --option-hover: #f8f9fa;
+      --correct-bg: #d1e7dd;
+      --correct-border: #198754;
+      --incorrect-bg: #f8d7da;
+      --incorrect-border: #dc3545;
+      --progress-bg: #e9ecef;
+      --stats-bg: #f8f9fa;
+      --toggle-bg: #ccc;
+      --button-bg: #506eec;
+      --button-hover: #3a5ad9;
+      --history-bg: #f8f9fa;
+      --history-hover: #e9ecef;
+      --scrollbar-track: #e9ecef;
+      --scrollbar-thumb: #506eec;
+    }
+
+    [data-theme="dark"] {
+      --body-bg: #2a2a2a;
+      --container-bg: #333333;
+      --text-color: #b0b0b0;
+      --shadow-color: rgba(255, 255, 255, 0.1);
+      --option-hover: #444444;
+      --correct-bg: #2e6b47;
+      --correct-border: #34c759;
+      --incorrect-bg: #6b2e2e;
+      --incorrect-border: #ff5555;
+      --progress-bg: #444444;
+      --stats-bg: #3a3a3a;
+      --toggle-bg: #666;
+      --button-bg: #5a74e8;
+      --button-hover: #4a64d8;
+      --history-bg: #3a3a3a;
+      --history-hover: #4a4a4a;
+      --scrollbar-track: #444444;
+      --scrollbar-thumb: #5a74e8;
+    }
+
     body {
-      background-color: #f4f6f9;
+      background-color: var(--body-bg);
+      color: var(--text-color);
       overflow-x: hidden;
       display: flex;
       justify-content: center;
       min-height: 100vh;
+      transition: all 0.3s ease;
+      position: relative;
     }
+
     .container {
       width: 70%;
       margin: 20px auto;
-      background-color: #fff;
+      background-color: var(--container-bg);
       padding: 30px;
       border-radius: 6px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 5px var(--shadow-color);
       max-width: 1200px;
+      position: relative;
+      min-height: 100%;
+      transition: all 0.3s ease;
     }
     @media (min-width: 1200px) { .container { width: 70%; padding: 40px; } }
     @media (max-width: 992px) { .container { width: 80%; } }
     @media (max-width: 768px) { .container { width: 90%; padding: 20px; } }
     .file-label { margin-bottom: 10px; font-size: 18px; }
     #uploadStatus { font-weight: bold; margin-top: 10px; font-size: 16px; }
-    .question-container { border: 1px solid #ddd; border-radius: 6px; padding: 20px; margin-bottom: 20px; scroll-margin-top: 20px; }
+    .question-container {
+      border: 1px solid var(--progress-bg);
+      border-radius: 6px;
+      padding: 20px;
+      margin-bottom: 20px;
+      scroll-margin-top: 20px;
+      background-color: var(--container-bg);
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 1;
+      min-height: 200px;
+    }
     .question-text { font-weight: bold; margin-bottom: 15px; font-size: 18px; }
     .options-container .option-item { margin-bottom: 12px; padding: 12px; border-radius: 4px; display: flex; align-items: flex-start; cursor: pointer; transition: all 0.2s ease; font-size: 16px; }
-    .options-container .option-item:hover { background-color: #f8f9fa; }
-    .options-container .option-item.correct { background-color: #d1e7dd; border-left: 4px solid #198754; }
-    .options-container .option-item.incorrect { background-color: #f8d7da; border-left: 4px solid #dc3545; }
+    .options-container .option-item:hover { background-color: var(--option-hover); }
+    .options-container .option-item.correct { background-color: var(--correct-bg); border-left: 4px solid var(--correct-border); }
+    .options-container .option-item.incorrect { background-color: var(--incorrect-bg); border-left: 4px solid var(--incorrect-border); }
     .option-checkbox { margin-right: 10px; flex-shrink: 0; }
     .option-text { flex-grow: 1; }
     .check-icon { margin-right: 8px; font-weight: bold; margin-left: 8px; }
     @keyframes correctPulse {
-      0% { transform: scale(1); background-color: #d1e7dd; }
-      50% { transform: scale(1.01); background-color: #bde0c8; }
-      100% { transform: scale(1); background-color: #d1e7dd; }
+      0% { transform: scale(1); }
+      50% { transform: scale(1.005); }
+      100% { transform: scale(1); }
     }
     .correct-anim { animation: correctPulse 0.5s ease; }
     @keyframes shake {
       0% { transform: translateX(0); }
-      20% { transform: translateX(-5px); }
-      40% { transform: translateX(5px); }
-      60% { transform: translateX(-5px); }
-      80% { transform: translateX(5px); }
+      25% { transform: translateX(-3px); }
+      50% { transform: translateX(3px); }
+      75% { transform: translateX(-3px); }
       100% { transform: translateX(0); }
     }
     .incorrect-anim { animation: shake 0.5s ease; }
-    #backToTop { position: fixed; bottom: 30px; right: 30px; display: none; background: #007bff; color: white; border: none; padding: 15px 20px; font-size: 20px; border-radius: 50%; cursor: pointer; transition: all 0.3s; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); }
-    #backToTop:hover { background: #0056b3; transform: scale(1.1); }
+    #backToTop { position: fixed; bottom: 30px; right: 30px; display: none; background: var(--button-bg); color: white; border: none; padding: 15px 20px; font-size: 20px; border-radius: 50%; cursor: pointer; transition: all 0.3s; box-shadow: 0px 4px 6px var(--shadow-color); }
+    #backToTop:hover { background: var(--button-hover); transform: scale(1.1); }
     #backToTop.recommend { padding: 12px 24px; border-radius: 25px; display: flex; align-items: center; justify-content: center; min-width: 120px; }
     #backToTop.recommend .count { margin-left: 8px; font-size: 16px; }
-    #backToTop.recommend .text { margin-left: 8px; font-size: 14px; }
     .custom-checkbox { width: 22px; height: 22px; border-radius: 3px; border: 1px solid #9098a9; margin-right: 12px; position: relative; margin-top: 3px; transition: all 0.2s ease; }
-    .custom-checkbox.checked { background-color: #506eec; border-color: #506eec; }
+    .custom-checkbox.checked { background-color: var(--button-bg); border-color: var(--button-bg); }
     .custom-checkbox .checkmark { display: none; color: white; position: absolute; top: 0px; left: 5px; font-size: 14px; }
     .custom-checkbox.checked .checkmark { display: block; }
-    .option-item:hover .custom-checkbox { border-color: #506eec; }
+    .option-item:hover .custom-checkbox { border-color: var(--button-bg); }
     #quizCompletionSection { display: none; margin-top: 40px; text-align: center; }
-    .stats-container { margin-top: 30px; padding: 30px; border-radius: 8px; background-color: #f8f9fa; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-    .progress-bar-container { margin-top: 20px; height: 24px; background-color: #e9ecef; border-radius: 12px; overflow: hidden; position: relative; }
+    .stats-container { margin-top: 30px; padding: 30px; border-radius: 8px; background-color: var(--stats-bg); box-shadow: 0 2px 4px var(--shadow-color); transition: all 0.3s ease; }
+    .progress-bar-container { margin-top: 20px; height: 24px; background-color: var(--progress-bg); border-radius: 12px; overflow: hidden; position: relative; }
     .progress-bar { height: 100%; border-radius: 12px; transition: width 1s ease-in-out; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 16px; }
-    .progress-correct { background-color: #28a745; }
-    .progress-incorrect { background-color: #dc3545; }
+    .progress-correct { background-color: var(--correct-border); }
+    .progress-incorrect { background-color: var(--incorrect-border); }
     #lottieContainer { width: 250px; height: 250px; margin: 0 auto 30px auto; }
-    .celebration-title { font-size: 32px; font-weight: bold; margin-bottom: 30px; color: #506eec; }
+    .celebration-title { font-size: 32px; font-weight: bold; margin-bottom: 30px; color: var(--button-bg); }
     .stat-number { font-size: 24px; font-weight: bold; }
-    .dual-progress { position: relative; height: 24px; background-color: #e9ecef; border-radius: 12px; overflow: hidden; margin: 15px 0 30px 0; }
-    .action-button { background-color: #506eec; color: white; border: none; padding: 12px 25px; border-radius: 5px; font-weight: bold; font-size: 18px; cursor: pointer; transition: all 0.3s ease; margin-top: 20px; }
-    .action-button:hover { background-color: #3a5ad9; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+    .dual-progress { position: relative; height: 24px; background-color: var(--progress-bg); border-radius: 12px; overflow: hidden; margin: 15px 0 30px 0; transition: all 0.3s ease; }
+    .action-button { background-color: var(--button-bg); color: white; border: none; padding: 12px 25px; border-radius: 5px; font-weight: bold; font-size: 18px; cursor: pointer; transition: all 0.3s ease; margin-top: 20px; }
+    .action-button:hover { background-color: var(--button-hover); transform: translateY(-2px); box-shadow: 0 4px 8px var(--shadow-color); }
     .action-button:active { transform: translateY(0); }
     h1 { font-size: 32px; margin-bottom: 30px; }
     #fileInput { font-size: 16px; padding: 10px; }
@@ -83,33 +142,54 @@
     .toggle-container { display: flex; align-items: center; margin-top: 10px; }
     .toggle-switch { position: relative; display: inline-block; width: 48px; height: 24px; margin-right: 8px; }
     .toggle-switch input { opacity: 0; width: 0; height: 0; }
-    .toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 24px; }
+    .toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--toggle-bg); transition: .4s; border-radius: 24px; }
     .toggle-slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
-    input:checked + .toggle-slider { background-color: #506eec; }
+    input:checked + .toggle-slider { background-color: var(--button-bg); }
     input:checked + .toggle-slider:before { transform: translateX(24px); }
-    .toggle-label { font-size: 14px; color: #555; }
+    .toggle-label { font-size: 14px; color: var(--text-color); }
     .history-section { margin-top: 15px; width: 100%; }
-    .history-toggle { background-color: #506eec; color: white; border: none; padding: 8px 12px; border-radius: 5px; font-size: 14px; cursor: pointer; width: 100%; text-align: left; transition: all 0.3s ease; }
-    .history-toggle:hover { background-color: #3a5ad9; }
+    .history-toggle { background-color: var(--button-bg); color: white; border: none; padding: 8px 12px; border-radius: 5px; font-size: 14px; cursor: pointer; width: 100%; text-align: left; transition: all 0.3s ease; }
+    .history-toggle:hover { background-color: var(--button-hover); }
     .history-toggle.collapsed::after { content: " ▸"; }
     .history-toggle:not(.collapsed)::after { content: " ▾"; }
-    .history-list { max-height: 0; overflow-y: auto; overflow-x: hidden; transition: max-height 0.3s ease-out; background-color: #f8f9fa; border-radius: 5px; margin-top: 5px; padding: 0; scrollbar-width: thin; scrollbar-color: #506eec #e9ecef; }
+    .history-list { max-height: 0; overflow-y: auto; overflow-x: hidden; transition: max-height 0.3s ease-out; background-color: var(--history-bg); border-radius: 5px; margin-top: 5px; padding: 0; scrollbar-width: thin; scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track); }
     .history-list::-webkit-scrollbar { width: 8px; }
-    .history-list::-webkit-scrollbar-track { background: #e9ecef; border-radius: 5px; }
-    .history-list::-webkit-scrollbar-thumb { background: #506eec; border-radius: 5px; }
-    .history-list::-webkit-scrollbar-thumb:hover { background: #3a5ad9; }
+    .history-list::-webkit-scrollbar-track { background: var(--scrollbar-track); border-radius: 5px; }
+    .history-list::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 5px; }
+    .history-list::-webkit-scrollbar-thumb:hover { background: var(--button-hover); }
     .history-list.visible { max-height: 150px; padding: 10px; transition: max-height 0.3s ease-in; }
-    .history-item { padding: 5px 10px; font-size: 13px; color: #333; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; opacity: 0; animation: fadeIn 0.3s ease forwards; }
+    .history-item { padding: 5px 10px; font-size: 13px; color: var(--text-color); border-bottom: 1px solid var(--progress-bg); display: flex; justify-content: space-between; align-items: center; opacity: 0; animation: fadeIn 0.3s ease forwards; transition: all 0.3s ease; }
     .history-item:last-child { border-bottom: none; }
-    .history-item:hover { background-color: #e9ecef; transform: translateX(5px); transition: all 0.2s ease; }
+    .history-item:hover { background-color: var(--history-hover); transform: translateX(5px); }
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(-5px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
+    .theme-toggle-container { display: flex; align-items: center; justify-content: flex-end; margin-bottom: 20px; }
+
+    #fireworksCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1000;
+    }
   </style>
 </head>
 <body>
+<canvas id="fireworksCanvas"></canvas>
 <div class="container">
+  <div class="theme-toggle-container">
+    <label class="toggle-switch">
+      <input type="checkbox" id="themeToggle" />
+      <span class="toggle-slider"></span>
+    </label>
+    <span class="toggle-label">Tungi rejim</span>
+  </div>
+
   <h1 class="text-center mb-4">Telegram Quiz</h1>
   <div class="mb-4" id="fileSection">
     <label for="fileInput" class="form-label file-label">Fayl tanlash (.txt)</label>
@@ -124,7 +204,7 @@
       <span class="toggle-label">Avtomatik pastga tushish</span>
     </div>
     <div class="history-section" id="historySection">
-      <button class="history-toggle" id="historyToggle">Fayl Tarixi ▾</button>
+      <button class="history-toggle collapsed" id="historyToggle">Oxirgi 10 ta Fayl Tarixi</button>
       <div class="history-list" id="historyList"></div>
     </div>
   </div>
@@ -167,9 +247,6 @@
   const backToTopButton = document.getElementById("backToTop");
   const startNewTestButton = document.getElementById("startNewTest");
   const autoScrollToggle = document.getElementById("autoScrollToggle");
-  let tests = [];
-  let stats = { correct: 0, incorrect: 0, total: 0 };
-  
   const fileInput = document.getElementById("fileInput");
   const uploadStatus = document.getElementById("uploadStatus");
   const quizList = document.getElementById("quizList");
@@ -182,27 +259,76 @@
   const correctBarEl = document.getElementById("correctBar");
   const incorrectBarEl = document.getElementById("incorrectBar");
   const percentageCorrectEl = document.getElementById("percentageCorrect");
+  const themeToggle = document.getElementById("themeToggle");
 
-  // Lottie animatsiya qismi Telegram Quizdan ko'chirildi
-  const animationFiles = [
-    './json/buy.json',
-    './json/marketing.json',
-    './json/target.json',
-    './json/work.json',
-    './json/ani1.json',
-    './json/ani2.json',
-    './json/ani3.json',
-    './json/ani4.json',
-    './json/ani5.json',
-    './json/ani6.json',
-    './json/ani7.json',
-    './json/ani8.json',
-    './json/ani9.json',
-    './json/ani10.json',
-  ];
-  
-  let usedAnimations = [];
+  let tests = [];
+  let stats = { correct: 0, incorrect: 0, total: 0 };
   let lottieAnimation = null;
+
+  const animationFiles = [
+    'https://assets.lottiefiles.com/packages/lf20_usmfx6.json',
+    'https://assets.lottiefiles.com/packages/lf20_vpmsry.json',
+  ];
+  let usedAnimations = [];
+
+  function launchFireworks() {
+    const canvas = document.getElementById('fireworksCanvas');
+    const duration = 1.5 * 1000;
+    const animationEnd = Date.now() + duration;
+    const defaults = {
+      startVelocity: 20,
+      spread: 180,
+      ticks: 30,
+      zIndex: 1000,
+      colors: ['#FFD700', '#1E90FF', '#FF69B4']
+    };
+
+    function randomInRange(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    const interval = setInterval(function() {
+      const timeLeft = animationEnd - Date.now();
+      if (timeLeft <= 0) return clearInterval(interval);
+      const particleCount = 20 * (timeLeft / duration);
+      confetti(Object.assign({}, defaults, {
+        particleCount,
+        origin: { x: randomInRange(0.3, 0.7), y: Math.random() - 0.1 }
+      }));
+    }, 400);
+
+    setTimeout(() => {
+      confetti({
+        particleCount: 50,
+        spread: 50,
+        origin: { y: 0.6 },
+        colors: ['#FFD700', '#1E90FF'],
+        zIndex: 1000
+      });
+    }, 300);
+  }
+
+  const currentTheme = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-theme', currentTheme);
+  themeToggle.checked = currentTheme === 'dark';
+
+  themeToggle.addEventListener('change', function() {
+    const theme = this.checked ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  });
+
+  if (localStorage.getItem("autoScrollEnabled") === null) {
+    localStorage.setItem("autoScrollEnabled", "true");
+  } else {
+    autoScrollToggle.checked = localStorage.getItem("autoScrollEnabled") === "true";
+  }
+
+  autoScrollToggle.addEventListener("change", function() {
+    localStorage.setItem("autoScrollEnabled", this.checked);
+  });
+
+  window.onscroll = updateBackToTopButton;
 
   function getRandomAnimation() {
     if (usedAnimations.length >= animationFiles.length) usedAnimations = [];
@@ -224,50 +350,6 @@
     });
   }
 
-  if (localStorage.getItem("autoScrollEnabled") === null) {
-    localStorage.setItem("autoScrollEnabled", "true");
-  } else {
-    autoScrollToggle.checked = localStorage.getItem("autoScrollEnabled") === "true";
-  }
-
-  autoScrollToggle.addEventListener("change", function() {
-    localStorage.setItem("autoScrollEnabled", this.checked);
-  });
-
-  function updateBackToTopButton() {
-    const unanswered = tests.filter((test, index) => {
-      const optionItems = document.querySelectorAll(`.option-item[data-question-index="${index}"]`);
-      return !Array.from(optionItems).some(item => item.classList.contains("correct") || item.classList.contains("incorrect"));
-    }).length;
-
-    if (unanswered > 0 && unanswered <= 5) {
-      backToTopButton.classList.add("recommend");
-      backToTopButton.innerHTML = `🔼 <span class="count">${unanswered}</span> <span class="text">ta qoldi</span>`;
-      backToTopButton.title = `${unanswered} ta javob berilmagan savol bor`;
-      backToTopButton.onclick = function() {
-        const firstUnansweredIndex = tests.findIndex((test, index) => {
-          const optionItems = document.querySelectorAll(`.option-item[data-question-index="${index}"]`);
-          return !Array.from(optionItems).some(item => item.classList.contains("correct") || item.classList.contains("incorrect"));
-        });
-        if (firstUnansweredIndex !== -1) {
-          document.getElementById(`question-${firstUnansweredIndex}`).scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-      };
-    } else {
-      backToTopButton.classList.remove("recommend");
-      backToTopButton.innerHTML = "🔼";
-      backToTopButton.title = "Yuqoriga qaytish";
-      backToTopButton.onclick = function() { window.scrollTo({ top: 0, behavior: "smooth" }); };
-    }
-    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
-      backToTopButton.style.display = "block";
-    } else {
-      backToTopButton.style.display = "none";
-    }
-  }
-
-  window.onscroll = updateBackToTopButton;
-
   startNewTestButton.addEventListener("click", function() {
     window.scrollTo({ top: 0, behavior: "smooth" });
     quizCompletionSection.style.display = "none";
@@ -279,6 +361,7 @@
     const selectedAnimation = getRandomAnimation();
     loadLottieAnimation(selectedAnimation);
     updateBackToTopButton();
+    fileInput.disabled = false;
   });
 
   function loadFileHistory() {
@@ -342,6 +425,10 @@
       }
     }
 
+    if (currentTest && currentTest.options.length > 0 && currentTest.answer) {
+      tests.push(currentTest);
+    }
+
     if (tests.length > 0) {
       uploadStatus.textContent = "Fayl yuklandi!";
       fileInput.disabled = true;
@@ -363,13 +450,14 @@
 
   function showTests() {
     quizList.style.display = "block";
-    testCount.textContent = tests.length + " ta test yuklandi!";
+    testCount.textContent = `${tests.length} ta test yuklandi!`;
     questionsContainer.innerHTML = "";
 
     tests.forEach((test, index) => {
       const questionDiv = document.createElement("div");
       questionDiv.className = "question-container";
       questionDiv.id = `question-${index}`;
+      questionDiv.style.minHeight = "200px";
       const qText = document.createElement("div");
       qText.className = "question-text";
       qText.textContent = `${index + 1}. ${test.question}`;
@@ -377,6 +465,8 @@
 
       const optionsDiv = document.createElement("div");
       optionsDiv.className = "options-container";
+      optionsDiv.style.position = "relative";
+      optionsDiv.style.zIndex = "2";
 
       const optionIndices = [...Array(test.options.length).keys()];
       shuffleArray(optionIndices);
@@ -465,7 +555,7 @@
 
     const selectedItem = document.querySelector(`.option-item[data-question-index="${questionIndex}"][data-option-index="${selectedRandomIndex}"]`);
     const correctRawOption = test.rawOptions.find(opt => opt.startsWith(correctLetter + ".") || opt.startsWith(correctLetter + ")"));
-    const correctOptionText = correctRawOption.replace(/^[A-D][\.\)]\s*/, "").trim();
+    const correctOptionText = correctRawOption ? correctRawOption.replace(/^[A-D][\.\)]\s*/, "").trim() : "";
     const correctOriginalIndex = test.options.indexOf(correctOptionText);
 
     let correctRandomIndex = null;
@@ -485,6 +575,7 @@
       checkIcon.textContent = "✅";
       selectedItem.appendChild(checkIcon);
       stats.correct++;
+      launchFireworks();
     } else {
       selectedItem.classList.add("incorrect", "incorrect-anim");
       const wrongIcon = document.createElement("span");
@@ -492,11 +583,13 @@
       wrongIcon.textContent = "❌";
       selectedItem.appendChild(wrongIcon);
 
-      correctItem.classList.add("correct");
-      const correctIcon = document.createElement("span");
-      correctIcon.className = "check-icon";
-      correctIcon.textContent = "✅";
-      correctItem.appendChild(correctIcon);
+      if (correctItem) {
+        correctItem.classList.add("correct");
+        const correctIcon = document.createElement("span");
+        correctIcon.className = "check-icon";
+        correctIcon.textContent = "✅";
+        correctItem.appendChild(correctIcon);
+      }
 
       stats.incorrect++;
     }
@@ -517,6 +610,38 @@
       fileInput.disabled = false;
       uploadStatus.textContent = "Barcha testlar belgilandi. Yangi fayl tanlash mumkin!";
       showCompletionStats();
+    }
+  }
+
+  function updateBackToTopButton() {
+    const unanswered = tests.filter((test, index) => {
+      const optionItems = document.querySelectorAll(`.option-item[data-question-index="${index}"]`);
+      return !Array.from(optionItems).some(item => item.classList.contains("correct") || item.classList.contains("incorrect"));
+    }).length;
+
+    if (unanswered > 0 && unanswered <= 5) {
+      backToTopButton.classList.add("recommend");
+      backToTopButton.innerHTML = `🔼 <span class="count">${unanswered}</span> <span class="text">ta qoldi</span>`;
+      backToTopButton.title = `${unanswered} ta javob berilmagan savol bor`;
+      backToTopButton.onclick = function() {
+        const firstUnansweredIndex = tests.findIndex((test, index) => {
+          const optionItems = document.querySelectorAll(`.option-item[data-question-index="${index}"]`);
+          return !Array.from(optionItems).some(item => item.classList.contains("correct") || item.classList.contains("incorrect"));
+        });
+        if (firstUnansweredIndex !== -1) {
+          document.getElementById(`question-${firstUnansweredIndex}`).scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      };
+    } else {
+      backToTopButton.classList.remove("recommend");
+      backToTopButton.innerHTML = "🔼";
+      backToTopButton.title = "Yuqoriga qaytish";
+      backToTopButton.onclick = function() { window.scrollTo({ top: 0, behavior: "smooth" }); };
+    }
+    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+      backToTopButton.style.display = "block";
+    } else {
+      backToTopButton.style.display = "none";
     }
   }
 
@@ -551,19 +676,19 @@
   const historyList = document.getElementById("historyList");
 
   historyToggle.addEventListener("click", function() {
-    const isCollapsed = historyList.classList.contains("visible");
+    const isCollapsed = !historyList.classList.contains("visible");
     if (isCollapsed) {
+      historyList.classList.add("visible");
+      historyToggle.classList.remove("collapsed");
+      historyList.style.maxHeight = historyList.scrollHeight + "px";
+      setTimeout(() => { historyList.style.maxHeight = "150px"; }, 300);
+    } else {
       historyList.style.maxHeight = historyList.scrollHeight + "px";
       setTimeout(() => {
         historyList.style.maxHeight = "0";
         historyList.classList.remove("visible");
         historyToggle.classList.add("collapsed");
       }, 10);
-    } else {
-      historyList.classList.add("visible");
-      historyToggle.classList.remove("collapsed");
-      historyList.style.maxHeight = historyList.scrollHeight + "px";
-      setTimeout(() => { historyList.style.maxHeight = "150px"; }, 300);
     }
   });
 
@@ -571,8 +696,15 @@
     const initialAnimation = getRandomAnimation();
     loadLottieAnimation(initialAnimation);
     loadFileHistory();
+
+    const canvas = document.getElementById('fireworksCanvas');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
   });
 </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9263f5b18d1f7bc3',t:'MTc0Mjk2MzkxOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>
