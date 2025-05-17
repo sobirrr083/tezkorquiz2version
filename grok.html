@@ -7,152 +7,118 @@
   <link rel="icon" href="tg.png">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.10.0/lottie.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
+    :root {
+      --body-bg: #f4f6f9;
+      --container-bg: #fff;
+      --text-color: #333;
+      --shadow-color: rgba(0, 0, 0, 0.1);
+      --option-hover: #f8f9fa;
+      --correct-bg: #d1e7dd;
+      --correct-border: #198754;
+      --incorrect-bg: #f8d7da;
+      --incorrect-border: #dc3545;
+      --progress-bg: #e9ecef;
+      --stats-bg: #f8f9fa;
+      --toggle-bg: #ccc;
+      --button-bg: #506eec;
+      --button-hover: #3a5ad9;
+      --history-bg: #f8f9fa;
+      --history-hover: #e9ecef;
+      --scrollbar-track: #e9ecef;
+      --scrollbar-thumb: #506eec;
+    }
+
+    [data-theme="dark"] {
+      --body-bg: #2a2a2a;
+      --container-bg: #333333;
+      --text-color: #b0b0b0;
+      --shadow-color: rgba(255, 255, 255, 0.1);
+      --option-hover: #444444;
+      --correct-bg: #2e6b47;
+      --correct-border: #34c759;
+      --incorrect-bg: #6b2e2e;
+      --incorrect-border: #ff5555;
+      --progress-bg: #444444;
+      --stats-bg: #3a3a3a;
+      --toggle-bg: #666;
+      --button-bg: #5a74e8;
+      --button-hover: #4a64d8;
+      --history-bg: #3a3a3a;
+      --history-hover: #4a4a4a;
+      --scrollbar-track: #444444;
+      --scrollbar-thumb: #5a74e8;
+    }
+
     body {
-      background-color: #f4f6f9;
+      background-color: var(--body-bg);
+      color: var(--text-color);
       overflow-x: hidden;
       display: flex;
       justify-content: center;
       min-height: 100vh;
-      transition: background-color 0.3s, color 0.3s;
+      transition: all 0.3s ease;
+      position: relative;
     }
-    body.dark-mode {
-      background-color: #1a1a1a;
-      color: #e0e0e0;
-    }
+
     .container {
       width: 70%;
       margin: 20px auto;
-      background-color: #fff;
+      background-color: var(--container-bg);
       padding: 30px;
       border-radius: 6px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 5px var(--shadow-color);
       max-width: 1200px;
-      transition: background-color 0.3s, color 0.3s;
-    }
-    .dark-mode .container {
-      background-color: #2c2c2c;
-      box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
+      position: relative;
+      min-height: 100%;
+      transition: all 0.3s ease;
     }
     @media (min-width: 1200px) { .container { width: 70%; padding: 40px; } }
     @media (max-width: 992px) { .container { width: 80%; } }
     @media (max-width: 768px) { .container { width: 90%; padding: 20px; } }
-    .file-label {
-      margin-bottom: 10px;
-      font-size: 18px;
-      color: #333;
-    }
-    .dark-mode .file-label {
-      color: #e0e0e0;
-    }
-    #uploadStatus {
-      font-weight: bold;
-      margin-top: 10px;
-      font-size: 16px;
-      color: #333;
-    }
-    .dark-mode #uploadStatus {
-      color: #e0e0e0;
-    }
+    .file-label { margin-bottom: 10px; font-size: 18px; }
+    #uploadStatus { font-weight: bold; margin-top: 10px; font-size: 16px; }
     .question-container {
-      border: 1px solid #ddd;
+      border: 1px solid var(--progress-bg);
       border-radius: 6px;
       padding: 20px;
       margin-bottom: 20px;
       scroll-margin-top: 20px;
-      transition: border-color 0.3s, background-color 0.3s;
+      background-color: var(--container-bg);
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 1;
+      min-height: 200px;
     }
-    .dark-mode .question-container {
-      border-color: #555;
-      background-color: #333;
-    }
-    .question-text {
-      font-weight: bold;
-      margin-bottom: 15px;
-      font-size: 18px;
-      color: #333;
-    }
-    .dark-mode .question-text {
-      color: #e0e0e0;
-    }
-    .options-container .option-item {
-      margin-bottom: 12px;
-      padding: 12px;
-      border-radius: 4px;
-      display: flex;
-      align-items: flex-start;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      font-size: 16px;
-      background-color: #fff;
-      color: #333;
-    }
-    .dark-mode .options-container .option-item {
-      background-color: #444;
-      color: #e0e0e0;
-    }
-    .options-container .option-item:hover {
-      background-color: #f8f9fa;
-    }
-    .dark-mode .options-container .option-item:hover {
-      background-color: #555;
-    }
-    .options-container .option-item.correct {
-      background-color: #d1e7dd;
-      border-left: 4px solid #198754;
-    }
-    .dark-mode .options-container .option-item.correct {
-      background-color: #2e6b47;
-    }
-    .options-container .option-item.incorrect {
-      background-color: #f8d7da;
-      border-left: 4px solid #dc3545;
-    }
-    .dark-mode .options-container .option-item.incorrect {
-      background-color: #6b2e2e;
-    }
-    .option-checkbox {
-      margin-right: 10px;
-      flex-shrink: 0;
-    }
-    .option-text {
-      flex-grow: 1;
-    }
-    .check-icon {
-      margin-right: 8px;
-      font-weight: bold;
-      margin-left: 8px;
-    }
+    .question-text { font-weight: bold; margin-bottom: 15px; font-size: 18px; }
+    .options-container .option-item { margin-bottom: 12px; padding: 12px; border-radius: 4px; display: flex; align-items: flex-start; cursor: pointer; transition: all 0.2s ease; font-size: 16px; }
+    .options-container .option-item:hover { background-color: var(--option-hover); }
+    .options-container .option-item.correct { background-color: var(--correct-bg); border-left: 4px solid var(--correct-border); }
+    .options-container .option-item.incorrect { background-color: var(--incorrect-bg); border-left: 4px solid var(--incorrect-border); }
+    .option-checkbox { margin-right: 10px; flex-shrink: 0; }
+    .option-text { flex-grow: 1; }
+    .check-icon { margin-right: 8px; font-weight: bold; margin-left: 8px; }
     @keyframes correctPulse {
-      0% { transform: scale(1); background-color: #d1e7dd; }
-      50% { transform: scale(1.01); background-color: #bde0c8; }
-      100% { transform: scale(1); background-color: #d1e7dd; }
+      0% { transform: scale(1); }
+      50% { transform: scale(1.005); }
+      100% { transform: scale(1); }
     }
-    .dark-mode @keyframes correctPulse {
-      0% { transform: scale(1); background-color: #2e6b47; }
-      50% { transform: scale(1.01); background-color: #3a8c5a; }
-      100% { transform: scale(1); background-color: #2e6b47; }
-    }
-    .correct-anim {
-      animation: correctPulse 0.5s ease;
-    }
+    .correct-anim { animation: correctPulse 0.5s ease; }
     @keyframes shake {
       0% { transform: translateX(0); }
-      20% { transform: translateX(-5px); }
-      40% { transform: translateX(5px); }
-      60% { transform: translateX(-5px); }
-      80% { transform: translateX(5px); }
+      25% { transform: translateX(-3px); }
+      50% { transform: translateX(3px); }
+      75% { transform: translateX(-3px); }
       100% { transform: translateX(0); }
     }
-    .incorrect-anim {
-      animation: shake 0.5s ease;
-    }
+    .incorrect-anim { animation: shake 0.5s ease; }
     #backToTop {
       position: fixed;
       bottom: 30px;
       right: 30px;
       display: none;
-      background: #007bff;
+      background: var(--button-bg);
       color: white;
       border: none;
       padding: 15px 20px;
@@ -160,986 +126,621 @@
       border-radius: 50%;
       cursor: pointer;
       transition: all 0.3s;
-      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+      box-shadow: 0px 4px 6px var(--shadow-color);
+      z-index: 2000; /* Increased z-index to appear above all content */
     }
-    #backToTop:hover {
-      background: #0056b3;
-      transform: scale(1.1);
-    }
-    #backToTop.recommend {
-      padding: 12px 24px;
-      border-radius: 25px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 120px;
-    }
-    #backToTop.recommend .count {
-      margin-left: 8px;
-      font-size: 16px;
-    }
-    #backToTop.recommend .text {
-      margin-left: 8px;
-      font-size: 14px;
-    }
-    .custom-checkbox {
-      width: 22px;
-      height: 22px;
-      border-radius: 3px;
-      border: 1px solid #9098a9;
-      margin-right: 12px;
-      position: relative;
-      margin-top: 3px;
-      transition: all 0.2s ease;
-    }
-    .dark-mode .custom-checkbox {
-      border-color: #aaa;
-    }
-    .custom-checkbox.checked {
-      background-color: #506eec;
-      border-color: #506eec;
-    }
-    .custom-checkbox .checkmark {
-      display: none;
-      color: white;
-      position: absolute;
-      top: 0px;
-      left: 5px;
-      font-size: 14px;
-    }
-    .custom-checkbox.checked .checkmark {
-      display: block;
-    }
-    .option-item:hover .custom-checkbox {
-      border-color: #506eec;
-    }
-    #quizCompletionSection {
-      display: none;
-      margin-top: 40px;
-      text-align: center;
-    }
-    .stats-container {
-      margin-top: 30px;
-      padding: 30px;
-      border-radius: 8px;
-      background-color: #f8f9fa;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      transition: background-color 0.3s;
-    }
-    .dark-mode .stats-container {
-      background-color: #444;
-    }
-    .progress-bar-container {
-      margin-top: 20px;
-      height: 24px;
-      background-color: #e9ecef;
-      border-radius: 12px;
-      overflow: hidden;
-      position: relative;
-      transition: background-color 0.3s;
-    }
-    .dark-mode .progress-bar-container {
-      background-color: #555;
-    }
-    .progress-bar {
-      height: 100%;
-      border-radius: 12px;
-      transition: width 1s ease-in-out;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: bold;
-      font-size: 16px;
-    }
-    .progress-correct {
-      background-color: #28a745;
-    }
-    .progress-incorrect {
-      background-color: #dc3545;
-    }
-    #lottieContainer {
-      width: 250px;
-      height: 250px;
-      margin: 0 auto 30px auto;
-    }
-    .celebration-title {
-      font-size: 32px;
-      font-weight: bold;
-      margin-bottom: 30px;
-      color: #506eec;
-    }
-    .stat-number {
-      font-size: 24px;
-      font-weight: bold;
-      color: #333;
-    }
-    .dark-mode .stat-number {
-      color: #e0e0e0;
-    }
-    .dual-progress {
-      position: relative;
-      height: 24px;
-      background-color: #e9ecef;
-      border-radius: 12px;
-      overflow: hidden;
-      margin: 15px 0 30px 0;
-      transition: background-color 0.3s;
-    }
-    .dark-mode .dual-progress {
-      background-color: #555;
-    }
-    .action-button {
-      background-color: #506eec;
-      color: white;
-      border: none;
-      padding: 12px 25px;
-      border-radius: 5px;
-      font-weight: bold;
-      font-size: 18px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      margin-top: 20px;
-    }
-    .action-button:hover {
-      background-color: #3a5ad9;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-    .action-button:active {
-      transform: translateY(0);
-    }
-    h1 {
-      font-size: 32px;
-      margin-bottom: 30px;
-      color: #333;
-    }
-    .dark-mode h1 {
-      color: #e0e0e0;
-    }
-    #fileInput {
-      font-size: 16px;
-      padding: 10px;
-      background-color: #fff;
-      color: #333;
-    }
-    .dark-mode #fileInput {
-      background-color: #444;
-      color: #e0e0e0;
-    }
-    p {
-      font-size: 16px;
-      color: #333;
-    }
-    .dark-mode p {
-      color: #e0e0e0;
-    }
-    #testCount {
-      font-size: 18px;
-      margin-bottom: 20px;
-      color: #28a745;
-    }
-    .dark-mode #testCount {
-      color: #4caf50;
-    }
-    .toggle-container {
-      display: flex;
-      align-items: center;
-      margin-top: 10px;
-    }
-    .toggle-switch {
-      position: relative;
-      display: inline-block;
-      width: 48px;
-      height: 24px;
-      margin-right: 8px;
-    }
-    .toggle-switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-    .toggle-slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: #ccc;
-      transition: .4s;
-      border-radius: 24px;
-    }
-    .toggle-slider:before {
-      position: absolute;
-      content: "";
-      height: 18px;
-      width: 18px;
-      left: 3px;
-      bottom: 3px;
-      background-color: white;
-      transition: .4s;
-      border-radius: 50%;
-    }
-    input:checked + .toggle-slider {
-      background-color: #506eec;
-    }
-    input:checked + .toggle-slider:before {
-      transform: translateX(24px);
-    }
-    .toggle-label {
-      font-size: 14px;
-      color: #555;
-    }
-    .dark-mode .toggle-label {
-      color: #bbb;
-    }
-    .history-section {
-      margin-top: 15px;
-      width: 100%;
-    }
-    .history-toggle {
-      background-color: #506eec;
-      color: white;
-      border: none;
-      padding: 8px 12px;
-      border-radius: 5px;
-      font-size: 14px;
-      cursor: pointer;
-      width: 100%;
-      text-align: left;
-      transition: all 0.3s ease;
-    }
-    .history-toggle:hover {
-      background-color: #3a5ad9;
-    }
-    .history-toggle.collapsed::after {
-      content: " ▸";
-    }
-    .history-toggle:not(.collapsed)::after {
-      content: " ▾";
-    }
-    .history-list {
-      max-height: 0;
-      overflow-y: auto;
-      overflow-x: hidden;
-      transition: max-height 0.3s ease-out;
-      background-color: #f8f9fa;
-      border-radius: 5px;
-      margin-top: 5px;
-      padding: 0;
-      scrollbar-width: thin;
-      scrollbar-color: #506eec #e9ecef;
-    }
-    .dark-mode .history-list {
-      background-color: #444;
-      scrollbar-color: #506eec #555;
-    }
-    .history-list::-webkit-scrollbar {
-      width: 8px;
-    }
-    .history-list::-webkit-scrollbar-track {
-      background: #e9ecef;
-      border-radius: 5px;
-    }
-    .dark-mode .history-list::-webkit-scrollbar-track {
-      background: #555;
-    }
-    .history-list::-webkit-scrollbar-thumb {
-      background: #506eec;
-      border-radius: 5px;
-    }
-    .history-list::-webkit-scrollbar-thumb:hover {
-      background: #3a5ad9;
-    }
-    .history-list.visible {
-      max-height: 150px;
-      padding: 10px;
-      transition: max-height 0.3s ease-in;
-    }
-    .history-item {
-      padding: 5px 10px;
-      font-size: 13px;
-      color: #333;
-      border-bottom: 1px solid #eee;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      opacity: 0;
-      animation: fadeIn 0.3s ease forwards;
-    }
-    .dark-mode .history-item {
-      color: #e0e0e0;
-      border-bottom: 1px solid #555;
-    }
-    .history-item:last-child {
-      border-bottom: none;
-    }
-    .history-item:hover {
-      background-color: #e9ecef;
-      transform: translateX(5px);
-      transition: all 0.2s ease;
-    }
-    .dark-mode .history-item:hover {
-      background-color: #555;
-    }
+    #backToTop:hover { background: var(--button-hover); transform: scale(1.1); }
+    #backToTop.recommend { padding: 12px 24px; border-radius: 25px; display: flex; align-items: center; justify-content: center; min-width: 120px; }
+    #backToTop.recommend .count { margin-left: 8px; font-size: 16px; }
+    .custom-checkbox { width: 22px; height: 22px; border-radius: 3px; border: 1px solid #9098a9; margin-right: 12px; position: relative; margin-top: 3px; transition: all 0.2s ease; }
+    .custom-checkbox.checked { background-color: var(--button-bg); border-color: var(--button-bg); }
+    .custom-checkbox .checkmark { display: none; color: white; position: absolute; top: 0px; left: 5px; font-size: 14px; }
+    .custom-checkbox.checked .checkmark { display: block; }
+    .option-item:hover .custom-checkbox { border-color: var(--button-bg); }
+    #quizCompletionSection { display: none; margin-top: 40px; text-align: center; }
+    .stats-container { margin-top: 30px; padding: 30px; border-radius: 8px; background-color: var(--stats-bg); box-shadow: 0 2px 4px var(--shadow-color); transition: all 0.3s ease; }
+    .progress-bar-container { margin-top: 20px; height: 24px; background-color: var(--progress-bg); border-radius: 12px; overflow: hidden; position: relative; }
+    .progress-bar { height: 100%; border-radius: 12px; transition: width 1s ease-in-out; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 16px; }
+    .progress-correct { background-color: var(--correct-border); }
+    .progress-incorrect { background-color: var(--incorrect-border); }
+    #lottieContainer { width: 250px; height: 250px; margin: 0 auto 30px auto; }
+    .celebration-title { font-size: 32px; font-weight: bold; margin-bottom: 30px; color: var(--button-bg); }
+    .stat-number { font-size: 24px; font-weight: bold; }
+    .dual-progress { position: relative; height: 24px; background-color: var(--progress-bg); border-radius: 12px; overflow: hidden; margin: 15px 0 30px 0; transition: all 0.3s ease; }
+    .action-button { background-color: var(--button-bg); color: white; border: none; padding: 12px 25px; border-radius: 5px; font-weight: bold; font-size: 18px; cursor: pointer; transition: all 0.3s ease; margin-top: 20px; }
+    .action-button:hover { background-color: var(--button-hover); transform: translateY(-2px); box-shadow: 0 4px 8px var(--shadow-color); }
+    .action-button:active { transform: translateY(0); }
+    h1 { font-size: 32px; margin-bottom: 30px; }
+    #fileInput { font-size: 16px; padding: 10px; }
+    p { font-size: 16px; }
+    #testCount { font-size: 18px; margin-bottom: 20px; }
+    .toggle-container { display: flex; align-items: center; margin-top: 10px; }
+    .toggle-switch { position: relative; display: inline-block; width: 48px; height: 24px; margin-right: 8px; }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--toggle-bg); transition: .4s; border-radius: 24px; }
+    .toggle-slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+    input:checked + .toggle-slider { background-color: var(--button-bg); }
+    input:checked + .toggle-slider:before { transform: translateX(24px); }
+    .toggle-label { font-size: 14px; color: var(--text-color); }
+    .history-section { margin-top: 15px; width: 100%; }
+    .history-toggle { background-color: var(--button-bg); color: white; border: none; padding: 8px 12px; border-radius: 5px; font-size: 14px; cursor: pointer; width: 100%; text-align: left; transition: all 0.3s ease; }
+    .history-toggle:hover { background-color: var(--button-hover); }
+    .history-toggle.collapsed::after { content: " ▸"; }
+    .history-toggle:not(.collapsed)::after { content: " ▾"; }
+    .history-list { max-height: 0; overflow-y: auto; overflow-x: hidden; transition: max-height 0.3s ease-out; background-color: var(--history-bg); border-radius: 5px; margin-top: 5px; padding: 0; scrollbar-width: thin; scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track); }
+    .history-list::-webkit-scrollbar { width: 8px; }
+    .history-list::-webkit-scrollbar-track { background: var(--scrollbar-track); border-radius: 5px; }
+    .history-list::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 5px; }
+    .history-list::-webkit-scrollbar-thumb:hover { background: var(--button-hover); }
+    .history-list.visible { max-height: 150px; padding: 10px; transition: max-height 0.3s ease-in; }
+    .history-item { padding: 5px 10px; font-size: 13px; color: var(--text-color); border-bottom: 1px solid var(--progress-bg); display: flex; justify-content: space-between; align-items: center; opacity: 0; animation: fadeIn 0.3s ease forwards; transition: all 0.3s ease; }
+    .history-item:last-child { border-bottom: none; }
+    .history-item:hover { background-color: var(--history-hover); transform: translateX(5px); }
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(-5px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
+    .theme-toggle-container { display: flex; align-items: center; justify-content: flex-end; margin-bottom: 20px; }
+
     #fireworksCanvas {
       position: fixed;
       top: 0;
       left: 0;
+      width: 100%;
+      height: 100%;
       pointer-events: none;
       z-index: 1000;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1 class="text-center mb-4">Telegram Quiz</h1>
-    <div class="mb-4" id="fileSection">
-      <label for="fileInput" class="form-label file-label">Fayl tanlash (.txt)</label>
-      <input type="file" class="form-control" id="fileInput" accept=".txt" />
-      <div id="uploadStatus"></div>
-      <p>Fayl yuklangach testlarni barchasi belgilanmaguncha fayl tanlash ochilmaydi</p>
-      <div class="toggle-container">
-        <label class="toggle-switch">
-          <input type="checkbox" id="autoScrollToggle" checked>
-          <span class="toggle-slider"></span>
-        </label>
-        <span class="toggle-label">Avtomatik pastga tushish</span>
-      </div>
-      <div class="toggle-container">
-        <label class="toggle-switch">
-          <input type="checkbox" id="darkModeToggle">
-          <span class="toggle-slider"></span>
-        </label>
-        <span class="toggle-label">Tungi rejim</span>
-      </div>
-      <div class="history-section" id="historySection">
-        <button class="history-toggle" id="historyToggle">Fayl Tarixi ▾</button>
-        <div class="history-list" id="historyList"></div>
-      </div>
+<canvas id="fireworksCanvas"></canvas>
+<div class="container">
+  <div class="theme-toggle-container">
+    <label class="toggle-switch">
+      <input type="checkbox" id="themeToggle" />
+      <span class="toggle-slider"></span>
+    </label>
+    <span class="toggle-label">Tungi rejim</span>
+  </div>
+
+  <h1 class="text-center mb-4">Telegram Quiz</h1>
+  <div class="mb-4" id="fileSection">
+    <label for="fileInput" class="form-label file-label">Fayl tanlash (.txt)</label>
+    <input type="file" class="form-control" id="fileInput" accept=".txt" />
+    <div id="uploadStatus"></div>
+    <p>Fayl yuklangach testlarni barchasi belgilanmaguncha fayl tanlash ochilmaydi</p>
+    <div class="toggle-container">
+      <label class="toggle-switch">
+        <input type="checkbox" id="autoScrollToggle" checked>
+        <span class="toggle-slider"></span>
+      </label>
+      <span class="toggle-label">Avtomatik pastga tushish</span>
     </div>
-    <div id="quizList" style="display: none;">
-      <p id="testCount" class="text-success fw-bold"></p>
-      <div id="questionsContainer"></div>
-    </div>
-    <div id="quizCompletionSection">
-      <div id="lottieContainer"></div>
-      <div class="celebration-title">Test Yakunlandi!</div>
-      <div class="stats-container">
-        <div class="mb-4">
-          <span class="fw-bold">Jami savollar: </span>
-          <span class="stat-number" id="totalQuestions">0</span>
-        </div>
-        <div class="row mb-3">
-          <div class="col-6 text-end">
-            <span class="stat-number text-success" id="correctAnswers">0</span> to'g'ri
-          </div>
-          <div class="col-6 text-start">
-            <span class="stat-number text-danger" id="incorrectAnswers">0</span> xato
-          </div>
-        </div>
-        <div class="dual-progress">
-          <div class="progress-bar progress-correct" id="correctBar" style="width: 0%"></div>
-          <div class="progress-bar progress-incorrect" id="incorrectBar" style="width: 0%; position: absolute; right: 0; top: 0;"></div>
-        </div>
-        <div class="text-center">
-          <span class="stat-number" id="percentageCorrect">0%</span> to'g'ri javob
-        </div>
-        <button id="startNewTest" class="action-button mt-4">
-          <i class="bi bi-arrow-repeat"></i> Yangi Testni Boshlang
-        </button>
-      </div>
+    <div class="history-section" id="historySection">
+      <button class="history-toggle collapsed" id="historyToggle">Oxirgi 10 ta Fayl Tarixi</button>
+      <div class="history-list" id="historyList"></div>
     </div>
   </div>
-  <button id="backToTop" title="Yuqoriga qaytish">🔼</button>
-  <canvas id="fireworksCanvas"></canvas>
+  <div id="quizList" style="display: none;">
+    <p id="testCount" class="text-success fw-bold"></p>
+    <div id="questionsContainer"></div>
+  </div>
+  <div id="quizCompletionSection">
+    <div id="lottieContainer"></div>
+    <div class="celebration-title">Test Yakunlandi!</div>
+    <div class="stats-container">
+      <div class="mb-4">
+        <span class="fw-bold">Jami savollar: </span>
+        <span class="stat-number" id="totalQuestions">0</span>
+      </div>
+      <div class="row mb-3">
+        <div class="col-6 text-end">
+          <span class="stat-number text-success" id="correctAnswers">0</span> to'g'ri
+        </div>
+        <div class="col-6 text-start">
+          <span class="stat-number text-danger" id="incorrectAnswers">0</span> xato
+        </div>
+      </div>
+      <div class="dual-progress">
+        <div class="progress-bar progress-correct" id="correctBar" style="width: 0%"></div>
+        <div class="progress-bar progress-incorrect" id="incorrectBar" style="width: 0%; position: absolute; right: 0; top: 0;"></div>
+      </div>
+      <div class="text-center">
+        <span class="stat-number" id="percentageCorrect">0%</span> to'g'ri javob
+      </div>
+      <button id="startNewTest" class="action-button mt-4">
+        <i class="bi bi-arrow-repeat"></i> Yangi Testni Boshlang
+      </button>
+    </div>
+  </div>
+</div>
+<button id="backToTop" title="Yuqoriga qaytish">🔼</button>
 
-  <script>
-    const backToTopButton = document.getElementById("backToTop");
-    const startNewTestButton = document.getElementById("startNewTest");
-    const autoScrollToggle = document.getElementById("autoScrollToggle");
-    const darkModeToggle = document.getElementById("darkModeToggle");
-    let tests = [];
-    let stats = { correct: 0, incorrect: 0, total: 0 };
-    
-    const fileInput = document.getElementById("fileInput");
-    const uploadStatus = document.getElementById("uploadStatus");
-    const quizList = document.getElementById("quizList");
-    const testCount = document.getElementById("testCount");
-    const questionsContainer = document.getElementById("questionsContainer");
-    const quizCompletionSection = document.getElementById("quizCompletionSection");
-    const correctAnswersEl = document.getElementById("correctAnswers");
-    const incorrectAnswersEl = document.getElementById("incorrectAnswers");
-    const totalQuestionsEl = document.getElementById("totalQuestions");
-    const correctBarEl = document.getElementById("correctBar");
-    const incorrectBarEl = document.getElementById("incorrectBar");
-    const percentageCorrectEl = document.getElementById("percentageCorrect");
+<script>
+  const backToTopButton = document.getElementById("backToTop");
+  const startNewTestButton = document.getElementById("startNewTest");
+  const autoScrollToggle = document.getElementById("autoScrollToggle");
+  const fileInput = document.getElementById("fileInput");
+  const uploadStatus = document.getElementById("uploadStatus");
+  const quizList = document.getElementById("quizList");
+  const testCount = document.getElementById("testCount");
+  const questionsContainer = document.getElementById("questionsContainer");
+  const quizCompletionSection = document.getElementById("quizCompletionSection");
+  const correctAnswersEl = document.getElementById("correctAnswers");
+  const incorrectAnswersEl = document.getElementById("incorrectAnswers");
+  const totalQuestionsEl = document.getElementById("totalQuestions");
+  const correctBarEl = document.getElementById("correctBar");
+  const incorrectBarEl = document.getElementById("incorrectBar");
+  const percentageCorrectEl = document.getElementById("percentageCorrect");
+  const themeToggle = document.getElementById("themeToggle");
 
-    // Fireworks Canvas Setup
+  let tests = [];
+  let stats = { correct: 0, incorrect: 0, total: 0 };
+  let lottieAnimation = null;
+
+  // Updated animation files to use local JSONs (ensure these files exist in your project)
+  const animationFiles = [
+    './json/buy.json',
+    './json/marketing.json',
+    './json/target.json',
+    './json/work.json',
+    './json/ani1.json',
+    './json/ani2.json',
+    './json/ani3.json',
+    './json/ani4.json',
+    './json/ani5.json',
+    './json/ani6.json',
+    './json/ani7.json',
+    './json/ani8.json',
+    './json/ani9.json',
+    './json/ani10.json',
+  ];
+  let usedAnimations = [];
+
+  function launchFireworks() {
     const canvas = document.getElementById('fireworksCanvas');
-    const ctx = canvas.getContext('2d');
-    let fireworks = [];
-    let particles = [];
+    const duration = 1.5 * 1000;
+    const animationEnd = Date.now() + duration;
+    const defaults = {
+      startVelocity: 20,
+      spread: 180,
+      ticks: 30,
+      zIndex: 1000,
+      colors: ['#FFD700', '#1E90FF', '#FF69B4']
+    };
 
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-
-    class Firework {
-      constructor(x, y, color) {
-        this.x = x;
-        this.y = y;
-        this.color = color;
-        this.radius = 3;
-        this.velocity = {
-          x: (Math.random() - 0.5) * 4,
-          y: Math.random() * -10 - 5
-        };
-        this.opacity = 1;
-        this.life = 100;
-      }
-
-      update() {
-        this.x += this.velocity.x;
-        this.y += this.velocity.y;
-        this.velocity.y += 0.1; // Gravity
-        this.opacity = this.life / 100;
-        this.life--;
-        if (this.life <= 0) {
-          createParticles(this.x, this.y, this.color);
-        }
-      }
-
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${this.color}, ${this.opacity})`;
-        ctx.fill();
-      }
+    function randomInRange(min, max) {
+      return Math.random() * (max - min) + min;
     }
 
-    class Particle {
-      constructor(x, y, color) {
-        this.x = x;
-        this.y = y;
-        this.color = color;
-        this.radius = Math.random() * 2 + 1;
-        this.velocity = {
-          x: (Math.random() - 0.5) * 8,
-          y: (Math.random() - 0.5) * 8
-        };
-        this.opacity = 1;
-        this.life = 80;
-      }
+    const interval = setInterval(function() {
+      const timeLeft = animationEnd - Date.now();
+      if (timeLeft <= 0) return clearInterval(interval);
+      const particleCount = 20 * (timeLeft / duration);
+      confetti(Object.assign({}, defaults, {
+        particleCount,
+        origin: { x: randomInRange(0.3, 0.7), y: Math.random() - 0.1 }
+      }));
+    }, 400);
 
-      update() {
-        this.x += this.velocity.x;
-        this.y += this.velocity.y;
-        this.velocity.x *= 0.98;
-        this.velocity.y *= 0.98;
-        this.opacity = this.life / 80;
-        this.life--;
-      }
-
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${this.color}, ${this.opacity})`;
-        ctx.fill();
-      }
-    }
-
-    function createParticles(x, y, color) {
-      for (let i = 0; i < 20; i++) {
-        particles.push(new Particle(x, y, color));
-      }
-    }
-
-    function animateFireworks() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      fireworks.forEach((firework, index) => {
-        firework.update();
-        firework.draw();
-        if (firework.life <= 0) fireworks.splice(index, 1);
+    setTimeout(() => {
+      confetti({
+        particleCount: 50,
+        spread: 50,
+        origin: { y: 0.6 },
+        colors: ['#FFD700', '#1E90FF'],
+        zIndex: 1000
       });
-      particles.forEach((particle, index) => {
-        particle.update();
-        particle.draw();
-        if (particle.life <= 0) particles.splice(index, 1);
-      });
-      requestAnimationFrame(animateFireworks);
-    }
-    animateFireworks();
+    }, 300);
+  }
 
-    function launchFireworks() {
-      const colors = ['255, 0, 0', '0, 255, 0', '0, 0, 255', '255, 255, 0'];
-      for (let i = 0; i < 3; i++) {
-        const x = Math.random() * canvas.width;
-        const y = canvas.height;
-        const color = colors[Math.floor(Math.random() * colors.length)];
-        fireworks.push(new Firework(x, y, color));
-      }
-    }
+  const currentTheme = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-theme', currentTheme);
+  themeToggle.checked = currentTheme === 'dark';
 
-    // Dark Mode Toggle
-    darkModeToggle.addEventListener('change', () => {
-      document.body.classList.toggle('dark-mode');
-      localStorage.setItem('darkMode', darkModeToggle.checked);
+  themeToggle.addEventListener('change', function() {
+    const theme = this.checked ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  });
+
+  if (localStorage.getItem("autoScrollEnabled") === null) {
+    localStorage.setItem("autoScrollEnabled", "true");
+  } else {
+    autoScrollToggle.checked = localStorage.getItem("autoScrollEnabled") === "true";
+  }
+
+  autoScrollToggle.addEventListener("change", function() {
+    localStorage.setItem("autoScrollEnabled", this.checked);
+  });
+
+  window.onscroll = updateBackToTopButton;
+
+  function getRandomAnimation() {
+    if (usedAnimations.length >= animationFiles.length) usedAnimations = [];
+    const availableAnimations = animationFiles.filter(anim => !usedAnimations.includes(anim));
+    const randomIndex = Math.floor(Math.random() * availableAnimations.length);
+    const selectedAnimation = availableAnimations[randomIndex];
+    usedAnimations.push(selectedAnimation);
+    return selectedAnimation;
+  }
+
+  function loadLottieAnimation(jsonPath) {
+    if (lottieAnimation) lottieAnimation.destroy();
+    lottieAnimation = lottie.loadAnimation({
+      container: document.getElementById('lottieContainer'),
+      renderer: 'svg',
+      loop: true,
+      autoplay: true,
+      path: jsonPath
     });
+    // Add error handling for Lottie animation loading
+    lottieAnimation.addEventListener('data_failed', () => {
+      console.error('Failed to load Lottie animation:', jsonPath);
+      // Fallback to another animation if one fails
+      const fallbackAnimation = getRandomAnimation();
+      if (fallbackAnimation !== jsonPath) {
+        loadLottieAnimation(fallbackAnimation);
+      }
+    });
+  }
 
-    // Load dark mode preference
-    if (localStorage.getItem('darkMode') === 'true') {
-      darkModeToggle.checked = true;
-      document.body.classList.add('dark-mode');
+  startNewTestButton.addEventListener("click", function() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    quizCompletionSection.style.display = "none";
+    fileInput.value = "";
+    uploadStatus.textContent = "Yangi test uchun fayl tanlang";
+    quizList.style.display = "none";
+    questionsContainer.innerHTML = "";
+    stats = { correct: 0, incorrect: 0, total: 0 };
+    const selectedAnimation = getRandomAnimation();
+    loadLottieAnimation(selectedAnimation);
+    updateBackToTopButton();
+    fileInput.disabled = false;
+  });
+
+  function loadFileHistory() {
+    const history = JSON.parse(localStorage.getItem("fileHistory")) || [];
+    const historyList = document.getElementById("historyList");
+    historyList.innerHTML = "";
+    history.reverse().forEach((item, index) => {
+      const historyItem = document.createElement("div");
+      historyItem.className = "history-item";
+      historyItem.style.animationDelay = `${index * 0.1}s`;
+      historyItem.innerHTML = `<span>${item.name}</span> <span style="font-size: 11px; color: #777;">${new Date(item.timestamp).toLocaleString("uz-UZ")}</span>`;
+      historyList.appendChild(historyItem);
+    });
+  }
+
+  function saveFileToHistory(fileName) {
+    const history = JSON.parse(localStorage.getItem("fileHistory")) || [];
+    history.unshift({ name: fileName, timestamp: Date.now() });
+    if (history.length > 10) history.pop();
+    localStorage.setItem("fileHistory", JSON.stringify(history));
+    loadFileHistory();
+  }
+
+  fileInput.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    uploadStatus.textContent = "Fayl yuklanmoqda...";
+    saveFileToHistory(file.name);
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      parseTestFile(ev.target.result);
+    };
+    reader.readAsText(file);
+    stats = { correct: 0, incorrect: 0, total: 0 };
+    quizCompletionSection.style.display = "none";
+  });
+
+  function parseTestFile(content) {
+    tests = [];
+    const lines = content.split("\n").map(line => line.trim()).filter(Boolean);
+    let currentTest = null;
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      if (line.startsWith("ANSWER:")) {
+        if (currentTest) {
+          currentTest.answer = line.replace("ANSWER:", "").trim();
+          tests.push(currentTest);
+          currentTest = null;
+        }
+      } else if (/^[A-D][\.\)]\s*/.test(line)) {
+        if (currentTest) {
+          const optionText = line.replace(/^[A-D][\.\)]\s*/, "").trim();
+          currentTest.options.push(optionText);
+          currentTest.rawOptions = currentTest.rawOptions || [];
+          currentTest.rawOptions.push(line.trim());
+        }
+      } else if (line) {
+        currentTest = { question: line, options: [], rawOptions: [], answer: "" };
+      }
     }
 
-    // Lottie Animation Setup
-    const animationFiles = [
-      './json/buy.json',
-      './json/marketing.json',
-      './json/target.json',
-      './json/work.json',
-      './json/ani1.json',
-      './json/ani2.json',
-      './json/ani3.json',
-      './json/ani4.json',
-      './json/ani5.json',
-      './json/ani6.json',
-      './json/ani7.json',
-      './json/ani8.json',
-      './json/ani9.json',
-      './json/ani10.json',
-    ];
-    
-    let usedAnimations = [];
-    let lottieAnimation = null;
-
-    function getRandomAnimation() {
-      if (usedAnimations.length >= animationFiles.length) usedAnimations = [];
-      const availableAnimations = animationFiles.filter(anim => !usedAnimations.includes(anim));
-      const randomIndex = Math.floor(Math.random() * availableAnimations.length);
-      const selectedAnimation = availableAnimations[randomIndex];
-      usedAnimations.push(selectedAnimation);
-      return selectedAnimation;
+    if (currentTest && currentTest.options.length > 0 && currentTest.answer) {
+      tests.push(currentTest);
     }
 
-    function loadLottieAnimation(jsonPath) {
-      if (lottieAnimation) lottieAnimation.destroy();
-      lottieAnimation = lottie.loadAnimation({
-        container: document.getElementById('lottieContainer'),
-        renderer: 'svg',
-        loop: true,
-        autoplay: true,
-        path: jsonPath
-      });
-    }
-
-    // Auto Scroll Preference
-    if (localStorage.getItem("autoScrollEnabled") === null) {
-      localStorage.setItem("autoScrollEnabled", "true");
+    if (tests.length > 0) {
+      uploadStatus.textContent = "Fayl yuklandi!";
+      fileInput.disabled = true;
+      stats.total = tests.length;
+      shuffleArray(tests);
+      showTests();
     } else {
-      autoScrollToggle.checked = localStorage.getItem("autoScrollEnabled") === "true";
+      uploadStatus.textContent = "Xatolik: Test ma'lumotlari topilmadi yoki noto'g'ri format!";
     }
+  }
 
-    autoScrollToggle.addEventListener("change", function() {
-      localStorage.setItem("autoScrollEnabled", this.checked);
-    });
-
-    // Back to Top Button
-    function updateBackToTopButton() {
-      const unanswered = tests.filter((test, index) => {
-        const optionItems = document.querySelectorAll(`.option-item[data-question-index="${index}"]`);
-        return !Array.from(optionItems).some(item => item.classList.contains("correct") || item.classList.contains("incorrect"));
-      }).length;
-
-      if (unanswered > 0 && unanswered <= 5) {
-        backToTopButton.classList.add("recommend");
-        backToTopButton.innerHTML = `🔼 <span class="count">${unanswered}</span> <span class="text">ta qoldi</span>`;
-        backToTopButton.title = `${unanswered} ta javob berilmagan savol bor`;
-        backToTopButton.onclick = function() {
-          const firstUnansweredIndex = tests.findIndex((test, index) => {
-            const optionItems = document.querySelectorAll(`.option-item[data-question-index="${index}"]`);
-            return !Array.from(optionItems).some(item => item.classList.contains("correct") || item.classList.contains("incorrect"));
-          });
-          if (firstUnansweredIndex !== -1) {
-            document.getElementById(`question-${firstUnansweredIndex}`).scrollIntoView({ behavior: "smooth", block: "start" });
-          }
-        };
-      } else {
-        backToTopButton.classList.remove("recommend");
-        backToTopButton.innerHTML = "🔼";
-        backToTopButton.title = "Yuqoriga qaytish";
-        backToTopButton.onclick = function() { window.scrollTo({ top: 0, behavior: "smooth" }); };
-      }
-      if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
-        backToTopButton.style.display = "block";
-      } else {
-        backToTopButton.style.display = "none";
-      }
+  function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
     }
+    return array;
+  }
 
-    window.onscroll = updateBackToTopButton;
+  function showTests() {
+    quizList.style.display = "block";
+    testCount.textContent = `${tests.length} ta test yuklandi!`;
+    questionsContainer.innerHTML = "";
 
-    // Start New Test
-    startNewTestButton.addEventListener("click", function() {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      quizCompletionSection.style.display = "none";
-      fileInput.value = "";
-      uploadStatus.textContent = "Yangi test uchun fayl tanlang";
-      quizList.style.display = "none";
-      questionsContainer.innerHTML = "";
-      stats = { correct: 0, incorrect: 0, total: 0 };
-      fireworks = [];
-      particles = [];
-      const selectedAnimation = getRandomAnimation();
-      loadLottieAnimation(selectedAnimation);
-      updateBackToTopButton();
-    });
+    tests.forEach((test, index) => {
+      const questionDiv = document.createElement("div");
+      questionDiv.className = "question-container";
+      questionDiv.id = `question-${index}`;
+      questionDiv.style.minHeight = "200px";
+      const qText = document.createElement("div");
+      qText.className = "question-text";
+      qText.textContent = `${index + 1}. ${test.question}`;
+      questionDiv.appendChild(qText);
 
-    // File History
-    function loadFileHistory() {
-      const history = JSON.parse(localStorage.getItem("fileHistory")) || [];
-      const historyList = document.getElementById("historyList");
-      historyList.innerHTML = "";
-      history.reverse().forEach((item, index) => {
-        const historyItem = document.createElement("div");
-        historyItem.className = "history-item";
-        historyItem.style.animationDelay = `${index * 0.1}s`;
-        historyItem.innerHTML = `<span>${item.name}</span> <span style="font-size: 11px; color: #777;">${new Date(item.timestamp).toLocaleString("uz-UZ")}</span>`;
-        historyList.appendChild(historyItem);
+      const optionsDiv = document.createElement("div");
+      optionsDiv.className = "options-container";
+      optionsDiv.style.position = "relative";
+      optionsDiv.style.zIndex = "2";
+
+      const optionIndices = [...Array(test.options.length).keys()];
+      shuffleArray(optionIndices);
+
+      const indexMap = {};
+      optionIndices.forEach((originalIndex, randomIndex) => {
+        indexMap[randomIndex] = originalIndex;
       });
-    }
+      test.indexMap = indexMap;
 
-    function saveFileToHistory(fileName) {
-      const history = JSON.parse(localStorage.getItem("fileHistory")) || [];
-      history.unshift({ name: fileName, timestamp: Date.now() });
-      if (history.length > 10) history.pop();
-      localStorage.setItem("fileHistory", JSON.stringify(history));
-      loadFileHistory();
-    }
+      optionIndices.forEach((originalIndex, randomIndex) => {
+        const optionItem = document.createElement("div");
+        optionItem.className = "option-item";
+        optionItem.dataset.questionIndex = index;
+        optionItem.dataset.optionIndex = randomIndex;
+        optionItem.dataset.originalIndex = originalIndex;
 
-    // File Upload
-    fileInput.addEventListener("change", (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      uploadStatus.textContent = "Fayl yuklanmoqda...";
-      saveFileToHistory(file.name);
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        parseTestFile(ev.target.result);
-      };
-      reader.readAsText(file);
-      stats = { correct: 0, incorrect: 0, total: 0 };
-      quizCompletionSection.style.display = "none";
-    });
+        const customCheckbox = document.createElement("div");
+        customCheckbox.className = "custom-checkbox";
+        const checkmark = document.createElement("span");
+        checkmark.className = "checkmark";
+        checkmark.innerHTML = "✓";
+        customCheckbox.appendChild(checkmark);
 
-    // Parse Test File
-    function parseTestFile(content) {
-      tests = [];
-      const lines = content.split("\n").map(line => line.trim()).filter(Boolean);
-      let currentTest = null;
+        const optionText = document.createElement("div");
+        optionText.className = "option-text";
+        optionText.textContent = test.options[originalIndex];
 
-      for (let i = 0; i < lines.length; i++) {
-        const line = lines[i];
-        if (line.startsWith("ANSWER:")) {
-          if (currentTest) {
-            currentTest.answer = line.replace("ANSWER:", "").trim();
-            tests.push(currentTest);
-            currentTest = null;
-          }
-        } else if (/^[A-D][\.\)]\s*/.test(line)) {
-          if (currentTest) {
-            const optionText = line.replace(/^[A-D][\.\)]\s*/, "").trim();
-            currentTest.options.push(optionText);
-            currentTest.rawOptions = currentTest.rawOptions || [];
-            currentTest.rawOptions.push(line.trim());
-          }
-        } else if (line) {
-          currentTest = { question: line, options: [], rawOptions: [], answer: "" };
-        }
-      }
+        optionItem.appendChild(customCheckbox);
+        optionItem.appendChild(optionText);
 
-      if (tests.length > 0) {
-        uploadStatus.textContent = "Fayl yuklandi!";
-        fileInput.disabled = true;
-        stats.total = tests.length;
-        shuffleArray(tests);
-        showTests();
-      } else {
-        uploadStatus.textContent = "Xatolik: Test ma'lumotlari topilmadi yoki noto'g'ri format!";
-      }
-    }
+        optionItem.addEventListener("click", function() {
+          if (optionItem.classList.contains("correct") || optionItem.classList.contains("incorrect")) return;
 
-    function shuffleArray(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-      return array;
-    }
+          customCheckbox.classList.add("checked");
 
-    // Display Tests
-    function showTests() {
-      quizList.style.display = "block";
-      testCount.textContent = tests.length + " ta test yuklandi!";
-      questionsContainer.innerHTML = "";
-
-      tests.forEach((test, index) => {
-        const questionDiv = document.createElement("div");
-        questionDiv.className = "question-container";
-        questionDiv.id = `question-${index}`;
-        const qText = document.createElement("div");
-        qText.className = "question-text";
-        qText.textContent = `${index + 1}. ${test.question}`;
-        questionDiv.appendChild(qText);
-
-        const optionsDiv = document.createElement("div");
-        optionsDiv.className = "options-container";
-
-        const optionIndices = [...Array(test.options.length).keys()];
-        shuffleArray(optionIndices);
-
-        const indexMap = {};
-        optionIndices.forEach((originalIndex, randomIndex) => {
-          indexMap[randomIndex] = originalIndex;
-        });
-        test.indexMap = indexMap;
-
-        optionIndices.forEach((originalIndex, randomIndex) => {
-          const optionItem = document.createElement("div");
-          optionItem.className = "option-item";
-          optionItem.dataset.questionIndex = index;
-          optionItem.dataset.optionIndex = randomIndex;
-          optionItem.dataset.originalIndex = originalIndex;
-
-          const customCheckbox = document.createElement("div");
-          customCheckbox.className = "custom-checkbox";
-          const checkmark = document.createElement("span");
-          checkmark.className = "checkmark";
-          checkmark.innerHTML = "✓";
-          customCheckbox.appendChild(checkmark);
-
-          const optionText = document.createElement("div");
-          optionText.className = "option-text";
-          optionText.textContent = test.options[originalIndex];
-
-          optionItem.appendChild(customCheckbox);
-          optionItem.appendChild(optionText);
-
-          optionItem.addEventListener("click", function() {
-            if (optionItem.classList.contains("correct") || optionItem.classList.contains("incorrect")) return;
-
-            customCheckbox.classList.add("checked");
-
-            const siblingOptions = optionsDiv.querySelectorAll(".option-item");
-            siblingOptions.forEach(sibling => {
-              if (sibling !== optionItem) {
-                sibling.querySelector(".custom-checkbox").classList.remove("checked");
-              }
-            });
-
-            checkAnswer(index, randomIndex, originalIndex);
-
-            if (autoScrollToggle.checked) {
-              setTimeout(() => scrollToNextQuestion(index), 800);
+          const siblingOptions = optionsDiv.querySelectorAll(".option-item");
+          siblingOptions.forEach(sibling => {
+            if (sibling !== optionItem) {
+              sibling.querySelector(".custom-checkbox").classList.remove("checked");
             }
           });
 
-          optionsDiv.appendChild(optionItem);
+          checkAnswer(index, randomIndex, originalIndex);
+
+          if (autoScrollToggle.checked) {
+            setTimeout(() => scrollToNextQuestion(index), 800);
+          }
         });
 
-        questionDiv.appendChild(optionsDiv);
-        questionsContainer.appendChild(questionDiv);
+        optionsDiv.appendChild(optionItem);
       });
-      updateBackToTopButton();
-    }
 
-    // Scroll to Next Question
-    function scrollToNextQuestion(currentIndex) {
-      const nextIndex = currentIndex + 1;
-      if (nextIndex < tests.length) {
-        const nextQuestion = document.getElementById(`question-${nextIndex}`);
-        if (nextQuestion) nextQuestion.scrollIntoView({ behavior: "smooth", block: "start" });
-      } else {
-        const allAnswered = tests.every((test, index) => {
-          const optionItems = document.querySelectorAll(`.option-item[data-question-index="${index}"]`);
-          return Array.from(optionItems).some(item => item.classList.contains("correct") || item.classList.contains("incorrect"));
-        });
-        if (allAnswered && quizCompletionSection.style.display === "block") {
-          quizCompletionSection.scrollIntoView({ behavior: "smooth" });
-        }
+      questionDiv.appendChild(optionsDiv);
+      questionsContainer.appendChild(questionDiv);
+    });
+    updateBackToTopButton();
+  }
+
+  function scrollToNextQuestion(currentIndex) {
+    const nextIndex = currentIndex + 1;
+    if (nextIndex < tests.length) {
+      const nextQuestion = document.getElementById(`question-${nextIndex}`);
+      if (nextQuestion) nextQuestion.scrollIntoView({ behavior: "smooth", block: "start" });
+    } else {
+      const allAnswered = tests.every((test, index) => {
+        const optionItems = document.querySelectorAll(`.option-item[data-question-index="${index}"]`);
+        return Array.from(optionItems).some(item => item.classList.contains("correct") || item.classList.contains("incorrect"));
+      });
+      if (allAnswered && quizCompletionSection.style.display === "block") {
+        quizCompletionSection.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }
+
+  function checkAnswer(questionIndex, selectedRandomIndex, originalIndex) {
+    const test = tests[questionIndex];
+    const correctLetter = test.answer;
+    const optionItems = document.querySelectorAll(`.option-item[data-question-index="${questionIndex}"]`);
+
+    optionItems.forEach(item => {
+      item.classList.remove("correct", "incorrect", "correct-anim", "incorrect-anim");
+      const checkIcon = item.querySelector(".check-icon");
+      if (checkIcon) checkIcon.remove();
+    });
+
+    const selectedItem = document.querySelector(`.option-item[data-question-index="${questionIndex}"][data-option-index="${selectedRandomIndex}"]`);
+    const correctRawOption = test.rawOptions.find(opt => opt.startsWith(correctLetter + ".") || opt.startsWith(correctLetter + ")"));
+    const correctOptionText = correctRawOption ? correctRawOption.replace(/^[A-D][\.\)]\s*/, "").trim() : "";
+    const correctOriginalIndex = test.options.indexOf(correctOptionText);
+
+    let correctRandomIndex = null;
+    for (let i = 0; i < optionItems.length; i++) {
+      if (parseInt(optionItems[i].dataset.originalIndex) === correctOriginalIndex) {
+        correctRandomIndex = parseInt(optionItems[i].dataset.optionIndex);
+        break;
       }
     }
 
-    // Check Answer
-    function checkAnswer(questionIndex, selectedRandomIndex, originalIndex) {
-      const test = tests[questionIndex];
-      const correctLetter = test.answer;
-      const optionItems = document.querySelectorAll(`.option-item[data-question-index="${questionIndex}"]`);
+    const correctItem = document.querySelector(`.option-item[data-question-index="${questionIndex}"][data-option-index="${correctRandomIndex}"]`);
 
-      optionItems.forEach(item => {
-        item.classList.remove("correct", "incorrect", "correct-anim", "incorrect-anim");
-        const checkIcon = item.querySelector(".check-icon");
-        if (checkIcon) checkIcon.remove();
-      });
+    if (originalIndex === correctOriginalIndex) {
+      selectedItem.classList.add("correct", "correct-anim");
+      const checkIcon = document.createElement("span");
+      checkIcon.className = "check-icon";
+      checkIcon.textContent = "✅";
+      selectedItem.appendChild(checkIcon);
+      stats.correct++;
+      launchFireworks();
+    } else {
+      selectedItem.classList.add("incorrect", "incorrect-anim");
+      const wrongIcon = document.createElement("span");
+      wrongIcon.className = "check-icon";
+      wrongIcon.textContent = "❌";
+      selectedItem.appendChild(wrongIcon);
 
-      const selectedItem = document.querySelector(`.option-item[data-question-index="${questionIndex}"][data-option-index="${selectedRandomIndex}"]`);
-      const correctRawOption = test.rawOptions.find(opt => opt.startsWith(correctLetter + ".") || opt.startsWith(correctLetter + ")"));
-      const correctOptionText = correctRawOption.replace(/^[A-D][\.\)]\s*/, "").trim();
-      const correctOriginalIndex = test.options.indexOf(correctOptionText);
-
-      let correctRandomIndex = null;
-      for (let i = 0; i < optionItems.length; i++) {
-        if (parseInt(optionItems[i].dataset.originalIndex) === correctOriginalIndex) {
-          correctRandomIndex = parseInt(optionItems[i].dataset.optionIndex);
-          break;
-        }
-      }
-
-      const correctItem = document.querySelector(`.option-item[data-question-index="${questionIndex}"][data-option-index="${correctRandomIndex}"]`);
-
-      if (originalIndex === correctOriginalIndex) {
-        selectedItem.classList.add("correct", "correct-anim");
-        const checkIcon = document.createElement("span");
-        checkIcon.className = "check-icon";
-        checkIcon.textContent = "✅";
-        selectedItem.appendChild(checkIcon);
-        stats.correct++;
-        launchFireworks(); // Trigger fireworks for correct answer
-      } else {
-        selectedItem.classList.add("incorrect", "incorrect-anim");
-        const wrongIcon = document.createElement("span");
-        wrongIcon.className = "check-icon";
-        wrongIcon.textContent = "❌";
-        selectedItem.appendChild(wrongIcon);
-
+      if (correctItem) {
         correctItem.classList.add("correct");
         const correctIcon = document.createElement("span");
         correctIcon.className = "check-icon";
         correctIcon.textContent = "✅";
         correctItem.appendChild(correctIcon);
-
-        stats.incorrect++;
       }
 
-      optionItems.forEach(item => { item.style.pointerEvents = "none"; });
-
-      updateBackToTopButton();
-      checkAllAnswered();
+      stats.incorrect++;
     }
 
-    // Check if All Answered
-    function checkAllAnswered() {
-      const allAnswered = tests.every((test, index) => {
-        const optionItems = document.querySelectorAll(`.option-item[data-question-index="${index}"]`);
-        return Array.from(optionItems).some(item => item.classList.contains("correct") || item.classList.contains("incorrect"));
-      });
+    optionItems.forEach(item => { item.style.pointerEvents = "none"; });
 
-      if (allAnswered) {
-        fileInput.disabled = false;
-        uploadStatus.textContent = "Barcha testlar belgilandi. Yangi fayl tanlash mumkin!";
-        showCompletionStats();
-      }
-    }
+    updateBackToTopButton();
+    checkAllAnswered();
+  }
 
-    // Show Completion Stats
-    function showCompletionStats() {
-      correctAnswersEl.textContent = stats.correct;
-      incorrectAnswersEl.textContent = stats.incorrect;
-      totalQuestionsEl.textContent = stats.total;
-
-      const percentCorrect = Math.round((stats.correct / stats.total) * 100) || 0;
-      percentageCorrectEl.textContent = percentCorrect + "%";
-
-      const correctWidth = (stats.correct / stats.total) * 100;
-      const incorrectWidth = (stats.incorrect / stats.total) * 100;
-
-      const selectedAnimation = getRandomAnimation();
-      loadLottieAnimation(selectedAnimation);
-      quizCompletionSection.style.display = "block";
-
-      setTimeout(() => {
-        correctBarEl.style.width = correctWidth + "%";
-        incorrectBarEl.style.width = incorrectWidth + "%";
-      }, 200);
-
-      setTimeout(() => {
-        quizCompletionSection.scrollIntoView({ behavior: 'smooth' });
-      }, 300);
-
-      updateBackToTopButton();
-    }
-
-    // History Toggle
-    const historyToggle = document.getElementById("historyToggle");
-    const historyList = document.getElementById("historyList");
-
-    historyToggle.addEventListener("click", function() {
-      const isCollapsed = historyList.classList.contains("visible");
-      if (isCollapsed) {
-        historyList.style.maxHeight = historyList.scrollHeight + "px";
-        setTimeout(() => {
-          historyList.style.maxHeight = "0";
-          historyList.classList.remove("visible");
-          historyToggle.classList.add("collapsed");
-        }, 10);
-      } else {
-        historyList.classList.add("visible");
-        historyToggle.classList.remove("collapsed");
-        historyList.style.maxHeight = historyList.scrollHeight + "px";
-        setTimeout(() => { historyList.style.maxHeight = "150px"; }, 300);
-      }
+  function checkAllAnswered() {
+    const allAnswered = tests.every((test, index) => {
+      const optionItems = document.querySelectorAll(`.option-item[data-question-index="${index}"]`);
+      return Array.from(optionItems).some(item => item.classList.contains("correct") || item.classList.contains("incorrect"));
     });
 
-    // Initialize
-    document.addEventListener("DOMContentLoaded", function() {
-      const initialAnimation = getRandomAnimation();
-      loadLottieAnimation(initialAnimation);
-      loadFileHistory();
-    });
+    if (allAnswered) {
+      fileInput.disabled = false;
+      uploadStatus.textContent = "Barcha testlar belgilandi. Yangi fayl tanlash mumkin!";
+      showCompletionStats();
+    }
+  }
 
-    // Cloudflare Challenge Script
-    (function(){
-      function c(){
-        var b = a.contentDocument || a.contentWindow.document;
-        if(b){
-          var d = b.createElement('script');
-          d.innerHTML = "window.__CF$cv$params={r:'9263f5b18d1f7bc3',t:'MTc0Mjk2MzkxOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
-          b.getElementsByTagName('head')[0].appendChild(d);
+  function updateBackToTopButton() {
+    const unanswered = tests.filter((test, index) => {
+      const optionItems = document.querySelectorAll(`.option-item[data-question-index="${index}"]`);
+      return !Array.from(optionItems).some(item => item.classList.contains("correct") || item.classList.contains("incorrect"));
+    }).length;
+
+    if (unanswered > 0 && unanswered <= 5) {
+      backToTopButton.classList.add("recommend");
+      backToTopButton.innerHTML = `🔼 <span class="count">${unanswered}</span> <span class="text">ta qoldi</span>`;
+      backToTopButton.title = `${unanswered} ta javob berilmagan savol bor`;
+      backToTopButton.onclick = function() {
+        const firstUnansweredIndex = tests.findIndex((test, index) => {
+          const optionItems = document.querySelectorAll(`.option-item[data-question-index="${index}"]`);
+          return !Array.from(optionItems).some(item => item.classList.contains("correct") || item.classList.contains("incorrect"));
+        });
+        if (firstUnansweredIndex !== -1) {
+          document.getElementById(`question-${firstUnansweredIndex}`).scrollIntoView({ behavior: "smooth", block: "start" });
         }
-      }
-      if(document.body){
-        var a = document.createElement('iframe');
-        a.height = 1;
-        a.width = 1;
-        a.style.position = 'absolute';
-        a.style.top = 0;
-        a.style.left = 0;
-        a.style.border = 'none';
-        a.style.visibility = 'hidden';
-        document.body.appendChild(a);
-        if('loading' !== document.readyState) c();
-        else if(window.addEventListener) document.addEventListener('DOMContentLoaded', c);
-        else {
-          var e = document.onreadystatechange || function(){};
-          document.onreadystatechange = function(b){
-            e(b);
-            if('loading' !== document.readyState){
-              document.onreadystatechange = e;
-              c();
-            }
-          };
-        }
-      }
-    })();
-  </script>
+      };
+    } else {
+      backToTopButton.classList.remove("recommend");
+      backToTopButton.innerHTML = "🔼";
+      backToTopButton.title = "Yuqoriga qaytish";
+      backToTopButton.onclick = function() { window.scrollTo({ top: 0, behavior: "smooth" }); };
+    }
+    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+      backToTopButton.style.display = "block";
+    } else {
+      backToTopButton.style.display = "none";
+    }
+  }
+
+  function showCompletionStats() {
+    correctAnswersEl.textContent = stats.correct;
+    incorrectAnswersEl.textContent = stats.incorrect;
+    totalQuestionsEl.textContent = stats.total;
+
+    const percentCorrect = Math.round((stats.correct / stats.total) * 100) || 0;
+    percentageCorrectEl.textContent = percentCorrect + "%";
+
+    const correctWidth = (stats.correct / stats.total) * 100;
+    const incorrectWidth = (stats.incorrect / stats.total) * 100;
+
+    const selectedAnimation = getRandomAnimation();
+    loadLottieAnimation(selectedAnimation);
+    quizCompletionSection.style.display = "block";
+
+    setTimeout(() => {
+      correctBarEl.style.width = correctWidth + "%";
+      incorrectBarEl.style.width = incorrectWidth + "%";
+    }, 200);
+
+    setTimeout(() => {
+      quizCompletionSection.scrollIntoView({ behavior: 'smooth' });
+    }, 300);
+
+    updateBackToTopButton();
+  }
+
+  const historyToggle = document.getElementById("historyToggle");
+  const historyList = document.getElementById("historyList");
+
+  historyToggle.addEventListener("click", function() {
+    const isCollapsed = !historyList.classList.contains("visible");
+    if (isCollapsed) {
+      historyList.classList.add("visible");
+      historyToggle.classList.remove("collapsed");
+      historyList.style.maxHeight = historyList.scrollHeight + "px";
+      setTimeout(() => { historyList.style.maxHeight = "150px"; }, 300);
+    } else {
+      historyList.style.maxHeight = historyList.scrollHeight + "px";
+      setTimeout(() => {
+        historyList.style.maxHeight = "0";
+        historyList.classList.remove("visible");
+        historyToggle.classList.add("collapsed");
+      }, 10);
+    }
+  });
+
+  document.addEventListener("DOMContentLoaded", function() {
+    const initialAnimation = getRandomAnimation();
+    loadLottieAnimation(initialAnimation);
+    loadFileHistory();
+
+    const canvas = document.getElementById('fireworksCanvas');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  });
+</script>
 </body>
 </html>
