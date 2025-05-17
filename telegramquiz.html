@@ -73,6 +73,7 @@
       transition: all 0.3s ease;
       position: relative;
       min-height: 100%;
+      z-index: 1;
     }
     @media (min-width: 768px) { .container { width: 70%; } }
     @media (min-width: 992px) { .container { width: 50%; } }
@@ -86,7 +87,7 @@
       background-color: var(--container-bg);
       transition: all 0.3s ease;
       position: relative;
-      z-index: 1;
+      z-index: 2;
       min-height: 150px;
     }
     .question-text { font-weight: bold; margin-bottom: 10px; font-size: 16px; }
@@ -111,7 +112,22 @@
       100% { transform: translateX(0); }
     }
     .incorrect-anim { animation: shake 0.5s ease; }
-    #backToTop { position: fixed; bottom: 20px; right: 20px; display: none; background: var(--button-bg); color: white; border: none; padding: 12px 18px; font-size: 18px; border-radius: 50%; cursor: pointer; transition: all 0.3s; box-shadow: 0px 4px 6px var(--shadow-color); }
+    #backToTop {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: none;
+      background: var(--button-bg);
+      color: white;
+      border: none;
+      padding: 12px 18px;
+      font-size: 18px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0px 4px 6px var(--shadow-color);
+      z-index: 1000; /* Increased z-index to ensure it appears above all elements */
+    }
     #backToTop:hover { background: var(--button-hover); transform: scale(1.1); }
     #backToTop.recommend { padding: 10px 20px; border-radius: 25px; display: flex; align-items: center; justify-content: center; min-width: 100px; font-size: 14px; }
     #backToTop.recommend .count { margin-left: 6px; font-size: 14px; }
@@ -121,13 +137,13 @@
     .custom-checkbox .checkmark { display: none; color: white; position: absolute; top: -1px; left: 3px; font-size: 12px; }
     .custom-checkbox.checked .checkmark { display: block; }
     .option-item:hover .custom-checkbox { border-color: var(--button-bg); }
-    #quizCompletionSection { display: none; margin-top: 30px; text-align: center; }
+    #quizCompletionSection { display: none; margin-top: 30px; text-align: center; z-index: 3; }
     .stats-container { margin-top: 20px; padding: 20px; border-radius: 8px; background-color: var(--stats-bg); box-shadow: 0 2px 4px var(--shadow-color); transition: all 0.3s ease; }
     .progress-bar-container { margin-top: 15px; height: 20px; background-color: var(--progress-bg); border-radius: 10px; overflow: hidden; position: relative; }
     .progress-bar { height: 100%; border-radius: 10px; transition: width 1s ease-in-out; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 12px; }
     .progress-correct { background-color: var(--correct-border); }
     .progress-incorrect { background-color: var(--incorrect-border); }
-    #lottieContainer { width: 200px; height: 200px; margin: 0 auto 20px auto; }
+    #lottieContainer { width: 200px; height: 200px; margin: 0 auto 20px auto; z-index: 4; }
     .celebration-title { font-size: 24px; font-weight: bold; margin-bottom: 20px; color: var(--button-bg); }
     .stat-number { font-size: 18px; font-weight: bold; }
     .dual-progress { position: relative; height: 20px; background-color: var(--progress-bg); border-radius: 10px; overflow: hidden; margin: 10px 0 20px 0; transition: all 0.3s ease; }
@@ -173,7 +189,7 @@
       width: 100%;
       height: 100%;
       pointer-events: none;
-      z-index: 1000;
+      z-index: 999; /* Below backToTop but above content */
     }
   </style>
 </head>
@@ -263,7 +279,7 @@
   let stats = { correct: 0, incorrect: 0, total: 0 };
 
   const animationFiles = [
-    './json/buy.json',
+      './json/buy.json',
     './json/marketing.json',
     './json/target.json',
     './json/work.json',
@@ -289,7 +305,7 @@
       startVelocity: 20,
       spread: 180,
       ticks: 30,
-      zIndex: 1000,
+      zIndex: 999,
       colors: ['#FFD700', '#1E90FF', '#FF69B4']
     };
 
@@ -313,7 +329,7 @@
         spread: 50,
         origin: { y: 0.6 },
         colors: ['#FFD700', '#1E90FF'],
-        zIndex: 1000
+        zIndex: 999
       });
     }, 300);
   }
@@ -351,13 +367,25 @@
 
   function loadLottieAnimation(jsonPath) {
     if (lottieAnimation) lottieAnimation.destroy();
-    lottieAnimation = lottie.loadAnimation({
-      container: document.getElementById('lottieContainer'),
-      renderer: 'svg',
-      loop: true,
-      autoplay: true,
-      path: jsonPath
-    });
+    try {
+      lottieAnimation = lottie.loadAnimation({
+        container: document.getElementById('lottieContainer'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: jsonPath
+      });
+      lottieAnimation.addEventListener('data_failed', () => {
+        console.error('Failed to load Lottie animation:', jsonPath);
+        // Fallback to another animation
+        const fallbackAnimation = getRandomAnimation();
+        if (fallbackAnimation !== jsonPath) {
+          loadLottieAnimation(fallbackAnimation);
+        }
+      });
+    } catch (error) {
+      console.error('Error loading Lottie animation:', error);
+    }
   }
 
   startNewTestButton.addEventListener("click", function() {
@@ -405,8 +433,7 @@
     saveFileToHistory(file.name);
     const reader = new FileReader();
     reader.onload = (ev) => {
-      const content = ev.target.result;
-      parseTestFile(content);
+      parseTestFile(ev.target.result);
     };
     reader.readAsText(file);
     stats = { correct: 0, incorrect: 0, total: 0 };
@@ -539,8 +566,7 @@
                 nextQuestion.scrollIntoView({ 
                   behavior: 'smooth', 
                   block: 'start',
-                  inline: 'nearest',
-                  easing: 'cubic-bezier(0.25, 0.1, 0.25, 1)'
+                  inline: 'nearest'
                 });
               }
             }, 800);
