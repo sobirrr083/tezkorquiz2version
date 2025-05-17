@@ -113,7 +113,22 @@
       100% { transform: translateX(0); }
     }
     .incorrect-anim { animation: shake 0.5s ease; }
-    #backToTop { position: fixed; bottom: 30px; right: 30px; display: none; background: var(--button-bg); color: white; border: none; padding: 15px 20px; font-size: 20px; border-radius: 50%; cursor: pointer; transition: all 0.3s; box-shadow: 0px 4px 6px var(--shadow-color); }
+    #backToTop {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      display: none;
+      background: var(--button-bg);
+      color: white;
+      border: none;
+      padding: 15px 20px;
+      font-size: 20px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0px 4px 6px var(--shadow-color);
+      z-index: 2000; /* Increased z-index to appear above all content */
+    }
     #backToTop:hover { background: var(--button-hover); transform: scale(1.1); }
     #backToTop.recommend { padding: 12px 24px; border-radius: 25px; display: flex; align-items: center; justify-content: center; min-width: 120px; }
     #backToTop.recommend .count { margin-left: 8px; font-size: 16px; }
@@ -265,9 +280,22 @@
   let stats = { correct: 0, incorrect: 0, total: 0 };
   let lottieAnimation = null;
 
+  // Updated animation files to use local JSONs (ensure these files exist in your project)
   const animationFiles = [
-    'https://assets.lottiefiles.com/packages/lf20_usmfx6.json',
-    'https://assets.lottiefiles.com/packages/lf20_vpmsry.json',
+    './json/buy.json',
+    './json/marketing.json',
+    './json/target.json',
+    './json/work.json',
+    './json/ani1.json',
+    './json/ani2.json',
+    './json/ani3.json',
+    './json/ani4.json',
+    './json/ani5.json',
+    './json/ani6.json',
+    './json/ani7.json',
+    './json/ani8.json',
+    './json/ani9.json',
+    './json/ani10.json',
   ];
   let usedAnimations = [];
 
@@ -348,6 +376,15 @@
       autoplay: true,
       path: jsonPath
     });
+    // Add error handling for Lottie animation loading
+    lottieAnimation.addEventListener('data_failed', () => {
+      console.error('Failed to load Lottie animation:', jsonPath);
+      // Fallback to another animation if one fails
+      const fallbackAnimation = getRandomAnimation();
+      if (fallbackAnimation !== jsonPath) {
+        loadLottieAnimation(fallbackAnimation);
+      }
+    });
   }
 
   startNewTestButton.addEventListener("click", function() {
@@ -392,8 +429,7 @@
     saveFileToHistory(file.name);
     const reader = new FileReader();
     reader.onload = (ev) => {
-      const content = ev.target.result;
-      parseTestFile(content);
+      parseTestFile(ev.target.result);
     };
     reader.readAsText(file);
     stats = { correct: 0, incorrect: 0, total: 0 };
