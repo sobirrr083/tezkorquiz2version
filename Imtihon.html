@@ -47,7 +47,7 @@
       background-color: #f8d7da !important;
     }
     .unanswered-correct {
-      background-color: #fff3e0 !important; /* Yellow for unanswered correct */
+      background-color: #fff3e0 !important;
     }
     .check-icon {
       font-weight: bold;
@@ -340,7 +340,6 @@
 <div class="container">
   <h1 class="text-center mb-4">Siz Imtihondasiz!</h1>
 
-  <!-- Vaqt sozlamalari -->
   <div id="timeSettings" class="time-settings">
     <h5>Imtihon vaqtini tanlang:</h5>
     <div class="btn-group mb-3" role="group">
@@ -363,7 +362,6 @@
     </div>
   </div>
 
-  <!-- Timer -->
   <div id="timerContainer" class="timer-container" style="display: none;">
     <div>
       <i class="fas fa-clock me-2"></i>
@@ -372,22 +370,18 @@
     <div id="timer" class="timer">00:00</div>
   </div>
 
-  <!-- Fayl tanlash qismi -->
   <div class="mb-3" id="fileSection">
     <label for="fileInput" class="form-label file-label">Fayl tanlash (.txt)</label>
     <input type="file" class="form-control" id="fileInput" accept=".txt" />
     <div id="uploadStatus"></div>
   </div>
 
-  <!-- Testlar ro'yxati chiqadigan joy -->
   <div id="quizList" style="display: none;">
     <p id="testCount" class="text-success fw-bold"></p>
     <div id="questionsContainer"></div>
 
-    <!-- Test yakunlash tugmasi -->
     <button id="finishBtn" class="btn btn-primary">Testni yakunlash</button>
 
-    <!-- To'plangan ballni ko'rsatish + tavsiya -->
     <div id="scoreContainer" class="score-container">
       <div class="results-card">
         <h3 class="mb-3">Imtihon Natijalari</h3>
@@ -431,19 +425,15 @@
       </div>
     </div>
 
-    <!-- Yangi test -->
     <button id="newTestBtn" class="btn btn-success new-test-btn" style="display: none; text-align: center; width: 100%;">
       Yangi test boshlamoq
     </button>
   </div>
 
-  <!-- Confetti effekti uchun -->
   <div id="confettiContainer" class="confetti-container"></div>
   
-  <!-- Salyut effekti uchun -->
   <div id="saluteContainer"></div>
   
-  <!-- Tasdiqlash modali (Testni yakunlash uchun) -->
   <div id="confirmModal" class="modal-overlay">
     <div class="confirm-modal">
       <h4 class="mb-3">Diqqat!</h4>
@@ -455,7 +445,6 @@
     </div>
   </div>
 
-  <!-- Chiqish tasdiqlash modali -->
   <div id="exitModal" class="modal-overlay">
     <div class="confirm-modal">
       <h4 class="mb-3">Diqqat!</h4>
@@ -468,81 +457,6 @@
   </div>
 </div>
 
-<script type="text/javascript">
-  var gk_isXlsx = false;
-  var gk_xlsxFileLookup = {};
-  var gk_fileData = {};
-  function filledCell(cell) {
-    return cell !== '' && cell != null;
-  }
-  function loadFileData(filename) {
-    if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-      try {
-        var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-        var firstSheetName = workbook.SheetNames[0];
-        var worksheet = workbook.Sheets[firstSheetName];
-
-        var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-        var filteredData = jsonData.filter(row => row.some(filledCell));
-
-        var headerRowIndex = filteredData.findIndex((row, index) =>
-          row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-        );
-        if (headerRowIndex === -1 || headerRowIndex > 25) {
-          headerRowIndex = 0;
-        }
-
-        var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex));
-        csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-        return csv;
-      } catch (e) {
-        console.error(e);
-        return "";
-      }
-    }
-    return gk_fileData[filename] || "";
-  }
-</script>
-<script type="text/javascript">
-  var gk_isXlsx = false;
-  var gk_xlsxFileLookup = {};
-  var gk_fileData = {};
-  function filledCell(cell) {
-    return cell !== '' && cell != null;
-  }
-  function loadFileData(filename) {
-  if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-      try {
-          var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-          var firstSheetName = workbook.SheetNames[0];
-          var worksheet = workbook.Sheets[firstSheetName];
-
-          // Convert sheet to JSON to filter blank rows
-          var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-          // Filter out blank rows (rows where all cells are empty, null, or undefined)
-          var filteredData = jsonData.filter(row => row.some(filledCell));
-
-          // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-          var headerRowIndex = filteredData.findIndex((row, index) =>
-            row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-          );
-          // Fallback
-          if (headerRowIndex === -1 || headerRowIndex > 25) {
-            headerRowIndex = 0;
-          }
-
-          // Convert filtered JSON back to CSV
-          var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-          csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-          return csv;
-      } catch (e) {
-          console.error(e);
-          return "";
-      }
-  }
-  return gk_fileData[filename] || "";
-  }
-  </script>
 <script>
   let originalTests = [];
   let randomizedTests = [];
@@ -552,29 +466,28 @@
   let allowExit = false;
   let lastExitAttempt = 0;
 
-  // GIFlar ro'yxati va ketma-ketlikni boshqarish
   const gifGroups = {
-    veryLow: [ // 0-29%
+    veryLow: [
       { url: "https://media.giphy.com/media/26ufnwz3wDUli7GU0/giphy.gif", alt: "Xafa 1" },
       { url: "https://media.giphy.com/media/l0Iyl55kTeh71nTWw/giphy.gif", alt: "Xafa 2" },
       { url: "https://media.giphy.com/media/3o7bu8sRnYp0kA6tY4/giphy.gif", alt: "Xafa 3" }
     ],
-    low: [ // 30-59%
+    low: [
       { url: "https://media.giphy.com/media/3o7TKtnuHOHzL7S7yM/giphy.gif", alt: "O'rtacha 1" },
       { url: "https://media.giphy.com/media/26xBwdIu2iuc6bF7O/giphy.gif", alt: "O'rtacha 2" },
       { url: "https://media.giphy.com/media/3o7TKsQ8ZgPBLgqL8Q/giphy.gif", alt: "O'rtacha 3" }
     ],
-    medium: [ // 60-70%
+    medium: [
       { url: "https://media.giphy.com/media/3o7btPCcdNniyf0ArS/giphy.gif", alt: "Yaxshi 1" },
       { url: "https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif", alt: "Yaxshi 2" },
       { url: "https://media.giphy.com/media/26tPplGWjN0xLybiU/giphy.gif", alt: "Yaxshi 3" }
     ],
-    high: [ // 71-81%
+    high: [
       { url: "https://media.giphy.com/media/3o6ZtaO9BZHcOjmErm/giphy.gif", alt: "Juda yaxshi 1" },
       { url: "https://media.giphy.com/media/3o7aDcz0L7lZ3X1e8w/giphy.gif", alt: "Juda yaxshi 2" },
       { url: "https://media.giphy.com/media/26FPy3QZQqGtDcrja/giphy.gif", alt: "Juda yaxshi 3" }
     ],
-    excellent: [ // 82-100%
+    excellent: [
       { url: "https://media.giphy.com/media/3o7bu3V1aG3Y4jZ7JC/giphy.gif", alt: "A'lo 1" },
       { url: "https://media.giphy.com/media/3o7aD4dKz8QzC6zO4w/giphy.gif", alt: "A'lo 2" },
       { url: "https://media.giphy.com/media/l0MYC0LdjMM6x5RwA/giphy.gif", alt: "A'lo 3" }
@@ -621,7 +534,6 @@
   const cancelExit = document.getElementById("cancelExit");
   const confirmExit = document.getElementById("confirmExit");
 
-  // Vaqt sozlamalari
   timeButtons.forEach(button => {
     button.addEventListener("click", () => {
       timeButtons.forEach(btn => btn.classList.remove("active"));
@@ -649,7 +561,6 @@
     }
   });
 
-  // Prevent accidental exit with debouncing
   window.addEventListener("beforeunload", (e) => {
     const now = Date.now();
     if (examStarted && !allowExit && now - lastExitAttempt > 200) {
@@ -661,14 +572,12 @@
     }
   });
 
-  // Show exit confirmation modal with modal overlap prevention
   function showExitModal() {
     if (examStarted && !confirmModal.classList.contains("show")) {
       exitModal.classList.add("show");
     }
   }
 
-  // Handle exit modal actions
   cancelExit.addEventListener("click", () => {
     exitModal.classList.remove("show");
   });
@@ -679,7 +588,6 @@
     window.location.reload();
   });
 
-  // Massivni randomizatsiya qilish uchun funksiya
   function shuffleArray(array) {
     const newArray = [...array];
     for (let i = newArray.length - 1; i > 0; i--) {
@@ -689,7 +597,6 @@
     return newArray;
   }
 
-  // Fayl tanlash eventi
   fileInput.addEventListener("change", (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -712,7 +619,6 @@
     }
   });
 
-  // Test faylini parse qilish
   function parseTestFile(content) {
     originalTests = [];
     const lines = content.split("\n").map(line => line.trim()).filter(Boolean);
@@ -748,9 +654,8 @@
     }
   }
 
-  // Testlar va variantlarni randomizatsiya qilish
   function randomizeTests() {
-    const shuffledTests = shuffleArray(originalTests);
+    const shuffledTests = shuffleArray(originalTests).slice(0, 25);
     randomizedTests = shuffledTests.map(test => {
       const shuffledOptions = shuffleArray(test.options);
       const correctOptionIndex = shuffledOptions.findIndex(option => option.letter === test.answer);
@@ -758,7 +663,6 @@
     });
   }
 
-  // Imtihonni boshlash
   function startExam() {
     examStarted = true;
     timeSettings.style.display = "none";
@@ -769,10 +673,13 @@
     showTests();
   }
 
-  // Testlarni ekranga chiqarish
   function showTests() {
     quizList.style.display = "block";
-    testCount.textContent = randomizedTests.length + " ta test yuklandi!";
+    if (originalTests.length > 25) {
+      testCount.textContent = `25 ta test ${originalTests.length} tadan tasodifiy tanlandi!`;
+    } else {
+      testCount.textContent = `${randomizedTests.length} ta test yuklandi!`;
+    }
     questionsContainer.innerHTML = "";
     randomizedTests.forEach((test, index) => {
       const questionDiv = document.createElement("div");
@@ -808,7 +715,6 @@
     });
   }
 
-  // Timer funksiyalari
   function startTimer() {
     timerInterval = setInterval(() => {
       if (totalSeconds > 0) {
@@ -832,7 +738,6 @@
     clearInterval(timerInterval);
   }
 
-  // Imtihon tugadi
   function endExam(message = "") {
     stopTimer();
     checkAnswers();
@@ -845,7 +750,6 @@
     allowExit = true;
   }
 
-  // "Testni yakunlash" tugmasi bosilganda
   finishBtn.addEventListener("click", () => {
     const totalQuestions = randomizedTests.length;
     let answeredCount = 0;
@@ -864,7 +768,6 @@
     confirmModal.classList.add("show");
   });
   
-  // Modal tugmalari uchun eventlar
   cancelFinish.addEventListener("click", () => {
     confirmModal.classList.remove("show");
   });
@@ -874,7 +777,6 @@
     endExam("Test yakunlandi!");
   });
 
-  // Javoblarni tekshirish
   function checkAnswers() {
     let correctCount = 0;
     let incorrectCount = 0;
@@ -919,7 +821,6 @@
     const ratio = correctCount / totalQuestions;
     const percentage = Math.round(ratio * 100);
     
-    // Progress bar va statistikani yangilash
     progressFill.style.width = `${percentage}%`;
     progressFill.classList.toggle('low', ratio < 0.6);
     progressText.textContent = `${percentage}%`;
@@ -929,7 +830,6 @@
     incorrectAnswersEl.textContent = incorrectCount;
     unansweredEl.textContent = unansweredCount;
     
-    // GIFni tanlash
     let gifGroupKey, emoji;
     if (percentage <= 29) {
       gifGroupKey = "veryLow";
@@ -957,16 +857,13 @@
       </div>
     `;
     
-    // Keyingi test uchun indeksni yangilash
     gifIndices[gifGroupKey] = (currentIndex + 1) % gifGroups[gifGroupKey].length;
 
-    // Animatsiyalar
     if (percentage >= 60) {
       createConfetti();
       createSalute();
     }
 
-    // Natija haqida xabar
     let feedback = "";
     if (percentage < 30) {
       feedback = `
@@ -1000,12 +897,10 @@
     finishBtn.style.display = "none";
   }
 
-  // Yangi test boshlash
   newTestBtn.addEventListener("click", () => {
     resetTest();
   });
 
-  // Testni qayta boshlash
   function resetTest() {
     examStarted = false;
     allowExit = false;
@@ -1028,7 +923,6 @@
     minutesInput.value = "15";
   }
 
-  // Confetti effektini yaratish
   function createConfetti() {
     confettiContainer.innerHTML = '';
     const colors = ["#fd5e53", "#3cc47c", "#1e1f26", "#df678c", "#3d8eb9", "#f9c80e"];
@@ -1050,7 +944,6 @@
     }, 8000);
   }
   
-  // Salyut effektini yaratish
   function createSalute() {
     saluteContainer.innerHTML = '';
     const colors = ["#ff4136", "#0074d9", "#2ecc40", "#ffdc00", "#f012be", "#ff851b"];
@@ -1071,6 +964,5 @@
     }
   }
 </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93c00001fb5353b1',t:'MTc0NjYxMzM4Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>
