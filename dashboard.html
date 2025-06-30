@@ -767,9 +767,7 @@
         
     </div>
 </div>
-
-
-
+    
 <!-- Footer -->
  <footer class="footer">
     <div class="container">
@@ -816,28 +814,6 @@
     
 <script src="//code.tidio.co/dp3xu5h0swhcq9n7ir1qs8kzethsdome.js" async></script>
     
-<!--     login parol uchun kod login.htmlga yo'naltirish -->
-<script>
-  const firebaseConfig = {
-       apiKey: "AIzaSyAYz2BA-iCfHOgbCzSAMrnxVaXgvAHC0Xg",
-  authDomain: "tezkorquiz-3a66d.firebaseapp.com",
-  projectId: "tezkorquiz-3a66d",
-  appId: "1:899112345856:web:57e70f914bb691670253e5",
-  };
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-
-  auth.onAuthStateChanged(user => {
-    if (!user) {
-      window.location.href = "login.html"; // Tizimga kirmagan foydalanuvchi uchun
-    } else {
-      // Istasangiz foydalanuvchi emailini chiqarishingiz mumkin
-      console.log("Kirish amalga oshirilgan:", user.email);
-    }
-  });
-</script>
-
-    <!--     login parol tugadi -->
 <!-- Initialize AOS -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -867,11 +843,6 @@
         });
     });
 </script>
-
-
-
-
 </body>
-
 </html>
 
