@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Login System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            overflow: hidden;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-container {
+            padding: 40px 30px;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo h1 {
+            color: #333;
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .logo p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: #fff;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group input.error {
+            border-color: #e74c3c;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-google {
+            background: #fff;
+            color: #333;
+            border: 2px solid #e1e5e9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-google:hover:not(:disabled) {
+            background: #f8f9fa;
+            border-color: #667eea;
+        }
+
+        .google-icon {
+            width: 18px;
+            height: 18px;
+        }
+
+        .loading {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid currentColor;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .divider {
+            text-align: center;
+            margin: 20px 0;
+            position: relative;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e1e5e9;
+            z-index: 1;
+        }
+
+        .divider span {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 0 15px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .form-links {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .form-links a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+
+        .form-links a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-top: 2px;
+        }
+
+        .checkbox-group label {
+            font-size: 12px;
+            line-height: 1.4;
+            color: #666;
+        }
+
+        .checkbox-group label a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .checkbox-group label a:hover {
+            text-decoration: underline;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .error-alert {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.3s ease;
+        }
+
+        .close:hover {
+            color: #333;
+        }
+
+        .modal h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .modal p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .modal h3 {
+            color: #333;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .form-toggle {
+            display: none;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .user-info {
+            background: #d4edda;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            display: none;
+        }
+
+        .user-info h3 {
+            color: #155724;
+            margin-bottom: 10px;
+        }
+
+        .user-info p {
+            color: #155724;
+            margin-bottom: 15px;
+        }
+
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: block;
+        }
+
+        .btn-logout {
+            background: #dc3545;
+            color: white;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-logout:hover {
+            background: #c82333;
+        }
+
+        .firebase-config-alert {
+            background: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #ffc107;
+        }
+
+        @media (max-width: 480px) {
+            .form-container {
+                padding: 30px 20px;
+            }
+            
+            .modal-content {
+                margin: 10% auto;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <div class="logo">
+                <h1>Xush kelibsiz</h1>
+                <p>Hisobingizga kiring yoki ro'yxatdan o'ting</p>
+            </div>
+
+            <!-- Firebase Configuration Alert -->
+            <div class="firebase-config-alert" id="configAlert">
+                <strong>Diqqat!</strong> Firebase konfiguratsiyasini o'rnatish kerak. Quyidagi bosqichlarni bajaring:
+                <ol style="margin-top: 10px; padding-left: 20px;">
+                    <li>Firebase console'da yangi loyiha yarating</li>
+                    <li>Authentication'ni yoqing (Email/Password va Google)</li>
+                    <li>Quyidagi konfiguratsiyani o'zingiznikiga almashtiring</li>
+                </ol>
+            </div>
+
+            <div class="success-message" id="successMessage"></div>
+            <div class="error-alert" id="errorAlert"></div>
+
+            <!-- User Info (after login) -->
+            <div class="user-info" id="userInfo">
+                <img src="" alt="User Avatar" class="user-avatar" id="userAvatar">
+                <h3 id="userName">Foydalanuvchi</h3>
+                <p id="userEmail">email@example.com</p>
+                <button class="btn btn-primary" onclick="goToDashboard()">Dashboard</button>
+                <button class="btn-logout" onclick="signOut()">Chiqish</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email manzil</label>
+                    <input type="email" id="loginEmail" name="email" required>
+                    <div class="error-message" id="loginEmailError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="loginPassword">Parol</label>
+                    <input type="password" id="loginPassword" name="password" required>
+                    <div class="error-message" id="loginPasswordError"></div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="loginBtn">
+                    <div class="loading" id="loginLoading"></div>
+                    <span id="loginBtnText">Kirish</span>
+                </button>
+
+                <div class="divider">
+                    <span>yoki</span>
+                </div>
+
+                <button type="button" class="btn btn-google" id="googleLoginBtn" onclick="signInWithGoogle()">
+                    <div class="loading" id="googleLoginLoading"></div>
+                    <svg class="google-icon" viewBox="0 0 24 24">
+                        <path fill="#4285f4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="#34a853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="#fbbc05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                        <path fill="#ea4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                    </svg>
+                    <span id="googleLoginText">Google orqali kirish</span>
+                </button>
+
+                <div class="form-links">
+                    <a href="#" onclick="showForgotPassword()">Parolni unutdingizmi?</a>
+                    <a href="#" onclick="showRegisterForm()">Ro'yxatdan o'tish</a>
+                </div>
+            </form>
+
+            <!-- Register Form -->
+            <form id="registerForm" class="form-toggle">
+                <div class="form-group">
+                    <label for="registerName">To'liq ism</label>
+                    <input type="text" id="registerName" name="name" required>
+                    <div class="error-message" id="registerNameError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="registerEmail">Email manzil</label>
+                    <input type="email" id="registerEmail" name="email" required>
+                    <div class="error-message" id="registerEmailError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="registerPassword">Parol</label>
+                    <input type="password" id="registerPassword" name="password" required>
+                    <div class="error-message" id="registerPasswordError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Parolni tasdiqlang</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required>
+                    <div class="error-message" id="confirmPasswordError"></div>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="agreeTerms" required>
+                    <label for="agreeTerms">
+                        Men <a href="#" onclick="showPrivacyPolicy()">Maxfiylik siyosati</a> va 
+                        <a href="#" onclick="showTermsOfService()">Foydalanish shartlari</a> bilan roziman
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="registerBtn">
+                    <div class="loading" id="registerLoading"></div>
+                    <span id="registerBtnText">Ro'yxatdan o'tish</span>
+                </button>
+
+                <div class="divider">
+                    <span>yoki</span>
+                </div>
+
+                <button type="button" class="btn btn-google" id="googleRegisterBtn" onclick="signInWithGoogle()">
+                    <div class="loading" id="googleRegisterLoading"></div>
+                    <svg class="google-icon" viewBox="0 0 24 24">
+                        <path fill="#4285f4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="#34a853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="#fbbc05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                        <path fill="#ea4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                    </svg>
+                    <span>Google orqali ro'yxatdan o'tish</span>
+                </button>
+
+                <div class="form-links">
+                    <a href="#" onclick="showLoginForm()">Hisobingiz bormi? Kirish</a>
+                </div>
+            </form>
+
+            <!-- Forgot Password Form -->
+            <form id="forgotPasswordForm" class="form-toggle">
+                <div class="form-group">
+                    <label for="forgotEmail">Email manzil</label>
+                    <input type="email" id="forgotEmail" name="email" required>
+                    <div class="error-message" id="forgotEmailError"></div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="forgotBtn">
+                    <div class="loading" id="forgotLoading"></div>
+                    <span id="forgotBtnText">Parolni tiklash</span>
+                </button>
+
+                <div class="form-links">
+                    <a href="#" onclick="showLoginForm()">Kirish sahifasiga qaytish</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Privacy Policy Modal -->
+    <div id="privacyModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('privacyModal')">×</span>
+            <h2>Maxfiylik siyosati</h2>
+            
+            <h3>1. Ma'lumotlarni to'plash</h3>
+            <p>Biz sizning shaxsiy ma'lumotlaringizni quyidagi maqsadlarda to'playmiz:</p>
+            <p>• Hisob yaratish va boshqarish</p>
+            <p>• Xizmatlarimizni taqdim etish</p>
+            <p>• Xavfsizlikni ta'minlash</p>
+            
+            <h3>2. Ma'lumotlardan foydalanish</h3>
+            <p>Sizning ma'lumotlaringiz faqat quyidagi maqsadlarda ishlatiladi:</p>
+            <p>• Hisobingizni boshqarish</p>
+            <p>• Xizmat sifatini yaxshilash</p>
+            <p>• Qonuniy talablarni bajarish</p>
+            
+            <h3>3. Ma'lumotlarni himoya qilish</h3>
+            <p>Biz sizning shaxsiy ma'lumotlaringizni himoya qilish uchun zamonaviy xavfsizlik choralarini qo'llaymiz.</p>
+            
+            <h3>4. Bog'lanish</h3>
+            <p>Maxfiylik siyosati bo'yicha savollaringiz bo'lsa, biz bilan bog'laning: privacy@example.com</p>
+        </div>
+    </div>
+
+    <!-- Terms of Service Modal -->
+    <div id="termsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('termsModal')">×</span>
+            <h2>Foydalanish shartlari</h2>
+            
+            <h3>1. Xizmatdan foydalanish</h3>
+            <p>Ushbu xizmatdan foydalanish orqali siz quyidagi shartlarga rozilik bildirasiz:</p>
+            <p>• Xizmatdan qonuniy maqsadlarda foydalanish</p>
+            <p>• Boshqa foydalanuvchilarning huquqlarini hurmat qilish</p>
+            <p>• Xizmat shartlariga rioya qilish</p>
+            
+            <h3>2. Foydalanuvchi majburiyatlari</h3>
+            <p>Siz quyidagilarni qilmaslikka majbursiz:</p>
+            <p>• Tizimga zarar yetkazish</p>
+            <p>• Boshqa foydalanuvchilarni bezovta qilish</p>
+            <p>• Noto'g'ri ma'lumot tarqatish</p>
+            
+            <h3>3. Javobgarlik</h3>
+            <p>Xizmat "bor holda" taqdim etiladi va biz barcha xatolarsizlikka kafolat bermaymiz.</p>
+            
+            <h3>4. O'zgarishlar</h3>
+            <p>Biz ushbu shartlarni istalgan vaqtda o'zgartirish huquqini saqlab qolamiz.</p>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+      // Firebase Configuration - Replace with your actual Firebase config
+      import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+      import { 
+          getAuth, 
+          signInWithEmailAndPassword, 
+          createUserWithEmailAndPassword, 
+          sendPasswordResetEmail,
+          signInWithPopup,
+          GoogleAuthProvider,
+          signOut as firebaseSignOut,
+          onAuthStateChanged,
+          updateProfile
+      } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+
+      // TODO: Replace with your Firebase configuration
+      const firebaseConfig = {
+  apiKey: "AIzaSyBxIpLY5WasiSIlDL4japBLnnXRwOLUKEQ",
+  authDomain: "tezkor-quiz-bbe3c.firebaseapp.com",
+  projectId: "tezkor-quiz-bbe3c",
+  storageBucket: "tezkor-quiz-bbe3c.firebasestorage.app",
+  messagingSenderId: "143161522496",
+  appId: "1:143161522496:web:252108ace3a4c19f35e2a5",
+      };
+
+      // Initialize Firebase
+      let app, auth, provider;
+      let isConfigured = false;
+
+      try {
+          app = initializeApp(firebaseConfig);
+          auth = getAuth(app);
+          provider = new GoogleAuthProvider();
+          provider.addScope('email');
+          provider.addScope('profile');
+          isConfigured = true;
+          document.getElementById('configAlert').style.display = 'none';
+      } catch (error) {
+          console.error('Firebase konfiguratsiyasi xato:', error);
+          showError('Firebase konfiguratsiyasi noto\'g\'ri. Iltimos, konfiguratsiyani tekshiring.');
+      }
+
+      // Global functions
+      window.auth = auth;
+      window.signInWithGoogle = signInWithGoogle;
+      window.signOut = signOut;
+      window.showLoginForm = showLoginForm;
+      window.showRegisterForm = showRegisterForm;
+      window.showForgotPassword = showForgotPassword;
+      window.closeModal = closeModal;
+      window.goToDashboard = goToDashboard;
+
+      // Auth state listener
+      if (isConfigured) {
+          onAuthStateChanged(auth, (user) => {
+              if (user) {
+                  showUserInfo(user);
+              } else {
+                  hideUserInfo();
+                  showLoginForm();
+              }
+          });
+      }
+
+      // Form submissions
+      document.getElementById('loginForm').addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const email = document.getElementById('loginEmail').value.trim();
+          const password = document.getElementById('loginPassword').value.trim();
+
+          // Reset error messages
+          resetErrorMessages();
+
+          // Basic validation
+          if (!validateEmail(email)) {
+              showFieldError('loginEmailError', 'Iltimos, to\'g\'ri email kiriting');
+              return;
+          }
+          if (password.length < 6) {
+              showFieldError('loginPasswordError', 'Parol kamida 6 belgi bo\'lishi kerak');
+              return;
+          }
+
+          // Attempt login
+          const success = await loginWithEmail(email, password);
+          if (success) {
+              document.getElementById('loginForm').reset();
+          }
+      });
+
+      document.getElementById('registerForm').addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const name = document.getElementById('registerName').value.trim();
+          const email = document.getElementById('registerEmail').value.trim();
+          const password = document.getElementById('registerPassword').value.trim();
+          const confirmPassword = document.getElementById('confirmPassword').value.trim();
+          const agreeTerms = document.getElementById('agreeTerms').checked;
+
+          // Reset error messages
+          resetErrorMessages();
+
+          // Validation
+          if (!name) {
+              showFieldError('registerNameError', 'Ism kiritish majburiy');
+              return;
+          }
+          if (!validateEmail(email)) {
+              showFieldError('registerEmailError', 'Iltimos, to\'g\'ri email kiriting');
+              return;
+          }
+          if (password.length < 6) {
+              showFieldError('registerPasswordError', 'Parol kamida 6 belgi bo\'lishi kerak');
+              return;
+          }
+          if (password !== confirmPassword) {
+              showFieldError('confirmPasswordError', 'Parollar mos kelmaydi');
+              return;
+          }
+          if (!agreeTerms) {
+              showFieldError('registerNameError', 'Foydalanish shartlariga rozi bo\'lishingiz kerak');
+              return;
+          }
+
+          // Attempt registration
+          const success = await registerWithEmail(email, password, name);
+          if (success) {
+              document.getElementById('registerForm').reset();
+          }
+      });
+
+      document.getElementById('forgotPasswordForm').addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const email = document.getElementById('forgotEmail').value.trim();
+
+          // Reset error messages
+          resetErrorMessages();
+
+          // Validation
+          if (!validateEmail(email)) {
+              showFieldError('forgotEmailError', 'Iltimos, to\'g\'ri email kiriting');
+              return;
+          }
+
+          // Attempt password reset
+          const success = await resetPassword(email);
+          if (success) {
+              document.getElementById('forgotPasswordForm').reset();
+              showLoginForm();
+          }
+      });
+
+      // Google Sign In
+      async function signInWithGoogle() {
+          if (!isConfigured) {
+              showError('Firebase konfiguratsiyasi kerak!');
+              return;
+          }
+
+          try {
+              setGoogleLoading(true);
+              const result = await signInWithPopup(auth, provider);
+              const user = result.user;
+              showSuccess(`Google orqali muvaffaqiyatli kirildi! Xush kelibsiz, ${user.displayName || 'Foydalanuvchi'}!`);
+              window.location.href = 'dashboard.html'; // Yo'naltirish
+          } catch (error) {
+              console.error('Google login xatosi:', error);
+              handleAuthError(error);
+          } finally {
+              setGoogleLoading(false);
+          }
+      }
+
+      // Sign Out
+      async function signOut() {
+          if (!isConfigured) return;
+
+          try {
+              await firebaseSignOut(auth);
+              showSuccess('Muvaffaqiyatli chiqildi!');
+              showLoginForm();
+              window.location.href = 'login.html'; // Chiqishdan so'ng login sahifasiga yo'naltirish
+          } catch (error) {
+              console.error('Chiqish xatosi:', error);
+              showError('Chiqishda xatolik yuz berdi. Qaytadan urinib ko\'ring.');
+          }
+      }
+
+      // Email/Password Login
+      async function loginWithEmail(email, password) {
+          if (!isConfigured) {
+              showError('Firebase konfiguratsiyasi kerak!');
+              return false;
+          }
+
+          try {
+              setLoginLoading(true);
+              const userCredential = await signInWithEmailAndPassword(auth, email, password);
+              const user = userCredential.user;
+              showSuccess(`Muvaffaqiyatli kirildi! Xush kelibsiz, ${user.displayName || user.email}!`);
+              window.location.href = 'dashboard.html'; // Yo'naltirish
+              return true;
+          } catch (error) {
+              console.error('Email login xatosi:', error);
+              handleAuthError(error);
+              return false;
+          } finally {
+              setLoginLoading(false);
+          }
+      }
+
+      // Email/Password Registration
+      async function registerWithEmail(email, password, displayName) {
+          if (!isConfigured) {
+              showError('Firebase konfiguratsiyasi kerak!');
+              return false;
+          }
+
+          try {
+              setRegisterLoading(true);
+              const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+              const user = userCredential.user;
+
+              // Update user profile with display name
+              await updateProfile(user, {
+                  displayName: displayName
+              });
+
+              showSuccess(`Ro'yxatdan o'tish muvaffaqiyatli! Xush kelibsiz, ${displayName}!`);
+              window.location.href = 'dashboard.html'; // Yo'naltirish
+              return true;
+          } catch (error) {
+              console.error('Email registration xatosi:', error);
+              handleAuthError(error);
+              return false;
+          } finally {
+              setRegisterLoading(false);
+          }
+      }
+
+      // Password Reset
+      async function resetPassword(email) {
+          if (!isConfigured) {
+              showError('Firebase konfiguratsiyasi kerak!');
+              return false;
+          }
+
+          try {
+              setForgotLoading(true);
+              await sendPasswordResetEmail(auth, email);
+              showSuccess('Parolni tiklash havolasi email manzilingizga yuborildi!');
+              window.location.href = 'login.html'; // Yo'naltirish
+              return true;
+          } catch (error) {
+              console.error('Password reset xatosi:', error);
+              handleAuthError(error);
+              return false;
+          } finally {
+              setForgotLoading(false);
+          }
+      }
+
+      // Dashboardga o'tish
+      function goToDashboard() {
+          window.location.href = 'index.html';
+      }
+
+      // UI Helper Functions
+      function showLoginForm() {
+          document.getElementById('loginForm').classList.remove('form-toggle');
+          document.getElementById('registerForm').classList.add('form-toggle');
+          document.getElementById('forgotPasswordForm').classList.add('form-toggle');
+          document.getElementById('userInfo').style.display = 'none';
+          resetErrorMessages();
+          document.getElementById('loginForm').reset();
+      }
+
+      function showRegisterForm() {
+          document.getElementById('loginForm').classList.add('form-toggle');
+          document.getElementById('registerForm').classList.remove('form-toggle');
+          document.getElementById('forgotPasswordForm').classList.add('form-toggle');
+          document.getElementById('userInfo').style.display = 'none';
+          resetErrorMessages();
+          document.getElementById('registerForm').reset();
+      }
+
+      function showForgotPassword() {
+          document.getElementById('loginForm').classList.add('form-toggle');
+          document.getElementById('registerForm').classList.add('form-toggle');
+          document.getElementById('forgotPasswordForm').classList.remove('form-toggle');
+          document.getElementById('userInfo').style.display = 'none';
+          resetErrorMessages();
+          document.getElementById('forgotPasswordForm').reset();
+      }
+
+      function showUserInfo(user) {
+          document.getElementById('loginForm').classList.add('form-toggle');
+          document.getElementById('registerForm').classList.add('form-toggle');
+          document.getElementById('forgotPasswordForm').classList.add('form-toggle');
+          document.getElementById('userInfo').style.display = 'block';
+          
+          document.getElementById('userName').textContent = user.displayName || 'Foydalanuvchi';
+          document.getElementById('userEmail').textContent = user.email;
+          document.getElementById('userAvatar').src = user.photoURL || 'https://via.placeholder.com/60';
+      }
+
+      function hideUserInfo() {
+          document.getElementById('userInfo').style.display = 'none';
+      }
+
+      function showPrivacyPolicy() {
+          document.getElementById('privacyModal').style.display = 'block';
+      }
+
+      function showTermsOfService() {
+          document.getElementById('termsModal').style.display = 'block';
+      }
+
+      function closeModal(modalId) {
+          document.getElementById(modalId).style.display = 'none';
+      }
+
+      // Error and Success Handling
+      function showError(message) {
+          const errorAlert = document.getElementById('errorAlert');
+          errorAlert.textContent = message;
+          errorAlert.style.display = 'block';
+          setTimeout(() => {
+              errorAlert.style.display = 'none';
+          }, 5000);
+      }
+
+      function showSuccess(message) {
+          const successMessage = document.getElementById('successMessage');
+          successMessage.textContent = message;
+          successMessage.style.display = 'block';
+          setTimeout(() => {
+              successMessage.style.display = 'none';
+          }, 5000);
+      }
+
+      function showFieldError(elementId, message) {
+          const errorElement = document.getElementById(elementId);
+          errorElement.textContent = message;
+          errorElement.style.display = 'block';
+          document.getElementById(elementId.replace('Error', '')).classList.add('error');
+      }
+
+      function resetErrorMessages() {
+          const errorMessages = document.querySelectorAll('.error-message');
+          errorMessages.forEach(msg => {
+              msg.style.display = 'none';
+              msg.textContent = '';
+          });
+          const inputs = document.querySelectorAll('input');
+          inputs.forEach(input => input.classList.remove('error'));
+          document.getElementById('errorAlert').style.display = 'none';
+          document.getElementById('successMessage').style.display = 'none';
+      }
+
+      function handleAuthError(error) {
+          let message = 'Noma\'lum xatolik yuz berdi';
+          switch (error.code) {
+              case 'auth/email-already-in-use':
+                  message = 'Bu email allaqachon ro\'yxatdan o\'tgan';
+                  showFieldError('registerEmailError', message);
+                  break;
+              case 'auth/invalid-email':
+                  message = 'Noto\'g\'ri email manzil';
+                  showFieldError('loginEmailError', message);
+                  showFieldError('registerEmailError', message);
+                  showFieldError('forgotEmailError', message);
+                  break;
+              case 'auth/user-not-found':
+              case 'auth/wrong-password':
+                  message = 'Email yoki parol noto\'g\'ri';
+                  showFieldError('loginEmailError', message);
+                  showFieldError('loginPasswordError', message);
+                  break;
+              case 'auth/too-many-requests':
+                  message = 'Juda ko\'p urinishlar. Iltimos, keyinroq qayta urinib ko\'ring';
+                  break;
+              case 'auth/user-disabled':
+                  message = 'Bu hisob o\'chirilgan';
+                  break;
+              default:
+                  message = error.message;
+          }
+          showError(message);
+      }
+
+      // Loading States
+      function setLoginLoading(loading) {
+          const btn = document.getElementById('loginBtn');
+          const text = document.getElementById('loginBtnText');
+          const loader = document.getElementById('loginLoading');
+          
+          if (loading) {
+              btn.disabled = true;
+              text.textContent = 'Kirilmoqda...';
+              loader.style.display = 'block';
+          } else {
+              btn.disabled = false;
+              text.textContent = 'Kirish';
+              loader.style.display = 'none';
+          }
+      }
+
+      function setRegisterLoading(loading) {
+          const btn = document.getElementById('registerBtn');
+          const text = document.getElementById('registerBtnText');
+          const loader = document.getElementById('registerLoading');
+          
+          if (loading) {
+              btn.disabled = true;
+              text.textContent = 'Ro\'yxatdan o\'tilmoqda...';
+              loader.style.display = 'block';
+          } else {
+              btn.disabled = false;
+              text.textContent = 'Ro\'yxatdan o\'tish';
+              loader.style.display = 'none';
+          }
+      }
+
+      function setForgotLoading(loading) {
+          const btn = document.getElementById('forgotBtn');
+          const text = document.getElementById('forgotBtnText');
+          const loader = document.getElementById('forgotLoading');
+          
+          if (loading) {
+              btn.disabled = true;
+              text.textContent = 'Yuborilmoqda...';
+              loader.style.display = 'block';
+          } else {
+              btn.disabled = false;
+              text.textContent = 'Parolni tiklash';
+              loader.style.display = 'none';
+          }
+      }
+
+      function setGoogleLoading(loading) {
+          const btns = [document.getElementById('googleLoginBtn'), document.getElementById('googleRegisterBtn')];
+          const texts = [document.getElementById('googleLoginText')];
+          const loaders = [document.getElementById('googleLoginLoading'), document.getElementById('googleRegisterLoading')];
+          
+          btns.forEach((btn, index) => {
+              if (btn) {
+                  btn.disabled = loading;
+                  if (texts[index]) {
+                      texts[index].textContent = loading ? 'Kirilmoqda...' : 'Google orqali kirish';
+                  }
+                  if (loaders[index]) {
+                      loaders[index].style.display = loading ? 'block' : 'none';
+                  }
+              }
+          });
+      }
+
+      // Email Validation
+      function validateEmail(email) {
+          const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          return re.test(email);
+      }
+    </script>
+</body>
+</html>
