@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Sekin Quiz</title>
+     <link rel="icon" href="aga/iconcha.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f4f6f9;
+        }
+        .quiz-container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.5s ease;
+        }
+        .btn-option {
+            margin-bottom: 10px;
+            text-align: left;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        #correct-answer-text {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #198754; /* Bootstrap success color */
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+    <div class="container">
+        <a class="navbar-brand" href="quiztanlovi.html">Quiz Test</a>
+        <!-- Sozlamalar modalini ochish tugmasi -->
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#settingsModal">⚙️ Sozlamalar</button>
+    </div>
+</nav>
+
+<!-- Asosiy konteyner -->
+<div class="container">
+    <div class="quiz-container mt-4" id="quiz-container">
+        <div class="text-center mb-4">
+            <h1>Sekin Quiz</h1>
+            <div id="quiz-info" class="text-muted"></div>
+        </div>
+
+        <!-- Fayl tanlash qismi -->
+        <div class="mb-3">
+            <label for="fileInput" class="form-label"><b>Quiz .txt faylini yuklang</b></label>
+            <input type="file" class="form-control" id="fileInput" accept=".txt" />
+            <small class="text-muted">
+
+            </small>
+            <div id="uploadStatus" class="mt-2 fw-bold"></div>
+        </div>
+
+        <!-- Savol va variantlar joyi -->
+        <div id="quiz-area">
+            <div class="mb-3">
+                <h3 id="question-text" class="question-header"></h3>
+            </div>
+            <div id="options-container" class="d-grid gap-2"></div>
+            <!-- To'g'ri javob matnini shu yerda ko'rsatamiz -->
+            <div id="correct-answer-text"></div>
+        </div>
+
+        <!-- Natija qismi -->
+        <div id="result-container" class="text-center mt-4" style="display:none;">
+            <h2>Quiz Tugadi!</h2>
+            <p>Sizning natijangiz: <span id="final-score"></span></p>
+            <button id="restart-btn" class="btn btn-success">Qayta Boshlash</button>
+        </div>
+    </div>
+</div>
+
+<!-- Sozlamalar Modali (javobdan keyingi kechikish vaqtini tanlash) -->
+<div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="settingsModalLabel">Sozlamalar</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <label class="form-label"><b>Javobdan keyingi vaqt (sekund):</b></label>
+                <select id="time-delay" class="form-select">
+                    <option value="3">3 soniya</option>
+                    <option value="5" selected>5 soniya</option>
+                    <option value="7">7 soniya</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bekor qilish</button>
+                <button type="button" class="btn btn-primary" id="save-settings">Tasdiqlash</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    class TxtQuiz {
+        constructor() {
+            this.questions = [];
+            this.currentQuestionIndex = 0;
+            this.score = 0;
+            this.optionMapping = {}; // A,B,C,D ni kuzatib borish uchun
+
+            // Javobdan keyin kechikish (millisekundda), default 5s
+            this.delayTime = localStorage.getItem("quizDelay") || 5000;
+
+            // Elementlarni olish
+            this.fileInput = document.getElementById('fileInput');
+            this.uploadStatus = document.getElementById('uploadStatus');
+            this.questionText = document.getElementById('question-text');
+            this.optionsContainer = document.getElementById('options-container');
+            this.correctAnswerText = document.getElementById('correct-answer-text');
+            this.resultContainer = document.getElementById('result-container');
+            this.finalScoreElement = document.getElementById('final-score');
+            this.restartButton = document.getElementById('restart-btn');
+            this.timeDelaySelect = document.getElementById('time-delay');
+            this.saveSettingsButton = document.getElementById('save-settings');
+
+            // Event listeners
+            this.fileInput.addEventListener('change', (e) => this.loadFile(e));
+            this.restartButton.addEventListener('click', () => this.restartQuiz());
+            this.saveSettingsButton.addEventListener('click', () => this.saveSettings());
+
+            // Delayni sozlamalarga o'rnatish
+            this.timeDelaySelect.value = this.delayTime / 1000;
+        }
+
+        // Massivni randomlashtirish funksiyasi
+        shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Sozlamalar oynasida 'Tasdiqlash' bosilganda
+        saveSettings() {
+            this.delayTime = parseInt(this.timeDelaySelect.value) * 1000; // soniya => ms
+            localStorage.setItem("quizDelay", this.delayTime);
+            alert("Sozlamalar saqlandi!");
+            document.querySelector(".btn-close").click();
+        }
+
+        // Fayl yuklash
+        loadFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            this.uploadStatus.textContent = "Fayl yuklanmoqda...";
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                this.parseTxt(e.target.result);
+            };
+            reader.readAsText(file);
+        }
+
+        // .txt faylini parse qilish
+        parseTxt(content) {
+            this.questions = [];
+            const lines = content.split('\n').map(line => line.trim()).filter(Boolean);
+
+            // 6 qatorlik blok: savol, A, B, C, D, ANSWER
+            for (let i = 0; i < lines.length; i += 6) {
+                if (lines[i] && lines[i+5] && lines[i+5].startsWith('ANSWER:')) {
+                    const questionLine = lines[i];
+                    // A,B,C,D qismini ajratib olish
+                    const optA = lines[i+1] ? this.extractOptionText(lines[i+1]) : '';
+                    const optB = lines[i+2] ? this.extractOptionText(lines[i+2]) : '';
+                    const optC = lines[i+3] ? this.extractOptionText(lines[i+3]) : '';
+                    const optD = lines[i+4] ? this.extractOptionText(lines[i+4]) : '';
+
+                    const answerLine = lines[i+5].replace('ANSWER:', '').trim(); // Masalan 'A'
+
+                    // Original variantlar va to'g'ri javob
+                    const originalOptions = {
+                        'A': optA,
+                        'B': optB,
+                        'C': optC,
+                        'D': optD
+                    };
+
+                    this.questions.push({
+                        question: questionLine,
+                        options: [optA, optB, optC, optD],
+                        originalOptions: originalOptions,
+                        correctAnswer: answerLine
+                    });
+                }
+            }
+
+            if (this.questions.length > 0) {
+                this.uploadStatus.textContent = "Fayl yuklandi! Savollar tayyor.";
+                this.startQuiz();
+            } else {
+                this.uploadStatus.textContent = "Xatolik: Fayl noto'g'ri formatda yoki savollar topilmadi!";
+            }
+        }
+
+        // Variantlardagi A), B) kabi prefikslarni olib tashlash
+        extractOptionText(option) {
+            // A), B) yoki A., B. kabi prefikslarni olib tashlash
+            return option.replace(/^[A-D][).]\s*/, '');
+        }
+
+        // Testni boshlash
+        startQuiz() {
+            this.currentQuestionIndex = 0;
+            this.score = 0;
+            this.resultContainer.style.display = 'none';
+            this.displayQuestion();
+        }
+
+        // Navbatdagi savolni ko'rsatish
+        displayQuestion() {
+            if (this.currentQuestionIndex >= this.questions.length) {
+                return this.showResults();
+            }
+
+            const currentQuestion = this.questions[this.currentQuestionIndex];
+            this.questionText.textContent = currentQuestion.question;
+            this.optionsContainer.innerHTML = '';
+            this.correctAnswerText.textContent = ''; // tozalash
+
+            // Variantlarni random qilish
+            const randomizedOptions = [...currentQuestion.options];
+            this.shuffleArray(randomizedOptions);
+
+            // Mapping for tracking which option corresponds to which letter
+            this.optionMapping = {};
+            const letters = ['A', 'B', 'C', 'D'];
+
+            // Find which randomized option is the correct one
+            let correctOptionIndex = -1;
+
+            for (let i = 0; i < randomizedOptions.length; i++) {
+                const currentOption = randomizedOptions[i];
+                // Find which letter this option corresponds to in the original
+                for (const [letter, text] of Object.entries(currentQuestion.originalOptions)) {
+                    if (text === currentOption) {
+                        this.optionMapping[currentOption] = letter;
+                        if (letter === currentQuestion.correctAnswer) {
+                            correctOptionIndex = i;
+                        }
+                        break;
+                    }
+                }
+            }
+
+            // Variantlar tugmalari
+            randomizedOptions.forEach((option) => {
+                const btn = document.createElement('button');
+                btn.textContent = option; // A, B, C, D prefikslarsiz
+                btn.classList.add('btn', 'btn-outline-primary', 'btn-option');
+                btn.addEventListener('click', () => this.selectOption(option));
+                this.optionsContainer.appendChild(btn);
+            });
+        }
+
+        // Variant tanlanganda
+        selectOption(selectedOption) {
+            const currentQuestion = this.questions[this.currentQuestionIndex];
+            const selectedLetter = this.optionMapping[selectedOption];
+            const correctLetter = currentQuestion.correctAnswer;
+
+            // Barcha tugmalarni bloklash
+            const buttons = this.optionsContainer.querySelectorAll('.btn');
+            buttons.forEach(btn => btn.disabled = true);
+
+            // Tanlangan tugma
+            const selectedButton = Array.from(buttons).find(btn => btn.textContent === selectedOption);
+
+            // Agar tanlangan variant to'g'ri bo'lsa
+            if (selectedLetter === correctLetter) {
+                this.score++;
+                selectedButton.classList.remove('btn-outline-primary');
+                selectedButton.classList.add('btn-success');
+                selectedButton.innerHTML += ' ✔️';
+                this.correctAnswerText.textContent = "To'g'ri!";
+            } else {
+                // Xato variant
+                selectedButton.classList.remove('btn-outline-primary');
+                selectedButton.classList.add('btn-danger');
+                selectedButton.innerHTML += ' ❌';
+
+                // To'g'ri variantni topib yashil qilish
+                const correctOptionText = currentQuestion.originalOptions[correctLetter];
+                const correctButton = Array.from(buttons).find(btn =>
+                    btn.textContent === correctOptionText ||
+                    btn.textContent.startsWith(correctOptionText)
+                );
+
+                if (correctButton) {
+                    correctButton.classList.remove('btn-outline-primary');
+                    correctButton.classList.add('btn-success');
+                    correctButton.innerHTML += ' ✔️';
+                }
+
+                // To'g'ri javob matnini ko'rsatish
+                this.correctAnswerText.textContent = `Noto'g'ri. To'g'ri javob: ${correctOptionText}`;
+            }
+
+            // Bir nechta soniyadan keyin navbatdagi savolga o'tish
+            setTimeout(() => {
+                this.currentQuestionIndex++;
+                if (this.currentQuestionIndex < this.questions.length) {
+                    this.displayQuestion();
+                } else {
+                    this.showResults();
+                }
+            }, this.delayTime);
+        }
+
+        // Test tugagach
+        showResults() {
+            this.questionText.textContent = 'Test tugadi!';
+            this.optionsContainer.innerHTML = '';
+            this.correctAnswerText.textContent = '';
+            this.resultContainer.style.display = 'block';
+            this.finalScoreElement.textContent = `${this.score} / ${this.questions.length}`;
+        }
+
+        // Qayta boshlash
+        restartQuiz() {
+            this.startQuiz();
+        }
+    }
+
+    // Kod ishga tushirish
+    new TxtQuiz();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
