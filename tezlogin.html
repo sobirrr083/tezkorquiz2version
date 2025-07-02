@@ -758,7 +758,7 @@
               const result = await signInWithPopup(auth, provider);
               const user = result.user;
               showSuccess(`Google orqali muvaffaqiyatli kirildi! Xush kelibsiz, ${user.displayName || 'Foydalanuvchi'}!`);
-              window.location.href = 'dashboard.html'; // Yo'naltirish
+              window.location.href = 'index.html'; // Yo'naltirish
           } catch (error) {
               console.error('Google login xatosi:', error);
               handleAuthError(error);
