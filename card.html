@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Card</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .card-container {
+            width: 100%;
+            max-width: 400px;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transform-style: preserve-3d;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            outline: none;
+        }
+
+        /* Desktop hover effects */
+        @media (min-width: 769px) {
+            .card-container:hover {
+                box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            }
+        }
+
+        /* Mobile touch effects */
+        @media (max-width: 768px) {
+            .card-container {
+                cursor: pointer;
+            }
+            
+            .card-container.pressed {
+                transform: perspective(1000px) rotateX(5deg) rotateY(-5deg) translateY(-10px) scale(0.98);
+                box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            }
+        }
+
+        .card-header {
+            height: 200px;
+            background: #f7fafc;
+            padding: 0;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .card-container:hover .card-image {
+            transform: scale(1.05);
+        }
+
+        .card-icon {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            width: 24px;
+            height: 24px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+        }
+
+        .card-icon::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 2px;
+        }
+
+        .card-body {
+            padding: 25px;
+            background: white;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 8px;
+        }
+
+        .card-subtitle {
+            font-size: 1rem;
+            color: #718096;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .card-description {
+            font-size: 0.9rem;
+            color: #4a5568;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            min-width: 100px;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            outline: none;
+        }
+
+        .action-btn.primary {
+            background: #2d3748;
+            color: white;
+        }
+
+        .action-btn.primary:hover {
+            background: #1a202c;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(45, 55, 72, 0.3);
+        }
+
+        .action-btn.secondary {
+            background: transparent;
+            color: #2d3748;
+            border: 2px solid #e2e8f0;
+        }
+
+        .action-btn.secondary:hover {
+            background: #f7fafc;
+            border-color: #cbd5e0;
+            transform: translateY(-2px);
+        }
+
+        /* Desktop styles */
+        @media (min-width: 768px) {
+            .card-container {
+                max-width: 450px;
+            }
+            
+            .card-header {
+                height: 220px;
+            }
+            
+            .card-body {
+                padding: 30px;
+            }
+        }
+
+        /* Mobile/Tablet styles */
+        @media (max-width: 767px) {
+            .card-body {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .card-actions {
+                flex-direction: row;
+                justify-content: flex-end;
+            }
+            
+            .action-btn {
+                flex: 0 0 auto;
+            }
+        }
+
+        /* Animation for image */
+        .card-image {
+            position: relative;
+        }
+
+        /* Pulse animation */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .card-container:hover .card-image {
+            animation: pulse 0.6s ease-in-out;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .card-container {
+                margin: 10px;
+            }
+            
+            .card-header {
+                height: 180px;
+            }
+            
+            .card-body {
+                padding: 20px;
+            }
+            
+            .card-actions {
+                margin-top: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card-container">
+        <div class="card-header">
+            <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Professional Image" class="card-image">
+            <div class="card-icon"></div>
+        </div>
+        <div class="card-body">
+            <div class="card-content">
+                <h2 class="card-title">Title</h2>
+                <p class="card-subtitle">Subtitle</p>
+                <p class="card-description">More information about the topic will come here within two to three lines.</p>
+            </div>
+            <div class="card-actions">
+                <button class="action-btn secondary">ACTION</button>
+                <button class="action-btn primary">ACTION</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add interactive effects based on device type
+        const card = document.querySelector('.card-container');
+        const cardHeader = document.querySelector('.card-header');
+        let isTouch = false;
+
+        // Detect if device supports touch
+        function detectTouch() {
+            return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        }
+
+        // Desktop mouse move effect
+        function handleMouseMove(e) {
+            if (detectTouch() || window.innerWidth <= 768) return;
+            
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = (y - centerY) / 15;
+            const rotateY = (centerX - x) / 15;
+            
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px)`;
+        }
+
+        // Desktop mouse leave effect
+        function handleMouseLeave() {
+            if (detectTouch() || window.innerWidth <= 768) return;
+            
+            card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)';
+        }
+
+        // Mobile touch effects
+        function handleTouchStart(e) {
+            if (!detectTouch() || window.innerWidth > 768) return;
+            
+            card.classList.add('pressed');
+        }
+
+        function handleTouchEnd(e) {
+            if (!detectTouch() || window.innerWidth > 768) return;
+            
+            setTimeout(() => {
+                card.classList.remove('pressed');
+            }, 150);
+        }
+
+        // Add event listeners based on device capabilities
+        if (detectTouch()) {
+            // Touch device events
+            card.addEventListener('touchstart', handleTouchStart, { passive: true });
+            card.addEventListener('touchend', handleTouchEnd, { passive: true });
+            card.addEventListener('touchcancel', handleTouchEnd, { passive: true });
+        } else {
+            // Desktop mouse events
+            card.addEventListener('mousemove', handleMouseMove);
+            card.addEventListener('mouseleave', handleMouseLeave);
+        }
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)';
+            card.classList.remove('pressed');
+        });
+
+        // Button click effects
+        const buttons = document.querySelectorAll('.action-btn');
+        buttons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                // Create ripple effect
+                const ripple = document.createElement('span');
+                const rect = btn.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.style.position = 'absolute';
+                ripple.style.borderRadius = '50%';
+                ripple.style.background = 'rgba(255, 255, 255, 0.5)';
+                ripple.style.transform = 'scale(0)';
+                ripple.style.animation = 'ripple 0.6s linear';
+                ripple.style.pointerEvents = 'none';
+                
+                btn.style.position = 'relative';
+                btn.style.overflow = 'hidden';
+                btn.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+    </script>
+
+    <style>
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+    </style>
+</body>
+</html>
