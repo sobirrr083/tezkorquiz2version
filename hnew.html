@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professional Header with Dropdown Menu</title>
+    <title>Tezkor Quiz</title>
     <style>
         * {
             margin: 0;
@@ -315,6 +315,7 @@
         .side-menu.active li:nth-child(2) { transition-delay: 0.2s; }
         .side-menu.active li:nth-child(3) { transition-delay: 0.3s; }
         .side-menu.active li:nth-child(4) { transition-delay: 0.4s; }
+        .side-menu.active li:nth-child(5) { transition-delay: 0.5s; } /* Added for new menu items */
 
         .side-menu a {
             display: flex;
@@ -407,6 +408,8 @@
         .side-menu .dropdown-menu li:nth-child(1) { transition-delay: 0.1s; }
         .side-menu .dropdown-menu li:nth-child(2) { transition-delay: 0.2s; }
         .side-menu .dropdown-menu li:nth-child(3) { transition-delay: 0.3s; }
+        .side-menu .dropdown-menu li:nth-child(4) { transition-delay: 0.4s; }
+        .side-menu .dropdown-menu li:nth-child(5) { transition-delay: 0.5s; } /* Added for new menu items */
 
         .side-menu .dropdown-menu a {
             font-size: 1.1rem;
@@ -712,21 +715,33 @@
                     <ul class="dropdown-menu">
                         <li><a href="#quiz1">
                             <svg class="menu-icon" viewBox="0 0 24 24">
-                                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-8 12H9.5v-2H11v2zm0-4H9.5V9H11v2zm4 4h-1.5v-2H15v2zm0-4h-1.5V9H15v2z"/>
+                                <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm1-13h-2v6l5.2 3.2 1-1.7-4.2-2.5V7z"/>
                             </svg>
-                            Matematika
+                            Tezkor quiz
                         </a></li>
                         <li><a href="#quiz2">
                             <svg class="menu-icon" viewBox="0 0 24 24">
-                                <path d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.01-4.65.5-6.96-.91-1.39-2.42-2.21-4.05-2.21-1.63 0-3.14.82-4.05 2.21C1.26 7.26 1.53 10.07 3.27 12l2.5 2.5c.39.4 1.02.4 1.41 0 .4-.39.4-1.02 0-1.41L5.69 11.6c-1.05-1.18-.82-3.02.52-4.07C6.94 6.91 8.4 6.91 9.12 7.53c.79.68 1.05 1.83.52 2.9l-3.09 3.09c-.39.4-.39 1.02 0 1.41.4.4 1.02.4 1.41 0L10.46 12c1.07-.53 2.72-.27 3.4 1.52.07.18.14.36.21.55.39 1.02.39 2.12 0 3.14-.68 1.79-2.33 2.05-3.4 1.52l-2.5-2.5c-.4-.4-1.02-.4-1.41 0-.4.39-.4 1.02 0 1.41l2.54 2.51c1.74 1.74 4.58 1.74 6.32 0s1.74-4.58 0-6.32z"/>
+                                <path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/>
                             </svg>
-                            Ingliz tili
+                            Bilim quiz
                         </a></li>
                         <li><a href="#quiz3">
                             <svg class="menu-icon" viewBox="0 0 24 24">
-                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h-1v6l4.2 2.5 1-1.7-3.2-1.9V7z"/>
                             </svg>
-                            Tarix
+                            Smart quiz
+                        </a></li>
+                        <li><a href="#quiz4">
+                            <svg class="menu-icon" viewBox="0 0 24 24">
+                                <path d="M12 2l-1.41 1.41L16.17 9H4v2h12.17l-5.58 5.59L12 18l8-8z"/>
+                            </svg>
+                            Pro quiz
+                        </a></li>
+                        <li><a href="#quiz5">
+                            <svg class="menu-icon" viewBox="0 0 24 24">
+                                <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 14h-3v3h-2v-3H8v-2h3v-3h2v3h3v2zm-3-7V3.5L18.5 9H13z"/>
+                            </svg>
+                            Imtihon quiz
                         </a></li>
                     </ul>
                 </li>
@@ -780,21 +795,33 @@
                     <ul class="dropdown-menu">
                         <li><a href="#quiz1">
                             <svg class="menu-icon" viewBox="0 0 24 24">
-                                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-8 12H9.5v-2H11v2zm0-4H9.5V9H11v2zm4 4h-1.5v-2H15v2zm0-4h-1.5V9H15v2z"/>
+                                <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm1-13h-2v6l5.2 3.2 1-1.7-4.2-2.5V7z"/>
                             </svg>
-                            Matematika
+                            Tezkor quiz
                         </a></li>
                         <li><a href="#quiz2">
                             <svg class="menu-icon" viewBox="0 0 24 24">
-                                <path d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.01-4.65.5-6.96-.91-1.39-2.42-2.21-4.05-2.21-1.63 0-3.14.82-4.05 2.21C1.26 7.26 1.53 10.07 3.27 12l2.5 2.5c.39.4 1.02.4 1.41 0 .4-.39.4-1.02 0-1.41L5.69 11.6c-1.05-1.18-.82-3.02.52-4.07C6.94 6.91 8.4 6.91 9.12 7.53c.79.68 1.05 1.83.52 2.9l-3.09 3.09c-.39.4-.39 1.02 0 1.41.4.4 1.02.4 1.41 0L10.46 12c1.07-.53 2.72-.27 3.4 1.52.07.18.14.36.21.55.39 1.02.39 2.12 0 3.14-.68 1.79-2.33 2.05-3.4 1.52l-2.5-2.5c-.4-.4-1.02-.4-1.41 0-.4.39-.4 1.02 0 1.41l2.54 2.51c1.74 1.74 4.58 1.74 6.32 0s1.74-4.58 0-6.32z"/>
+                                <path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/>
                             </svg>
-                            Ingliz tili
+                            Bilim quiz
                         </a></li>
                         <li><a href="#quiz3">
                             <svg class="menu-icon" viewBox="0 0 24 24">
-                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h-1v6l4.2 2.5 1-1.7-3.2-1.9V7z"/>
                             </svg>
-                            Tarix
+                            Smart quiz
+                        </a></li>
+                        <li><a href="#quiz4">
+                            <svg class="menu-icon" viewBox="0 0 24 24">
+                                <path d="M12 2l-1.41 1.41L16.17 9H4v2h12.17l-5.58 5.59L12 18l8-8z"/>
+                            </svg>
+                            Pro quiz
+                        </a></li>
+                        <li><a href="#quiz5">
+                            <svg class="menu-icon" viewBox="0 0 24 24">
+                                <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 14h-3v3h-2v-3H8v-2h3v-3h2v3h3v2zm-3-7V3.5L18.5 9H13z"/>
+                            </svg>
+                            Imtihon quiz
                         </a></li>
                     </ul>
                 </li>
