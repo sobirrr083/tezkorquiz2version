@@ -15,11 +15,11 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #6b7280 0%, #1f2937 100%);
             min-height: 100vh;
-            color: #1f2937;
+            color: #1e293b;
         }
 
         .header {
-            background: rgba(255, 255, 255, 0.97);
+            background: rgba(248, 250, 252, 0.97);
             backdrop-filter: blur(12px);
             padding: 1rem 0;
             position: fixed;
@@ -32,7 +32,7 @@
         }
 
         .header.scrolled {
-            background: rgba(255, 255, 255, 1);
+            background: rgba(248, 250, 252, 1);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
         }
 
@@ -54,7 +54,7 @@
         }
 
         .logo:hover {
-            color: #1f2937;
+            color: #1e293b;
         }
 
         .nav-menu {
@@ -70,7 +70,7 @@
 
         .nav-menu a {
             text-decoration: none;
-            color: #1f2937;
+            color: #1e293b;
             font-weight: 500;
             padding: 0.8rem 0;
             transition: all 0.3s ease;
@@ -125,7 +125,7 @@
             content: '';
             width: 12px;
             height: 12px;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%231f2937"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat center;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%231e293b"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat center;
             background-size: contain;
             transition: all 0.3s ease;
             margin-left: 0.4rem;
@@ -140,8 +140,8 @@
             position: absolute;
             top: 100%;
             left: 50%;
-            transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.98);
+            transform: translateX(-50%) scale(0.95);
+            background: rgba(248, 250, 252, 0.98);
             backdrop-filter: blur(12px);
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
             border-radius: 8px;
@@ -150,7 +150,6 @@
             z-index: 1001;
             opacity: 0;
             visibility: hidden;
-            transform: translateX(-50%) translateY(-10px);
             transition: all 0.3s ease;
         }
 
@@ -158,7 +157,7 @@
         .nav-menu .dropdown.active .dropdown-menu {
             opacity: 1;
             visibility: visible;
-            transform: translateX(-50%) translateY(0);
+            transform: translateX(-50%) scale(1);
         }
 
         .nav-menu .dropdown-menu li {
@@ -170,7 +169,7 @@
             align-items: center;
             font-size: 0.95rem;
             padding: 0.75rem 1.5rem;
-            color: #1f2937;
+            color: #1e293b;
             transition: all 0.3s ease;
             gap: 0.6rem;
         }
@@ -202,7 +201,7 @@
         .hamburger span {
             width: 30px;
             height: 3px;
-            background: #1f2937;
+            background: #1e293b;
             transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             transform-origin: center;
         }
@@ -226,7 +225,7 @@
             right: -100%;
             width: 100%;
             height: 100vh;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(243, 244, 246, 0.95) 100%);
+            background: linear-gradient(135deg, rgba(248, 250, 252, 0.98) 0%, rgba(243, 244, 246, 0.95) 100%);
             backdrop-filter: blur(12px);
             box-shadow: -8px 0 25px rgba(0, 0, 0, 0.2);
             transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -253,7 +252,7 @@
         .side-menu-logo {
             font-size: 1.6rem;
             font-weight: 800;
-            color: #1f2937;
+            color: #1e293b;
             text-decoration: none;
         }
 
@@ -274,7 +273,7 @@
         }
 
         .close-btn:hover {
-            color: #1f2937;
+            color: #1e293b;
             background: rgba(79, 70, 229, 0.1);
         }
 
@@ -309,7 +308,7 @@
             display: flex;
             align-items: center;
             text-decoration: none;
-            color: #1f2937;
+            color: #1e293b;
             font-weight: 500;
             font-size: 1.1rem;
             padding: 0.9rem 1.2rem;
@@ -351,7 +350,7 @@
             content: '';
             width: 12px;
             height: 12px;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%231f2937"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat center;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%231e293b"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat center;
             background-size: contain;
             transition: all 0.3s ease;
         }
@@ -365,10 +364,15 @@
             display: none;
             padding-left: 1.5rem;
             margin-top: 0.5rem;
+            transform: scale(0.95);
+            opacity: 0;
+            transition: all 0.3s ease;
         }
 
         .side-menu .dropdown.active .dropdown-menu {
             display: block;
+            transform: scale(1);
+            opacity: 1;
             animation: fadeInDown 0.3s ease forwards;
         }
 
@@ -405,7 +409,7 @@
         }
 
         .social-section {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(248, 250, 252, 0.95);
             backdrop-filter: blur(10px);
             border-radius: 12px;
             padding: 1.25rem;
@@ -415,7 +419,7 @@
 
         .social-section h3 {
             font-size: 1rem;
-            color: #1f2937;
+            color: #1e293b;
             margin-bottom: 1rem;
             text-align: center;
             font-weight: 600;
@@ -435,7 +439,7 @@
             width: 48px;
             height: 48px;
             border-radius: 10px;
-            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            background: #1e293b;
             transition: all 0.3s ease;
             text-decoration: none;
             position: relative;
@@ -449,7 +453,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            background: linear-gradient(90deg, transparent, rgba(248, 250, 252, 0.3), transparent);
             transition: left 0.5s;
         }
 
@@ -465,7 +469,7 @@
         .social-icons svg {
             width: 22px;
             height: 22px;
-            fill: white;
+            fill: #f8fafc;
             z-index: 1;
         }
 
@@ -479,8 +483,8 @@
             align-items: center;
             justify-content: center;
             padding: 0.9rem 1.5rem;
-            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
-            color: white;
+            background: #1e293b;
+            color: #f8fafc;
             text-decoration: none;
             border-radius: 10px;
             font-size: 1rem;
@@ -498,7 +502,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            background: linear-gradient(90deg, transparent, rgba(248, 250, 252, 0.3), transparent);
             transition: left 0.5s;
         }
 
@@ -515,7 +519,7 @@
             width: 20px;
             height: 20px;
             margin-right: 0.5rem;
-            fill: white;
+            fill: #f8fafc;
         }
 
         .overlay {
@@ -540,7 +544,7 @@
             margin-top: 90px;
             padding: 2rem;
             text-align: center;
-            color: white;
+            color: #f8fafc;
         }
 
         .content h1 {
@@ -570,11 +574,11 @@
         @keyframes fadeInDown {
             from {
                 opacity: 0;
-                transform: translateY(-10px);
+                transform: translateY(-10px) scale(0.95);
             }
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0) scale(1);
             }
         }
 
@@ -687,7 +691,12 @@
             
             <ul class="nav-menu">
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle">Testni boshlash</a>
+                    <a href="#" class="dropdown-toggle">
+                        <svg class="menu-icon" viewBox="0 0 24 24">
+                            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                        </svg>
+                        Testni boshlash
+                    </a>
                     <ul class="dropdown-menu">
                         <li><a href="#quiz1">
                             <svg class="menu-icon" viewBox="0 0 24 24">
@@ -741,7 +750,12 @@
             <ul>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle">
-                        <span>Testni boshlash</span>
+                        <span>
+                            <svg class="menu-icon" viewBox="0 0 24 24">
+                                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                            </svg>
+                            Testni boshlash
+                        </span>
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="#quiz1">
