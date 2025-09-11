@@ -233,6 +233,8 @@
             padding: 1.5rem;
             display: flex;
             flex-direction: column;
+            align-items: center;
+            justify-content: center;
             overflow-y: auto;
         }
 
@@ -244,6 +246,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            width: 100%;
+            max-width: 400px;
             margin-bottom: 1.5rem;
             padding-bottom: 1rem;
             border-bottom: 2px solid rgba(79, 70, 229, 0.15);
@@ -279,6 +283,12 @@
 
         .menu-items {
             flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 400px;
             overflow-y: auto;
         }
 
@@ -286,10 +296,11 @@
             list-style: none;
             padding: 0;
             margin: 0;
+            width: 100%;
         }
 
         .side-menu li {
-            margin-bottom: 0.75rem;
+            margin-bottom: 1rem;
             opacity: 0;
             transform: translateX(20px);
             transition: all 0.4s ease;
@@ -310,11 +321,13 @@
             text-decoration: none;
             color: #1e293b;
             font-weight: 500;
-            font-size: 1.1rem;
-            padding: 0.9rem 1.2rem;
+            font-size: 1.25rem;
+            padding: 1rem 1.5rem;
             border-radius: 8px;
             transition: all 0.3s ease;
             gap: 0.8rem;
+            width: 100%;
+            justify-content: flex-start;
         }
 
         .side-menu a:hover {
@@ -324,8 +337,8 @@
         }
 
         .side-menu .menu-icon {
-            width: 20px;
-            height: 20px;
+            width: 24px;
+            height: 24px;
             fill: currentColor;
             transition: transform 0.3s ease;
         }
@@ -336,6 +349,7 @@
 
         .side-menu .dropdown {
             position: relative;
+            width: 100%;
         }
 
         .side-menu .dropdown-toggle {
@@ -367,6 +381,7 @@
             transform: scale(0.95);
             opacity: 0;
             transition: all 0.3s ease;
+            width: 100%;
         }
 
         .side-menu .dropdown.active .dropdown-menu {
@@ -377,7 +392,7 @@
         }
 
         .side-menu .dropdown-menu li {
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
             opacity: 0;
             transform: translateY(10px);
             transition: all 0.3s ease;
@@ -393,8 +408,8 @@
         .side-menu .dropdown-menu li:nth-child(3) { transition-delay: 0.3s; }
 
         .side-menu .dropdown-menu a {
-            font-size: 1rem;
-            padding: 0.7rem 1rem;
+            font-size: 1.1rem;
+            padding: 0.8rem 1rem;
             gap: 0.6rem;
         }
 
@@ -404,8 +419,8 @@
         }
 
         .side-menu .dropdown-menu .menu-icon {
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
         }
 
         .social-section {
@@ -413,15 +428,17 @@
             backdrop-filter: blur(10px);
             border-radius: 12px;
             padding: 1.25rem;
-            margin-top: 1rem;
+            margin-top: 1.5rem;
             border: 1px solid rgba(79, 70, 229, 0.15);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
         }
 
         .social-section h3 {
             font-size: 1rem;
             color: #1e293b;
             margin-bottom: 1rem;
-            text-align: center;
             font-weight: 600;
         }
 
@@ -474,7 +491,6 @@
         }
 
         .help-button {
-            text-align: center;
             margin-top: 1rem;
         }
 
@@ -606,12 +622,22 @@
             }
 
             .side-menu a {
-                font-size: 1rem;
-                padding: 0.8rem;
+                font-size: 1.2rem;
+                padding: 1rem 1.2rem;
             }
 
             .side-menu .dropdown-menu {
                 padding-left: 1rem;
+            }
+
+            .side-menu .dropdown-menu a {
+                font-size: 1rem;
+                padding: 0.8rem 1rem;
+            }
+
+            .side-menu .dropdown-menu .menu-icon {
+                width: 20px;
+                height: 20px;
             }
 
             .content h1 {
@@ -627,8 +653,8 @@
             }
 
             .social-icons a {
-                width: 42px;
-                height: 42px;
+                width: 44px;
+                height: 44px;
             }
 
             .social-icons svg {
@@ -652,8 +678,13 @@
             }
 
             .side-menu a {
+                font-size: 1.15rem;
+                padding: 0.9rem 1rem;
+            }
+
+            .side-menu .dropdown-menu a {
                 font-size: 0.95rem;
-                padding: 0.7rem;
+                padding: 0.7rem 0.8rem;
             }
 
             .social-section {
@@ -665,8 +696,8 @@
             }
 
             .social-icons a {
-                width: 38px;
-                height: 38px;
+                width: 40px;
+                height: 40px;
             }
 
             .social-icons svg {
