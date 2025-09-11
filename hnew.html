@@ -314,6 +314,7 @@
         .side-menu.active li:nth-child(1) { transition-delay: 0.1s; }
         .side-menu.active li:nth-child(2) { transition-delay: 0.2s; }
         .side-menu.active li:nth-child(3) { transition-delay: 0.3s; }
+        .side-menu.active li:nth-child(4) { transition-delay: 0.4s; }
 
         .side-menu a {
             display: flex;
@@ -413,11 +414,6 @@
             gap: 0.6rem;
         }
 
-        .side-menu .dropdown-menu a:hover {
-            background: rgba(79, 70, 229, 0.1);
-            color: #4f46e5;
-        }
-
         .side-menu .dropdown-menu .menu-icon {
             width: 20px;
             height: 20px;
@@ -453,8 +449,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 48px;
-            height: 48px;
+            width: 50px;
+            height: 50px;
             border-radius: 10px;
             background: #1e293b;
             transition: all 0.3s ease;
@@ -484,8 +480,8 @@
         }
 
         .social-icons svg {
-            width: 22px;
-            height: 22px;
+            width: 24px;
+            height: 24px;
             fill: #f8fafc;
             z-index: 1;
         }
@@ -529,13 +525,6 @@
         .help-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(79, 70, 229, 0.4);
-        }
-
-        .help-btn svg {
-            width: 20px;
-            height: 20px;
-            margin-right: 0.5rem;
-            fill: #f8fafc;
         }
 
         .overlay {
@@ -648,18 +637,14 @@
                 font-size: 1rem;
             }
 
-            .social-icons {
-                gap: 0.8rem;
-            }
-
             .social-icons a {
-                width: 44px;
-                height: 44px;
+                width: 50px;
+                height: 50px;
             }
 
             .social-icons svg {
-                width: 20px;
-                height: 20px;
+                width: 24px;
+                height: 24px;
             }
 
             .help-btn {
@@ -691,18 +676,14 @@
                 padding: 1rem;
             }
 
-            .social-icons {
-                gap: 0.6rem;
-            }
-
             .social-icons a {
-                width: 40px;
-                height: 40px;
+                width: 46px;
+                height: 46px;
             }
 
             .social-icons svg {
-                width: 18px;
-                height: 18px;
+                width: 22px;
+                height: 22px;
             }
 
             .content h1 {
@@ -779,6 +760,14 @@
         
         <div class="menu-items">
             <ul>
+                <li>
+                    <a href="#home">
+                        <svg class="menu-icon" viewBox="0 0 24 24">
+                            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                        </svg>
+                        Bosh sahifa
+                    </a>
+                </li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle">
                         <span>
@@ -845,12 +834,7 @@
                 </a>
             </div>
             <div class="help-button">
-                <a href="#help" class="help-btn">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm2.07-7.75l-.9.92c-.72.73-1.17 1.4-1.17 2.83h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/>
-                    </svg>
-                    Yordam
-                </a>
+                <a href="#help" class="help-btn">Yordam</a>
             </div>
         </div>
     </div>
