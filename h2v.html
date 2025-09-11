@@ -128,13 +128,7 @@
             height: 12px;
             background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%231e293b"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat center;
             background-size: contain;
-            transition: all 0.3s ease;
             margin-left: 0.4rem;
-        }
-
-        .nav-menu .dropdown.active .dropdown-toggle::after {
-            transform: rotate(180deg);
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%234f46e5"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat center;
         }
 
         .nav-menu .dropdown-menu {
@@ -154,8 +148,7 @@
             transition: all 0.3s ease;
         }
 
-        .nav-menu .dropdown:hover .dropdown-menu,
-        .nav-menu .dropdown.active .dropdown-menu {
+        .nav-menu .dropdown:hover .dropdown-menu {
             opacity: 1;
             visibility: visible;
             transform: translateX(-50%) scale(1);
@@ -369,12 +362,6 @@
             height: 12px;
             background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%231e293b"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat center;
             background-size: contain;
-            transition: all 0.3s ease;
-        }
-
-        .side-menu .dropdown.active .dropdown-toggle::after {
-            transform: rotate(180deg);
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%234f46e5"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat center;
         }
 
         .side-menu .dropdown-menu {
@@ -883,7 +870,8 @@
             const closeBtn = document.getElementById('close-btn');
             const overlay = document.getElementById('overlay');
             const header = document.getElementById('header');
-            const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+            const dropdownToggles = document.querySelectorAll('.side-menu .dropdown-toggle');
+            const dropdown = document.querySelector('.nav-menu .dropdown');
 
             // Toggle side menu
             hamburger.addEventListener('click', () => {
@@ -896,8 +884,8 @@
                 hamburger.classList.remove('active');
                 sideMenu.classList.remove('active');
                 overlay.classList.remove('active');
-                document.querySelectorAll('.side-menu .dropdown').forEach(dropdown => {
-                    dropdown.classList.remove('active');
+                document.querySelectorAll('.side-menu .dropdown').forEach(d => {
+                    d.classList.remove('active');
                 });
             });
 
@@ -905,12 +893,12 @@
                 hamburger.classList.remove('active');
                 sideMenu.classList.remove('active');
                 overlay.classList.remove('active');
-                document.querySelectorAll('.side-menu .dropdown').forEach(dropdown => {
-                    dropdown.classList.remove('active');
+                document.querySelectorAll('.side-menu .dropdown').forEach(d => {
+                    d.classList.remove('active');
                 });
             });
 
-            // Toggle dropdowns in side menu
+            // Toggle dropdowns in side menu (mobile)
             dropdownToggles.forEach(toggle => {
                 toggle.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -925,6 +913,13 @@
                 });
             });
 
+            // Close dropdown on click outside in desktop mode
+            document.addEventListener('click', (e) => {
+                if (window.innerWidth > 768 && !dropdown.contains(e.target)) {
+                    dropdown.classList.remove('active');
+                }
+            });
+
             // Handle scroll for header
             window.addEventListener('scroll', () => {
                 if (window.scrollY > 50) {
@@ -932,15 +927,6 @@
                 } else {
                     header.classList.remove('scrolled');
                 }
-            });
-
-            // Prevent default behavior for dropdown toggle links in mobile
-            document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
-                toggle.addEventListener('click', (e) => {
-                    if (window.innerWidth <= 768) {
-                        e.preventDefault();
-                    }
-                });
             });
         });
     </script>
