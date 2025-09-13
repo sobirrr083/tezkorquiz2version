@@ -33,11 +33,12 @@
             box-sizing: border-box;
         }
 
-        body {
+        html, body {
+            height: 100%;
             font-family: 'Nunito', sans-serif;
             background: linear-gradient(135deg, #6b7280 0%, #1f2937 100%);
-            min-height: 100vh;
             color: #1e293b;
+            overflow-x: hidden;
         }
 
         /* Header Styles */
@@ -558,11 +559,32 @@
             visibility: visible;
         }
 
+        /* Main content wrapper for proper flex layout */
+        .main-wrapper {
+            min-height: calc(100vh - 120px); /* Adjust based on header/footer heights */
+            display: flex;
+            flex-direction: column;
+            padding-top: 80px; /* Space for fixed header */
+        }
+
         .content {
-            margin-top: 90px;
-            padding: 2rem;
+            flex: 1;
+            padding: 2rem 0;
             text-align: center;
             color: #f8fafc;
+        }
+
+        .content h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards;
+        }
+
+        .content p {
+            font-size: 1.1rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.3s forwards;
         }
 
         /* Hero section */
@@ -573,6 +595,7 @@
             margin-bottom: 50px;
             position: relative;
             overflow: hidden;
+            color: white;
         }
 
         .hero-section::before {
@@ -587,16 +610,15 @@
         }
 
         .hero-title {
-            color: white;
             font-size: 2.5rem;
             font-weight: 700;
             margin-bottom: 20px;
         }
 
         .hero-text {
-            color: rgba(255, 255, 255, 0.9);
             font-size: 1.1rem;
             margin-bottom: 30px;
+            opacity: 0.9;
         }
 
         .hero-btn {
@@ -643,6 +665,8 @@
             perspective: 1000px;
             box-shadow: 0 0 0 5px #ffffff80;
             transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-decoration: none;
+            color: inherit;
         }
 
         .card svg {
@@ -675,7 +699,7 @@
         }
 
         .card__title {
-            margin: 0;
+            margin: 0 0 10px;
             font-size: 24px;
             color: #000000;
             font-weight: 700;
@@ -720,12 +744,14 @@
             }
         }
 
-        /* Footer */
+        /* Footer - Fixed to bottom, full width */
         .footer {
-            padding: 50px 0 20px;
             background-color: var(--dark-color);
             color: white;
-            margin-top: 50px;
+            padding: 50px 0 20px;
+            width: 100%;
+            margin-top: auto; /* Push to bottom in flex */
+            flex-shrink: 0;
         }
 
         .footer-title {
@@ -1167,6 +1193,11 @@
             .hero-text {
                 font-size: 1rem;
             }
+
+            .main-wrapper {
+                padding-top: 70px;
+                min-height: calc(100vh - 100px);
+            }
         }
 
         @media (max-width: 480px) {
@@ -1388,8 +1419,8 @@
 
     <div class="overlay" id="overlay"></div>
 
-    <!-- Main Content -->
-    <main class="content">
+    <!-- Main Content Wrapper -->
+    <div class="main-wrapper">
         <!-- Hero Section -->
         <section class="container mt-5" data-aos="fade-up" data-aos-duration="1000">
             <div class="hero-section">
@@ -1418,7 +1449,7 @@
             </div>
         </section>
 
-        <div class="container mt-3">
+        <div class="container">
             <div class="row">
                 <div class="col-lg-6 mb-4">
                     <a href="segment25.html" class="text-decoration-none">
@@ -1514,7 +1545,7 @@
                 </div>
             </div>
         </footer>
-    </main>
+    </div>
 
     <!-- Audio elements for sound effects -->
     <audio id="openSound" preload="auto">
@@ -1523,14 +1554,6 @@
     <audio id="messageSound" preload="auto">
         <source src="https://cdnjs.cloudflare.com/ajax/libs/simple-sounds/1.0.0/sounds/notification.mp3" type="audio/mpeg">
     </audio>
-
-    <!-- Chat Container (if needed, but commented out in original) -->
-    <!-- <div class="chat-container" id="chatContainer">
-        ... (chat HTML if required)
-    </div>
-    <div class="chat-button" id="chatButton">
-        <i class="fas fa-comments chat-icon"></i>
-    </div> -->
 
     <!-- Initialize AOS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
