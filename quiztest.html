@@ -4,18 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tezkor Quiz</title>
-    <!-- Bootstrap 5 CSS 20250321_132913.png -->
+    <!-- Favicon -->
     <link rel="icon" href="aga/logo01.png">
+    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- AOS Animation CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
-    <!-- Audio elements for sound effects -->
-    <audio id="openSound" preload="auto">
-        <source src="https://cdnjs.cloudflare.com/ajax/libs/simple-sounds/1.0.0/sounds/pop-up.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="messageSound" preload="auto">
-        <source src="https://cdnjs.cloudflare.com/ajax/libs/simple-sounds/1.0.0/sounds/notification.mp3" type="audio/mpeg">
-    </audio>
     <style>
         /* Navbar styling */
         .navbar {
@@ -23,18 +17,15 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
             background-color: #fff;
         }
-    
-         body {
-                background-color: #ECF2FF; /* O'zingiz xohlagan rang, masalan, och kulrang */
-            }
-            
+        body {
+            background-color: #ECF2FF;
+        }
         .navbar-brand {
             font-weight: 700;
             font-size: 26px;
             color: #3a56e4 !important;
             letter-spacing: 0.5px;
         }
-        
         .nav-link {
             font-weight: 500;
             font-size: 16px;
@@ -42,16 +33,13 @@
             color: #333 !important;
             transition: color 0.3s ease;
         }
-        
         .nav-link:hover {
             color: #3a56e4 !important;
         }
-        
         .nav-link.active {
             color: #3a56e4 !important;
             font-weight: 600;
         }
-        
         .beta-badge {
             font-size: 12px;
             background-color: #ff6b6b;
@@ -61,17 +49,14 @@
             margin-left: 8px;
             vertical-align: middle;
         }
-        
         .navbar-toggler {
             border: none;
             padding: 0;
             outline: none;
         }
-        
         .navbar-toggler:focus {
             box-shadow: none;
         }
-
         /* Book card styling */
         .book-card {
             position: relative;
@@ -88,7 +73,6 @@
             color: #000;
             margin-bottom: 20px;
         }
-
         .book-content {
             padding: 20px;
             width: 100%;
@@ -99,7 +83,6 @@
             justify-content: center;
             text-align: center;
         }
-
         .book-cover {
             top: 0;
             position: absolute;
@@ -118,42 +101,35 @@
             overflow: hidden;
             z-index: 2;
         }
-
         .book-card:hover .book-cover {
             transition: all 0.5s;
             transform: rotatey(-80deg);
         }
-
         .book-cover img {
             width: 100%;
             height: 200px;
             object-fit: cover;
             transition: transform 0.5s ease;
         }
-
         .book-cover-content {
             padding: 20px;
             text-align: center;
         }
-
         .book-card-title {
             font-weight: 600;
             color: #333;
             margin-top: 10px;
             font-size: 1.5rem;
         }
-
         .book-card-text {
             color: #666;
         }
-
         .card-badge {
             position: absolute;
             top: 10px;
             right: 10px;
             z-index: 3;
         }
-
         /* Button styling */
         .container-eg-btn-3 {
             font-family: sans-serif;
@@ -170,13 +146,11 @@
             transition: opacity 0.5s ease, transform 0.5s ease;
             transition-delay: 0s;
         }
-        
         .book-card:hover .container-eg-btn-3 {
             opacity: 1;
             transform: translateY(0);
             transition-delay: 0.3s;
         }
-
         .container-eg-btn-3 .button {
             color: #fff;
             margin: 10px 0;
@@ -193,7 +167,6 @@
             display: inline-block;
             width: 150px;
         }
-
         .container-eg-btn-3 .button-8:before {
             content: '';
             background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
@@ -233,12 +206,10 @@
             50% { background-position: 400% 0; }
             100% { background-position: 0 0; }
         }
-
         /* Spacing for content */
         .main-content {
             margin-top: 100px;
         }
-        
         /* Animation for book content */
         .book-card .book-content h5,
         .book-card .book-content p {
@@ -247,632 +218,28 @@
             transition: all 0.5s ease;
             transition-delay: 0s;
         }
-        
         .book-card:hover .book-content h5 {
             opacity: 1;
             transform: translateY(0);
             transition-delay: 0.1s;
         }
-        
         .book-card:hover .book-content p {
             opacity: 1;
             transform: translateY(0);
             transition-delay: 0.2s;
         }
-
-        /* asissent csslari ohirigacha */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-        }
-
-        /* Chat Button Style */
-        .chat-button {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(145deg, #4d93ff, #2e6cd7);
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            box-shadow: 0 4px 20px rgba(66, 133, 244, 0.4);
-            z-index: 1000;
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-            overflow: hidden;
-        }
-
-        .chat-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 25px rgba(66, 133, 244, 0.6);
-        }
-
-        .chat-button.active {
-            transform: scale(1.2);
-            opacity: 0;
-        }
-
-        .chat-icon {
-            font-size: 24px;
-            transition: all 0.3s ease;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-        }
-
-        /* Chat Window Style */
-        .chat-container {
-            position: fixed;
-            bottom: 90px;
-            right: 20px;
-            width: 350px;
-            height: 450px;
-            background-color: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            display: none;
-            flex-direction: column;
-            z-index: 999;
-            overflow: hidden;
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-            transform-origin: bottom right;
-            opacity: 0;
-            transform: scale(0.1);
-        }
-
-        .chat-container.visible {
-            display: flex;
-            opacity: 1;
-            transform: scale(1);
-            animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
-        }
-
-        .chat-container.closing {
-            opacity: 0;
-            transform: scale(0.1);
-        }
-
-        @keyframes popIn {
-            0% { transform: scale(0.1); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .chat-header {
-            background: linear-gradient(145deg, #4d93ff, #2e6cd7);
-            color: white;
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .chat-title {
-            font-weight: bold;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .chat-title::before {
-            content: '';
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            background-color: #4eff4e;
-            border-radius: 50%;
-            animation: blink 1.5s infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
-        }
-
-        .chat-controls {
-            display: flex;
-            gap: 15px;
-        }
-
-        .control-button {
-            background: none;
-            border: none;
-            color: white;
-            cursor: pointer;
-            font-size: 16px;
-            width: 25px;
-            height: 25px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-        }
-
-        .control-button:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-            transform: scale(1.1);
-        }
-
-        .chat-messages {
-            flex-grow: 1;
-            padding: 20px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            background-color: #f9fafc;
-        }
-
-        .message {
-            max-width: 80%;
-            padding: 12px 18px;
-            border-radius: 18px;
-            margin-bottom: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
-            animation: messageIn 0.3s ease forwards;
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        @keyframes messageIn {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        .assistant-message {
-            background: linear-gradient(145deg, #f1f1f1, #ffffff);
-            color: #333;
-            align-self: flex-start;
-            border-bottom-left-radius: 5px;
-        }
-
-        .user-message {
-            background: linear-gradient(145deg, #4d93ff, #2e6cd7);
-            color: white;
-            align-self: flex-end;
-            border-bottom-right-radius: 5px;
-        }
-
-        .chat-input-container {
-            display: flex;
-            padding: 15px;
-            background-color: white;
-            border-top: 1px solid #eaeaea;
-            transition: all 0.3s ease;
-        }
-
-        .chat-input {
-            flex-grow: 1;
-            padding: 12px 18px;
-            border: 1px solid #e0e0e0;
-            border-radius: 25px;
-            outline: none;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-
-        .chat-input:focus {
-            border-color: #4285f4;
-            box-shadow: 0 2px 15px rgba(66, 133, 244, 0.15);
-        }
-
-        .send-button {
-            background: linear-gradient(145deg, #4d93ff, #2e6cd7);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 45px;
-            height: 45px;
-            margin-left: 10px;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 4px 10px rgba(66, 133, 244, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .send-button:hover {
-            transform: scale(1.05) rotate(5deg);
-            box-shadow: 0 6px 15px rgba(66, 133, 244, 0.4);
-        }
-
-        .telegram-button {
-            display: inline-block;
-            background: linear-gradient(145deg, #0088cc, #0066aa);
-            color: white;
-            text-decoration: none;
-            padding: 10px 18px;
-            border-radius: 25px;
-            margin-top: 10px;
-            font-weight: bold;
-            box-shadow: 0 4px 10px rgba(0, 136, 204, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .telegram-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 136, 204, 0.4);
-        }
-
-        .ai-thinking {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 15px;
-            border-radius: 18px;
-            background-color: #f1f1f1;
-            align-self: flex-start;
-            margin-bottom: 5px;
-            animation: fadeInOut 1.5s infinite;
-        }
-
-        .thinking-dots {
-            display: flex;
-            gap: 4px;
-        }
-
-        .dot {
-            width: 8px;
-            height: 8px;
-            background-color: #888;
-            border-radius: 50%;
-        }
-
-        .dot:nth-child(1) {
-            animation: bounce 1.4s -0.32s infinite ease-in-out;
-        }
-
-        .dot:nth-child(2) {
-            animation: bounce 1.4s -0.16s infinite ease-in-out;
-        }
-
-        .dot:nth-child(3) {
-            animation: bounce 1.4s 0s infinite ease-in-out;
-        }
-
-        @keyframes bounce {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-5px);
-            }
-        }
-
-        @keyframes fadeInOut {
-            0%, 100% {
-                opacity: 0.7;
-            }
-            50% {
-                opacity: 1;
-            }
-        }    
-
-        /* asissent csslari bu yerdan oxirigacha  */
-        /* Chat Button Style with increased z-index */
-        .chat-button {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(145deg, #4d93ff, #2e6cd7);
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            box-shadow: 0 4px 20px rgba(66, 133, 244, 0.4);
-            z-index: 99999; /* Very high z-index to ensure top priority */
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-            overflow: hidden;
-        }
-
-        .chat-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 25px rgba(66, 133, 244, 0.6);
-        }
-
-        .chat-button.active {
-            transform: scale(1.2);
-            opacity: 0;
-        }
-
-        .chat-icon {
-            font-size: 24px;
-            transition: all 0.3s ease;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-        }
-
-        /* Chat Window Style with increased z-index */
-        .chat-container {
-            position: fixed;
-            bottom: 90px;
-            right: 20px;
-            width: 350px;
-            height: 450px;
-            background-color: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            display: none;
-            flex-direction: column;
-            z-index: 99998; /* Very high z-index, just below the chat button */
-            overflow: hidden;
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-            transform-origin: bottom right;
-            opacity: 0;
-            transform: scale(0.1);
-        }
-
-        .chat-container.visible {
-            display: flex;
-            opacity: 1;
-            transform: scale(1);
-            animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
-        }
-
-        .chat-container.closing {
-            opacity: 0;
-            transform: scale(0.1);
-        }
-
-        @keyframes popIn {
-            0% { transform: scale(0.1); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .chat-header {
-            background: linear-gradient(145deg, #4d93ff, #2e6cd7);
-            color: white;
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .chat-title {
-            font-weight: bold;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .chat-title::before {
-            content: '';
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            background-color: #4eff4e;
-            border-radius: 50%;
-            animation: blink 1.5s infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
-        }
-
-        .chat-controls {
-            display: flex;
-            gap: 15px;
-        }
-
-        .control-button {
-            background: none;
-            border: none;
-            color: white;
-            cursor: pointer;
-            font-size: 16px;
-            width: 25px;
-            height: 25px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-        }
-
-        .control-button:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-            transform: scale(1.1);
-        }
-
-        .chat-messages {
-            flex-grow: 1;
-            padding: 20px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            background-color: #f9fafc;
-        }
-
-        .message {
-            max-width: 80%;
-            padding: 12px 18px;
-            border-radius: 18px;
-            margin-bottom: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
-            animation: messageIn 0.3s ease forwards;
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        @keyframes messageIn {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        .assistant-message {
-            background: linear-gradient(145deg, #f1f1f1, #ffffff);
-            color: #333;
-            align-self: flex-start;
-            border-bottom-left-radius: 5px;
-        }
-
-        .user-message {
-            background: linear-gradient(145deg, #4d93ff, #2e6cd7);
-            color: white;
-            align-self: flex-end;
-            border-bottom-right-radius: 5px;
-        }
-
-        .chat-input-container {
-            display: flex;
-            padding: 15px;
-            background-color: white;
-            border-top: 1px solid #eaeaea;
-            transition: all 0.3s ease;
-        }
-
-        .chat-input {
-            flex-grow: 1;
-            padding: 12px 18px;
-            border: 1px solid #e0e0e0;
-            border-radius: 25px;
-            outline: none;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-
-        .chat-input:focus {
-            border-color: #4285f4;
-            box-shadow: 0 2px 15px rgba(66, 133, 244, 0.15);
-        }
-
-        .send-button {
-            background: linear-gradient(145deg, #4d93ff, #2e6cd7);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 45px;
-            height: 45px;
-            margin-left: 10px;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 4px 10px rgba(66, 133, 244, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .send-button:hover {
-            transform: scale(1.05) rotate(5deg);
-            box-shadow: 0 6px 15px rgba(66, 133, 244, 0.4);
-        }
-
-        .telegram-button {
-            display: inline-block;
-            background: linear-gradient(145deg, #0088cc, #0066aa);
-            color: white;
-            text-decoration: none;
-            padding: 10px 18px;
-            border-radius: 25px;
-            margin-top: 10px;
-            font-weight: bold;
-            box-shadow: 0 4px 10px rgba(0, 136, 204, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .telegram-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 136, 204, 0.4);
-        }
-
-        .ai-thinking {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 15px;
-            border-radius: 18px;
-            background-color: #f1f1f1;
-            align-self: flex-start;
-            margin-bottom: 5px;
-            animation: fadeInOut 1.5s infinite;
-        }
-
-        .thinking-dots {
-            display: flex;
-            gap: 4px;
-        }
-
-        .dot {
-            width: 8px;
-            height: 8px;
-            background-color: #888;
-            border-radius: 50%;
-        }
-
-        .dot:nth-child(1) {
-            animation: bounce 1.4s -0.32s infinite ease-in-out;
-        }
-
-        .dot:nth-child(2) {
-            animation: bounce 1.4s -0.16s infinite ease-in-out;
-        }
-
-        .dot:nth-child(3) {
-            animation: bounce 1.4s 0s infinite ease-in-out;
-        }
-
-        @keyframes bounce {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-5px);
-            }
-        }
-
-        @keyframes fadeInOut {
-            0%, 100% {
-                opacity: 0.7;
-            }
-            50% {
-                opacity: 1;
-            }
-        }
     </style>
 </head>
 <body>
     <!-- Simple Navbar -->
-    <!-- Simple Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top">
         <div class="container">
             <!-- Site Name -->
-               <a class="navbar-brand" href="index.html">Tezkor Quiz</a>
-            
+            <a class="navbar-brand" href="index.html">Tezkor Quiz</a>
             <!-- Mobile Toggle Button -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            
             <!-- Navbar Links -->
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
@@ -886,29 +253,30 @@
                         <a class="nav-link" href="faq.html">Yordam</a>
                     </li>
                     <li class="nav-item dropdown">
- <a class="nav-link dropdown-toggle" href="quiztanlovi.html" id="quizDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="quiztanlovi.html" id="quizDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Quiz Test
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="quizDropdown">
                             <li><a class="dropdown-item" href="quiztest/tezkorquiz.html">Tezkor Quiz</a></li>
                             <li><a class="dropdown-item" href="quiztest/bilim.html">Bilim Quiz</a></li>
-                             <li><a class="dropdown-item" href="quiztest/smart.html">Smart Quiz</a></li>
+                            <li><a class="dropdown-item" href="quiztest/smart.html">Smart Quiz</a></li>
                             <li><a class="dropdown-item" href="quiztest/pro.html">Pro Quiz</a></li>
                             <li><a class="dropdown-item" href="quiztest/imtihon.html">Imtihon Quiz</a></li> 
-                        </li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
-    </div>
+        </div>
     </nav>
 
+    <!-- Main Content -->
     <div class="container main-content py-5">
-        <h1 class="text-center mb-5" data-aos="fade-up"></h1>
-
+        <h1 class="text-center mb-2" data-aos="fade-up">Testni boshlash</h1>
+        <p class="text-center text-muted mb-5" data-aos="fade-up" data-aos-delay="100">Testni boshlash uchun o'zingizga qulay test turini tanlang. O'qish rejimidan imtihon testigacha — barchasi bir joyda!</p>
         <div class="row">
-              <!-- O'qish rejimi -->
+            <!-- O'qish rejimi -->
             <div class="col-lg-4 col-md-6 mb-4">
                 <div class="book-card" data-aos="fade-up" data-aos-delay="300">
-<!--                     <span class="badge bg-dark card-badge">Yangi</span> -->
                     <div class="book-content">
                         <h5 class="book-card-title">O'qish Rejimi</h5>
                         <p class="book-card-text">Test faylni yuklagan holda o'qish imkoni sizda mavjud</p>
@@ -925,16 +293,12 @@
                     </div>
                 </div>
             </div>
-
-            
             <!-- Tezkor Quiz -->
             <div class="col-lg-4 col-md-6 mb-4">
                 <div class="book-card" data-aos="fade-up" data-aos-delay="100">
-                  <!--   <span class="badge bg-success card-badge"></span> -->
                     <div class="book-content">
                         <h5 class="book-card-title">Tezkor Quiz</h5>
                         <p class="book-card-text">Testning bazasini .txt formatda menga yuboring va darhol shu testni boshlang!</p>
-                     
                         <div class="container-eg-btn-3">
                             <a href="quiztest/tezkorquiz.html" class="button button-8">Boshlash</a>
                         </div>
@@ -948,16 +312,14 @@
                     </div>
                 </div>
             </div>
-
             <!-- Bilim Quiz -->
             <div class="col-lg-4 col-md-6 mb-4">
                 <div class="book-card" data-aos="fade-up" data-aos-delay="200">
-                  <!--   <span class="badge bg-success card-badge">yangi</span> -->
                     <div class="book-content">
                         <h5 class="book-card-title">Bilim Quiz</h5>
                         <p class="book-card-text">Testga tayyorlangan holda bu testni boshlash tavsiya etiladi.</p>
                         <div class="container-eg-btn-3">
-                            <a href="quiztest/bilim.html"  class="button button-8">Boshlash</a>
+                            <a href="quiztest/bilim.html" class="button button-8">Boshlash</a>
                         </div>
                     </div>
                     <div class="book-cover">
@@ -969,13 +331,12 @@
                     </div>
                 </div>
             </div>
-
-              <!-- Smart Quiz -->
+            <!-- Smart Quiz -->
             <div class="col-lg-4 col-md-6 mb-4">
                 <div class="book-card" data-aos="fade-up" data-aos-delay="300">
                     <div class="book-content">
                         <h5 class="book-card-title">Smart Quiz</h5>
-                        <p class="book-card-text">Mobil telefonlarda judayam uzun savol va variantlar uchun moslashtirilgan. </p>
+                        <p class="book-card-text">Mobil telefonlarda judayam uzun savol va variantlar uchun moslashtirilgan.</p>
                         <div class="container-eg-btn-3">
                             <a href="quiztest/smart.html" class="button button-8">Boshlash</a>
                         </div>
@@ -989,14 +350,13 @@
                     </div>
                 </div>
             </div>
-
             <!-- Pro Quiz -->
             <div class="col-lg-4 col-md-6 mb-4">
                 <div class="book-card" data-aos="fade-up" data-aos-delay="300">
                     <span class="badge bg-success card-badge">tavsiya</span>
                     <div class="book-content">
                         <h5 class="book-card-title">Pro Quiz</h5>
-                        <p class="book-card-text">Kampyuter va telefon uchun keng, optimallashtirilgan qulayliklar. </p>
+                        <p class="book-card-text">Kampyuter va telefon uchun keng, optimallashtirilgan qulayliklar.</p>
                         <div class="container-eg-btn-3">
                             <a href="quiztest/pro.html" class="button button-8">Boshlash</a>
                         </div>
@@ -1010,7 +370,6 @@
                     </div>
                 </div>
             </div>
-            
             <!-- Imtihon Quiz -->
             <div class="col-lg-4 col-md-6 mb-4">
                 <div class="book-card" data-aos="fade-up" data-aos-delay="400">
@@ -1018,7 +377,7 @@
                         <h5 class="book-card-title">Imtihon Quiz</h5>
                         <p class="book-card-text">Imtihon ko'rinishidagi testlar, tasdiqlaganingizdan keyin natija chiqadi!</p>
                         <div class="container-eg-btn-3">
-                            <a  href="quiztest/imtihon.html" class="button button-8">Boshlash</a>
+                            <a href="quiztest/imtihon.html" class="button button-8">Boshlash</a>
                         </div>
                     </div>
                     <div class="book-cover">
@@ -1030,19 +389,18 @@
                     </div>
                 </div>
             </div>
-                 <!-- Ko'p foydalanuvchi -->
+            <!-- Birgalikda Quiz -->
             <div class="col-lg-4 col-md-6 mb-4">
                 <div class="book-card" data-aos="fade-up" data-aos-delay="300">
                     <span class="badge bg-success card-badge">beta</span>
                     <div class="book-content">
                         <h5 class="book-card-title">Birgalikda Quiz</h5>
-                        <p class="book-card-text">Ko'p foydalanuvchilar uchun test bitgalikda ishlash imkoniyati</p>
+                        <p class="book-card-text">Ko'p foydalanuvchilar uchun test birgalikda ishlash imkoniyati</p>
                         <div class="container-eg-btn-3">
                             <a href="quiztest/birgalikda.html" class="button button-8">Boshlash</a>
                         </div>
                     </div>
                     <div class="book-cover">
-<!--                         <img src="aga/tgds.png" alt="Telegram Quiz"> -->
                         <div class="book-cover-content">
                             <h5 class="book-card-title">Birgalikda Quiz</h5>
                             <p class="book-card-text">Ochish uchun ustiga bosing</p>
@@ -1050,226 +408,17 @@
                     </div>
                 </div>
             </div>
-            
         </div>
     </div>
 
-
-
-    <!-- Bootstrap JS Bundle with Popper -->
+    <!-- Required JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- AOS Animation JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script>
-        // Initialize AOS
         AOS.init({
             duration: 800,
             once: true
         });
     </script>
-
-<script>
-    // DOM Elements
-    const chatButton = document.getElementById('chatButton');
-    const chatContainer = document.getElementById('chatContainer');
-    const chatMessages = document.getElementById('chatMessages');
-    const chatInput = document.getElementById('chatInput');
-    const sendButton = document.getElementById('sendButton');
-    const closeButton = document.getElementById('closeButton');
-    const openSound = document.getElementById('openSound');
-    const messageSound = document.getElementById('messageSound');
-
-    // Telegram Bot link - Replace with your actual Telegram bot link
-    const TELEGRAM_BOT_LINK = "https://t.me/tezkorquiz_bot";
-
-    // Question-Answer database
-    const qaDatabase = {
-        "salom": "Salom! Men Tezkor Quizni assistentiman. Bugun sizga qanday yordam bera olaman?",
-        "assalomu alaykum": "Va alaykum assalom! Men Tezkor Quizni assistentiman. Sizga qanday yordam bera olaman?",
-        "yordam": "Albatta! Sizga qanday yordam bera olaman? Savolingizni yozing.",
-        "narx": "Bizning xizmatlarimiz mutloqo bepul",
-        "xizmat": "Biz turli xizmatlarni taqdim etamiz. Test yaratish, Tahrirlash, Quiz Test bo'limi",
-        "rahmat": "Arzimaydi! Boshqa savollaringiz bo'lsa, so'rashingiz mumkin.",
-        "xayr": "Xayr! Yaxshi kun tilayman.",
-        "qanday": "Bizning xizmatlarimiz haqida batafsil ma'lumotni Telegram botimizda topishingiz mumkin!",
-        "qayerda": "Bizning manzilimiz va aloqa ma'lumotlarini saytimizning pastidan topishingiz mumkin",
-        "nima": "Savolingizni aniqroq yozing va men yordam berishga harakat qilaman."
-    };
-
-    // Fallback messages when answer is not in the database
-    const fallbackMessages = [
-        "Afsuski, bu savolga javob berishda qiynalyapman. Iltimos, Telegram botimizga tashrif buyuring va u yerda to'liq ma'lumot oling.",
-        "Savolingiz juda muhim! Aniq va to'liq javob olish uchun Telegram botimizga murojaat qiling.",
-        "Bu savol bo'yicha to'liq ma'lumot olish uchun Telegram botimizga tashrif buyuring.",
-        "Kechirasiz, bu mavzu bo'yicha ma'lumotim cheklangan. To'liq ma'lumot uchun Telegram botimizga tashrif buyuring.",
-        "Bu masala bo'yicha batafsil ma'lumot olish va savollaringizga javob olish uchun Telegram botimizga tashrif buyuring.",
-    "Kechirasiz bu haqida menda ma'lumot yo'q iltimos botimizga tashrif buyiring!"
-];
-
-    // Toggle chat window
-    chatButton.addEventListener('click', () => {
-        if (chatContainer.style.display !== 'flex') {
-            // Open the chat window
-            chatButton.classList.add('active');
-            chatContainer.style.display = 'flex';
-            
-            // Give time for the display:flex to take effect before adding the visible class
-            setTimeout(() => {
-                chatContainer.classList.add('visible');
-                openSound.play(); // Play opening sound
-            }, 10);
-        } else {
-            // Close the chat window with animation
-            chatContainer.classList.remove('visible');
-            chatContainer.classList.add('closing');
-            chatButton.classList.remove('active');
-            
-            // Wait for animation to complete before hiding
-            setTimeout(() => {
-                chatContainer.style.display = 'none';
-                chatContainer.classList.remove('closing');
-            }, 500);
-        }
-    });
-
-    // Close chat window
-    closeButton.addEventListener('click', () => {
-        chatContainer.classList.remove('visible');
-        chatContainer.classList.add('closing');
-        chatButton.classList.remove('active');
-        
-        // Wait for animation to complete before hiding
-        setTimeout(() => {
-            chatContainer.style.display = 'none';
-            chatContainer.classList.remove('closing');
-        }, 500);
-    });
-
-    // Show thinking animation
-    function showThinking() {
-        const thinkingDiv = document.createElement('div');
-        thinkingDiv.classList.add('ai-thinking');Add commentMore actions
-        thinkingDiv.id = 'thinking-indicator';
-        
-        const thinkingDots = document.createElement('div');
-        thinkingDots.classList.add('thinking-dots');
-        
-        for (let i = 0; i < 3; i++) {
-            const dot = document.createElement('div');
-            dot.classList.add('dot');
-            thinkingDots.appendChild(dot);
-        }
-        
-        thinkingDiv.appendChild(thinkingDots);
-        chatMessages.appendChild(thinkingDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-
-    // Remove thinking animation
-    function removeThinking() {
-        const thinkingDiv = document.getElementById('thinking-indicator');
-        if (thinkingDiv) {
-            thinkingDiv.remove();
-        }
-    }
-
-    // Check database for answer
-    function findAnswerInDatabase(message) {
-        message = message.toLowerCase();
-        
-        // Check each key in the database
-        for (const key in qaDatabase) {
-            if (message.includes(key)) {
-                return qaDatabase[key];
-            }
-        }
-        
-        // If no match found, return null
-        return null;
-    }
-
-    // Get a random fallback message with Telegram button
-    function getFallbackWithTelegramLink() {
-        const randomIndex = Math.floor(Math.random() * fallbackMessages.length);
-        const fallbackMessage = fallbackMessages[randomIndex];
-        
-        return `${fallbackMessage}<br><br><a href="${TELEGRAM_BOT_LINK}" target="_blank" class="telegram-button">Telegram Botga o'tish</a>`;
-    }
-
-    // Send message
-    async function sendMessage() {
-        const message = chatInput.value.trim();
-        if (message) {
-            // Play message sound
-            messageSound.play();
-            
-            // Add user message
-            addMessage(message, 'user');
-            chatInput.value = '';
-
-            // Show thinking animation
-            showThinking();
-            
-            // Simulate processing delay (300-800ms)
-            setTimeout(() => {
-                // Remove thinking animation
-                removeThinking();
-                
-                // Check database for answer
-                const answer = findAnswerInDatabase(message);
-                
-                if (answer) {
-                    // If answer found in database
-                    addMessage(answer, 'assistant');
-                } else {
-                    // If no answer found, use fallback with Telegram link
-                    addMessage(getFallbackWithTelegramLink(), 'assistant', true);
-                }
-                
-                // Play message sound for response
-                messageSound.play();
-            }, Math.random() * 500 + 300);
-        }
-    }
-
-    // Add message to chat
-    function addMessage(text, sender, isHTML = false) {
-        const messageDiv = document.createElement('div');
-        messageDiv.classList.add('message', `${sender}-message`);
-        
-        if (isHTML) {
-            messageDiv.innerHTML = text;
-        } else {
-            messageDiv.textContent = text;
-        }
-        
-        // Initially set opacity to 0 for animation
-        messageDiv.style.opacity = '0';
-        messageDiv.style.transform = 'translateY(20px)';
-        
-        chatMessages.appendChild(messageDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-        
-        // Trigger animation after a small delay
-        setTimeout(() => {
-            messageDiv.style.opacity = '1';
-            messageDiv.style.transform = 'translateY(0)';
-        }, 10);
-    }
-
-    // Event listeners for sending messages
-    sendButton.addEventListener('click', sendMessage);
-    chatInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            sendMessage();
-        }
-    });
-</script>
-
 </body>
 </html>
-
-
-
-
-
