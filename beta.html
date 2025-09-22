@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tezkor Quiz</title>
+    <!-- Favicon -->
+    <link rel="icon" href="aga/logo01.png">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- AOS Animation CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #ECF2FF;
+            padding-top: 20px; /* Yuqori bo'shliq qo'shildi, chunki navbar yo'q */
+        }
+        /* Book card styling */
+        .book-card {
+            position: relative;
+            border-radius: 10px;
+            width: 100%;
+            height: 380px;
+            background-color: whitesmoke;
+            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.08);
+            transform: preserve-3d;
+            perspective: 2000px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            margin-bottom: 20px;
+        }
+        .book-content {
+            padding: 20px;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .book-cover {
+            top: 0;
+            position: absolute;
+            background-color: #fff;
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.5s;
+            transform-origin: 0;
+            box-shadow: 1px 1px 12px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            z-index: 2;
+        }
+        .book-card:hover .book-cover {
+            transition: all 0.5s;
+            transform: rotatey(-80deg);
+        }
+        .book-cover img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .book-cover-content {
+            padding: 20px;
+            text-align: center;
+        }
+        .book-card-title {
+            font-weight: 600;
+            color: #333;
+            margin-top: 10px;
+            font-size: 1.5rem;
+        }
+        .book-card-text {
+            color: #666;
+        }
+        .card-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 3;
+        }
+        /* Button styling */
+        .container-eg-btn-3 {
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+            flex-wrap: wrap;
+            margin: 20px auto 10px;
+            padding: .5em;
+            line-height: normal;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            transition-delay: 0s;
+        }
+        .book-card:hover .container-eg-btn-3 {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.3s;
+        }
+        .container-eg-btn-3 .button {
+            color: #fff;
+            margin: 10px 0;
+            padding: 12px 15px;
+            text-align: center;
+            text-transform: uppercase;
+            position: relative;
+            transition: .3s;
+            z-index: 1;
+            background: #4361ee;
+            cursor: pointer;
+            border-radius: 6px;
+            text-decoration: none;
+            display: inline-block;
+            width: 150px;
+        }
+        .container-eg-btn-3 .button-8:before {
+            content: '';
+            background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+            position: absolute;
+            top: -2px;
+            left:-2px;
+            background-size: 400%;
+            z-index: -1;
+            filter: blur(5px);
+            width: calc(100% + 4px);
+            height: calc(100% + 4px);
+            animation: glowing 20s linear infinite;
+            opacity: 0;
+            transition: opacity .3s ease-in-out;
+            border-radius: 6px;
+        }
+        .container-eg-btn-3 .button-8:hover:before, .container-eg-btn-3 .button-8:hover:after {
+            opacity: 1;
+        }
+        .container-eg-btn-3 .button-8:after {
+            z-index: -1;
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #111;
+            left: 0;
+            top: 0;
+            border-radius: 6px;
+            opacity: 0;
+        }
+        .container-eg-btn-3 .button-8:active:after {
+            background: transparent;
+        }
+        @keyframes glowing {
+            0% { background-position: 0 0; }
+            50% { background-position: 400% 0; }
+            100% { background-position: 0 0; }
+        }
+        /* Spacing for content */
+        .main-content {
+            margin-top: 40px; /* Navbar yo'q, shuning uchun margin kamaytirildi */
+        }
+        /* Animation for book content */
+        .book-card .book-content h5,
+        .book-card .book-content p {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.5s ease;
+            transition-delay: 0s;
+        }
+        .book-card:hover .book-content h5 {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.1s;
+        }
+        .book-card:hover .book-content p {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.2s;
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Content -->
+    <div class="container main-content py-5">
+        <h1 class="text-center mb-2" data-aos="fade-up">Tezkor Quiz Platformasi</h1>
+        <p class="text-center text-muted mb-5" data-aos="fade-up" data-aos-delay="100">Testlaringizni onlayn yaratish, tahrirlash va boshqarish uchun zamonaviy yechim. O'qish rejimidan imtihon testigacha — barchasi bir joyda!</p>
+        <div class="row">
+            <!-- O'qish rejimi -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="book-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="book-content">
+                        <h5 class="book-card-title">O'qish Rejimi</h5>
+                        <p class="book-card-text">Test faylni yuklagan holda o'qish imkoni sizda mavjud</p>
+                        <div class="container-eg-btn-3">
+                            <a href="quiztest/oqishrejimi.html" class="button button-8">Boshlash</a>
+                        </div>
+                    </div>
+                    <div class="book-cover">
+                        <img src="aga/rejimi.png" alt="O'qish rejimi">
+                        <div class="book-cover-content">
+                            <h5 class="book-card-title">O'qish Rejimi</h5>
+                            <p class="book-card-text">Ochish uchun ustiga bosing</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Tezkor Quiz -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="book-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="book-content">
+                        <h5 class="book-card-title">Tezkor Quiz</h5>
+                        <p class="book-card-text">Testning bazasini .txt formatda menga yuboring va darhol shu testni boshlang!</p>
+                        <div class="container-eg-btn-3">
+                            <a href="quiztest/tezkorquiz.html" class="button button-8">Boshlash</a>
+                        </div>
+                    </div>
+                    <div class="book-cover">
+                        <img src="aga/asosiy (1).png" alt="Tezkor Quiz">
+                        <div class="book-cover-content">
+                            <h5 class="book-card-title">Tezkor Quiz</h5>
+                            <p class="book-card-text">Ochish uchun ustiga bosing</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Bilim Quiz -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="book-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="book-content">
+                        <h5 class="book-card-title">Bilim Quiz</h5>
+                        <p class="book-card-text">Testga tayyorlangan holda bu testni boshlash tavsiya etiladi.</p>
+                        <div class="container-eg-btn-3">
+                            <a href="quiztest/bilim.html" class="button button-8">Boshlash</a>
+                        </div>
+                    </div>
+                    <div class="book-cover">
+                        <img src="aga/bilim.webp" alt="Bilim Quiz">
+                        <div class="book-cover-content">
+                            <h5 class="book-card-title">Bilim Quiz</h5>
+                            <p class="book-card-text">Ochish uchun ustiga bosing</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Smart Quiz -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="book-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="book-content">
+                        <h5 class="book-card-title">Smart Quiz</h5>
+                        <p class="book-card-text">Mobil telefonlarda judayam uzun savol va variantlar uchun moslashtirilgan.</p>
+                        <div class="container-eg-btn-3">
+                            <a href="quiztest/smart.html" class="button button-8">Boshlash</a>
+                        </div>
+                    </div>
+                    <div class="book-cover">
+                        <img src="aga/smart.webp" alt="Smart Quiz">
+                        <div class="book-cover-content">
+                            <h5 class="book-card-title">Smart Quiz</h5>
+                            <p class="book-card-text">Ochish uchun ustiga bosing</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Pro Quiz -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="book-card" data-aos="fade-up" data-aos-delay="300">
+                    <span class="badge bg-success card-badge">tavsiya</span>
+                    <div class="book-content">
+                        <h5 class="book-card-title">Pro Quiz</h5>
+                        <p class="book-card-text">Kampyuter va telefon uchun keng, optimallashtirilgan qulayliklar.</p>
+                        <div class="container-eg-btn-3">
+                            <a href="quiztest/pro.html" class="button button-8">Boshlash</a>
+                        </div>
+                    </div>
+                    <div class="book-cover">
+                        <img src="aga/pro.webp" alt="Pro Quiz">
+                        <div class="book-cover-content">
+                            <h5 class="book-card-title">Pro Quiz</h5>
+                            <p class="book-card-text">Ochish uchun ustiga bosing</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Imtihon Quiz -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="book-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="book-content">
+                        <h5 class="book-card-title">Imtihon Quiz</h5>
+                        <p class="book-card-text">Imtihon ko'rinishidagi testlar, tasdiqlaganingizdan keyin natija chiqadi!</p>
+                        <div class="container-eg-btn-3">
+                            <a href="quiztest/imtihon.html" class="button button-8">Boshlash</a>
+                        </div>
+                    </div>
+                    <div class="book-cover">
+                        <img src="aga/asosiy (3).png" alt="Imtihon Quiz">
+                        <div class="book-cover-content">
+                            <h5 class="book-card-title">Imtihon Quiz</h5>
+                            <p class="book-card-text">Ochish uchun ustiga bosing</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Birgalikda Quiz -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="book-card" data-aos="fade-up" data-aos-delay="300">
+                    <span class="badge bg-success card-badge">beta</span>
+                    <div class="book-content">
+                        <h5 class="book-card-title">Birgalikda Quiz</h5>
+                        <p class="book-card-text">Ko'p foydalanuvchilar uchun test birgalikda ishlash imkoniyati</p>
+                        <div class="container-eg-btn-3">
+                            <a href="quiztest/birgalikda.html" class="button button-8">Boshlash</a>
+                        </div>
+                    </div>
+                    <div class="book-cover">
+                        <div class="book-cover-content">
+                            <h5 class="book-card-title">Birgalikda Quiz</h5>
+                            <p class="book-card-text">Ochish uchun ustiga bosing</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Required JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            once: true
+        });
+    </script>
+</body>
+</html>
