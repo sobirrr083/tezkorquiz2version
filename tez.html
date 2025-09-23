@@ -436,26 +436,7 @@
         }
     </style>
 </head>
-<body>
- 
-    <script>
-class HeaderComponent extends HTMLElement {
-    connectedCallback() {
-        fetch('header.html')
-            .then(response => response.text())
-            .then(html => {
-                this.innerHTML = html;
-            });
-    }
-}
-
-customElements.define('my-header', HeaderComponent);
-</script>
-
-<!-- Ishlatish -->
-<my-header></my-header>
-    
-    
+<body>   
     <!-- Hero Section -->
   <section class="container mt-5" data-aos="fade-up" data-aos-duration="1000">
     <div class="hero-section">
