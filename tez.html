@@ -585,12 +585,6 @@
 </script>
 <!-- bu yerdan cards javascript kodlari boshlanadi -->
   <script>
-        function handleEnter(cardNumber) {
-            console.log(`Card ${cardNumber} bosildi`);
-            alert(`Card ${cardNumber} ga xush kelibsiz!`);
-            // Bu yerda kerakli amallarni bajaring
-            // Misol: window.location.href = `/page${cardNumber}`;
-        }
         // Keyboard navigation support
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
@@ -628,7 +622,7 @@
             }, observerOptions);
             document.querySelectorAll('.hero-card').forEach(card => {
                 observer.observe(card);
-            });
+            }); 
         } else {
             // Fallback for older browsers
             document.querySelectorAll('.hero-card').forEach(card => {
