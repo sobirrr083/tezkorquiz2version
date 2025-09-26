@@ -166,6 +166,11 @@
             min-height: 100vh;
             padding-top: 40px;
         }
+        
+        .card-container {
+            margin-bottom: 40px;
+        }
+        
         .hero-card {
             position: relative;
             width: 100%;
@@ -175,12 +180,18 @@
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             cursor: pointer;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
+        
         .hero-card:hover {
             transform: translateY(-10px);
             box-shadow: 0 35px 70px rgba(0, 0, 0, 0.3);
         }
+        
         .card-image {
             position: absolute;
             top: 0;
@@ -192,28 +203,32 @@
             background-repeat: no-repeat;
             transition: transform 0.3s ease;
         }
+        
         .card-1 .card-image {
             background-image: url('aga/segy02.png');
         }
         .card-2 .card-image {
             background-image: url('aga/segy01.png');
         }
-          .card-3 .card-image {
+        .card-3 .card-image {
             background-image: url('aga/testyaratish.webp');
         }
         .card-4 .card-image {
             background-image: url('aga/quiztest.webp');
         }
+        
         .hero-card:hover .card-image {
             transform: scale(1.05);
         }
+        
         .card-button-container {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 15px;
             z-index: 10;
         }
+        
         /* Mobile optimizations */
         @media (max-width: 767px) {
             body {
@@ -221,10 +236,13 @@
             }
             .hero-card {
                 border-radius: 20px !important;
-                margin-bottom: 25px;
+                margin-bottom: 15px;
             }
             .card-button-container {
-                bottom: 25px;
+                margin-top: 12px;
+            }
+            .card-container {
+                margin-bottom: 30px;
             }
         }
         @media (max-width: 480px) {
@@ -232,60 +250,16 @@
                 border-radius: 16px !important;
             }
             .card-button-container {
-                bottom: 20px;
+                margin-top: 10px;
             }
         }
         /* Tablet and larger screens */
         @media (min-width: 768px) {
-            .hero-card {
-                margin-bottom: 40px;
-            }
-            .card-button-container {
-                bottom: 35px;
+            .card-container {
+                margin-bottom: 50px;
             }
         }
-        /* Large screen optimizations */
-        @media (min-width: 1200px) {
-            .card-button-container {
-                bottom: 40px;
-            }
-        }
-        /* Animation keyframes */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translate(-50%, 30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(-50%);
-            }
-        }
-        .card-button-container {
-            animation: fadeInUp 0.8s ease-out;
-            animation-delay: 0.3s;
-            animation-fill-mode: both;
-        }
-        /* Accessibility improvements */
-        @media (prefers-reduced-motion: reduce) {
-            .hero-card,
-            .card-image,
-            .card-button-container {
-                transition: none;
-                animation: none;
-            }
-            .hero-card:hover {
-                transform: none;
-            }
-            .card-button-container {
-                opacity: 1;
-                transform: translateX(-50%);
-            }
-        }
-        /* Container spacing */
-        .container {
-            max-width: 1400px;
-        }
+        
         /* Gradient overlay for better button visibility */
         .hero-card::after {
             content: "";
@@ -293,24 +267,28 @@
             bottom: 0;
             left: 0;
             right: 0;
-            height: 150px;
-            background: linear-gradient(transparent, rgba(0, 0, 0, 0.3));
+            height: 100px;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.2));
             pointer-events: none;
             transition: opacity 0.3s ease;
         }
+        
         .hero-card:hover::after {
             opacity: 0.7;
         }
+        
         /* Smooth card entrance animation */
         .hero-card {
             opacity: 0;
             transform: translateY(50px);
             transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s ease;
         }
+        
         .hero-card.animate {
             opacity: 1;
             transform: translateY(0);
         }
+        
         /* bu yerdan cards csslari tugadi */
         /*ifirime kodlari */
          .cards-container {
@@ -357,6 +335,10 @@
             font-family: inherit;
             width: 12rem;
             height: auto;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         .circle {
@@ -450,7 +432,7 @@
                         <a href="quiztest.html" class="btn btn-light hero-btn mb-3 mb-md-0">
                             <i class="fas fa-play me-2"></i>Testni boshlash
                         </a>
-                        <a href="testyaratish" class="btn btn-outline-light hero-btn >
+                        <a href="testyaratish" class="btn btn-outline-light hero-btn">
                             <i class="fas fa-file-alt me-2"></i>Test yaratish
                         </a>
                     </div>
@@ -469,8 +451,10 @@
         <div class="row g-4">
             <!-- First Card -->
             <div class="col-12 col-md-6">
-                <div class="hero-card card-1">
-                    <div class="card-image"></div>
+                <div class="card-container">
+                    <div class="hero-card card-1" onclick="handleCardClick(1)">
+                        <div class="card-image"></div>
+                    </div>
                     <div class="card-button-container">
                         <div class="learn-more-button" onclick="handleEnter(1)">
                             <span class="circle" aria-hidden="true">
@@ -483,8 +467,10 @@
             </div>
             <!-- Second Card -->
             <div class="col-12 col-md-6">
-                <div class="hero-card card-2">
-                    <div class="card-image"></div>
+                <div class="card-container">
+                    <div class="hero-card card-2" onclick="handleCardClick(2)">
+                        <div class="card-image"></div>
+                    </div>
                     <div class="card-button-container">
                         <div class="learn-more-button" onclick="handleEnter(2)">
                             <span class="circle" aria-hidden="true">
@@ -497,8 +483,10 @@
             </div>
              <!-- Third Card -->
             <div class="col-12 col-md-6">
-                <div class="hero-card card-3">
-                    <div class="card-image"></div>
+                <div class="card-container">
+                    <div class="hero-card card-3" onclick="handleCardClick(3)">
+                        <div class="card-image"></div>
+                    </div>
                     <div class="card-button-container">
                         <div class="learn-more-button" onclick="handleEnter(3)">
                             <span class="circle" aria-hidden="true">
@@ -511,8 +499,10 @@
             </div>
             <!-- Fourth Card -->
             <div class="col-12 col-md-6">
-                <div class="hero-card card-4">
-                    <div class="card-image"></div>
+                <div class="card-container">
+                    <div class="hero-card card-4" onclick="handleCardClick(4)">
+                        <div class="card-image"></div>
+                    </div>
                     <div class="card-button-container">
                         <div class="learn-more-button" onclick="handleEnter(4)">
                             <span class="circle" aria-hidden="true">
@@ -632,8 +622,29 @@
         // Performance optimization: Passive event listeners
         document.addEventListener('scroll', () => {}, { passive: true });
         document.addEventListener('touchstart', () => {}, { passive: true });
+        
+        <!-- handleEnter function -->
+        function handleEnter(cardNumber) {
+            // Har bir card uchun sahifa yo'nalishi
+            const pages = {
+                1: 'segment25.html',      // 1-card uchun sahifa
+                2: 'quiztest.html',       // 2-card uchun sahifa  
+                3: 'testyaratish.html',   // 3-card uchun sahifa
+                4: 'faq.html'             // 4-card uchun sahifa
+            };
+            
+            // Agar sahifa mavjud bo'lsa, o'sha sahifaga yo'naltirish
+            if (pages[cardNumber]) {
+                window.location.href = pages[cardNumber];
+            }
+        }
+
+        // Card ustiga bosganda ham sahifaga o'tish
+        function handleCardClick(cardNumber) {
+            handleEnter(cardNumber);
+        }
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <!-- bu yerdan cards javascript kodlari tugadi -->
+    <!-- bu yergan cards javascript kodlari tugadi -->
 </body>
 </html>
