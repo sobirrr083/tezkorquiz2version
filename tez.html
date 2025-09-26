@@ -169,6 +169,7 @@
         
         .card-container {
             margin-bottom: 40px;
+            transition: all 0.3s ease;
         }
         
         .hero-card {
@@ -190,6 +191,25 @@
         .hero-card:hover {
             transform: translateY(-10px);
             box-shadow: 0 35px 70px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Card hover bo'lganda tugmaga ham tasir qilish */
+        .card-container:hover .hero-card {
+            transform: translateY(-10px);
+            box-shadow: 0 35px 70px rgba(0, 0, 0, 0.3);
+        }
+        
+        .card-container:hover .learn-more-button .circle {
+            width: 100%;
+        }
+
+        .card-container:hover .learn-more-button .arrow {
+            background: var(--white);
+            transform: translate(1rem, 0);
+        }
+
+        .card-container:hover .learn-more-button .button-text {
+            color: var(--white);
         }
         
         .card-image {
@@ -218,6 +238,11 @@
         }
         
         .hero-card:hover .card-image {
+            transform: scale(1.05);
+        }
+        
+        /* Card-container hover bo'lganda image ga ham tasir */
+        .card-container:hover .card-image {
             transform: scale(1.05);
         }
         
@@ -274,6 +299,11 @@
         }
         
         .hero-card:hover::after {
+            opacity: 0.7;
+        }
+        
+        /* Card-container hover bo'lganda overlay ga ham tasir */
+        .card-container:hover .hero-card::after {
             opacity: 0.7;
         }
         
