@@ -7,38 +7,86 @@
   <title>Imtihondasiz</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <style>
     body {
       background-color: #f4f6f9;
       overflow-x: hidden;
-      font-family: 'Inter', sans-serif;
     }
-
     .container {
       max-width: 900px;
       margin: 20px auto;
       background-color: #fff;
       padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      border-radius: 6px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
-
+    .file-label {
+      margin-bottom: 10px;
+    }
+    #uploadStatus {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    .question-container {
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+    .question-text {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .options-container .form-check {
+      margin-bottom: 8px;
+    }
+    .correct {
+      background-color: #d1e7dd !important;
+    }
+    .incorrect {
+      background-color: #f8d7da !important;
+    }
+    .unanswered-correct {
+      background-color: #fff3e0 !important;
+    }
+    .check-icon {
+      font-weight: bold;
+      margin-left: 8px;
+    }
+    .score-container {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: bold;
+      opacity: 0;
+      transition: opacity 1s ease-in;
+    }
+    .show-feedback {
+      opacity: 1 !important;
+    }
+    .feedback-text {
+      font-size: 1.1rem;
+      margin-top: 10px;
+      color: #444;
+    }
+    .feedback-text span {
+      font-weight: bold;
+      color: #2c7fbb;
+    }
     .timer-container {
-      background-color: #ffffff;
-      border-radius: 8px;
-      padding: 12px 20px;
+      background-color: #f8f9fa;
+      border-radius: 6px;
+      padding: 10px 15px;
       margin-bottom: 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
       position: sticky;
       top: 10px;
       z-index: 1000;
       transition: all 0.3s ease;
     }
-
     .timer-container.compact-timer {
       position: fixed;
       top: 10px;
@@ -46,377 +94,280 @@
       width: 200px;
       padding: 8px;
       font-size: 1rem;
+      background-color: #ffffff;
       border: 1px solid #ddd;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
       justify-content: center;
       margin-bottom: 0;
-      will-change: transform;
     }
-
+    .timer-container.compact-timer .timer {
+      font-size: 1.2rem;
+    }
     .timer {
       font-size: 1.5rem;
-      font-weight: 600;
-      color: #1a1a1a;
+      font-weight: bold;
+      color: #333;
     }
-
     .timer.warning {
       color: #dc3545;
       animation: pulse 1s infinite;
     }
-
     @keyframes pulse {
       0% { opacity: 1; }
       50% { opacity: 0.7; }
       100% { opacity: 1; }
     }
-
-    .question-container {
-      border: 1px solid #e9ecef;
-      border-radius: 8px;
-      padding: 15px;
+    .time-settings {
+      margin-top: 15px;
       margin-bottom: 15px;
-      background-color: #fff;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      background-color: #f8f9fa;
     }
-
-    .question-text {
-      font-weight: 600;
-      margin-bottom: 12px;
-      font-size: 1.1rem;
+    .confetti-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 999;
     }
-
-    .form-check {
-      display: flex;
-      align-items: flex-start;
-      margin-bottom: 8px;
-      padding-left: 2.5rem;
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: #f00;
+      border-radius: 50%;
+      animation: fall 5s ease-in-out;
     }
-
+    @keyframes fall {
+      0% {
+        top: -10px;
+        transform: translateX(0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        top: 100vh;
+        transform: translateX(100px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+    .sad-emoji {
+      font-size: 3rem;
+      margin: 10px 0;
+      animation: shake 0.5s ease-in-out;
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      50% { transform: translateX(10px); }
+      75% { transform: translateX(-10px); }
+    }
+    .neutral-emoji {
+      font-size: 3rem;
+      margin: 10px 0;
+      animation: bounce 1s ease-in-out;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+    .new-test-btn {
+      margin-top: 20px;
+    }
+    @media (max-width: 576px) {
+      .container {
+        padding: 10px;
+        margin: 10px;
+      }
+      .question-container {
+        padding: 10px;
+      }
+      .form-check {
+        margin-bottom: 5px;
+      }
+      .timer-container {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .timer-container.compact-timer {
+        width: 150px;
+        padding: 6px;
+        right: 5px;
+      }
+      .timer {
+        font-size: 1.2rem;
+      }
+      .timer-container.compact-timer .timer {
+        font-size: 1rem;
+      }
+      .question-text {
+        font-size: 1rem;
+      }
+      .form-check-label {
+        font-size: 1rem;
+        word-wrap: break-word;
+        white-space: normal;
+      }
+      .feedback-text {
+        font-size: 1rem;
+      }
+      .sad-emoji, .neutral-emoji {
+        font-size: 2.5rem;
+      }
+      .time-settings {
+        padding: 10px;
+      }
+      .btn-group {
+        display: flex;
+        flex-wrap: wrap;
+      }
+      .btn-group button {
+        flex: 1 0 45%;
+        margin: 2px;
+      }
+    }
     .form-check-input {
-      transform: scale(1.3);
-      margin-right: 12px;
-      margin-top: 4px;
-      flex-shrink: 0;
+      transform: scale(1.2);
+      margin-right: 10px;
     }
-
     .form-check-label {
-      word-break: break-word;
+      word-wrap: break-word;
       white-space: normal;
-      flex: 1;
-      line-height: 1.5;
     }
-
-    .correct {
-      background-color: #d1e7dd !important;
-    }
-
-    .incorrect {
-      background-color: #f8d7da !important;
-    }
-
-    .unanswered-correct {
-      background-color: #fff3e0 !important;
-    }
-
-    .check-icon {
-      font-weight: bold;
-      margin-left: 8px;
-    }
-
     .results-card {
-      border-radius: 12px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-      padding: 25px;
-      background: linear-gradient(145deg, #ffffff, #f8f9fa);
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 20px;
+      background-color: #fff;
       margin-top: 30px;
       text-align: center;
-      transition: transform 0.3s ease;
     }
-
-    .results-card:hover {
-      transform: translateY(-5px);
-    }
-
     .progress-container {
-      margin: 20px 0;
+      margin: 25px 0;
     }
-
     .progress-bar {
-      height: 24px;
-      border-radius: 12px;
-      background-color: #e9ecef;
+      height: 20px;
+      border-radius: 10px;
+      background-color: #f0f0f0;
       overflow: hidden;
-      position: relative;
+      margin-bottom: 10px;
     }
-
     .progress-fill {
       height: 100%;
-      background: linear-gradient(90deg, #4CAF50, #81C784);
-      transition: width 1s ease-in-out;
-      border-radius: 12px;
+      background: linear-gradient(90deg, #4CAF50, #8BC34A);
+      transition: width 1.5s ease-in-out;
+      border-radius: 10px;
     }
-
     .progress-fill.low {
       background: linear-gradient(90deg, #FF5252, #FF8A80);
     }
-
-    .progress-text {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      color: #fff;
-      font-weight: 600;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
-    }
-
     .stats-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 15px;
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
       margin: 20px 0;
     }
-
     .stat-item {
-      padding: 15px;
+      padding: 10px 20px;
       border-radius: 8px;
-      font-weight: 600;
-      text-align: center;
-      transition: transform 0.2s ease;
+      margin: 5px;
+      font-weight: bold;
+      min-width: 150px;
     }
-
-    .stat-item:hover {
-      transform: translateY(-3px);
+    .total-questions {
+      background-color: #E3F2FD;
+      color: #1976D2;
     }
-
-    .total-questions { background-color: #E3F2FD; color: #1976D2; }
-    .correct-answers { background-color: #E8F5E9; color: #388E3C; }
-    .incorrect-answers { background-color: #FFEBEE; color: #D32F2F; }
-    .unanswered { background-color: #FFF3E0; color: #F57C00; }
-
+    .correct-answers {
+      background-color: #E8F5E9;
+      color: #388E3C;
+    }
+    .incorrect-answers {
+      background-color: #FFEBEE;
+      color: #D32F2F;
+    }
+    .unanswered {
+      background-color: #FFF3E0;
+      color: #F57C00;
+    }
     .gif-container {
       margin: 20px auto;
-      max-width: 280px;
-      height: 180px;
-      border-radius: 12px;
+      text-align: center;
+      max-width: 300px;
+      height: 200px;
       overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      position: relative;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
-
-    .buttons-container {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-top: 20px;
-      flex-wrap: wrap;
+    .salute {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      animation: salute 2s forwards;
+      opacity: 0;
     }
-
-    .new-test-button, .restart-button, .share-button {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 12px 24px;
-      border-radius: 8px;
-      font-size: 1rem;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      border: none;
-      cursor: pointer;
+    @keyframes salute {
+      0% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      50% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh);
+        opacity: 0;
+      }
     }
-
-    .new-test-button {
-      background-color: #4CAF50;
-      color: white;
-    }
-
-    .new-test-button:hover {
-      background-color: #45a049;
-      transform: translateY(-2px);
-    }
-
-    .restart-button {
-      background-color: #2196F3;
-      color: white;
-    }
-
-    .restart-button:hover {
-      background-color: #1e88e5;
-      transform: translateY(-2px);
-    }
-
-    .share-button {
-      background-color: #757575;
-      color: white;
-    }
-
-    .share-button:hover {
-      background-color: #616161;
-      transform: translateY(-2px);
-    }
-
-    .share-modal {
+    .modal-overlay {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
       background-color: rgba(0,0,0,0.5);
-      display: none;
+      display: flex;
       justify-content: center;
       align-items: center;
-      z-index: 2000;
+      z-index: 1000;
+      visibility: hidden;
+      opacity: 0;
+      transition: all 0.3s;
     }
-
-    .share-modal-content {
+    .modal-overlay.show {
+      visibility: visible;
+      opacity: 1;
+    }
+    .confirm-modal {
       background-color: white;
-      border-radius: 12px;
+      border-radius: 10px;
       padding: 20px;
-      max-width: 400px;
+      max-width: 450px;
       width: 90%;
       box-shadow: 0 5px 15px rgba(0,0,0,0.2);
       text-align: center;
+      transform: translateY(-20px);
+      transition: transform 0.3s;
     }
-
-    .share-options {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin: 20px 0;
+    .modal-overlay.show .confirm-modal {
+      transform: translateY(0);
     }
-
-    .share-options-top {
+    .confirm-btn-group {
+      margin-top: 20px;
       display: flex;
-      gap: 10px;
       justify-content: center;
-    }
-
-    .share-option {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 20px;
-      border-radius: 8px;
-      border: none;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .share-option.telegram { background-color: #0088cc; color: white; }
-    .share-option.whatsapp { background-color: #25D366; color: white; }
-    .share-option.other { background-color: #6c757d; color: white; }
-
-    .share-option:hover {
-      transform: translateY(-2px);
-      opacity: 0.9;
-    }
-
-    .share-modal-close {
-      margin-top: 15px;
-      padding: 10px 20px;
-      border-radius: 8px;
-      background-color: #dc3545;
-      color: white;
-      border: none;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .share-modal-close:hover {
-      background-color: #c82333;
-    }
-
-    .notification-container {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 2000;
-      max-width: 300px;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5em;
-      list-style-type: none;
-      font-family: sans-serif;
-      --content-color: black;
-      --background-color: #f3f3f3;
-      --font-size-content: 0.9em;
-      --icon-size: 1.2em;
-    }
-
-    .notification-item {
-      position: relative;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 1em;
-      padding: 12px 16px;
-      border-radius: 8px;
-      box-shadow: rgba(0, 0, 0, 0.15) 0px 8px 24px;
-      background-color: var(--background-color);
-      transition: all 250ms ease;
-    }
-
-    .notification-item.success {
-      color: #047857;
-      background-color: #d1fae5;
-      --grid-color: rgba(16, 185, 129, 0.25);
-    }
-
-    .notification-progress-bar {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      height: 3px;
-      background: var(--content-color);
-      width: 100%;
-      transform: translateX(100%);
-      animation: progressBar 5s linear forwards;
-    }
-
-    @media (max-width: 576px) {
-      .container {
-        padding: 15px;
-        margin: 10px;
-      }
-
-      .timer-container {
-        padding: 8px 12px;
-      }
-
-      .timer-container.compact-timer {
-        width: 160px;
-        right: 5px;
-      }
-
-      .timer {
-        font-size: 1.2rem;
-      }
-
-      .question-text {
-        font-size: 1rem;
-      }
-
-      .form-check-label {
-        font-size: 0.95rem;
-      }
-
-      .buttons-container {
-        flex-direction: column;
-      }
-
-      .new-test-button, .restart-button, .share-button {
-        width: 100%;
-        padding: 12px;
-      }
+      gap: 10px;
     }
   </style>
 </head>
 <body>
 <div class="container">
   <h1 class="text-center mb-4">Siz Imtihondasiz!</h1>
-
-  <ul class="notification-container" id="notificationContainer"></ul>
 
   <div id="timeSettings" class="time-settings">
     <h5>Imtihon vaqtini tanlang:</h5>
@@ -458,7 +409,7 @@
     <p id="testCount" class="text-success fw-bold"></p>
     <div id="questionsContainer"></div>
 
-    <button id="finishBtn" class="btn btn-primary w-100 mb-4">Testni yakunlash</button>
+    <button id="finishBtn" class="btn btn-primary">Testni yakunlash</button>
 
     <div id="scoreContainer" class="score-container">
       <div class="results-card">
@@ -467,8 +418,8 @@
         <div class="progress-container">
           <div class="progress-bar">
             <div id="progressFill" class="progress-fill" style="width: 0%"></div>
-            <div id="progressText" class="progress-text">0%</div>
           </div>
+          <div id="progressText" class="mt-2">0%</div>
         </div>
         
         <div class="stats-container">
@@ -500,25 +451,18 @@
         <div id="gifContainer" class="gif-container"></div>
         
         <div id="feedbackText" class="feedback-text mt-3"></div>
-        
-        <div class="buttons-container">
-          <button id="newTestButton" class="new-test-button">
-            <i class="bi bi-plus-circle"></i> Yangi Test
-          </button>
-          <button id="restartButton" class="restart-button">
-            <i class="bi bi-arrow-clockwise"></i> Qayta boshlash
-          </button>
-          <button id="shareButton" class="share-button">
-            <i class="bi bi-share"></i> Ulashish
-          </button>
-        </div>
       </div>
     </div>
+
+    <button id="newTestBtn" class="btn btn-success new-test-btn" style="display: none; text-align: center; width: 100%;">
+      Yangi test boshlamoq
+    </button>
   </div>
 
   <div id="confettiContainer" class="confetti-container"></div>
+  
   <div id="saluteContainer"></div>
-
+  
   <div id="confirmModal" class="modal-overlay">
     <div class="confirm-modal">
       <h4 class="mb-3">Diqqat!</h4>
@@ -533,36 +477,15 @@
   <div id="exitModal" class="modal-overlay">
     <div class="confirm-modal">
       <h4 class="mb-3">Diqqat!</h4>
-      <p id="exitMessage">Imtihondan chiqishni hohlaysizmi?</p>
+      <p id="exitMessage">Imtihondan chiqishni hohlaysizmi (yiqilmoqchimisiz)?</p>
       <div class="confirm-btn-group">
         <button id="cancelExit" class="btn btn-secondary">Yo'q</button>
         <button id="confirmExit" class="btn btn-primary">Ha</button>
       </div>
     </div>
   </div>
-
-  <div class="share-modal" id="shareModal">
-    <div class="share-modal-content">
-      <h3>Natijani ulashish</h3>
-      <div class="share-options">
-        <div class="share-options-top">
-          <button class="share-option telegram" data-platform="telegram">
-            <i class="bi bi-telegram"></i> Telegram
-          </button>
-          <button class="share-option whatsapp" data-platform="whatsapp">
-            <i class="bi bi-whatsapp"></i> WhatsApp
-          </button>
-        </div>
-        <button class="share-option other" data-platform="other">
-          <i class="bi bi-share"></i> Boshqa
-        </button>
-      </div>
-      <button class="share-modal-close" id="shareModalClose">Yopish</button>
-    </div>
-  </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
   let originalTests = [];
   let randomizedTests = [];
@@ -571,8 +494,6 @@
   let examStarted = false;
   let allowExit = false;
   let lastExitAttempt = 0;
-  let lastUploadedFile = null;
-  let currentTestName = "Imtihon";
 
   const gifGroups = {
     veryLow: [
@@ -601,7 +522,6 @@
       { url: "https://media.giphy.com/media/l0MYC0LdjMM6x5RwA/giphy.gif", alt: "A'lo 3" }
     ]
   };
-
   let gifIndices = {
     veryLow: 0,
     low: 0,
@@ -618,12 +538,14 @@
   const finishBtn = document.getElementById("finishBtn");
   const scoreContainer = document.getElementById("scoreContainer");
   const feedbackText = document.getElementById("feedbackText");
+  const newTestBtn = document.getElementById("newTestBtn");
   const timeSettings = document.getElementById("timeSettings");
   const timerContainer = document.getElementById("timerContainer");
   const timerElement = document.getElementById("timer");
   const customTimeCheck = document.getElementById("customTimeCheck");
   const customTimeInput = document.getElementById("customTimeInput");
   const minutesInput = document.getElementById("minutesInput");
+  const confettiContainer = document.getElementById("confettiContainer");
   const timeButtons = document.querySelectorAll(".btn-group button");
   const confirmModal = document.getElementById("confirmModal");
   const confirmMessage = document.getElementById("confirmMessage");
@@ -636,28 +558,20 @@
   const incorrectAnswersEl = document.getElementById("incorrectAnswers");
   const unansweredEl = document.getElementById("unanswered");
   const gifContainer = document.getElementById("gifContainer");
-  const confettiContainer = document.getElementById("confettiContainer");
   const saluteContainer = document.getElementById("saluteContainer");
   const exitModal = document.getElementById("exitModal");
   const cancelExit = document.getElementById("cancelExit");
   const confirmExit = document.getElementById("confirmExit");
-  const newTestButton = document.getElementById("newTestButton");
-  const restartButton = document.getElementById("restartButton");
-  const shareButton = document.getElementById("shareButton");
-  const shareModal = document.getElementById("shareModal");
-  const shareModalClose = document.getElementById("shareModalClose");
-  const notificationContainer = document.getElementById("notificationContainer");
 
-  // Optimized scroll handler for timer
-  let ticking = false;
+  // Timer kompakt holatga o'tishi uchun scroll eventi
   window.addEventListener('scroll', () => {
-    if (examStarted && !ticking) {
-      window.requestAnimationFrame(() => {
-        const scrollY = window.scrollY;
-        timerContainer.classList.toggle('compact-timer', scrollY > 100);
-        ticking = false;
-      });
-      ticking = true;
+    if (examStarted) {
+      const scrollY = window.scrollY;
+      if (scrollY > 100) {
+        timerContainer.classList.add('compact-timer');
+      } else {
+        timerContainer.classList.remove('compact-timer');
+      }
     }
   });
 
@@ -665,7 +579,8 @@
     button.addEventListener("click", () => {
       timeButtons.forEach(btn => btn.classList.remove("active"));
       button.classList.add("active");
-      totalSeconds = parseInt(button.getAttribute("data-time")) * 60;
+      const minutes = parseInt(button.getAttribute("data-time"));
+      totalSeconds = minutes * 60;
       customTimeCheck.checked = false;
       customTimeInput.style.display = "none";
     });
@@ -706,7 +621,6 @@
 
   cancelExit.addEventListener("click", () => {
     exitModal.classList.remove("show");
-    showNotification("Imtihon davom etmoqda!", "info");
   });
 
   confirmExit.addEventListener("click", () => {
@@ -730,17 +644,17 @@
 
     if (!examStarted) {
       if (totalSeconds <= 0) {
-        showNotification("Iltimos, avval imtihon vaqtini tanlang!", "warning");
+        uploadStatus.textContent = "Xatolik: Iltimos, avval imtihon vaqtini tanlang!";
         fileInput.value = "";
         return;
       }
 
-      lastUploadedFile = file;
-      currentTestName = file.name.split('.')[0];
       uploadStatus.textContent = "Fayl yuklanmoqda...";
+
       const reader = new FileReader();
       reader.onload = (ev) => {
-        parseTestFile(ev.target.result);
+        const content = ev.target.result;
+        parseTestFile(content);
       };
       reader.readAsText(file);
     }
@@ -773,31 +687,21 @@
 
     if (originalTests.length > 0) {
       uploadStatus.textContent = "Fayl yuklandi!";
-      showNotification("Fayl muvaffaqiyatli yuklandi!", "success");
       randomizeTests();
       startExam();
     } else {
-      showNotification("Xatolik: Test ma'lumotlari topilmadi!", "error");
+      uploadStatus.textContent = "Xatolik: Test ma'lumotlari topilmadi yoki noto'g'ri format!";
       fileInput.value = "";
     }
   }
 
   function randomizeTests() {
-    const maxQuestions = 25;
-    const shuffledTests = shuffleArray(originalTests);
-    const selectedTests = shuffledTests.slice(0, Math.min(maxQuestions, shuffledTests.length));
-    
-    randomizedTests = selectedTests.map(test => {
+    const shuffledTests = shuffleArray(originalTests).slice(0, 25);
+    randomizedTests = shuffledTests.map(test => {
       const shuffledOptions = shuffleArray(test.options);
       const correctOptionIndex = shuffledOptions.findIndex(option => option.letter === test.answer);
       return { question: test.question, options: shuffledOptions, correctOptionIndex };
     });
-
-    if (originalTests.length > maxQuestions) {
-      showNotification(`${maxQuestions} ta test ${originalTests.length} tadan tasodifiy tanlandi!`, "info");
-    } else {
-      showNotification(`${randomizedTests.length} ta test yuklandi!`, "info");
-    }
   }
 
   function startExam() {
@@ -812,7 +716,11 @@
 
   function showTests() {
     quizList.style.display = "block";
-    testCount.textContent = `${randomizedTests.length} ta test yuklandi!`;
+    if (originalTests.length > 25) {
+      testCount.textContent = `25 ta test ${originalTests.length} tadan tasodifiy tanlandi!`;
+    } else {
+      testCount.textContent = `${randomizedTests.length} ta test yuklandi!`;
+    }
     questionsContainer.innerHTML = "";
     randomizedTests.forEach((test, index) => {
       const questionDiv = document.createElement("div");
@@ -821,7 +729,7 @@
 
       const qText = document.createElement("div");
       qText.className = "question-text";
-      qText.textContent = `${index + 1}. ${test.question}`;
+      qText.textContent = (index + 1) + ". " + test.question;
       questionDiv.appendChild(qText);
 
       const optionsDiv = document.createElement("div");
@@ -832,8 +740,8 @@
         const input = document.createElement("input");
         input.className = "form-check-input";
         input.type = "radio";
-        input.name = `question_${index}`;
-        input.id = `question_${index}_option_${optIndex}`;
+        input.name = "question_" + index;
+        input.id = "question_" + index + "_option_" + optIndex;
         input.dataset.originalLetter = opt.letter;
         const label = document.createElement("label");
         label.className = "form-check-label";
@@ -874,17 +782,13 @@
   function endExam(message = "") {
     stopTimer();
     checkAnswers();
-    if (message) {
-      uploadStatus.textContent = message;
-      showNotification(message, "info");
-    }
+    if (message) uploadStatus.textContent = message;
+    newTestBtn.style.display = "block";
     const allRadios = document.querySelectorAll('input[type="radio"]');
-    allRadios.forEach(radio => radio.disabled = true);
+    allRadios.forEach(radio => {
+      radio.disabled = true;
+    });
     allowExit = true;
-    scoreContainer.classList.add("show-feedback");
-    setTimeout(() => {
-      scoreContainer.scrollIntoView({ behavior: "smooth" });
-    }, 300);
   }
 
   finishBtn.addEventListener("click", () => {
@@ -893,19 +797,22 @@
     
     randomizedTests.forEach((test, index) => {
       const radios = document.querySelectorAll(`input[name="question_${index}"]`);
-      if ([...radios].some(radio => radio.checked)) answeredCount++;
+      let answered = false;
+      radios.forEach(radio => {
+        if (radio.checked) answered = true;
+      });
+      if (answered) answeredCount++;
     });
     
     confirmMessage.innerHTML = `<strong>${answeredCount}</strong> ta savolga javob berildi, <strong>${totalQuestions - answeredCount}</strong> ta savol javobsiz. <br><br>Testni yakunlashni tasdiqlaysizmi?`;
     exitModal.classList.remove("show");
     confirmModal.classList.add("show");
   });
-
+  
   cancelFinish.addEventListener("click", () => {
     confirmModal.classList.remove("show");
-    showNotification("Test davom etmoqda!", "info");
   });
-
+  
   confirmFinish.addEventListener("click", () => {
     confirmModal.classList.remove("show");
     endExam("Test yakunlandi!");
@@ -964,27 +871,22 @@
     incorrectAnswersEl.textContent = incorrectCount;
     unansweredEl.textContent = unansweredCount;
     
-    let gifGroupKey, emoji, feedback;
+    let gifGroupKey, emoji;
     if (percentage <= 29) {
       gifGroupKey = "veryLow";
       emoji = "😔 😢 📚";
-      feedback = "Natijangiz <span>qoniqarli emas</span>.<br>Hali hammasi oldinda! Ko'proq o'qib, mashq qiling!";
     } else if (percentage <= 59) {
       gifGroupKey = "low";
       emoji = "😐 📖";
-      feedback = "Natijangiz <span>o'rtacha</span>.<br>Yana biroz harakat qilsangiz, yaxshi natijaga erishasiz!";
     } else if (percentage <= 70) {
       gifGroupKey = "medium";
       emoji = "🙂 👍";
-      feedback = "Natijangiz <span>yaxshi</span>!<br>Siz yaxshi bilimga egasiz, lekin yanada yaxshiroq bo'lishingiz mumkin.";
     } else if (percentage <= 81) {
       gifGroupKey = "high";
       emoji = "😊 🎉";
-      feedback = "Natijangiz <span>juda yaxshi</span>!<br>Siz mavzuni yaxshi o'zlashtirgansiz. Ajoyib!";
     } else {
       gifGroupKey = "excellent";
       emoji = "🎉 🥳 🎊";
-      feedback = "Natijangiz <span>a'lo darajada</span>!<br>Siz mavzuni chuqur o'zlashtirgan ko'rinasiz. Tabriklaymiz!";
     }
 
     const currentIndex = gifIndices[gifGroupKey];
@@ -997,155 +899,48 @@
     `;
     
     gifIndices[gifGroupKey] = (currentIndex + 1) % gifGroups[gifGroupKey].length;
-    feedbackText.innerHTML = feedback;
 
     if (percentage >= 60) {
       createConfetti();
       createSalute();
     }
+
+    let feedback = "";
+    if (percentage < 30) {
+      feedback = `
+          Natijangiz <span>qoniqarli emas</span>.
+          <br>Hali hammasi oldinda! Ko'proq o'qib, mashq qiling va qayta urinib ko'ring!
+      `;
+    } else if (percentage < 60) {
+      feedback = `
+          Natijangiz <span>o'rtacha</span>.
+          <br>Yana biroz harakat qilsangiz, yaxshi natijaga erishasiz!
+      `;
+    } else if (percentage <= 70) {
+      feedback = `
+          Natijangiz <span>yaxshi</span>!
+          <br>Siz yaxshi bilimga egasiz, lekin yanada yaxshiroq bo'lishingiz mumkin.
+      `;
+    } else if (percentage <= 81) {
+      feedback = `
+          Natijangiz <span>juda yaxshi</span>!
+          <br>Siz mavzuni yaxshi o'zlashtirgansiz. Ajoyib!
+      `;
+    } else {
+      feedback = `
+          Natijangiz <span>a'lo darajada</span>!
+          <br>Siz mavzuni chuqur o'zlashtirgan ko'rinasiz. Tabriklaymiz!
+      `;
+    }
+
+    feedbackText.innerHTML = feedback;
+    scoreContainer.classList.add("show-feedback");
+    finishBtn.style.display = "none";
   }
 
-  newTestButton.addEventListener("click", () => {
+  newTestBtn.addEventListener("click", () => {
     resetTest();
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    showNotification("Yangi test uchun fayl tanlang!", "info");
   });
-
-  restartButton.addEventListener("click", () => {
-    if (!lastUploadedFile) {
-      showNotification("Hech qanday fayl yuklanmagan!", "error");
-      return;
-    }
-    resetTest();
-    uploadStatus.textContent = "Fayl qayta yuklanmoqda...";
-    fileInput.disabled = true;
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      parseTestFile(ev.target.result);
-    };
-    reader.onerror = () => {
-      showNotification("Faylni qayta o'qishda xatolik yuz berdi!", "error");
-      fileInput.disabled = false;
-    };
-    reader.readAsText(lastUploadedFile);
-  });
-
-  shareButton.addEventListener("click", () => {
-    shareModal.style.display = 'flex';
-  });
-
-  shareModalClose.addEventListener("click", () => {
-    shareModal.style.display = 'none';
-  });
-
-  document.querySelectorAll('.share-option').forEach(button => {
-    button.addEventListener('click', async function() {
-      const platform = this.dataset.platform;
-      await shareToPlatform(platform, platform !== 'other');
-      shareModal.style.display = 'none';
-    });
-  });
-
-  async function shareToPlatform(platform, includeScreenshot = true) {
-    try {
-      const shareText = `🎯 Imtihon Natijasi - ${currentTestName}:
-📊 Jami savollar: ${totalQuestionsEl.textContent}
-✅ To'g'ri javoblar: ${correctAnswersEl.textContent}
-❌ Xato javoblar: ${incorrectAnswersEl.textContent}
-📈 Foiz: ${progressText.textContent}
-🌐 Imtihondasiz bilan bilimlaringizni sinab ko'ring!
-${window.location.origin}${window.location.pathname}`;
-
-      let blob = null;
-      if (includeScreenshot) {
-        showNotification("Screenshot tayyorlanmoqda...", "info");
-        const statsContainer = scoreContainer;
-        statsContainer.scrollIntoView({ behavior: 'smooth' });
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        const canvas = await html2canvas(statsContainer, {
-          backgroundColor: '#ffffff',
-          scale: 2,
-          useCORS: true,
-          logging: false
-        });
-        blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png', 0.9));
-      }
-
-      const randomSuffix = Math.floor(10000 + Math.random() * 90000);
-      const uniqueFileName = `${currentTestName.replace(/[^a-zA-Z0-9]/g, '_')}_natijasi_${randomSuffix}.png`;
-
-      if (navigator.share && navigator.canShare) {
-        if (platform === 'telegram') {
-          const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(shareText)}`;
-          if (blob) {
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = uniqueFileName;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(link.href);
-            window.open(telegramUrl, '_blank');
-          } else {
-            window.open(telegramUrl, '_blank');
-          }
-        } else if (platform === 'whatsapp') {
-          const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;
-          if (blob) {
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = uniqueFileName;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(link.href);
-            window.open(whatsappUrl, '_blank');
-          } else {
-            window.open(whatsappUrl, '_blank');
-          }
-        } else if (platform === 'other') {
-          if (navigator.canShare({ text: shareText })) {
-            await navigator.share({
-              title: `Imtihon Natijasi - ${currentTestName}`,
-              text: shareText,
-              url: window.location.href
-            });
-          } else {
-            await copyToClipboard(shareText);
-            showNotification('Natija matni nusxa olindi!', 'success');
-          }
-        }
-      } else {
-        await copyToClipboard(shareText);
-        if (blob) {
-          const link = document.createElement('a');
-          link.href = URL.createObjectURL(blob);
-          link.download = uniqueFileName;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          URL.revokeObjectURL(link.href);
-        }
-        showNotification('Natija matni nusxa olindi!' + (blob ? ' Screenshot yuklab olindi.' : ''), 'success');
-      }
-    } catch (error) {
-      console.error('Ulashishda xatolik:', error);
-      showNotification('Ulashishda xatolik yuz berdi!', 'error');
-    }
-  }
-
-  async function copyToClipboard(text) {
-    try {
-      await navigator.clipboard.writeText(text);
-    } catch (err) {
-      const textArea = document.createElement('textarea');
-      textArea.value = text;
-      document.body.appendChild(textArea);
-      textArea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textArea);
-    }
-  }
 
   function resetTest() {
     examStarted = false;
@@ -1160,6 +955,7 @@ ${window.location.origin}${window.location.pathname}`;
     timerElement.classList.remove("warning");
     timerContainer.style.display = "none";
     timerContainer.classList.remove("compact-timer");
+    newTestBtn.style.display = "none";
     finishBtn.style.display = "block";
     timeSettings.style.display = "block";
     timeButtons.forEach(btn => btn.classList.remove("active"));
@@ -1167,7 +963,6 @@ ${window.location.origin}${window.location.pathname}`;
     customTimeInput.style.display = "none";
     totalSeconds = 0;
     minutesInput.value = "15";
-    questionsContainer.innerHTML = "";
   }
 
   function createConfetti() {
@@ -1190,7 +985,7 @@ ${window.location.origin}${window.location.pathname}`;
       confettiContainer.innerHTML = '';
     }, 8000);
   }
-
+  
   function createSalute() {
     saluteContainer.innerHTML = '';
     const colors = ["#ff4136", "#0074d9", "#2ecc40", "#ffdc00", "#f012be", "#ff851b"];
@@ -1208,54 +1003,6 @@ ${window.location.origin}${window.location.pathname}`;
           salute.remove();
         }, 2000);
       }, Math.random() * 3000);
-    }
-  }
-
-  function showNotification(message, type = "info") {
-    const notification = document.createElement("li");
-    notification.className = `notification-item ${type}`;
-    notification.innerHTML = `
-      <div class="notification-content">
-        <div class="notification-icon">
-          <svg aria-hidden="true" fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="${getNotificationIconPath(type)}"></path>
-          </svg>
-        </div>
-        <div class="notification-text">${message}</div>
-      </div>
-      <div class="notification-icon notification-close">
-        <svg aria-hidden="true" fill="none" viewBox="0 0 24 24">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M6 18 17.94 6M18 18 6.06 6"></path>
-        </svg>
-      </div>
-      <div class="notification-progress-bar"></div>
-    `;
-    notificationContainer.appendChild(notification);
-
-    const closeButton = notification.querySelector(".notification-close");
-    closeButton.addEventListener("click", () => {
-      notification.remove();
-    });
-
-    setTimeout(() => {
-      notification.remove();
-    }, 5000);
-  }
-
-  function getNotificationIconPath(type) {
-    switch (type) {
-      case "success":
-        return "M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z";
-      case "info":
-        return "M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z";
-      case "warning":
-        return "M12 13V8m0 8h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z";
-      case "error":
-        return "m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z";
-      default:
-        return "M21 13v-2a1 1 0 0 0-1-1h-.757l-.707-1.707.535-.536a1 1 0 0 0 0-1.414l-1.414-1.414a1 1 0 0 0-1.414 0l-.536.535L14 4.757V4a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v.757l-1.707.707-.536-.535a1 1 0 0 0-1.414 0L4.929 6.343a1 1 0 0 0 0 1.414l.536.536L4.757 10H4a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h.757l.707 1.707-.535.536a1 1 0 0 0 0 1.414l1.414 1.414a1 1 0 0 0 1.414 0l.536-.535 1.707.707V20a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-.757l1.707-.708.536.536a1 1 0 0 0 1.414 0l1.414-1.414a1 1 0 0 0 0-1.414l-.535-.536.707-1.707H20a1 1 0 0 0 1-1Z";
     }
   }
 </script>
