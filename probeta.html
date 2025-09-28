@@ -439,7 +439,7 @@
       border-color: var(--progress-bg);
       color: var(--text-color);
       width: 100%;
-      max-width: calc(240px + 12px); /* Matches combined width of Telegram + WhatsApp + gap */
+      max-width: calc(240px + 12px);
     }
 
     .share-option.other:hover {
@@ -691,6 +691,10 @@ ANSWER: A
     });
   }
 
+  function generateRandomFiveDigitNumber() {
+    return Math.floor(10000 + Math.random() * 90000);
+  }
+
   async function shareToPlatform(platform, includeScreenshot = true) {
     try {
       const shareText = `🎯 Pro Quiz - ${currentTestName} natijasi:\n\n` +
@@ -706,7 +710,7 @@ ANSWER: A
         loadingOverlay.style.display = 'flex';
         const statsContainer = document.getElementById('statsContainer');
         statsContainer.scrollIntoView({ behavior: 'smooth' });
-        await new Promise(resolve => setTimeout(resolve, 3000)); // 3 soniya kutish
+        await new Promise(resolve => setTimeout(resolve, 3000));
         const canvas = await html2canvas(statsContainer, {
           backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--stats-bg'),
           scale: 2,
@@ -716,12 +720,15 @@ ANSWER: A
         blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png', 0.9));
       }
 
+      const randomSuffix = generateRandomFiveDigitNumber();
+      const uniqueFileName = `${currentTestName.replace(/[^a-zA-Z0-9]/g, '_')}_natijasi_${randomSuffix}.png`;
+
       if (navigator.share && navigator.canShare) {
         const shareData = {
           title: `Pro Quiz - ${currentTestName} Natijasi`,
           text: shareText,
           url: window.location.href,
-          files: blob ? [new File([blob], 'test-natijasi.png', { type: 'image/png' })] : undefined
+          files: blob ? [new File([blob], uniqueFileName, { type: 'image/png' })] : undefined
         };
 
         if (platform === 'telegram') {
@@ -729,11 +736,11 @@ ANSWER: A
           if (blob) {
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = `${currentTestName.replace(/[^a-zA-Z0-9]/g, '_')}_natijasi.png`;
+            link.download = uniqueFileName;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            URL.revokeObjectURL(link);
+            URL.revokeObjectURL(link.href);
             window.open(telegramUrl, '_blank');
           } else {
             window.open(telegramUrl, '_blank');
@@ -743,11 +750,11 @@ ANSWER: A
           if (blob) {
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = `${currentTestName.replace(/[^a-zA-Z0-9]/g, '_')}_natijasi.png`;
+            link.download = uniqueFileName;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            URL.revokeObjectURL(link);
+            URL.revokeObjectURL(link.href);
             window.open(whatsappUrl, '_blank');
           } else {
             window.open(whatsappUrl, '_blank');
@@ -780,11 +787,11 @@ ANSWER: A
           if (blob) {
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = `${currentTestName.replace(/[^a-zA-Z0-9]/g, '_')}_natijasi.png`;
+            link.download = uniqueFileName;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            URL.revokeObjectURL(link);
+            URL.revokeObjectURL(link.href);
           }
           alert('Natija matni nusxa olindi!' + (blob ? ' Screenshot yuklab olindi.' : ''));
         } catch (err) {
@@ -797,11 +804,11 @@ ANSWER: A
           if (blob) {
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = `${currentTestName.replace(/[^a-zA-Z0-9]/g, '_')}_natijasi.png`;
+            link.download = uniqueFileName;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            URL.revokeObjectURL(link);
+            URL.revokeObjectURL(link.href);
           }
           alert('Natija matni nusxa olindi!' + (blob ? ' Screenshot yuklab olindi.' : ''));
         }
