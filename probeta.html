@@ -25,12 +25,12 @@
       --toggle-bg: #ccc;
       --button-bg: #506eec;
       --button-hover: #3a5ad9;
-      --new-test-bg: #eff6ff; /* Yangi Test tugmasi rangi */
-      --new-test-hover: #dbe9ff; /* Hover uchun biroz quyuqroq */
-      --share-bg: #f0fdf4; /* Ulashish tugmasi rangi */
-      --share-hover: #d1fae5; /* Hover uchun biroz quyuqroq */
-      --restart-bg: #fefbe8; /* Qayta boshlash tugmasi rangi */
-      --restart-hover: #fef3c7; /* Hover uchun biroz quyuqroq */
+      --new-test-bg: #eff6ff;
+      --new-test-hover: #dbe9ff;
+      --share-bg: #f0fdf4;
+      --share-hover: #d1fae5;
+      --restart-bg: #fefbe8;
+      --restart-hover: #fef3c7;
       --history-bg: #f8f9fa;
       --history-hover: #e9ecef;
       --scrollbar-track: #e9ecef;
@@ -52,11 +52,11 @@
       --toggle-bg: #666;
       --button-bg: #5a74e8;
       --button-hover: #4a64d8;
-      --new-test-bg: #6b7280; /* Tungi rejimda Yangi Test */
+      --new-test-bg: #6b7280;
       --new-test-hover: #4b5563;
-      --share-bg: #4b5563; /* Tungi rejimda Ulashish */
+      --share-bg: #4b5563;
       --share-hover: #374151;
-      --restart-bg: #78716c; /* Tungi rejimda Qayta boshlash */
+      --restart-bg: #78716c;
       --restart-hover: #57534e;
       --history-bg: #3a3a3a;
       --history-hover: #4a4a4a;
@@ -166,7 +166,7 @@
     
     .share-button {
       background-color: var(--share-bg);
-      color: #15803d; /* Matn rangi kontrast uchun */
+      color: #15803d;
       border: none;
       padding: 12px 25px;
       border-radius: 5px;
@@ -187,7 +187,7 @@
     
     .restart-button {
       background-color: var(--restart-bg);
-      color: #b45309; /* Matn rangi kontrast uchun */
+      color: #b45309;
       border: none;
       padding: 12px 25px;
       border-radius: 5px;
@@ -208,7 +208,7 @@
     
     .new-test-button {
       background-color: var(--new-test-bg);
-      color: #1e40af; /* Matn rangi kontrast uchun */
+      color: #1e40af;
       border: none;
       padding: 12px 25px;
       border-radius: 5px;
@@ -342,12 +342,113 @@
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
+
+    /* Modal styles */
+    .share-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+    }
+    .share-modal-content {
+      background-color: var(--container-bg);
+      padding: 20px;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 4px 8px var(--shadow-color);
+      text-align: center;
+    }
+    .share-modal-content h3 {
+      margin-bottom: 20px;
+      color: var(--text-color);
+    }
+    .share-options {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+    .share-option {
+      background-color: var(--button-bg);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .share-option:hover {
+      background-color: var(--button-hover);
+      transform: translateY(-2px);
+    }
+    .share-option.telegram { background-color: #0088cc; }
+    .share-option.telegram:hover { background-color: #006b9f; }
+    .share-option.instagram { background-color: #e1306c; }
+    .share-option.instagram:hover { background-color: #c13584; }
+    .share-option.whatsapp { background-color: #25d366; }
+    .share-option.whatsapp:hover { background-color: #1da851; }
+    .share-option.other { background-color: #6b7280; }
+    .share-option.other:hover { background-color: #4b5563; }
+    .share-modal-close {
+      background-color: var(--incorrect-border);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 5px;
+      margin-top: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .share-modal-close:hover {
+      background-color: #c82333;
+      transform: translateY(-2px);
+    }
+    @media (max-width: 576px) {
+      .share-options {
+        flex-direction: column;
+      }
+      .share-option {
+        width: 100%;
+      }
+    }
   </style>
 </head>
 <body>
 <div class="loading-overlay" id="loadingOverlay">
   <div class="loading-spinner"></div>
   <div>Screenshot tayyorlanmoqda...</div>
+</div>
+
+<div class="share-modal" id="shareModal">
+  <div class="share-modal-content">
+    <h3>Natijani ulashish</h3>
+    <div class="share-options">
+      <button class="share-option telegram" data-platform="telegram">
+        <i class="bi bi-telegram"></i> Telegram
+      </button>
+      <button class="share-option instagram" data-platform="instagram">
+        <i class="bi bi-instagram"></i> Instagram
+      </button>
+      <button class="share-option whatsapp" data-platform="whatsapp">
+        <i class="bi bi-whatsapp"></i> WhatsApp
+      </button>
+      <button class="share-option other" data-platform="other">
+        <i class="bi bi-share"></i> Boshqa
+      </button>
+    </div>
+    <button class="share-modal-close" id="shareModalClose">Yopish</button>
+  </div>
 </div>
 
 <div class="container" id="mainContainer">
@@ -460,6 +561,8 @@ ANSWER: A
   const defaultMessage = document.getElementById("defaultMessage");
   const testNameDisplay = document.getElementById("testNameDisplay");
   const loadingOverlay = document.getElementById("loadingOverlay");
+  const shareModal = document.getElementById("shareModal");
+  const shareModalClose = document.getElementById("shareModalClose");
 
   let tests = [];
   let stats = { correct: 0, incorrect: 0, total: 0 };
@@ -534,62 +637,80 @@ ANSWER: A
     });
   }
 
-  async function captureAndShare() {
+  async function shareToPlatform(platform, includeScreenshot = true) {
     try {
-      loadingOverlay.style.display = 'flex';
-      
-      const statsContainer = document.getElementById('statsContainer');
-      statsContainer.scrollIntoView({ behavior: 'smooth' });
-      
-      await new Promise(resolve => setTimeout(resolve, 3000)); // 3 soniya kutish
-      
-      const canvas = await html2canvas(statsContainer, {
-        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--stats-bg'),
-        scale: 2,
-        useCORS: true,
-        logging: false
-      });
-      
-      canvas.toBlob(async (blob) => {
-        const shareText = `🎯 Pro Quiz - ${currentTestName} natijasi:\n\n` +
-          `📊 Jami savollar: ${stats.total}\n` +
-          `✅ To'g'ri javoblar: ${stats.correct}\n` +
-          `❌ Xato javoblar: ${stats.incorrect}\n` +
-          `📈 Foiz: ${Math.round((stats.correct / stats.total) * 100)}%\n\n` +
-          `🌐 Pro Quiz bilan bilimlaringizni sinab ko'ring! Hozir testni boshlang!\n` +
-          `${window.location.origin}${window.location.pathname}`;
+      const shareText = `🎯 Pro Quiz - ${currentTestName} natijasi:\n\n` +
+        `📊 Jami savollar: ${stats.total}\n` +
+        `✅ To'g'ri javoblar: ${stats.correct}\n` +
+        `❌ Xato javoblar: ${stats.incorrect}\n` +
+        `📈 Foiz: ${Math.round((stats.correct / stats.total) * 100)}%\n\n` +
+        `🌐 Pro Quiz bilan bilimlaringizni sinab ko'ring! Hozir testni boshlang!\n` +
+        `${window.location.origin}${window.location.pathname}`;
 
-        if (navigator.share && navigator.canShare) {
-          const shareData = {
-            title: `Pro Quiz - ${currentTestName} Natijasi`,
-            text: shareText,
-            files: blob ? [new File([blob], 'test-natijasi.png', { type: 'image/png' })] : undefined
-          };
-          
-          if (navigator.canShare(shareData)) {
-            await navigator.share(shareData);
-          } else {
-            await navigator.share({
-              title: shareData.title,
-              text: shareData.text,
-              url: window.location.href
-            });
-          }
-        } else {
+      let blob = null;
+      if (includeScreenshot) {
+        loadingOverlay.style.display = 'flex';
+        const statsContainer = document.getElementById('statsContainer');
+        statsContainer.scrollIntoView({ behavior: 'smooth' });
+        await new Promise(resolve => setTimeout(resolve, 3000)); // 3 soniya kutish
+        const canvas = await html2canvas(statsContainer, {
+          backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--stats-bg'),
+          scale: 2,
+          useCORS: true,
+          logging: false
+        });
+        blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png', 0.9));
+      }
+
+      if (navigator.share && navigator.canShare) {
+        const shareData = {
+          title: `Pro Quiz - ${currentTestName} Natijasi`,
+          text: shareText,
+          url: window.location.href,
+          files: blob ? [new File([blob], 'test-natijasi.png', { type: 'image/png' })] : undefined
+        };
+
+        if (platform === 'telegram') {
+          const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(shareText)}`;
           if (blob) {
-            const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
             link.download = `${currentTestName.replace(/[^a-zA-Z0-9]/g, '_')}_natijasi.png`;
-            link.href = url;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            URL.revokeObjectURL(url);
+            URL.revokeObjectURL(link);
+            window.open(telegramUrl, '_blank');
+          } else {
+            window.open(telegramUrl, '_blank');
           }
-          
+        } else if (platform === 'whatsapp') {
+          const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;
+          if (blob) {
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `${currentTestName.replace(/[^a-zA-Z0-9]/g, '_')}_natijasi.png`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(link);
+            window.open(whatsappUrl, '_blank');
+          } else {
+            window.open(whatsappUrl, '_blank');
+          }
+        } else if (platform === 'instagram') {
+          alert('Instagramda toʻgʻridan-toʻgʻri matn ulashish imkoni yoʻq. Screenshot va matn nusxa olindi!');
           try {
             await navigator.clipboard.writeText(shareText);
-            alert('Natija matni nusxa olindi! Screenshot yuklab olindi.');
+            if (blob) {
+              const link = document.createElement('a');
+              link.href = URL.createObjectURL(blob);
+              link.download = `${currentTestName.replace(/[^a-zA-Z0-9]/g, '_')}_natijasi.png`;
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+              URL.revokeObjectURL(link);
+            }
           } catch (err) {
             const textArea = document.createElement('textarea');
             textArea.value = shareText;
@@ -597,21 +718,88 @@ ANSWER: A
             textArea.select();
             document.execCommand('copy');
             document.body.removeChild(textArea);
-            alert('Natija matni nusxa olindi! Screenshot yuklab olindi.');
+          }
+        } else if (platform === 'other') {
+          if (navigator.canShare({ text: shareText })) {
+            await navigator.share({
+              title: `Pro Quiz - ${currentTestName} Natijasi`,
+              text: shareText,
+              url: window.location.href
+            });
+          } else {
+            try {
+              await navigator.clipboard.writeText(shareText);
+              alert('Natija matni nusxa olindi!');
+            } catch (err) {
+              const textArea = document.createElement('textarea');
+              textArea.value = shareText;
+              document.body.appendChild(textArea);
+              textArea.select();
+              document.execCommand('copy');
+              document.body.removeChild(textArea);
+              alert('Natija matni nusxa olindi!');
+            }
           }
         }
-        
+      } else {
+        try {
+          await navigator.clipboard.writeText(shareText);
+          if (blob) {
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `${currentTestName.replace(/[^a-zA-Z0-9]/g, '_')}_natijasi.png`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(link);
+          }
+          alert('Natija matni nusxa olindi!' + (blob ? ' Screenshot yuklab olindi.' : ''));
+        } catch (err) {
+          const textArea = document.createElement('textarea');
+          textArea.value = shareText;
+          document.body.appendChild(textArea);
+          textArea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textArea);
+          if (blob) {
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `${currentTestName.replace(/[^a-zA-Z0-9]/g, '_')}_natijasi.png`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(link);
+          }
+          alert('Natija matni nusxa olindi!' + (blob ? ' Screenshot yuklab olindi.' : ''));
+        }
+      }
+
+      if (includeScreenshot) {
         loadingOverlay.style.display = 'none';
-      }, 'image/png', 0.9);
-      
+      }
+      shareModal.style.display = 'none';
     } catch (error) {
       console.error('Ulashishda xatolik:', error);
       loadingOverlay.style.display = 'none';
+      shareModal.style.display = 'none';
       alert('Xatolik yuz berdi. Qaytadan urining.');
     }
   }
 
-  shareButton.addEventListener("click", captureAndShare);
+  shareButton.addEventListener("click", function() {
+    shareModal.style.display = 'flex';
+  });
+
+  shareModalClose.addEventListener("click", function() {
+    shareModal.style.display = 'none';
+  });
+
+  document.querySelectorAll('.share-option').forEach(button => {
+    button.addEventListener('click', function() {
+      const platform = this.dataset.platform;
+      shareToPlatform(platform, platform !== 'other');
+    });
+  });
 
   restartButton.addEventListener("click", function() {
     if (!lastUploadedFile) {
