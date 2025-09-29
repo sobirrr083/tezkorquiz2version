@@ -475,14 +475,14 @@
                     "Klaviaturada 1, 2, 3, 4 raqamlarni bosish orqali variantlarni tanlash mumkin va Keyingi savolga o'tish uchun Enter tugmasi bosiladi (Sinab ko'ringchi?) ",
                     "Variant belgilangandan keyin avtomatik pastga tushadi.",
                     "Imtihon ko'rinishidagi muhit bilan test yechiladi.",
-                    "Vaqt kam beriladi va tez ishlahsga undaydi."
+                    "Vaqt kam beriladi va tez ishlashga undaydi."
                 ],
                 answer: 0
             },
             {
-                question: "Pro Quiz qanday tuzilishi qaysi ilova, botdan ilhomlanilgan?",
+                question: "Pro Quiz tuzilishi qaysi sayt, ilova, botdan ilhomlanilgan?",
                 options: [
-                    "Telegram ijtimoiy tarmog'idan Quiz Botdan",
+                    "Telegram ijtimoiy tarmog'ining Quiz Botdan",
                     "Kahoot saytidan",
                     "Kreativ qilingan"
                 ],
@@ -508,15 +508,15 @@
                     try {
                         parseQuestions(e.target.result);
                     } catch (error) {
-                        alert('Faylni o‘qishda xatolik yuz berdi: ' + error.message);
+                        alert('Faylni o‘qishda xatolik yuz berdi: Yordam: telegram: @sobirweb ' + error.message);
                     }
                 };
                 reader.onerror = function() {
-                    alert('Faylni o‘qishda xatolik yuz berdi!');
+                    alert('Faylni o‘qishda xatolik yuz berdi! Yordam: telegram: @sobirweb');
                 };
                 reader.readAsText(file);
             } else {
-                alert('Iltimos, .txt formatda fayl yuklang!');
+                alert('Iltimos, .txt formatda fayl yuklang! Yordam: telegram: @sobirweb');
             }
         });
 
@@ -579,7 +579,7 @@
             }
 
             if (questions.length === 0) {
-                throw new Error('Faylda hech qanday savol topilmadi yoki format noto‘g‘ri!');
+                throw new Error('Faylda hech qanday savol topilmadi yoki format noto‘g‘ri! Yordam: telegram: @sobirweb');
             }
 
             // Savollarni tasodifiy tartibda joylashtirish
@@ -827,6 +827,7 @@
     </script>
 </body>
 </html>
+
 
 
 
