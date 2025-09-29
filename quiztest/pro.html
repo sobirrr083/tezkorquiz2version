@@ -6,8 +6,9 @@
   <title>Pro Quiz</title>
   <link rel="icon" href="tg.png">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.10.0/lottie.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
     :root {
       --body-bg: #f4f6f9;
@@ -24,6 +25,12 @@
       --toggle-bg: #ccc;
       --button-bg: #506eec;
       --button-hover: #3a5ad9;
+      --new-test-bg: #eff6ff;
+      --new-test-hover: #dbe9ff;
+      --share-bg: #f0fdf4;
+      --share-hover: #d1fae5;
+      --restart-bg: #fefbe8;
+      --restart-hover: #fef3c7;
       --history-bg: #f8f9fa;
       --history-hover: #e9ecef;
       --scrollbar-track: #e9ecef;
@@ -45,6 +52,12 @@
       --toggle-bg: #666;
       --button-bg: #5a74e8;
       --button-hover: #4a64d8;
+      --new-test-bg: #6b7280;
+      --new-test-hover: #4b5563;
+      --share-bg: #4b5563;
+      --share-hover: #374151;
+      --restart-bg: #78716c;
+      --restart-hover: #57534e;
       --history-bg: #3a3a3a;
       --history-hover: #4a4a4a;
       --scrollbar-track: #444444;
@@ -127,7 +140,7 @@
       cursor: pointer;
       transition: all 0.3s;
       box-shadow: 0px 4px 6px var(--shadow-color);
-      z-index: 2000; /* Increased z-index to appear above all content */
+      z-index: 2000;
     }
     #backToTop:hover { background: var(--button-hover); transform: scale(1.1); }
     #backToTop.recommend { padding: 12px 24px; border-radius: 25px; display: flex; align-items: center; justify-content: center; min-width: 120px; }
@@ -147,9 +160,98 @@
     .celebration-title { font-size: 32px; font-weight: bold; margin-bottom: 30px; color: var(--button-bg); }
     .stat-number { font-size: 24px; font-weight: bold; }
     .dual-progress { position: relative; height: 24px; background-color: var(--progress-bg); border-radius: 12px; overflow: hidden; margin: 15px 0 30px 0; transition: all 0.3s ease; }
-    .action-button { background-color: var(--button-bg); color: white; border: none; padding: 12px 25px; border-radius: 5px; font-weight: bold; font-size: 18px; cursor: pointer; transition: all 0.3s ease; margin-top: 20px; }
+    .action-button { background-color: var(--button-bg); color: white; border: none; padding: 12px 25px; border-radius: 5px; font-weight: bold; font-size: 18px; cursor: pointer; transition: all 0.3s ease; margin: 10px; }
     .action-button:hover { background-color: var(--button-hover); transform: translateY(-2px); box-shadow: 0 4px 8px var(--shadow-color); }
     .action-button:active { transform: translateY(0); }
+    
+    .share-button {
+      background-color: var(--share-bg);
+      color: #15803d;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 5px;
+      font-weight: bold;
+      font-size: 18px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin: 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .share-button:hover {
+      background-color: var(--share-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px var(--shadow-color);
+    }
+    
+    .restart-button {
+      background-color: var(--restart-bg);
+      color: #b45309;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 5px;
+      font-weight: bold;
+      font-size: 18px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin: 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .restart-button:hover {
+      background-color: var(--restart-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px var(--shadow-color);
+    }
+    
+    .new-test-button {
+      background-color: var(--new-test-bg);
+      color: #1e40af;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 5px;
+      font-weight: bold;
+      font-size: 18px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin: 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .new-test-button:hover {
+      background-color: var(--new-test-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px var(--shadow-color);
+    }
+    .new-test-button:active {
+      transform: translateY(0);
+    }
+    
+    .buttons-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    
+    @media (max-width: 768px) {
+      .buttons-container {
+        flex-direction: column;
+      }
+      .new-test-button,
+      .share-button,
+      .restart-button,
+      .action-button {
+        width: 100%;
+        margin: 5px 0;
+      }
+    }
+    
     h1 { font-size: 32px; margin-bottom: 30px; }
     #fileInput { font-size: 16px; padding: 10px; }
     p { font-size: 16px; }
@@ -176,27 +278,234 @@
     .history-item { padding: 5px 10px; font-size: 13px; color: var(--text-color); border-bottom: 1px solid var(--progress-bg); display: flex; justify-content: space-between; align-items: center; opacity: 0; animation: fadeIn 0.3s ease forwards; transition: all 0.3s ease; }
     .history-item:last-child { border-bottom: none; }
     .history-item:hover { background-color: var(--history-hover); transform: translateX(5px); }
+    .history-item.recent { font-size: 14px; font-weight: 600; background-color: var(--new-test-bg); padding: 8px 12px; border-left: 3px solid var(--button-bg); }
+    .history-item.recent:hover { background-color: var(--new-test-hover); }
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(-5px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .theme-toggle-container { display: flex; align-items: center; justify-content: flex-end; margin-bottom: 20px; }
+    .theme-toggle-container { display: flex; align-items: center; justify-content: flex-end; margin-bottom: 20px; gap: 20px; }
 
-    #fireworksCanvas {
+    .default-message {
+      padding: 20px;
+      background-color: var(--stats-bg);
+      border-radius: 8px;
+      box-shadow: 0 2px 4px var(--shadow-color);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    .default-message pre {
+      background-color: var(--progress-bg);
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 14px;
+      white-space: pre-wrap;
+    }
+    
+    .test-name-display {
+      font-size: 20px;
+      font-weight: bold;
+      color: var(--button-bg);
+      margin-bottom: 20px;
+      padding: 15px;
+      background-color: var(--stats-bg);
+      border-radius: 8px;
+      border-left: 4px solid var(--button-bg);
+    }
+    
+    .loading-overlay {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      pointer-events: none;
-      z-index: 1000;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      color: white;
+      font-size: 18px;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid var(--button-bg);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Modal styles */
+    .share-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+    }
+
+    .share-modal-content {
+      background-color: var(--container-bg);
+      padding: 24px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      text-align: center;
+    }
+
+    .share-modal-content h3 {
+      margin-bottom: 20px;
+      color: var(--text-color);
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .share-options {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .share-options-top {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 12px;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .share-option {
+      flex: 1;
+      background-color: transparent;
+      color: var(--text-color);
+      border: 1px solid var(--progress-bg);
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 120px;
+    }
+
+    .share-option:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .share-option.telegram {
+      background-color: #E6F3FA;
+      border-color: #4DABF7;
+      color: #1D93D2;
+    }
+
+    .share-option.telegram:hover {
+      background-color: #CCE8F6;
+    }
+
+    .share-option.whatsapp {
+      background-color: #E6FFF5;
+      border-color: #4ADE80;
+      color: #25D366;
+    }
+
+    .share-option.whatsapp:hover {
+      background-color: #CCFFE6;
+    }
+
+    .share-option.other {
+      background-color: var(--new-test-bg);
+      border-color: var(--progress-bg);
+      color: var(--text-color);
+      width: 100%;
+      max-width: calc(240px + 12px);
+    }
+
+    .share-option.other:hover {
+      background-color: var(--new-test-hover);
+    }
+
+    .share-modal-close {
+      background-color: transparent;
+      color: var(--incorrect-border);
+      border: 1px solid var(--incorrect-border);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      margin-top: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .share-modal-close:hover {
+      background-color: var(--incorrect-bg);
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 576px) {
+      .share-options-top {
+        flex-direction: column;
+        gap: 8px;
+      }
+      .share-option {
+        width: 100%;
+        min-width: 0;
+      }
+      .share-option.other {
+        max-width: 100%;
+      }
     }
   </style>
 </head>
 <body>
-<canvas id="fireworksCanvas"></canvas>
-<div class="container">
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-spinner"></div>
+  <div>Screenshot tayyorlanmoqda...</div>
+</div>
+
+<div class="share-modal" id="shareModal">
+  <div class="share-modal-content">
+    <h3>Natijani ulashish</h3>
+    <div class="share-options">
+      <div class="share-options-top">
+        <button class="share-option telegram" data-platform="telegram">
+          <i class="bi bi-telegram"></i> Telegram
+        </button>
+        <button class="share-option whatsapp" data-platform="whatsapp">
+          <i class="bi bi-whatsapp"></i> WhatsApp
+        </button>
+      </div>
+      <button class="share-option other" data-platform="other">
+        <i class="bi bi-share"></i> Boshqa
+      </button>
+    </div>
+    <button class="share-modal-close" id="shareModalClose">Yopish</button>
+  </div>
+</div>
+
+<div class="container" id="mainContainer">
   <div class="theme-toggle-container">
     <label class="toggle-switch">
       <input type="checkbox" id="themeToggle" />
@@ -223,14 +532,32 @@
       <div class="history-list" id="historyList"></div>
     </div>
   </div>
+
+  <div id="defaultMessage" class="default-message">
+    <p><strong>Pro Quiz qanday ishlaydi?</strong></p>
+    <p>Testlarni boshlash uchun yuqoridagi "Fayl tanlash" orqali .txt faylini yuklang. Fayl quyidagi formatda bo'lishi kerak:</p>
+    <pre>
+O'zbekiston poytaxti qayer?
+A. Toshkent
+B. Samarqand
+C. Namangan
+D. Buxoro
+ANSWER: A
+    </pre>
+    <p><strong>Izoh:</strong> Har bir savol bir qatordan boshlanadi, undan keyin A, B, C, D variantlari va ANSWER: so'zidan keyin bitta probel bilan to'g'ri javob (A, B, C yoki D) ko'rsatiladi.</p>
+    <p>Barcha testlar shu ko'rinishda bo'lishi lozim.</p>
+  </div>
+
   <div id="quizList" style="display: none;">
     <p id="testCount" class="text-success fw-bold"></p>
     <div id="questionsContainer"></div>
   </div>
+  
   <div id="quizCompletionSection">
     <div id="lottieContainer"></div>
     <div class="celebration-title">Test Yakunlandi!</div>
-    <div class="stats-container">
+    <div class="test-name-display" id="testNameDisplay"></div>
+    <div class="stats-container" id="statsContainer">
       <div class="mb-4">
         <span class="fw-bold">Jami savollar: </span>
         <span class="stat-number" id="totalQuestions">0</span>
@@ -250,9 +577,17 @@
       <div class="text-center">
         <span class="stat-number" id="percentageCorrect">0%</span> to'g'ri javob
       </div>
-      <button id="startNewTest" class="action-button mt-4">
-        <i class="bi bi-arrow-repeat"></i> Yangi Testni Boshlang
-      </button>
+      <div class="buttons-container">
+        <button id="newTestButton" class="new-test-button">
+          <i class="bi bi-plus-circle"></i> Yangi Test
+        </button>
+        <button id="shareButton" class="share-button">
+          <i class="bi bi-share"></i> Ulashish
+        </button>
+        <button id="restartButton" class="restart-button">
+          <i class="bi bi-arrow-clockwise"></i> Qayta boshlash
+        </button>
+      </div>
     </div>
   </div>
 </div>
@@ -260,7 +595,9 @@
 
 <script>
   const backToTopButton = document.getElementById("backToTop");
-  const startNewTestButton = document.getElementById("startNewTest");
+  const shareButton = document.getElementById("shareButton");
+  const restartButton = document.getElementById("restartButton");
+  const newTestButton = document.getElementById("newTestButton");
   const autoScrollToggle = document.getElementById("autoScrollToggle");
   const fileInput = document.getElementById("fileInput");
   const uploadStatus = document.getElementById("uploadStatus");
@@ -275,12 +612,18 @@
   const incorrectBarEl = document.getElementById("incorrectBar");
   const percentageCorrectEl = document.getElementById("percentageCorrect");
   const themeToggle = document.getElementById("themeToggle");
+  const defaultMessage = document.getElementById("defaultMessage");
+  const testNameDisplay = document.getElementById("testNameDisplay");
+  const loadingOverlay = document.getElementById("loadingOverlay");
+  const shareModal = document.getElementById("shareModal");
+  const shareModalClose = document.getElementById("shareModalClose");
 
   let tests = [];
   let stats = { correct: 0, incorrect: 0, total: 0 };
   let lottieAnimation = null;
+  let currentTestName = "";
+  let lastUploadedFile = null;
 
-  // Updated animation files to use local JSONs (ensure these files exist in your project)
   const animationFiles = [
     './json/buy.json',
     './json/marketing.json',
@@ -298,43 +641,6 @@
     './json/ani10.json',
   ];
   let usedAnimations = [];
-
-  function launchFireworks() {
-    const canvas = document.getElementById('fireworksCanvas');
-    const duration = 1.5 * 1000;
-    const animationEnd = Date.now() + duration;
-    const defaults = {
-      startVelocity: 20,
-      spread: 180,
-      ticks: 30,
-      zIndex: 1000,
-      colors: ['#FFD700', '#1E90FF', '#FF69B4']
-    };
-
-    function randomInRange(min, max) {
-      return Math.random() * (max - min) + min;
-    }
-
-    const interval = setInterval(function() {
-      const timeLeft = animationEnd - Date.now();
-      if (timeLeft <= 0) return clearInterval(interval);
-      const particleCount = 20 * (timeLeft / duration);
-      confetti(Object.assign({}, defaults, {
-        particleCount,
-        origin: { x: randomInRange(0.3, 0.7), y: Math.random() - 0.1 }
-      }));
-    }, 400);
-
-    setTimeout(() => {
-      confetti({
-        particleCount: 50,
-        spread: 50,
-        origin: { y: 0.6 },
-        colors: ['#FFD700', '#1E90FF'],
-        zIndex: 1000
-      });
-    }, 300);
-  }
 
   const currentTheme = localStorage.getItem('theme') || 'light';
   document.documentElement.setAttribute('data-theme', currentTheme);
@@ -376,10 +682,8 @@
       autoplay: true,
       path: jsonPath
     });
-    // Add error handling for Lottie animation loading
     lottieAnimation.addEventListener('data_failed', () => {
       console.error('Failed to load Lottie animation:', jsonPath);
-      // Fallback to another animation if one fails
       const fallbackAnimation = getRandomAnimation();
       if (fallbackAnimation !== jsonPath) {
         loadLottieAnimation(fallbackAnimation);
@@ -387,27 +691,214 @@
     });
   }
 
-  startNewTestButton.addEventListener("click", function() {
+  function generateRandomFiveDigitNumber() {
+    return Math.floor(10000 + Math.random() * 90000);
+  }
+
+  async function shareToPlatform(platform, includeScreenshot = true) {
+    try {
+      const shareText = `🎯 Pro Quiz - ${currentTestName} natijasi:\n\n` +
+        `📊 Jami savollar: ${stats.total}\n` +
+        `✅ To'g'ri javoblar: ${stats.correct}\n` +
+        `❌ Xato javoblar: ${stats.incorrect}\n` +
+        `📈 Foiz: ${Math.round((stats.correct / stats.total) * 100)}%\n\n` +
+        `🌐 Pro Quiz bilan bilimlaringizni sinab ko'ring! Hozir testni boshlang!\n` +
+        `${window.location.origin}${window.location.pathname}`;
+
+      let blob = null;
+      if (includeScreenshot) {
+        loadingOverlay.style.display = 'flex';
+        const statsContainer = document.getElementById('statsContainer');
+        statsContainer.scrollIntoView({ behavior: 'smooth' });
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        const canvas = await html2canvas(statsContainer, {
+          backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--stats-bg'),
+          scale: 2,
+          useCORS: true,
+          logging: false
+        });
+        blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png', 0.9));
+      }
+
+      const randomSuffix = generateRandomFiveDigitNumber();
+      const uniqueFileName = `${currentTestName.replace(/[^a-zA-Z0-9]/g, '_')}_natijasi_${randomSuffix}.png`;
+
+      if (navigator.share && navigator.canShare) {
+        const shareData = {
+          title: `Pro Quiz - ${currentTestName} Natijasi`,
+          text: shareText,
+          url: window.location.href,
+          files: blob ? [new File([blob], uniqueFileName, { type: 'image/png' })] : undefined
+        };
+
+        if (platform === 'telegram') {
+          const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(shareText)}`;
+          if (blob) {
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = uniqueFileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(link.href);
+            window.open(telegramUrl, '_blank');
+          } else {
+            window.open(telegramUrl, '_blank');
+          }
+        } else if (platform === 'whatsapp') {
+          const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;
+          if (blob) {
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = uniqueFileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(link.href);
+            window.open(whatsappUrl, '_blank');
+          } else {
+            window.open(whatsappUrl, '_blank');
+          }
+        } else if (platform === 'other') {
+          if (navigator.canShare({ text: shareText })) {
+            await navigator.share({
+              title: `Pro Quiz - ${currentTestName} Natijasi`,
+              text: shareText,
+              url: window.location.href
+            });
+          } else {
+            try {
+              await navigator.clipboard.writeText(shareText);
+              alert('Natija matni nusxa olindi!');
+            } catch (err) {
+              const textArea = document.createElement('textarea');
+              textArea.value = shareText;
+              document.body.appendChild(textArea);
+              textArea.select();
+              document.execCommand('copy');
+              document.body.removeChild(textArea);
+              alert('Natija matni nusxa olindi!');
+            }
+          }
+        }
+      } else {
+        try {
+          await navigator.clipboard.writeText(shareText);
+          if (blob) {
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = uniqueFileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(link.href);
+          }
+          alert('Natija matni nusxa olindi!' + (blob ? ' Screenshot yuklab olindi.' : ''));
+        } catch (err) {
+          const textArea = document.createElement('textarea');
+          textArea.value = shareText;
+          document.body.appendChild(textArea);
+          textArea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textArea);
+          if (blob) {
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = uniqueFileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(link.href);
+          }
+          alert('Natija matni nusxa olindi!' + (blob ? ' Screenshot yuklab olindi.' : ''));
+        }
+      }
+
+      if (includeScreenshot) {
+        loadingOverlay.style.display = 'none';
+      }
+      shareModal.style.display = 'none';
+    } catch (error) {
+      console.error('Ulashishda xatolik:', error);
+      loadingOverlay.style.display = 'none';
+      shareModal.style.display = 'none';
+      alert('Xatolik yuz berdi. Qaytadan urining.');
+    }
+  }
+
+  shareButton.addEventListener("click", function() {
+    shareModal.style.display = 'flex';
+  });
+
+  shareModalClose.addEventListener("click", function() {
+    shareModal.style.display = 'none';
+  });
+
+  document.querySelectorAll('.share-option').forEach(button => {
+    button.addEventListener('click', function() {
+      const platform = this.dataset.platform;
+      shareToPlatform(platform, platform !== 'other');
+      shareModal.style.display = 'none';
+    });
+  });
+
+  restartButton.addEventListener("click", function() {
+    if (!lastUploadedFile) {
+      alert("Hech qanday fayl yuklanmagan! Yangi test uchun fayl tanlang.");
+      return;
+    }
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    quizCompletionSection.style.display = "none";
+    quizList.style.display = "none";
+    defaultMessage.style.display = "none";
+    questionsContainer.innerHTML = "";
+    stats = { correct: 0, incorrect: 0, total: 0 };
+    uploadStatus.textContent = "Fayl qayta yuklanmoqda...";
+    fileInput.disabled = true;
+
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      parseTestFile(ev.target.result);
+      const selectedAnimation = getRandomAnimation();
+      loadLottieAnimation(selectedAnimation);
+      updateBackToTopButton();
+    };
+    reader.onerror = () => {
+      uploadStatus.textContent = "Faylni qayta o'qishda xatolik yuz berdi!";
+      defaultMessage.style.display = "block";
+      fileInput.disabled = false;
+    };
+    reader.readAsText(lastUploadedFile);
+  });
+
+  newTestButton.addEventListener("click", function() {
     window.scrollTo({ top: 0, behavior: "smooth" });
     quizCompletionSection.style.display = "none";
     fileInput.value = "";
     uploadStatus.textContent = "Yangi test uchun fayl tanlang";
     quizList.style.display = "none";
+    defaultMessage.style.display = "block";
     questionsContainer.innerHTML = "";
     stats = { correct: 0, incorrect: 0, total: 0 };
+    currentTestName = "";
+    lastUploadedFile = null;
     const selectedAnimation = getRandomAnimation();
     loadLottieAnimation(selectedAnimation);
     updateBackToTopButton();
     fileInput.disabled = false;
+    setTimeout(() => {
+      fileInput.focus();
+    }, 500);
   });
 
   function loadFileHistory() {
     const history = JSON.parse(localStorage.getItem("fileHistory")) || [];
     const historyList = document.getElementById("historyList");
     historyList.innerHTML = "";
-    history.reverse().forEach((item, index) => {
+    history.forEach((item, index) => {
       const historyItem = document.createElement("div");
-      historyItem.className = "history-item";
+      historyItem.className = `history-item ${index === 0 ? 'recent' : ''}`;
       historyItem.style.animationDelay = `${index * 0.1}s`;
       historyItem.innerHTML = `<span>${item.name}</span> <span style="font-size: 11px; color: #777;">${new Date(item.timestamp).toLocaleString("uz-UZ")}</span>`;
       historyList.appendChild(historyItem);
@@ -416,6 +907,7 @@
 
   function saveFileToHistory(fileName) {
     const history = JSON.parse(localStorage.getItem("fileHistory")) || [];
+    currentTestName = fileName.replace('.txt', '');
     history.unshift({ name: fileName, timestamp: Date.now() });
     if (history.length > 10) history.pop();
     localStorage.setItem("fileHistory", JSON.stringify(history));
@@ -425,6 +917,7 @@
   fileInput.addEventListener("change", (e) => {
     const file = e.target.files[0];
     if (!file) return;
+    lastUploadedFile = file;
     uploadStatus.textContent = "Fayl yuklanmoqda...";
     saveFileToHistory(file.name);
     const reader = new FileReader();
@@ -434,6 +927,7 @@
     reader.readAsText(file);
     stats = { correct: 0, incorrect: 0, total: 0 };
     quizCompletionSection.style.display = "none";
+    defaultMessage.style.display = "none";
   });
 
   function parseTestFile(content) {
@@ -473,6 +967,9 @@
       showTests();
     } else {
       uploadStatus.textContent = "Xatolik: Test ma'lumotlari topilmadi yoki noto'g'ri format!";
+      defaultMessage.style.display = "block";
+      fileInput.disabled = false;
+      lastUploadedFile = null;
     }
   }
 
@@ -486,6 +983,7 @@
 
   function showTests() {
     quizList.style.display = "block";
+    defaultMessage.style.display = "none";
     testCount.textContent = `${tests.length} ta test yuklandi!`;
     questionsContainer.innerHTML = "";
 
@@ -611,7 +1109,6 @@
       checkIcon.textContent = "✅";
       selectedItem.appendChild(checkIcon);
       stats.correct++;
-      launchFireworks();
     } else {
       selectedItem.classList.add("incorrect", "incorrect-anim");
       const wrongIcon = document.createElement("span");
@@ -685,6 +1182,7 @@
     correctAnswersEl.textContent = stats.correct;
     incorrectAnswersEl.textContent = stats.incorrect;
     totalQuestionsEl.textContent = stats.total;
+    testNameDisplay.textContent = `📝 Test: ${currentTestName}`;
 
     const percentCorrect = Math.round((stats.correct / stats.total) * 100) || 0;
     percentageCorrectEl.textContent = percentCorrect + "%";
@@ -732,14 +1230,6 @@
     const initialAnimation = getRandomAnimation();
     loadLottieAnimation(initialAnimation);
     loadFileHistory();
-
-    const canvas = document.getElementById('fireworksCanvas');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    window.addEventListener('resize', () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    });
   });
 </script>
 </body>
