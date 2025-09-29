@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pro Quiz</title>
-  <link rel="icon" href="tg.png">
+  <title>Pro Quiz - Tezkor Quiz</title>
+  <link rel="icon" href="aga/iconcha.png">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.10.0/lottie.min.js"></script>
@@ -482,7 +482,7 @@
 <body>
 <div class="loading-overlay" id="loadingOverlay">
   <div class="loading-spinner"></div>
-  <div>Screenshot tayyorlanmoqda...</div>
+  <div>Rasm yuklanmoqda (Galereyaga saqlanmoqda)...</div>
 </div>
 
 <div class="share-modal" id="shareModal">
@@ -528,7 +528,7 @@
       <span class="toggle-label">Avtomatik pastga tushish</span>
     </div>
     <div class="history-section" id="historySection">
-      <button class="history-toggle collapsed" id="historyToggle">Oxirgi 10 ta Fayl Tarixi</button>
+      <button class="history-toggle collapsed" id="historyToggle">Fayl tarixi</button>
       <div class="history-list" id="historyList"></div>
     </div>
   </div>
@@ -537,14 +537,21 @@
     <p><strong>Pro Quiz qanday ishlaydi?</strong></p>
     <p>Testlarni boshlash uchun yuqoridagi "Fayl tanlash" orqali .txt faylini yuklang. Fayl quyidagi formatda bo'lishi kerak:</p>
     <pre>
-O'zbekiston poytaxti qayer?
-A. Toshkent
-B. Samarqand
-C. Namangan
-D. Buxoro
-ANSWER: A
+    O'zbekiston poytaxti qayer?
+    A. Toshkent
+    B. Samarqand
+    C. Namangan
+    D. Buxoro
+    ANSWER: A
+      
+    Kompyuterda yozish uchun nima kerak?
+    A. Monitor
+    B. Sichqoncha
+    C. Klaviatura
+    D. Printer
+    ANSWER: C
     </pre>
-    <p><strong>Izoh:</strong> Har bir savol bir qatordan boshlanadi, undan keyin A, B, C, D variantlari va ANSWER: so'zidan keyin bitta probel bilan to'g'ri javob (A, B, C yoki D) ko'rsatiladi.</p>
+    <p><strong>Izoh:</strong> Har bir savol bir qatordan boshlanadi, undan keyin A, B, C, D variantlari va ANSWER: so'zidan keyin bitta probel bilan to'g'ri javob (A, B, C yoki D) ko'rsatiladi va bir qator ochhiq joy (Enter) qoldiriladi va keyingi savol namunadek davom etadi.</p>
     <p>Barcha testlar shu ko'rinishda bo'lishi lozim.</p>
   </div>
 
@@ -555,7 +562,7 @@ ANSWER: A
   
   <div id="quizCompletionSection">
     <div id="lottieContainer"></div>
-    <div class="celebration-title">Test Yakunlandi!</div>
+    <div class="celebration-title">Test yakunlandi!</div>
     <div class="test-name-display" id="testNameDisplay"></div>
     <div class="stats-container" id="statsContainer">
       <div class="mb-4">
@@ -579,7 +586,7 @@ ANSWER: A
       </div>
       <div class="buttons-container">
         <button id="newTestButton" class="new-test-button">
-          <i class="bi bi-plus-circle"></i> Yangi Test
+          <i class="bi bi-plus-circle"></i> Yangi test
         </button>
         <button id="shareButton" class="share-button">
           <i class="bi bi-share"></i> Ulashish
@@ -966,7 +973,7 @@ ANSWER: A
       shuffleArray(tests);
       showTests();
     } else {
-      uploadStatus.textContent = "Xatolik: Test ma'lumotlari topilmadi yoki noto'g'ri format!";
+      uploadStatus.textContent = "Xatolik: Test ma'lumotlari topilmadi yoki noto'g'ri format! yordam: telegram @sobirweb";
       defaultMessage.style.display = "block";
       fileInput.disabled = false;
       lastUploadedFile = null;
@@ -1234,3 +1241,4 @@ ANSWER: A
 </script>
 </body>
 </html>
+
