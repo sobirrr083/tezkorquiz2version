@@ -42,7 +42,7 @@
             font-family: 'Nunito', 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #ECF2FF;
             min-height: 100vh;
-            padding-top: 100px;
+            padding-top: 80px;
         }
 
         .navbar {
@@ -151,6 +151,7 @@
             display: inline-block;
             vertical-align: middle;
             z-index: 1;
+            flex-shrink: 0;
         }
 
         .dropdown-toggle::after {
@@ -177,8 +178,8 @@
             transform: scaleY(0);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: block;
-            position: absolute; /* Ensure consistent positioning */
-            right: 0; /* Align to right for desktop */
+            position: absolute;
+            right: 0;
         }
 
         .dropdown.show .dropdown-menu {
@@ -208,11 +209,12 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             margin-bottom: 4px;
             position: relative;
             z-index: 1;
             overflow: hidden;
+            width: 100%;
         }
 
         .dropdown-item:last-child {
@@ -256,6 +258,11 @@
             height: 200px;
             transition: width 0.4s ease, height 0.4s ease, opacity 0.4s ease;
             opacity: 0;
+        }
+
+        .dropdown-item span {
+            flex-grow: 1;
+            text-align: left;
         }
 
         .burger {
@@ -339,10 +346,10 @@
 
             .navbar-collapse {
                 position: fixed;
-                top: 0;
+                top: 60px; /* Keep navbar header visible */
                 left: 0;
                 width: 100vw;
-                height: 100vh;
+                height: calc(100vh - 60px); /* Adjust height to leave space for header */
                 background: white;
                 padding: 20px;
                 border-radius: 0;
@@ -368,13 +375,16 @@
             .navbar-nav {
                 gap: 15px;
                 width: 100%;
-                text-align: center;
+                max-width: 300px;
+                text-align: left;
             }
 
             .nav-link {
                 padding: 14px 18px !important;
                 margin: 0;
-                justify-content: center;
+                display: flex;
+                align-items: center;
+                gap: 10px;
             }
 
             .dropdown-menu {
@@ -402,7 +412,9 @@
 
             .dropdown-item {
                 padding: 12px 18px;
-                justify-content: center;
+                display: flex;
+                align-items: center;
+                gap: 10px;
             }
         }
 
@@ -412,7 +424,7 @@
             }
 
             body {
-                padding-top: 80px;
+                padding-top: 70px;
             }
 
             .nav-icon {
@@ -423,6 +435,11 @@
             .dropdown-icon {
                 width: 20px;
                 height: 20px;
+            }
+
+            .navbar-collapse {
+                top: 50px;
+                height: calc(100vh - 50px);
             }
         }
 
@@ -1027,13 +1044,13 @@
             burgerInput.addEventListener('change', function() {
                 if (this.checked) {
                     navbarCollapse.classList.add('show');
-                    document.body.style.overflow = 'hidden'; // Prevent scrolling
+                    document.body.style.overflow = 'hidden';
                 } else {
                     navbarCollapse.classList.remove('show');
                     dropdown.classList.remove('show');
                     dropdownToggle.setAttribute('aria-expanded', 'false');
                     dropdownMenu.classList.remove('show');
-                    document.body.style.overflow = 'auto'; // Restore scrolling
+                    document.body.style.overflow = 'auto';
                 }
             });
 
@@ -1053,7 +1070,7 @@
 
             dropdownToggle.addEventListener('click', function(e) {
                 e.preventDefault();
-                e.stopPropagation(); // Prevent triggering document click
+                e.stopPropagation();
                 isDropdownClicked = !dropdown.classList.contains('show');
                 dropdown.classList.toggle('show');
                 dropdownToggle.setAttribute('aria-expanded', isDropdownClicked);
