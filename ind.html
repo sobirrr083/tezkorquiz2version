@@ -29,6 +29,7 @@
             --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             --white: #fff;
             --black: #282936;
+            --burger-active-color: #ff0000; /* Red color for active burger menu */
         }
 
         * {
@@ -175,6 +176,7 @@
             visibility: hidden;
             transform: scaleY(0);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: block; /* Ensure visibility in mobile */
         }
 
         .dropdown.show .dropdown-menu {
@@ -208,6 +210,7 @@
             margin-bottom: 4px;
             position: relative;
             z-index: 1;
+            overflow: hidden;
         }
 
         .dropdown-item:last-child {
@@ -225,22 +228,44 @@
         }
 
         .dropdown-item:active {
-            background: var(--gradient-1);
-            color: white;
+            background: none; /* Remove active background */
         }
 
         .dropdown-item:active .dropdown-icon {
-            fill: white;
+            fill: var(--dark-color); /* Keep icon color unchanged on click */
+        }
+
+        /* Ripple Effect for Dropdown Items */
+        .dropdown-item::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            background: rgba(102, 126, 234, 0.3);
+            top: 50%;
+            left: 50%;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.4s ease, height 0.4s ease;
+            z-index: 0;
+        }
+
+        .dropdown-item:active::after {
+            width: 200px;
+            height: 200px;
+            transition: width 0.4s ease, height 0.4s ease, opacity 0.4s ease;
+            opacity: 0;
         }
 
         .burger {
             position: relative;
-            width: 40px;
-            height: 30px;
+            width: 32px; /* Smaller size for better UI/UX */
+            height: 24px;
             background: transparent;
             cursor: pointer;
             display: none;
             margin-left: auto;
+            transition: all 0.3s ease;
         }
 
         .burger input {
@@ -250,14 +275,18 @@
         .burger span {
             display: block;
             position: absolute;
-            height: 4px;
+            height: 3px; /* Thinner lines for elegance */
             width: 100%;
-            background: var(--primary-color);
-            border-radius: 9px;
+            background: var(--black); /* Default black color */
+            border-radius: 8px;
             opacity: 1;
             left: 0;
             transform: rotate(0deg);
             transition: all 0.3s ease-in-out;
+        }
+
+        .burger input:checked ~ span {
+            background: var(--burger-active-color); /* Red when active */
         }
 
         .burger span:nth-of-type(1) {
@@ -280,7 +309,7 @@
         .burger input:checked ~ span:nth-of-type(1) {
             transform: rotate(45deg);
             top: 0px;
-            left: 5px;
+            left: 4px;
         }
 
         .burger input:checked ~ span:nth-of-type(2) {
@@ -290,8 +319,8 @@
 
         .burger input:checked ~ span:nth-of-type(3) {
             transform: rotate(-45deg);
-            top: 28px;
-            left: 5px;
+            top: 22px;
+            left: 4px;
         }
 
         @media (max-width: 991px) {
@@ -339,6 +368,7 @@
                 opacity: 0;
                 visibility: hidden;
                 transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                display: block; /* Ensure visibility in mobile */
             }
 
             .dropdown.show .dropdown-menu {
@@ -991,29 +1021,9 @@
                 });
             });
 
-            // Dropdown hover and click functionality
+            // Click handling for dropdown
             let isDropdownClicked = false;
 
-            // Desktop hover
-            if (window.innerWidth > 991) {
-                dropdown.addEventListener('mouseenter', function() {
-                    if (!isDropdownClicked) {
-                        dropdown.classList.add('show');
-                        dropdownToggle.setAttribute('aria-expanded', 'true');
-                        dropdownMenu.classList.add('show');
-                    }
-                });
-
-                dropdown.addEventListener('mouseleave', function() {
-                    if (!isDropdownClicked) {
-                        dropdown.classList.remove('show');
-                        dropdownToggle.setAttribute('aria-expanded', 'false');
-                        dropdownMenu.classList.remove('show');
-                    }
-                });
-            }
-
-            // Click handling (both mobile and desktop)
             dropdownToggle.addEventListener('click', function(e) {
                 e.preventDefault();
                 isDropdownClicked = !dropdown.classList.contains('show');
