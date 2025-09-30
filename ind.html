@@ -29,7 +29,7 @@
             --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             --white: #fff;
             --black: #282936;
-            --burger-active-color: #ff0000; /* Red color for active burger menu */
+            --burger-active-color: #ff0000;
         }
 
         * {
@@ -176,7 +176,9 @@
             visibility: hidden;
             transform: scaleY(0);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: block; /* Ensure visibility in mobile */
+            display: block;
+            position: absolute; /* Ensure consistent positioning */
+            right: 0; /* Align to right for desktop */
         }
 
         .dropdown.show .dropdown-menu {
@@ -228,14 +230,13 @@
         }
 
         .dropdown-item:active {
-            background: none; /* Remove active background */
+            background: none;
         }
 
         .dropdown-item:active .dropdown-icon {
-            fill: var(--dark-color); /* Keep icon color unchanged on click */
+            fill: var(--dark-color);
         }
 
-        /* Ripple Effect for Dropdown Items */
         .dropdown-item::after {
             content: '';
             position: absolute;
@@ -259,7 +260,7 @@
 
         .burger {
             position: relative;
-            width: 32px; /* Smaller size for better UI/UX */
+            width: 32px;
             height: 24px;
             background: transparent;
             cursor: pointer;
@@ -275,9 +276,9 @@
         .burger span {
             display: block;
             position: absolute;
-            height: 3px; /* Thinner lines for elegance */
+            height: 3px;
             width: 100%;
-            background: var(--black); /* Default black color */
+            background: var(--black);
             border-radius: 8px;
             opacity: 1;
             left: 0;
@@ -286,7 +287,7 @@
         }
 
         .burger input:checked ~ span {
-            background: var(--burger-active-color); /* Red when active */
+            background: var(--burger-active-color);
         }
 
         .burger span:nth-of-type(1) {
@@ -324,6 +325,10 @@
         }
 
         @media (max-width: 991px) {
+            .navbar {
+                padding: 10px 0;
+            }
+
             .burger {
                 display: block;
             }
@@ -333,15 +338,25 @@
             }
 
             .navbar-collapse {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
                 background: white;
                 padding: 20px;
-                border-radius: 16px;
-                margin-top: 15px;
-                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-                transform: translateY(-10px);
+                border-radius: 0;
+                margin-top: 0;
+                box-shadow: none;
+                transform: translateY(-100%);
                 opacity: 0;
                 visibility: hidden;
-                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
             }
 
             .navbar-collapse.show {
@@ -351,12 +366,15 @@
             }
 
             .navbar-nav {
-                gap: 8px;
+                gap: 15px;
+                width: 100%;
+                text-align: center;
             }
 
             .nav-link {
                 padding: 14px 18px !important;
                 margin: 0;
+                justify-content: center;
             }
 
             .dropdown-menu {
@@ -367,8 +385,13 @@
                 transform: scaleY(0);
                 opacity: 0;
                 visibility: hidden;
-                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                display: block; /* Ensure visibility in mobile */
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                display: block;
+                position: static;
+                width: 100%;
+                max-width: 300px;
+                margin-left: auto;
+                margin-right: auto;
             }
 
             .dropdown.show .dropdown-menu {
@@ -379,6 +402,7 @@
 
             .dropdown-item {
                 padding: 12px 18px;
+                justify-content: center;
             }
         }
 
@@ -1003,11 +1027,13 @@
             burgerInput.addEventListener('change', function() {
                 if (this.checked) {
                     navbarCollapse.classList.add('show');
+                    document.body.style.overflow = 'hidden'; // Prevent scrolling
                 } else {
                     navbarCollapse.classList.remove('show');
                     dropdown.classList.remove('show');
                     dropdownToggle.setAttribute('aria-expanded', 'false');
                     dropdownMenu.classList.remove('show');
+                    document.body.style.overflow = 'auto'; // Restore scrolling
                 }
             });
 
@@ -1017,6 +1043,7 @@
                     if (navbarCollapse.classList.contains('show')) {
                         burgerInput.checked = false;
                         navbarCollapse.classList.remove('show');
+                        document.body.style.overflow = 'auto';
                     }
                 });
             });
@@ -1026,6 +1053,7 @@
 
             dropdownToggle.addEventListener('click', function(e) {
                 e.preventDefault();
+                e.stopPropagation(); // Prevent triggering document click
                 isDropdownClicked = !dropdown.classList.contains('show');
                 dropdown.classList.toggle('show');
                 dropdownToggle.setAttribute('aria-expanded', isDropdownClicked);
@@ -1039,9 +1067,10 @@
                     dropdown.classList.remove('show');
                     dropdownToggle.setAttribute('aria-expanded', 'false');
                     dropdownMenu.classList.remove('show');
-                    if (navbarCollapse.classList.contains('show')) {
+                    if (navbarCollapse.classList.contains('show') && window.innerWidth <= 991) {
                         burgerInput.checked = false;
                         navbarCollapse.classList.remove('show');
+                        document.body.style.overflow = 'auto';
                     }
                 }
             });
