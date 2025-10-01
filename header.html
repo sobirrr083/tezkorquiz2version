@@ -1,11 +1,29 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-    <meta charset="UTF-8">
+    <title>Tezkor Quiz Navbar</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="aga/iconcha.png">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tezkor Quiz</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="description" content="Tezkor Quiz - testlarni yaratish, boshqarish va yechish uchun qulay platforma">
     <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3a0ca3;
+            --accent-color: #f72585;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #4cc9f0;
+            --warning-color: #f8961e;
+            --gradient-1: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            --white: #fff;
+            --black: #282936;
+            --burger-active-color: #ff0000;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -13,962 +31,732 @@
         }
 
         body {
-            font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #6b7280 0%, #1f2937 100%);
+            font-family: 'Nunito', 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #ECF2FF;
             min-height: 100vh;
-            color: #1e293b;
+            padding-top: 80px;
         }
 
-        .header {
-            background: rgba(248, 250, 252, 0.97);
-            backdrop-filter: blur(12px);
-            padding: 1rem 0;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .header.scrolled {
-            background: rgba(248, 250, 252, 1);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        .nav-container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 600;
-            color: #4f46e5;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .logo:hover {
-            color: #1e293b;
-        }
-
-        .nav-menu {
-            display: flex;
-            list-style: none;
-            gap: 2.5rem;
-            align-items: center;
-        }
-
-        .nav-menu li {
-            position: relative;
-        }
-
-        .nav-menu a {
-            text-decoration: none;
-            color: #1e293b;
-            font-weight: 500;
-            padding: 0.8rem 0;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-        }
-
-        .nav-menu a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 2px;
-            background: #4f46e5;
-            transition: width 0.3s ease;
-        }
-
-        .nav-menu a:hover::after {
-            width: 100%;
-        }
-
-        .nav-menu a:hover {
-            color: #4f46e5;
-        }
-
-        .menu-icon {
-            width: 20px;
-            height: 20px;
-            fill: currentColor;
-            transition: transform 0.3s ease;
-        }
-
-        .nav-menu a:hover .menu-icon {
-            transform: scale(1.15);
-        }
-
-        .nav-menu .dropdown {
-            position: relative;
-        }
-
-        .nav-menu .dropdown-toggle {
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .nav-menu .dropdown-toggle::after {
-            content: '';
-            width: 12px;
-            height: 12px;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%231e293b"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat center;
-            background-size: contain;
-            margin-left: 0.4rem;
-        }
-
-        .nav-menu .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%) scale(0.95);
-            background: rgba(248, 250, 252, 0.98);
-            backdrop-filter: blur(12px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-            border-radius: 8px;
-            padding: 0.75rem 0;
-            min-width: 220px;
-            z-index: 1001;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-
-        /* Hover bilan ochilish */
-        .nav-menu .dropdown:hover .dropdown-menu,
-        /* Click bilan ochilish (active class qo'shilganda) */
-        .nav-menu .dropdown.active .dropdown-menu {
-            opacity: 1;
-            visibility: visible;
-            transform: translateX(-50%) scale(1);
-        }
-
-        .nav-menu .dropdown-menu li {
-            list-style: none;
-        }
-
-        .nav-menu .dropdown-menu a {
-            display: flex;
-            align-items: center;
-            font-size: 0.95rem;
-            padding: 0.75rem 1.5rem;
-            color: #1e293b;
-            transition: all 0.3s ease;
-            gap: 0.6rem;
-        }
-
-        .nav-menu .dropdown-menu a::after {
-            display: none;
-        }
-
-        .nav-menu .dropdown-menu a:hover {
-            background: rgba(79, 70, 229, 0.1);
-            color: #4f46e5;
-            padding-left: 2rem;
-        }
-
-        .nav-menu .dropdown-menu .menu-icon {
-            width: 18px;
-            height: 18px;
-        }
-
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-            padding: 0.5rem;
-            gap: 5px;
-            z-index: 1001;
-        }
-
-        .hamburger span {
-            width: 30px;
-            height: 3px;
-            background: #1e293b;
-            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            transform-origin: center;
-        }
-
-        .hamburger.active span:nth-child(1) {
-            transform: rotate(45deg) translate(8px, 8px);
-        }
-
-        .hamburger.active span:nth-child(2) {
-            opacity: 0;
-            transform: translateX(20px);
-        }
-
-        .hamburger.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(8px, -8px);
-        }
-
-        .side-menu {
-            position: fixed;
-            top: 0;
-            right: -100%;
-            width: 100%;
-            height: 100vh;
-            background: linear-gradient(135deg, rgba(248, 250, 252, 0.98) 0%, rgba(243, 244, 246, 0.95) 100%);
-            backdrop-filter: blur(12px);
-            box-shadow: -8px 0 25px rgba(0, 0, 0, 0.2);
-            transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            z-index: 999;
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            overflow-y: auto;
-        }
-
-        .side-menu.active {
-            right: 0;
-        }
-
-        .side-menu-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            max-width: 400px;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid rgba(79, 70, 229, 0.15);
-        }
-
-        .side-menu-logo {
-            font-size: 1.6rem;
-            font-weight: 600;
-            color: #1e293b;
-            text-decoration: none;
-        }
-
-        .close-btn {
-            background: none;
-            border: none;
-            font-size: 1.8rem;
-            cursor: pointer;
-            color: #6b7280;
-            padding: 0.5rem;
-            transition: all 0.3s ease;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .close-btn:hover {
-            color: #1e293b;
-            background: rgba(79, 70, 229, 0.1);
-        }
-
-        .menu-items {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            max-width: 400px;
-            overflow-y: auto;
-        }
-
-        .side-menu ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            width: 100%;
-        }
-
-        .side-menu li {
-            margin-bottom: 1rem;
-            opacity: 0;
-            transform: translateX(20px);
-            transition: all 0.4s ease;
-        }
-
-        .side-menu.active li {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .side-menu.active li:nth-child(1) { transition-delay: 0.1s; }
-        .side-menu.active li:nth-child(2) { transition-delay: 0.2s; }
-        .side-menu.active li:nth-child(3) { transition-delay: 0.3s; }
-        .side-menu.active li:nth-child(4) { transition-delay: 0.4s; }
-        .side-menu.active li:nth-child(5) { transition-delay: 0.5s; }
-
-        .side-menu a {
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-            color: #1e293b;
-            font-weight: 500;
-            font-size: 1.25rem;
-            padding: 1rem 1.5rem;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            gap: 0.8rem;
-            width: 100%;
-            justify-content: flex-start;
-        }
-
-        .side-menu a:hover {
-            color: #4f46e5;
-            background: rgba(79, 70, 229, 0.1);
-            transform: translateX(8px);
-        }
-
-        .side-menu .menu-icon {
-            width: 24px;
-            height: 24px;
-            fill: currentColor;
-            transition: transform 0.3s ease;
-        }
-
-        .side-menu a:hover .menu-icon {
-            transform: scale(1.15);
-        }
-
-        .side-menu .dropdown {
-            position: relative;
-            width: 100%;
-        }
-
-        .side-menu .dropdown-toggle {
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            justify-content: space-between;
-            width: 100%;
-        }
-
-        .side-menu .dropdown-toggle::after {
-            content: '';
-            width: 12px;
-            height: 12px;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%231e293b"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat center;
-            background-size: contain;
-        }
-
-        .side-menu .dropdown-menu {
-            display: none;
-            padding-left: 1.5rem;
-            margin-top: 0.5rem;
-            transform: scale(0.95);
-            opacity: 0;
-            transition: all 0.3s ease;
-            width: 100%;
-        }
-
-        .side-menu .dropdown.active .dropdown-menu {
-            display: block;
-            transform: scale(1);
-            opacity: 1;
-            animation: fadeInDown 0.3s ease forwards;
-        }
-
-        .side-menu .dropdown-menu li {
-            margin-bottom: 0.75rem;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: all 0.3s ease;
-        }
-
-        .side-menu .dropdown.active .dropdown-menu li {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .side-menu .dropdown-menu li:nth-child(1) { transition-delay: 0.1s; }
-        .side-menu .dropdown-menu li:nth-child(2) { transition-delay: 0.2s; }
-        .side-menu .dropdown-menu li:nth-child(3) { transition-delay: 0.3s; }
-        .side-menu .dropdown-menu li:nth-child(4) { transition-delay: 0.4s; }
-        .side-menu .dropdown-menu li:nth-child(5) { transition-delay: 0.5s; }
-
-        .side-menu .dropdown-menu a {
-            font-size: 1.1rem;
-            padding: 0.8rem 1rem;
-            gap: 0.6rem;
-        }
-
-        .side-menu .dropdown-menu .menu-icon {
-            width: 20px;
-            height: 20px;
-        }
-
-        .social-section {
-            background: rgba(248, 250, 252, 0.95);
+        .navbar {
+            padding: 12px 0;
+            background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(10px);
-            border-radius: 12px;
-            padding: 1.25rem;
-            margin-top: 1.5rem;
-            border: 1px solid rgba(79, 70, 229, 0.15);
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .social-section h3 {
-            font-size: 1rem;
-            color: #1e293b;
-            margin-bottom: 1rem;
-            font-weight: 600;
+        .navbar.scrolled {
+            padding: 8px 0;
+            box-shadow: 0 6px 40px rgba(0, 0, 0, 0.15);
         }
 
-        .social-icons {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            justify-items: center;
-        }
-
-        .social-icons a {
+        .navbar-brand {
+            font-family: 'Roboto';
+            font-weight: 800;
+            font-size: 28px;
+            color: var(--primary-color) !important;
+            letter-spacing: -0.5px;
+            transition: transform 0.3s ease;
             display: flex;
             align-items: center;
-            justify-content: center;
-            width: 50px;
-            height: 50px;
-            border-radius: 10px;
-            background: #1e293b;
-            transition: all 0.3s ease;
-            text-decoration: none;
+            gap: 10px;
+        }
+
+        .navbar-brand:hover {
+            transform: scale(1.05);
+        }
+
+        .navbar-nav {
+            gap: 5px;
+        }
+
+        .nav-link {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 600;
+            font-size: 15px;
+            padding: 10px 20px !important;
+            color: var(--dark-color) !important;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
+            display: flex;
+            align-items: center;
         }
 
-        .social-icons a::before {
+        .nav-link::before {
             content: '';
             position: absolute;
             top: 0;
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(248, 250, 252, 0.3), transparent);
-            transition: left 0.5s;
+            background: var(--gradient-1);
+            opacity: 0.1;
+            transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: -1;
         }
 
-        .social-icons a:hover::before {
-            left: 100%;
+        .nav-link:hover::before {
+            left: 0;
         }
 
-        .social-icons a:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 8px 15px rgba(79, 70, 229, 0.3);
+        .nav-link:hover {
+            color: var(--primary-color) !important;
         }
 
-        .social-icons svg {
-            width: 24px;
-            height: 24px;
-            fill: #f8fafc;
+        .nav-link:hover .nav-icon {
+            fill: var(--primary-color);
+            transform: scale(1.1);
+        }
+
+        .nav-link.active {
+            background: var(--gradient-1);
+            color: white !important;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .nav-link.active .nav-icon {
+            fill: white;
+        }
+
+        .nav-link.active::before {
+            display: none;
+        }
+
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            fill: var(--dark-color);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-right: 8px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .dropdown-icon {
+            width: 22px;
+            height: 22px;
+            fill: var(--dark-color);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-right: 10px;
+            display: inline-block;
+            vertical-align: middle;
             z-index: 1;
+            flex-shrink: 0;
+        }
+
+        .dropdown-toggle::after {
+            transition: transform 0.3s ease;
+            margin-left: 8px;
+        }
+
+        .dropdown-toggle[aria-expanded="true"]::after {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-menu {
+            border: none;
+            border-radius: 16px;
+            padding: 12px;
+            margin-top: 12px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            min-width: 260px;
+            transform-origin: top;
+            opacity: 0;
+            visibility: hidden;
+            transform: scaleY(0);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: block;
+            position: absolute;
+            right: 0;
+        }
+
+        .dropdown.show .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: scaleY(1);
+        }
+
+        .dropdown-item {
+            padding: 12px 18px;
+            border-radius: 12px;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--dark-color);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 4px;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .dropdown-item:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+            color: var(--primary-color);
+        }
+
+        .dropdown-item:hover .dropdown-icon {
+            fill: var(--primary-color);
+            transform: scale(1.15);
+        }
+
+        .burger {
+            position: relative;
+            width: 32px;
+            height: 24px;
+            background: transparent;
+            cursor: pointer;
+            display: none;
+            margin-left: auto;
+            transition: all 0.3s ease;
+        }
+
+        .burger input {
+            display: none;
+        }
+
+        .burger span {
+            display: block;
+            position: absolute;
+            height: 3px;
+            width: 100%;
+            background: var(--black);
+            border-radius: 8px;
+            opacity: 1;
+            left: 0;
+            transform: rotate(0deg);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .burger input:checked ~ span {
+            background: var(--burger-active-color);
+        }
+
+        .burger span:nth-of-type(1) {
+            top: 0px;
+            transform-origin: left center;
+        }
+
+        .burger span:nth-of-type(2) {
+            top: 50%;
+            transform: translateY(-50%);
+            transform-origin: left center;
+        }
+
+        .burger span:nth-of-type(3) {
+            top: 100%;
+            transform-origin: left center;
+            transform: translateY(-100%);
+        }
+
+        .burger input:checked ~ span:nth-of-type(1) {
+            transform: rotate(45deg);
+            top: 0px;
+            left: 4px;
+        }
+
+        .burger input:checked ~ span:nth-of-type(2) {
+            width: 0%;
+            opacity: 0;
+        }
+
+        .burger input:checked ~ span:nth-of-type(3) {
+            transform: rotate(-45deg);
+            top: 22px;
+            left: 4px;
+        }
+
+        /* Mobile menu bottom section styles */
+        .mobile-menu-bottom {
+            display: none;
+            padding: 20px;
+            border-top: 2px solid rgba(102, 126, 234, 0.1);
+            margin-top: auto;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 20px;
+        }
+
+        .social-link {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        }
+
+        .social-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            background: var(--gradient-1);
+        }
+
+        .social-link i {
+            font-size: 20px;
+            color: var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover i {
+            color: white;
         }
 
         .help-button {
-            margin-top: 1rem;
-        }
-
-        .help-btn {
-            display: inline-flex;
+            width: 100%;
+            padding: 14px;
+            background: var(--gradient-1);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
             align-items: center;
             justify-content: center;
-            padding: 0.9rem 1.5rem;
-            background: #1e293b;
-            color: #f8fafc;
-            text-decoration: none;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            width: 100%;
-            position: relative;
-            overflow: hidden;
+            gap: 10px;
         }
 
-        .help-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(248, 250, 252, 0.3), transparent);
-            transition: left 0.5s;
+        .help-button:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
         }
 
-        .help-btn:hover::before {
-            left: 100%;
+        .help-button i {
+            font-size: 18px;
         }
 
-        .help-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.4);
-        }
-
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 998;
-        }
-
-        .overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .content {
-            margin-top: 90px;
-            padding: 2rem;
-            text-align: center;
-            color: #f8fafc;
-        }
-
-        .content h1 {
-            font-size: 2.8rem;
-            margin-bottom: 1rem;
-            opacity: 0;
-            animation: fadeInUp 1s ease forwards;
-        }
-
-        .content p {
-            font-size: 1.1rem;
-            opacity: 0;
-            animation: fadeInUp 1s ease 0.3s forwards;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
+        @media (max-width: 991px) {
+            .navbar {
+                padding: 10px 0;
             }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
 
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px) scale(0.95);
+            .burger {
+                display: block;
             }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
 
-        @media (max-width: 768px) {
-            .nav-menu {
+            .navbar-toggler {
                 display: none;
             }
 
-            .hamburger {
+            .navbar-collapse {
+                position: fixed;
+                top: 60px;
+                left: 0;
+                width: 100vw;
+                height: calc(100vh - 60px);
+                background: white;
+                padding: 25px 20px 5px 20px;
+                border-radius: 0;
+                margin-top: 0;
+                box-shadow: none;
+                transform: translateX(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
                 display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: flex-start;
+                z-index: 1000;
+                overflow-y: auto;
             }
 
-            .side-menu {
+            .navbar-collapse.show {
+                transform: translateX(0);
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .navbar-nav {
+                gap: 8px;
                 width: 100%;
-                max-width: 100%;
-                padding: 1rem;
+                text-align: left;
+                flex: 1;
             }
 
-            .side-menu-header {
-                margin-bottom: 1rem;
+            .nav-link {
+                padding: 18px 20px !important;
+                margin: 0;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                gap: 15px;
+                font-size: 17px;
+                width: 100%;
+                border-radius: 14px;
+                background: rgba(102, 126, 234, 0.03);
             }
 
-            .side-menu-logo {
-                font-size: 1.4rem;
+            .nav-link:hover {
+                background: rgba(102, 126, 234, 0.08);
             }
 
-            .side-menu a {
-                font-size: 1.2rem;
-                padding: 1rem 1.2rem;
+            .nav-link.active {
+                background: var(--gradient-1);
+                color: white !important;
             }
 
-            .side-menu .dropdown-menu {
-                padding-left: 1rem;
-            }
-
-            .side-menu .dropdown-menu a {
-                font-size: 1rem;
-                padding: 0.8rem 1rem;
-            }
-
-            .side-menu .dropdown-menu .menu-icon {
-                width: 20px;
-                height: 20px;
-            }
-
-            .content h1 {
-                font-size: 2.2rem;
-            }
-
-            .content p {
-                font-size: 1rem;
-            }
-
-            .social-icons a {
-                width: 50px;
-                height: 50px;
-            }
-
-            .social-icons svg {
+            .nav-icon {
                 width: 24px;
                 height: 24px;
+                flex-shrink: 0;
             }
 
-            .help-btn {
-                padding: 0.8rem 1.2rem;
-                font-size: 0.9rem;
+            .dropdown-icon {
+                width: 24px;
+                height: 24px;
+                flex-shrink: 0;
+            }
+
+            .dropdown-menu {
+                border: none;
+                box-shadow: none;
+                background: rgba(102, 126, 234, 0.05);
+                margin-top: 8px;
+                margin-left: 20px;
+                transform: scaleY(0);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                display: block;
+                position: static;
+                width: calc(100% - 20px);
+                padding: 8px;
+            }
+
+            .dropdown.show .dropdown-menu {
+                transform: scaleY(1);
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .dropdown-item {
+                padding: 14px 18px;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                gap: 15px;
+                font-size: 16px;
+                background: white;
+                margin-bottom: 6px;
+            }
+
+            .dropdown-item:last-child {
+                margin-bottom: 0;
+            }
+
+            .dropdown-item span {
+                flex-grow: 0;
+            }
+
+            .mobile-menu-bottom {
+                display: block;
             }
         }
 
-        @media (max-width: 480px) {
-            .side-menu {
-                padding: 0.75rem;
+        @media (max-width: 576px) {
+            .navbar-brand {
+                font-size: 22px;
             }
 
-            .side-menu-logo {
-                font-size: 1.2rem;
+            body {
+                padding-top: 65px;
             }
 
-            .side-menu a {
-                font-size: 1.15rem;
-                padding: 0.9rem 1rem;
+            .navbar-collapse {
+                top: 55px;
+                height: calc(100vh - 55px);
+                padding: 20px 15px 5px 15px;
             }
 
-            .side-menu .dropdown-menu a {
-                font-size: 0.95rem;
-                padding: 0.7rem 0.8rem;
+            .nav-link {
+                padding: 16px 18px !important;
+                font-size: 16px;
             }
 
-            .social-section {
-                padding: 1rem;
-            }
-
-            .social-icons a {
-                width: 46px;
-                height: 46px;
-            }
-
-            .social-icons svg {
+            .nav-icon {
                 width: 22px;
                 height: 22px;
             }
 
-            .content h1 {
-                font-size: 1.8rem;
+            .dropdown-icon {
+                width: 22px;
+                height: 22px;
             }
 
-            .content p {
-                font-size: 0.9rem;
+            .dropdown-item {
+                padding: 12px 16px;
+                font-size: 15px;
+            }
+
+            .social-link {
+                width: 42px;
+                height: 42px;
+            }
+
+            .social-link i {
+                font-size: 18px;
+            }
+
+            .help-button {
+                padding: 12px;
+                font-size: 15px;
+            }
+        }
+
+        @media (max-width: 375px) {
+            .navbar-brand {
+                font-size: 20px;
+            }
+
+            .nav-link {
+                padding: 14px 16px !important;
+                font-size: 15px;
+                gap: 12px;
+            }
+
+            .dropdown-item {
+                padding: 11px 14px;
+                font-size: 14px;
+                gap: 12px;
+            }
+
+            .social-links {
+                gap: 20px;
+            }
+
+            .social-link {
+                width: 40px;
+                height: 40px;
             }
         }
     </style>
 </head>
 <body>
-    <header class="header" id="header">
-        <nav class="nav-container">
-            <a href="#" class="logo">Tezkor Quiz</a>
-            
-            <ul class="nav-menu">
-                <li class="dropdown" id="desktop-dropdown">
-                    <a href="#" class="dropdown-toggle">
-                        <svg class="menu-icon" viewBox="0 0 24 24">
-                            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
-                        </svg>
-                        Testni boshlash
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#quiz1">
-                            <svg class="menu-icon" viewBox="0 0 24 24">
-                                <path d="M7 2v11h3v9l7-12h-4l4-8z"/>
-                            </svg>
-                            Tezkor quiz
-                        </a></li>
-                        <li><a href="#quiz2">
-                            <svg class="menu-icon" viewBox="0 0 24 24">
-                                <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/>
-                                <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>
-                            </svg>
-                            Bilim quiz
-                        </a></li>
-                        <li><a href="#quiz3">
-                            <svg class="menu-icon" viewBox="0 0 24 24">
-                                <path d="M5 16L3 5L8.5 10L12 4L15.5 10L21 5L19 16H5M19 19C19 19.6 18.6 20 18 20H6C5.4 20 5 19.6 5 19S5.4 18 6 18H18C18.6 18 19 18.4 19 19Z"/>
-                            </svg>
-                            Smart quiz
-                        </a></li>
-                        <li><a href="#quiz4">
-                            <svg class="menu-icon" viewBox="0 0 24 24">
-                                <path d="M9,21C9,22.1 9.9,23 11,23H13C14.1,23 15,22.1 15,21V20H9V21M12,2A7,7 0 0,0 5,9C5,11.38 6.19,13.47 8,14.74V17A1,1 0 0,0 9,18H15A1,1 0 0,0 16,17V14.74C17.81,13.47 19,11.38 19,9A7,7 0 0,0 12,2Z"/>
-                            </svg>
-                            Pro quiz
-                        </a></li>
-                        <li><a href="#quiz5">
-                            <svg class="menu-icon" viewBox="0 0 24 24">
-                                <path d="M4,3H18A2,2 0 0,1 20,5V12.5L18.5,11H4V19H12.5L14,20.5V21A2,2 0 0,1 12,23H4A2,2 0 0,1 2,21V5A2,2 0 0,1 4,3M4,7H18V9H4V7M4,11H18V13H4V11M4,15H13V17H4V15M23.7,16.3L17,23L13,19L14.4,17.6L17,20.2L22.3,14.9L23.7,16.3Z"/>
-                            </svg>
-                            Imtihon quiz
-                        </a></li>
-                    </ul>
-                </li>
-                <li><a href="#about">
-                    <svg class="menu-icon" viewBox="0 0 24 24">
-                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                    </svg>
-                    Biz haqimizda
-                </a></li>
-                <li><a href="#contact">
-                    <svg class="menu-icon" viewBox="0 0 24 24">
-                        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-                    </svg>
-                    Aloqa
-                </a></li>
-            </ul>
-
-            <div class="hamburger" id="hamburger">
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNavbar">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                Tezkor Quiz
+            </a>
+            <label class="burger" for="burger">
+                <input type="checkbox" id="burger">
                 <span></span>
                 <span></span>
                 <span></span>
-            </div>
-        </nav>
-    </header>
-
-    <div class="side-menu" id="side-menu">
-        <div class="side-menu-header">
-            <a href="#" class="side-menu-logo">Tezkor Quiz</a>
-            <button class="close-btn" id="close-btn">×</button>
-        </div>
-        
-        <div class="menu-items">
-            <ul>
-                <li>
-                    <a href="#home">
-                        <svg class="menu-icon" viewBox="0 0 24 24">
-                            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
-                        </svg>
-                        Bosh sahifa
-                    </a>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle">
-                        <span>
-                            <svg class="menu-icon" viewBox="0 0 24 24">
+            </label>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <svg class="nav-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                            </svg>
+                            <span>Bosh sahifa</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="segment25.html">
+                            <svg class="nav-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M11 2v20c-5.07-.5-9-4.79-9-10s3.93-9.5 9-10zm2.03 0v8.99H22c-.47-4.74-4.24-8.52-8.97-8.99zm0 11.01V22c4.74-.47 8.5-4.25 8.97-8.99h-8.97z"/>
+                            </svg>
+                            <span>Segment</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="faq.html">
+                            <svg class="nav-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56-.35-.12-.74-.03-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/>
+                            </svg>
+                            <span>Aloqa</span>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="quizDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <svg class="nav-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
                             </svg>
-                            Testni boshlash
-                        </span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#quiz1">
-                            <svg class="menu-icon" viewBox="0 0 24 24">
-                                <path d="M7 2v11h3v9l7-12h-4l4-8z"/>
-                            </svg>
-                            Tezkor quiz
-                        </a></li>
-                        <li><a href="#quiz2">
-                            <svg class="menu-icon" viewBox="0 0 24 24">
-                                <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/>
-                                <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>
-                            </svg>
-                            Bilim quiz
-                        </a></li>
-                        <li><a href="#quiz3">
-                            <svg class="menu-icon" viewBox="0 0 24 24">
-                                <path d="M5 16L3 5L8.5 10L12 4L15.5 10L21 5L19 16H5M19 19C19 19.6 18.6 20 18 20H6C5.4 20 5 19.6 5 19S5.4 18 6 18H18C18.6 18 19 18.4 19 19Z"/>
-                            </svg>
-                            Smart quiz
-                        </a></li>
-                        <li><a href="#quiz4">
-                            <svg class="menu-icon" viewBox="0 0 24 24">
-                                <path d="M9,21C9,22.1 9.9,23 11,23H13C14.1,23 15,22.1 15,21V20H9V21M12,2A7,7 0 0,0 5,9C5,11.38 6.19,13.47 8,14.74V17A1,1 0 0,0 9,18H15A1,1 0 0,0 16,17V14.74C17.81,13.47 19,11.38 19,9A7,7 0 0,0 12,2Z"/>
-                            </svg>
-                            Pro quiz
-                        </a></li>
-                        <li><a href="#quiz5">
-                            <svg class="menu-icon" viewBox="0 0 24 24">
-                                <path d="M4,3H18A2,2 0 0,1 20,5V12.5L18.5,11H4V19H12.5L14,20.5V21A2,2 0 0,1 12,23H4A2,2 0 0,1 2,21V5A2,2 0 0,1 4,3M4,7H18V9H4V7M4,11H18V13H4V11M4,15H13V17H4V15M23.7,16.3L17,23L13,19L14.4,17.6L17,20.2L22.3,14.9L23.7,16.3Z"/>
-                            </svg>
-                            Imtihon quiz
-                        </a></li>
-                    </ul>
-                </li>
-                <li><a href="#about">
-                    <svg class="menu-icon" viewBox="0 0 24 24">
-                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                    </svg>
-                    Biz haqimizda
-                </a></li>
-                <li><a href="#contact">
-                    <svg class="menu-icon" viewBox="0 0 24 24">
-                        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-                    </svg>
-                    Aloqa
-                </a></li>
-            </ul>
-        </div>
-
-        <div class="social-section">
-            <h3>Biz bilan aloqa</h3>
-            <div class="social-icons">
-                <a href="https://facebook.com" target="_blank">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.84-.89 8.4-4.92 8.4-9.95z"/>
-                    </svg>
-                </a>
-                <a href="https://twitter.com" target="_blank">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M22.46 6c-.77.35-1.6.58-2.46.69a4.3 4.3 0 0 0 1.88-2.38 8.6 8.6 0 0 1-2.72 1.05 4.28 4.28 0 0 0-7.29 3.9A12.14 12.14 0 0 1 3.15 4.78a4.28 4.28 0 0 0 1.32 5.71 4.27 4.27 0 0 1-1.94-.54v.05a4.28 4.28 0 0 0 3.44 4.19 4.28 4.28 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98A8.6 8.6 0 0 1 2 19.54a12.14 12.14 0 0 0 6.58 1.93c7.9 0 12.22-6.54 12.22-12.22 0-.19 0-.37-.01-.55A8.7 8.7 0 0 0 22.46 6z"/>
-                    </svg>
-                </a>
-                <a href="https://instagram.com" target="_blank">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.06 1.97.24 2.67.51.73.29 1.35.67 1.97 1.29s1 1.24 1.29 1.97c.27.7.45 1.5.51 2.67.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.06 1.17-.24 1.97-.51 2.67-.29.73-.67 1.35-1.29 1.97s-1.24 1-1.97 1.29c-.7.27-1.5.45-2.67.51-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.06-1.97-.24-2.67-.51-.73-.29-1.35-.67-1.97-1.29s-1-1.24-1.29-1.97c-.27-.7-.45-1.5-.51-2.67-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.06-1.17.24-1.97.51-2.67.29-.73.67-1.35 1.29-1.97s1.24-1 1.97-1.29c.7-.27 1.5-.45 2.67-.51 1.27-.06 1.65-.07 4.85-.07zm0-2.16C8.74 0 8.33.01 7.05.07c-1.29.06-2.17.27-2.94.58-.8.32-1.47.75-2.14 1.42S.8 3.54.48 4.34c-.31.77-.52 1.65-.58 2.94C0 8.56 0 8.97 0 12s.01 3.44.07 4.72c.06 1.29.27 2.17.58 2.94.32.8.75 1.47 1.42 2.14s1.34 1.1 2.14 1.42c.77.31 1.65.52 2.94.58 1.28.06 1.69.07 4.72.07s3.44-.01 4.72-.07c1.29-.06 2.17-.27 2.94-.58.8-.32 1.47-.75 2.14-1.42s1.1-1.34 1.42-2.14c.31-.77.52-1.65.58-2.94.06-1.28.07-1.69.07-4.72s-.01-3.44-.07-4.72c-.06-1.29-.27-2.17-.58-2.94-.32-.8-.75-1.47-1.42-2.14s-1.34-1.1-2.14-1.42c-.77-.31-1.65-.52-2.94-.58C15.44.01 15.03 0 12 0z"/>
-                        <path d="M12 5.84a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32zm0 10.16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.4-10.4c0 .8-.65 1.45-1.45 1.45s-1.45-.65-1.45-1.45.65-1.45 1.45-1.45 1.45.65 1.45 1.45z"/>
-                    </svg>
-                </a>
-            </div>
-            <div class="help-button">
-                <a href="#help" class="help-btn">Yordam</a>
+                            <span>Testni boshlash</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="quizDropdown">
+                            <li>
+                                <a class="dropdown-item" href="quiztest/tezkorquiz.html">
+                                    <svg class="dropdown-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M7 2v11h3v9l7-12h-4l4-8z"/>
+                                    </svg>
+                                    <span>Tezkor Quiz</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="quiztest/bilim.html">
+                                    <svg class="dropdown-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/>
+                                        <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>
+                                    </svg>
+                                    <span>Bilim Quiz</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="quiztest/smart.html">
+                                    <svg class="dropdown-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6C7.8 12.16 7 10.63 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z"/>
+                                    </svg>
+                                    <span>Smart Quiz</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="quiztest/pro.html">
+                                    <svg class="dropdown-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1s.4-1 1-1h12c.6 0 1 .4 1 1z"/>
+                                    </svg>
+                                    <span>Pro Quiz</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="quiztest/imtihon.html">
+                                    <svg class="dropdown-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11zM8.82 13.05L7.4 14.46 10.94 18l5.66-5.66-1.41-1.41-4.24 4.24-2.13-2.12z"/>
+                                    </svg>
+                                    <span>Imtihon Quiz</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <div class="mobile-menu-bottom">
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="social-link" aria-label="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="#" class="social-link" aria-label="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
+                    <button class="help-button">
+                        <i class="fas fa-headset"></i>
+                        <span>Yordam</span>
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
+    </nav>
 
-    <div class="overlay" id="overlay"></div>
-
-    <div class="content">
-        <h1>Tezkor Quizga xush kelibsiz!</h1>
-        <p>Bilimlaringizni sinab ko'ring va yangi narsalarni o'rganing!</p>
-    </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const hamburger = document.getElementById('hamburger');
-            const sideMenu = document.getElementById('side-menu');
-            const closeBtn = document.getElementById('close-btn');
-            const overlay = document.getElementById('overlay');
-            const header = document.getElementById('header');
-            const dropdownToggles = document.querySelectorAll('.side-menu .dropdown-toggle');
-            const desktopDropdown = document.getElementById('desktop-dropdown');
-            const desktopDropdownToggle = desktopDropdown.querySelector('.dropdown-toggle');
+        document.addEventListener('DOMContentLoaded', function() {
+            const navbar = document.getElementById('mainNavbar');
+            const navLinks = document.querySelectorAll('.navbar-nav a:not(.dropdown-toggle)');
+            const burgerInput = document.querySelector('#burger');
+            const navbarCollapse = document.querySelector('.navbar-collapse');
+            const dropdown = document.querySelector('.dropdown');
+            const dropdownToggle = document.getElementById('quizDropdown');
+            const dropdownMenu = document.querySelector('.dropdown-menu');
 
-            // Toggle side menu (mobile)
-            hamburger.addEventListener('click', () => {
-                hamburger.classList.toggle('active');
-                sideMenu.classList.toggle('active');
-                overlay.classList.toggle('active');
+            // Scroll effect for navbar
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            }, { passive: true });
+
+            // Burger menu toggle
+            burgerInput.addEventListener('change', function() {
+                if (this.checked) {
+                    navbarCollapse.classList.add('show');
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    navbarCollapse.classList.remove('show');
+                    dropdown.classList.remove('show');
+                    dropdownToggle.setAttribute('aria-expanded', 'false');
+                    dropdownMenu.classList.remove('show');
+                    document.body.style.overflow = 'auto';
+                }
             });
 
-            closeBtn.addEventListener('click', () => {
-                hamburger.classList.remove('active');
-                sideMenu.classList.remove('active');
-                overlay.classList.remove('active');
-                document.querySelectorAll('.side-menu .dropdown').forEach(d => {
-                    d.classList.remove('active');
-                });
-            });
-
-            overlay.addEventListener('click', () => {
-                hamburger.classList.remove('active');
-                sideMenu.classList.remove('active');
-                overlay.classList.remove('active');
-                document.querySelectorAll('.side-menu .dropdown').forEach(d => {
-                    d.classList.remove('active');
-                });
-            });
-
-            // Toggle dropdowns in side menu (mobile)
-            dropdownToggles.forEach(toggle => {
-                toggle.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const dropdown = toggle.closest('.dropdown');
-                    const isActive = dropdown.classList.contains('active');
-                    document.querySelectorAll('.side-menu .dropdown').forEach(d => {
-                        if (d !== dropdown) {
-                            d.classList.remove('active');
-                        }
-                    });
-                    dropdown.classList.toggle('active', !isActive);
+            // Close mobile menu on link click (except dropdown toggle)
+            navLinks.forEach(function(link) {
+                link.addEventListener('click', function() {
+                    if (navbarCollapse.classList.contains('show')) {
+                        burgerInput.checked = false;
+                        navbarCollapse.classList.remove('show');
+                        document.body.style.overflow = 'auto';
+                    }
                 });
             });
 
-            // Desktop dropdown toggle with click + preserve hover
-            if (window.innerWidth > 768) {
-                let isDropdownManuallyToggled = false; // Foydalanuvchi bosganmi?
+            // Click handling for dropdown
+            let isDropdownClicked = false;
 
-                desktopDropdownToggle.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation(); // Tashqari click eventiga ta'sir qilmasin
-                    isDropdownManuallyToggled = !isDropdownManuallyToggled;
-                    if (isDropdownManuallyToggled) {
-                        desktopDropdown.classList.add('active');
-                    } else {
-                        desktopDropdown.classList.remove('active');
-                    }
-                });
+            dropdownToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                isDropdownClicked = !dropdown.classList.contains('show');
+                dropdown.classList.toggle('show');
+                dropdownToggle.setAttribute('aria-expanded', isDropdownClicked);
+                dropdownMenu.classList.toggle('show');
+            });
 
-                // Agar tashqariga bosilsa, dropdownni yopish
-                document.addEventListener('click', (e) => {
-                    if (isDropdownManuallyToggled && !desktopDropdown.contains(e.target)) {
-                        desktopDropdown.classList.remove('active');
-                        isDropdownManuallyToggled = false;
-                    }
-                });
+            // Close dropdown on outside click
+            document.addEventListener('click', function(e) {
+                if (!dropdown.contains(e.target) && dropdown.classList.contains('show')) {
+                    isDropdownClicked = false;
+                    dropdown.classList.remove('show');
+                    dropdownToggle.setAttribute('aria-expanded', 'false');
+                    dropdownMenu.classList.remove('show');
+                }
+            });
 
-                // Hover effectni saqlash (agar manual toggle yoq bo'lsa)
-                desktopDropdown.addEventListener('mouseenter', () => {
-                    if (!isDropdownManuallyToggled) {
-                        desktopDropdown.classList.add('active');
-                    }
-                });
+            // Prevent dropdown menu clicks from closing the dropdown
+            dropdownMenu.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
 
-                desktopDropdown.addEventListener('mouseleave', () => {
-                    if (!isDropdownManuallyToggled) {
-                        desktopDropdown.classList.remove('active');
-                    }
+            // Active link highlight
+            const currentPath = window.location.pathname;
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPath.split('/').pop()) {
+                    link.classList.add('active');
+                }
+            });
+
+            // Help button click handler
+            const helpButton = document.querySelector('.help-button');
+            if (helpButton) {
+                helpButton.addEventListener('click', function() {
+                    alert('Yordam xizmati tez orada ishga tushadi!');
                 });
             }
 
-            // Handle scroll for header
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 50) {
-                    header.classList.add('scrolled');
-                } else {
-                    header.classList.remove('scrolled');
-                }
-            });
-
-            // Agar o'lcham o'zgarsa (resize), hover/click mantiqini qayta tekshirish
-            window.addEventListener('resize', () => {
-                if (window.innerWidth <= 768) {
-                    // Mobilega o'tganda, hover mantiqini o'chirish
-                    desktopDropdown.classList.remove('active');
-                }
+            // Social links click handlers
+            const socialLinks = document.querySelectorAll('.social-link');
+            socialLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // Add your social media URLs here
+                    console.log('Social link clicked');
+                });
             });
         });
     </script>
