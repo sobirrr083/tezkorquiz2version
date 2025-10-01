@@ -389,15 +389,18 @@
         .hero-text {
             color: rgba(255, 255, 255, 0.9);
             font-size: 1.1rem;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .hero-btn {
-            padding: 12px 30px;
+            padding: 10px 20px;
+            font-size: 0.9rem;
             font-weight: 600;
             border-radius: 50px;
             transition: all 0.3s ease;
-            margin-right: 15px;
+            width: 100%;
+            max-width: 200px;
+            text-align: center;
         }
 
         .btn-light {
@@ -420,6 +423,19 @@
         .btn-outline-light:hover {
             background: rgba(255, 255, 255, 0.1);
             transform: translateY(-3px);
+        }
+
+        .hero-buttons-container {
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            align-items: flex-start;
+            justify-content: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .hero-btn {
+            height: 50px;
         }
 
         /* Footer */
@@ -850,54 +866,46 @@
         }
 
         @media (max-width: 767px) {
-            body {
-                padding: 15px 0;
-            }
-
             .hero-section {
-                padding: 30px 0; /* Reduced padding for less height */
+                padding: 70px 0;
+                border-radius: 15px;
+                margin-bottom: 50px;
                 display: flex;
                 align-items: center;
-                min-height: auto; /* Removed min-height: 100vh */
-            }
-
-            .hero-card {
-                border-radius: 20px !important;
-                margin-bottom: 15px;
-            }
-
-            .card-button-container {
-                margin-top: 12px;
-            }
-
-            .card-container {
-                margin-bottom: 30px;
+                min-height: auto;
             }
 
             .hero-title {
                 font-size: 1.8rem;
                 text-align: left;
-                margin-bottom: 15px; /* Reduced margin */
+                margin-bottom: 15px;
+                margin-top: 0;
             }
 
             .hero-text {
                 font-size: 1rem;
                 text-align: left;
-                margin-bottom: 20px; /* Reduced margin */
+                margin-bottom: 15px;
+            }
+
+            .hero-buttons-container {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
             }
 
             .hero-btn {
-                font-size: 1rem; /* Slightly larger font */
-                padding: 12px 30px; /* Increased padding for larger buttons */
-                margin: 0 0 10px 0;
-                width: 100%; /* Full-width buttons */
-                max-width: 300px; /* Max width for buttons */
+                font-size: 0.9rem;
+                padding: 10px 20px;
+                width: 100%;
+                max-width: 200px;
+                height: 50px;
             }
 
             .d-flex {
                 flex-direction: column;
                 justify-content: start;
-                align-items: center; /* Center buttons */
+                align-items: flex-start;
             }
         }
 
@@ -1200,8 +1208,8 @@
                         <h1 class="hero-title">Tezkor Quiz bilan bilimlaringizni sinovdan o'tkazing</h1>
                         <p class="hero-text">Testlarni yaratish, boshqarish va yechish uchun eng qulay platforma. 
                         O'z bilimlaringizni sinab ko'ring va yangi ma'lumotlarni o'rganing.</p>
-                        <div class="d-flex flex-wrap">
-                            <a href="quiztest.html" class="btn btn-light hero-btn mb-3 mb-md-0">
+                        <div class="hero-buttons-container">
+                            <a href="quiztest.html" class="btn btn-light hero-btn">
                                 <i class="fas fa-play me-2"></i>Testni boshlash
                             </a>
                             <a href="testyaratish.html" class="btn btn-outline-light hero-btn">
