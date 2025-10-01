@@ -68,6 +68,7 @@
 
         .navbar-nav {
             gap: 5px;
+            margin-left: auto; /* Aligns menu to the right in desktop and tablet */
         }
 
         .nav-link {
@@ -280,7 +281,7 @@
             padding: 20px;
             border-top: 2px solid rgba(102, 126, 234, 0.1);
             margin-top: auto;
-            padding-bottom: 80px; /* Increased for bottom spacing */
+            padding-bottom: 80px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -322,7 +323,7 @@
 
         .help-button {
             width: 100%;
-            max-width: 200px; /* Limit width for centering */
+            max-width: 200px;
             padding: 14px;
             background: var(--gradient-1);
             border: none;
@@ -347,24 +348,30 @@
             font-size: 18px;
         }
 
+        @media (min-width: 992px) {
+            .mobile-menu-bottom {
+                display: none !important; /* Hide social links and help button in desktop and tablet */
+            }
+        }
+
         @media (max-width: 991px) {
             .navbar {
                 padding: 10px 0;
             }
 
             .navbar-brand {
-                font-size: 34px; /* Increased font size for mobile */
-                font-weight: 900;
+                font-size: 34px;
+                font-weight: 700; /* Reduced font weight for less boldness */
             }
 
             .burger {
                 display: block;
-                width: 22px; /* Smaller burger menu */
-                height: 16px; /* Smaller burger menu */
+                width: 24px; /* Slightly larger than previous 22px */
+                height: 18px; /* Slightly larger than previous 16px */
             }
 
             .burger span {
-                height: 2px; /* Thinner lines for smaller burger */
+                height: 2.2px; /* Slightly thicker lines */
             }
 
             .burger input:checked ~ span:nth-of-type(1) {
@@ -373,7 +380,7 @@
             }
 
             .burger input:checked ~ span:nth-of-type(3) {
-                top: 14px; /* Adjusted for smaller burger */
+                top: 16px; /* Adjusted for larger burger */
                 left: 2px;
             }
 
@@ -415,6 +422,7 @@
                 gap: 8px;
                 width: 100%;
                 text-align: left;
+                margin-left: 0; /* Reset right alignment for mobile */
             }
 
             .nav-link {
@@ -457,7 +465,7 @@
                 background: transparent;
                 margin-top: 8px;
                 margin-left: 0;
-                margin-bottom: 20px; /* Added spacing below dropdown */
+                margin-bottom: 15px; /* Reduced spacing to move social links/help button higher */
                 transform: scaleY(0);
                 opacity: 0;
                 visibility: hidden;
@@ -475,20 +483,20 @@
             }
 
             .dropdown-item {
-                padding: 18px 20px; /* Same padding as nav-link */
+                padding: 18px 20px;
                 display: flex;
                 align-items: center;
                 justify-content: flex-start;
                 gap: 15px;
-                font-size: 17px; /* Same font size as nav-link */
-                background: transparent; /* Removed background */
+                font-size: 17px;
+                background: transparent;
                 margin-bottom: 8px;
                 border-radius: 14px;
-                width: 100%; /* Full width like nav-link */
+                width: 100%;
             }
 
             .dropdown-item:hover {
-                background: rgba(102, 126, 234, 0.08); /* Same hover effect as nav-link */
+                background: rgba(102, 126, 234, 0.08);
             }
 
             .dropdown-item:last-child {
@@ -505,21 +513,23 @@
                 align-items: center;
                 justify-content: center;
                 flex-direction: column;
+                padding-top: 10px; /* Reduced to move section higher */
             }
         }
 
         @media (max-width: 576px) {
             .navbar-brand {
-                font-size: 30px; /* Slightly smaller but still larger than original */
+                font-size: 30px;
+                font-weight: 700;
             }
 
             .burger {
-                width: 20px; /* Even smaller for smaller screens */
-                height: 14px;
+                width: 22px; /* Slightly larger than previous 20px */
+                height: 16px; /* Slightly larger than previous 14px */
             }
 
             .burger span {
-                height: 1.8px;
+                height: 2px;
             }
 
             .burger input:checked ~ span:nth-of-type(1) {
@@ -528,7 +538,7 @@
             }
 
             .burger input:checked ~ span:nth-of-type(3) {
-                top: 12px;
+                top: 14px;
                 left: 2px;
             }
 
@@ -574,26 +584,28 @@
             .help-button {
                 padding: 12px;
                 font-size: 15px;
-                max-width: 180px; /* Slightly smaller for smaller screens */
+                max-width: 180px;
             }
 
             .mobile-menu-bottom {
-                padding-bottom: 70px; /* Adjusted bottom padding */
+                padding-bottom: 70px;
+                padding-top: 8px; /* Reduced to move section higher */
             }
         }
 
         @media (max-width: 375px) {
             .navbar-brand {
                 font-size: 28px;
+                font-weight: 700;
             }
 
             .burger {
-                width: 18px;
-                height: 12px;
+                width: 20px; /* Slightly larger than previous 18px */
+                height: 14px; /* Slightly larger than previous 12px */
             }
 
             .burger span {
-                height: 1.5px;
+                height: 1.8px;
             }
 
             .burger input:checked ~ span:nth-of-type(1) {
@@ -602,7 +614,7 @@
             }
 
             .burger input:checked ~ span:nth-of-type(3) {
-                top: 10px;
+                top: 12px;
                 left: 1px;
             }
 
@@ -629,6 +641,7 @@
 
             .mobile-menu-bottom {
                 padding-bottom: 60px;
+                padding-top: 6px; /* Reduced to move section higher */
             }
         }
 
