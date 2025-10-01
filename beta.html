@@ -40,7 +40,7 @@
             font-family: 'Nunito', 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #ECF2FF;
             min-height: 100vh;
-            padding-top: 60px; /* Desktop rejimida top masofani kamaytirish */
+            padding-top: 60px;
         }
 
         /* Navbar Styles */
@@ -852,14 +852,14 @@
 
         @media (max-width: 767px) {
             body {
-                padding: 15px 0; /* Mobil rejimida padding optimallashtirildi */
+                padding: 15px 0;
             }
 
             .hero-section {
-                min-height: 100vh; /* Hero to'liq ekran balandligini egallaydi */
-                padding: 40px 0; /* Mobil rejimida padding kamaytirildi */
+                min-height: 100vh;
+                padding: 40px 0;
                 display: flex;
-                align-items: center; /* Vertikal markazlashtirish */
+                align-items: center;
             }
 
             .hero-card {
@@ -876,35 +876,26 @@
             }
 
             .hero-title {
-                font-size: 1.8rem; /* Mobil rejimida matn o'lchami kamaytirildi */
-                text-align: center; /* Markazlashtirish */
+                font-size: 1.8rem;
+                text-align: left;
             }
 
             .hero-text {
                 font-size: 1rem;
-                text-align: center; /* Markazlashtirish */
+                text-align: left;
             }
 
             .hero-btn {
-                font-size: 0.9rem; /* Tugmalar matni mobil uchun kamaytirildi */
+                font-size: 0.9rem;
                 padding: 10px 25px;
-                margin: 0 auto 10px; /* Tugmalar markazlashtirildi */
-                display: block; /* Tugmalar vertikal joylashadi */
+                margin: 0 15px 10px 0;
+                display: block;
             }
 
             .d-flex {
-                flex-direction: column; /* Tugmalar vertikal joylashadi */
-                align-items: center;
-            }
-
-            .col-md-5 {
-                display: block !important; /* Mobil rejimida rasm ko'rsatiladi */
-                text-align: center;
-                margin-top: 20px;
-            }
-
-            .col-md-5 img {
-                max-width: 80%; /* Rasm o'lchami mobil uchun moslashtirildi */
+                flex-direction: column;
+                justify-content: start;
+                align-items: flex-start;
             }
         }
 
@@ -934,7 +925,7 @@
             }
 
             body {
-                padding-top: 55px; /* Mobil rejimida navbar balandligiga moslash */
+                padding-top: 55px;
             }
 
             .navbar-collapse {
@@ -1216,7 +1207,7 @@
                             </a>
                         </div>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-5 d-none d-md-block">
                         <div style="max-width: 350px; margin: 0 auto;">
                             <img src="aga/kamlogo.webp" alt="Tezkor Quiz Logosi" class="img-fluid rounded">
                         </div>
