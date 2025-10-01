@@ -68,7 +68,7 @@
 
         .navbar-nav {
             gap: 5px;
-            margin-left: auto; /* Aligns menu to the right in desktop and tablet */
+            margin-left: auto;
         }
 
         .nav-link {
@@ -283,15 +283,16 @@
             margin-top: auto;
             padding-bottom: 80px;
             display: flex;
-            flex-direction: column;
+            flex-direction: row; /* Changed to row for mobile view */
             align-items: center;
+            justify-content: center;
+            gap: 25px; /* Match social-links gap */
         }
 
         .social-links {
             display: flex;
             justify-content: center;
             gap: 25px;
-            margin-bottom: 20px;
         }
 
         .social-link {
@@ -322,9 +323,8 @@
         }
 
         .help-button {
-            width: 100%;
-            max-width: 200px;
-            padding: 14px;
+            width: auto; /* Adjusted to fit content */
+            padding: 14px 20px; /* Adjusted padding for consistency */
             background: var(--gradient-1);
             border: none;
             border-radius: 12px;
@@ -350,7 +350,7 @@
 
         @media (min-width: 992px) {
             .mobile-menu-bottom {
-                display: none !important; /* Hide social links and help button in desktop and tablet */
+                display: none !important;
             }
         }
 
@@ -361,17 +361,17 @@
 
             .navbar-brand {
                 font-size: 34px;
-                font-weight: 700; /* Reduced font weight for less boldness */
+                font-weight: 700;
             }
 
             .burger {
                 display: block;
-                width: 24px; /* Slightly larger than previous 22px */
-                height: 18px; /* Slightly larger than previous 16px */
+                width: 24px;
+                height: 18px;
             }
 
             .burger span {
-                height: 2.2px; /* Slightly thicker lines */
+                height: 2.2px;
             }
 
             .burger input:checked ~ span:nth-of-type(1) {
@@ -380,7 +380,7 @@
             }
 
             .burger input:checked ~ span:nth-of-type(3) {
-                top: 16px; /* Adjusted for larger burger */
+                top: 16px;
                 left: 2px;
             }
 
@@ -422,7 +422,7 @@
                 gap: 8px;
                 width: 100%;
                 text-align: left;
-                margin-left: 0; /* Reset right alignment for mobile */
+                margin-left: 0;
             }
 
             .nav-link {
@@ -465,7 +465,7 @@
                 background: transparent;
                 margin-top: 8px;
                 margin-left: 0;
-                margin-bottom: 15px; /* Reduced spacing to move social links/help button higher */
+                margin-bottom: 15px;
                 transform: scaleY(0);
                 opacity: 0;
                 visibility: hidden;
@@ -510,10 +510,7 @@
             .mobile-menu-bottom {
                 display: flex;
                 margin-top: auto;
-                align-items: center;
-                justify-content: center;
-                flex-direction: column;
-                padding-top: 10px; /* Reduced to move section higher */
+                padding-top: 10px;
             }
         }
 
@@ -524,8 +521,8 @@
             }
 
             .burger {
-                width: 22px; /* Slightly larger than previous 20px */
-                height: 16px; /* Slightly larger than previous 14px */
+                width: 22px;
+                height: 16px;
             }
 
             .burger span {
@@ -582,14 +579,13 @@
             }
 
             .help-button {
-                padding: 12px;
+                padding: 12px 18px; /* Adjusted for smaller screens */
                 font-size: 15px;
-                max-width: 180px;
             }
 
             .mobile-menu-bottom {
                 padding-bottom: 70px;
-                padding-top: 8px; /* Reduced to move section higher */
+                padding-top: 8px;
             }
         }
 
@@ -600,8 +596,8 @@
             }
 
             .burger {
-                width: 20px; /* Slightly larger than previous 18px */
-                height: 14px; /* Slightly larger than previous 12px */
+                width: 20px;
+                height: 14px;
             }
 
             .burger span {
@@ -639,9 +635,14 @@
                 height: 40px;
             }
 
+            .help-button {
+                padding: 10px 16px; /* Adjusted for smaller screens */
+                font-size: 14px;
+            }
+
             .mobile-menu-bottom {
                 padding-bottom: 60px;
-                padding-top: 6px; /* Reduced to move section higher */
+                padding-top: 6px;
             }
         }
 
