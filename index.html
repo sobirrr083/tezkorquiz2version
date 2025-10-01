@@ -1,39 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Tezkor Quiz - Asosan Talabalar va O'quvchilar uchun</title>
+    <title>Tezkor Quiz: Asosan talabalar va o'quvchilar uchun</title>
     <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- AOS Animation CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
-    <link rel="icon" href="aga/iconcha.png">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
-       
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- AOS Animation CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
-    <meta name="description" content="Tezkor Quiz - Talabalar va o'quvchilar uchun testlarni yaratish, boshqarish va yechish uchun qulay platforma">
-
-    <!-- asissent linklari --> 
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="aga/iconcha.png">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tezkor Quiz - testlarni yaratish, boshqarish va yechish uchun qulay platforma">
     <!-- Audio elements for sound effects -->
-     <audio id="openSound" preload="auto">
-    <source src="https://cdnjs.cloudflare.com/ajax/libs/simple-sounds/1.0.0/sounds/pop-up.mp3" type="audio/mpeg">
+    <audio id="openSound" preload="auto">
+        <source src="https://cdnjs.cloudflare.com/ajax/libs/simple-sounds/1.0.0/sounds/pop-up.mp3" type="audio/mpeg">
     </audio>
     <audio id="messageSound" preload="auto">
-    <source src="https://cdnjs.cloudflare.com/ajax/libs/simple-sounds/1.0.0/sounds/notification.mp3" type="audio/mpeg">
+        <source src="https://cdnjs.cloudflare.com/ajax/libs/simple-sounds/1.0.0/sounds/notification.mp3" type="audio/mpeg">
     </audio>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <style>
-       :root {
+        :root {
             --primary-color: #4361ee;
             --secondary-color: #3a0ca3;
             --accent-color: #f72585;
@@ -41,156 +30,336 @@
             --dark-color: #212529;
             --success-color: #4cc9f0;
             --warning-color: #f8961e;
+            --gradient-1: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            --white: #fff;
+            --black: #282936;
+            --burger-active-color: #ff0000;
         }
 
         body {
-            background-color: #ECF2FF; /* O'zingiz xohlagan rang, masalan, och kulrang */
-        }
-        
-      /* Rasmlar moslashuvchan bo'lishi uchun */
-        .ima img {
-            max-width: 100%;
-            height: 50px;
-            display: block;
-            margin: 0 auto;
+            font-family: 'Nunito', 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #ECF2FF;
+            min-height: 100vh;
+            padding-top: 60px;
         }
 
-        /* Kichik ekranlar uchun matn o'lchamini moslash */
-        @media (max-width: 767px) {
-            h2 {
-                font-size: 20px;
-            }
-            .card-body {
-                font-size: 14px;
-            }
-        }
-        
-        /* New card styles */
-        .card {
-          position: relative;
-          width: 100%;
-          height: 300px;
-          background-color: #f2f2f2;
-          border-radius: 10px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          overflow: hidden;
-          perspective: 1000px;
-          box-shadow: 0 0 0 5px #ffffff80;
-          transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .card svg {
-          width: 48px;
-          fill: #333;
-          transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .card:hover {
-          transform: scale(1.05);
-          box-shadow: 0 8px 16px rgba(255, 255, 255, 0.2);
-        }
-
-        .card__content {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          padding: 20px;
-          box-sizing: border-box;
-          background-color: #f2f2f2;
-          transform: rotateX(-90deg);
-          transform-origin: bottom;
-          transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .card:hover .card__content {
-          transform: rotateX(0deg);
-        }
-
-        .card__title {
-          margin: 0;
-          font-size: 24px;
-          color: #000000;
-          font-weight: 700;
-        }
-
-        .card:hover svg {
-          scale: 0;
-        }
-
-        .card__description {
-          margin: 10px 0 0;
-          font-size: 14px;
-          color: #000000;
-          line-height: 1.4;
-        }
-        
-        .card-image {
-          width: 100%;
-          height: auto;
-          transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        
-        .card:hover .card-image {
-          scale: 0;
-        }
-
-        
-        /* Navbar styling */
+        /* Navbar Styles */
         .navbar {
-            padding: 15px 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-            background-color: #fff;
+            padding: 12px 0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
         }
-        
+
+        .navbar.scrolled {
+            padding: 8px 0;
+            box-shadow: 0 6px 40px rgba(0, 0, 0, 0.15);
+        }
+
         .navbar-brand {
-            font-weight: 700;
-            font-size: 26px;
-            color: #3a56e4 !important;
-            letter-spacing: 0.5px;
+            font-family: 'Roboto';
+            font-weight: 800;
+            font-size: 28px;
+            color: var(--primary-color) !important;
+            letter-spacing: -0.5px;
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        
+
+        .navbar-brand:hover {
+            transform: scale(1.05);
+        }
+
+        .navbar-nav {
+            gap: 5px;
+            margin-left: auto;
+        }
+
         .nav-link {
-            font-weight: 500;
-            font-size: 16px;
-            margin: 0 15px;
-            color: #333 !important;
-            transition: color 0.3s ease;
-        }
-        
-        .nav-link:hover {
-            color: #3a56e4 !important;
-        }
-        
-        .nav-link.active {
-            color: #3a56e4 !important;
+            font-family: 'Roboto', sans-serif;
             font-weight: 600;
-        }
-        
-        .beta-badge {
-            font-size: 12px;
-            background-color: #ff6b6b;
-            color: white;
-            padding: 2px 8px;
+            font-size: 15px;
+            padding: 10px 20px !important;
+            color: var(--dark-color) !important;
             border-radius: 12px;
-            margin-left: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-1);
+            opacity: 0.1;
+            transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: -1;
+        }
+
+        .nav-link:hover::before {
+            left: 0;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+        }
+
+        .nav-link:hover .nav-icon {
+            fill: var(--primary-color);
+            transform: scale(1.1);
+        }
+
+        .nav-link.active {
+            background: var(--gradient-1);
+            color: white !important;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .nav-link.active .nav-icon {
+            fill: white;
+        }
+
+        .nav-link.active::before {
+            display: none;
+        }
+
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            fill: var(--dark-color);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-right: 8px;
+            display: inline-block;
             vertical-align: middle;
         }
-        
-        .navbar-toggler {
+
+        .dropdown-icon {
+            width: 22px;
+            height: 22px;
+            fill: var(--dark-color);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-right: 10px;
+            display: inline-block;
+            vertical-align: middle;
+            z-index: 1;
+            flex-shrink: 0;
+        }
+
+        .dropdown-toggle::after {
+            transition: transform 0.3s ease;
+            margin-left: 8px;
+        }
+
+        .dropdown-toggle[aria-expanded="true"]::after {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-menu {
             border: none;
-            padding: 0;
-            outline: none;
+            border-radius: 16px;
+            padding: 12px;
+            margin-top: 12px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            min-width: 260px;
+            transform-origin: top;
+            opacity: 0;
+            visibility: hidden;
+            transform: scaleY(0);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: block;
+            position: absolute;
+            right: 0;
         }
-        
-        .navbar-toggler:focus {
-            box-shadow: none;
+
+        .dropdown.show .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: scaleY(1);
         }
-     /* Hero section */
-     .hero-section {
+
+        .dropdown-item {
+            padding: 12px 18px;
+            border-radius: 12px;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--dark-color);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 4px;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .dropdown-item:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+            color: var(--primary-color);
+        }
+
+        .dropdown-item:hover .dropdown-icon {
+            fill: var(--primary-color);
+            transform: scale(1.15);
+        }
+
+        .burger {
+            position: relative;
+            width: 26px;
+            height: 20px;
+            background: transparent;
+            cursor: pointer;
+            display: none;
+            margin-left: auto;
+            transition: all 0.3s ease;
+        }
+
+        .burger input {
+            display: none;
+        }
+
+        .burger span {
+            display: block;
+            position: absolute;
+            height: 2.5px;
+            width: 100%;
+            background: var(--black);
+            border-radius: 8px;
+            opacity: 1;
+            left: 0;
+            transform: rotate(0deg);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .burger input:checked ~ span {
+            background: var(--burger-active-color);
+        }
+
+        .burger span:nth-of-type(1) {
+            top: 0px;
+            transform-origin: left center;
+        }
+
+        .burger span:nth-of-type(2) {
+            top: 50%;
+            transform: translateY(-50%);
+            transform-origin: left center;
+        }
+
+        .burger span:nth-of-type(3) {
+            top: 100%;
+            transform-origin: left center;
+            transform: translateY(-100%);
+        }
+
+        .burger input:checked ~ span:nth-of-type(1) {
+            transform: rotate(45deg);
+            top: -1px;
+            left: 3px;
+        }
+
+        .burger input:checked ~ span:nth-of-type(2) {
+            width: 0%;
+            opacity: 0;
+        }
+
+        .burger input:checked ~ span:nth-of-type(3) {
+            transform: rotate(-45deg);
+            top: 18px;
+            left: 3px;
+        }
+
+        .mobile-menu-bottom {
+            display: none;
+            padding: 20px;
+            border-top: 2px solid rgba(102, 126, 234, 0.1);
+            margin-top: auto;
+            padding-bottom: 80px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 25px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+        }
+
+        .social-link {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        }
+
+        .social-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            background: var(--gradient-1);
+        }
+
+        .social-link i {
+            font-size: 20px;
+            color: var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover i {
+            color: white;
+        }
+
+        .help-button {
+            width: auto;
+            padding: 14px 20px;
+            background: var(--gradient-1);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .help-button:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .help-button i {
+            font-size: 18px;
+        }
+
+        /* Hero section */
+        .hero-section {
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             padding: 70px 0;
             border-radius: 15px;
@@ -198,7 +367,7 @@
             position: relative;
             overflow: hidden;
         }
-        
+
         .hero-section::before {
             content: "";
             position: absolute;
@@ -209,49 +378,66 @@
             top: -100px;
             right: -100px;
         }
-        
+
         .hero-title {
             color: white;
             font-size: 2.5rem;
             font-weight: 700;
             margin-bottom: 20px;
         }
-        
+
         .hero-text {
             color: rgba(255, 255, 255, 0.9);
             font-size: 1.1rem;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
-        
+
         .hero-btn {
-            padding: 12px 30px;
+            padding: 10px 20px;
+            font-size: 0.9rem;
             font-weight: 600;
             border-radius: 50px;
             transition: all 0.3s ease;
-            margin-right: 15px;
+            width: 100%;
+            max-width: 200px;
+            text-align: center;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        
+
         .btn-light {
             background: white;
             color: var(--primary-color);
             border: none;
         }
-        
+
         .btn-light:hover {
             background: rgba(255, 255, 255, 0.9);
             transform: translateY(-3px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
-        
+
         .btn-outline-light {
             border: 2px solid white;
             color: white;
         }
-        
+
         .btn-outline-light:hover {
             background: rgba(255, 255, 255, 0.1);
             transform: translateY(-3px);
         }
+
+        .hero-buttons-container {
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            align-items: center;
+            justify-content: flex-start;
+            margin-bottom: 20px;
+        }
+
         /* Footer */
         .footer {
             padding: 50px 0 20px;
@@ -259,13 +445,13 @@
             color: white;
             margin-top: 50px;
         }
-        
+
         .footer-title {
             font-size: 20px;
             font-weight: 700;
             margin-bottom: 20px;
         }
-        
+
         .footer-link {
             display: block;
             color: rgba(255, 255, 255, 0.7);
@@ -273,12 +459,12 @@
             transition: all 0.3s ease;
             text-decoration: none;
         }
-        
+
         .footer-link:hover {
             color: white;
             padding-left: 5px;
         }
-        
+
         .social-icon {
             display: inline-flex;
             align-items: center;
@@ -291,12 +477,12 @@
             margin-right: 10px;
             transition: all 0.3s ease;
         }
-        
+
         .social-icon:hover {
             background-color: var(--primary-color);
             transform: translateY(-3px);
         }
-        
+
         .copyright {
             font-size: 14px;
             color: rgba(255, 255, 255, 0.6);
@@ -305,543 +491,1005 @@
             padding-top: 20px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
-   /* asissent csslari oxirigacha */
 
+        /* Cards CSS */
+        .card-container {
+            margin-bottom: 40px;
+            transition: all 0.3s ease;
+        }
 
-  /* Chat Button Style with increased z-index */
-  .chat-button {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(145deg, #4d93ff, #2e6cd7);
-            color: white;
+        .hero-card {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16/9;
+            border-radius: 24px !important;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            margin-bottom: 20px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .hero-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 35px 70px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-container:hover .hero-card {
+            transform: translateY(-10px);
+            box-shadow: 0 35px 70px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-container:hover .learn-more-button .circle {
+            width: 100%;
+        }
+
+        .card-container:hover .learn-more-button .arrow {
+            background: var(--white);
+            transform: translate(1rem, 0);
+        }
+
+        .card-container:hover .learn-more-button .button-text {
+            color: var(--white);
+        }
+
+        .card-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: transform 0.3s ease;
+        }
+
+        .card-1 .card-image {
+            background-image: url('aga/segy02.png');
+        }
+
+        .card-2 .card-image {
+            background-image: url('aga/segy01.png');
+        }
+
+        .card-3 .card-image {
+            background-image: url('aga/testyaratish.webp');
+        }
+
+        .card-4 .card-image {
+            background-image: url('aga/quiztest.webp');
+        }
+
+        .hero-card:hover .card-image {
+            transform: scale(1.05);
+        }
+
+        .card-container:hover .card-image {
+            transform: scale(1.05);
+        }
+
+        .card-button-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            cursor: pointer;
-            box-shadow: 0 4px 20px rgba(66, 133, 244, 0.4);
-            z-index: 99999; /* Very high z-index to ensure top priority */
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-            overflow: hidden;
+            margin-top: 15px;
+            z-index: 10;
         }
 
-        .chat-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 25px rgba(66, 133, 244, 0.6);
+        .hero-card::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.2));
+            pointer-events: none;
+            transition: opacity 0.3s ease;
         }
 
-        .chat-button.active {
-            transform: scale(1.2);
+        .hero-card:hover::after {
+            opacity: 0.7;
+        }
+
+        .card-container:hover .hero-card::after {
+            opacity: 0.7;
+        }
+
+        .hero-card {
             opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s ease;
         }
 
-        .chat-icon {
-            font-size: 24px;
-            transition: all 0.3s ease;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-        }
-
-        /* Chat Window Style with increased z-index */
-        .chat-container {
-            position: fixed;
-            bottom: 90px;
-            right: 20px;
-            width: 350px;
-            height: 450px;
-            background-color: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            display: none;
-            flex-direction: column;
-            z-index: 99998; /* Very high z-index, just below the chat button */
-            overflow: hidden;
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-            transform-origin: bottom right;
-            opacity: 0;
-            transform: scale(0.1);
-        }
-
-        .chat-container.visible {
-            display: flex;
+        .hero-card.animate {
             opacity: 1;
-            transform: scale(1);
-            animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+            transform: translateY(0);
         }
 
-        .chat-container.closing {
-            opacity: 0;
-            transform: scale(0.1);
-        }
-
-        @keyframes popIn {
-            0% { transform: scale(0.1); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .chat-header {
-            background: linear-gradient(145deg, #4d93ff, #2e6cd7);
-            color: white;
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .chat-title {
-            font-weight: bold;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .chat-title::before {
-            content: '';
+        .learn-more-button {
+            position: relative;
             display: inline-block;
-            width: 10px;
-            height: 10px;
-            background-color: #4eff4e;
-            border-radius: 50%;
-            animation: blink 1.5s infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
-        }
-
-        .chat-controls {
-            display: flex;
-            gap: 15px;
-        }
-
-        .control-button {
-            background: none;
-            border: none;
-            color: white;
             cursor: pointer;
-            font-size: 16px;
-            width: 25px;
-            height: 25px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-        }
-
-        .control-button:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-            transform: scale(1.1);
-        }
-
-        .chat-messages {
-            flex-grow: 1;
-            padding: 20px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            background-color: #f9fafc;
-        }
-
-        .message {
-            max-width: 80%;
-            padding: 12px 18px;
-            border-radius: 18px;
-            margin-bottom: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
-            animation: messageIn 0.3s ease forwards;
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        @keyframes messageIn {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        .assistant-message {
-            background: linear-gradient(145deg, #f1f1f1, #ffffff);
-            color: #333;
-            align-self: flex-start;
-            border-bottom-left-radius: 5px;
-        }
-
-        .user-message {
-            background: linear-gradient(145deg, #4d93ff, #2e6cd7);
-            color: white;
-            align-self: flex-end;
-            border-bottom-right-radius: 5px;
-        }
-
-        .chat-input-container {
-            display: flex;
-            padding: 15px;
-            background-color: white;
-            border-top: 1px solid #eaeaea;
-            transition: all 0.3s ease;
-        }
-
-        .chat-input {
-            flex-grow: 1;
-            padding: 12px 18px;
-            border: 1px solid #e0e0e0;
-            border-radius: 25px;
             outline: none;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-
-        .chat-input:focus {
-            border-color: #4285f4;
-            box-shadow: 0 2px 15px rgba(66, 133, 244, 0.15);
-        }
-
-        .send-button {
-            background: linear-gradient(145deg, #4d93ff, #2e6cd7);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 45px;
-            height: 45px;
-            margin-left: 10px;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 4px 10px rgba(66, 133, 244, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .send-button:hover {
-            transform: scale(1.05) rotate(5deg);
-            box-shadow: 0 6px 15px rgba(66, 133, 244, 0.4);
-        }
-
-        .telegram-button {
-            display: inline-block;
-            background: linear-gradient(145deg, #0088cc, #0066aa);
-            color: white;
+            border: 0;
+            vertical-align: middle;
             text-decoration: none;
-            padding: 10px 18px;
-            border-radius: 25px;
-            margin-top: 10px;
-            font-weight: bold;
-            box-shadow: 0 4px 10px rgba(0, 136, 204, 0.3);
-            transition: all 0.3s ease;
+            background: transparent;
+            padding: 0;
+            font-size: inherit;
+            font-family: inherit;
+            width: 12rem;
+            height: auto;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
-        .telegram-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 136, 204, 0.4);
+        .circle {
+            transition: all 0.45s cubic-bezier(0.65,0,.076,1);
+            position: relative;
+            display: block;
+            margin: 0;
+            width: 3rem;
+            height: 3rem;
+            background: var(--black);
+            border-radius: 1.625rem;
         }
 
-        .ai-thinking {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 15px;
-            border-radius: 18px;
-            background-color: #f1f1f1;
-            align-self: flex-start;
-            margin-bottom: 5px;
-            animation: fadeInOut 1.5s infinite;
+        .icon {
+            transition: all 0.45s cubic-bezier(0.65,0,.076,1);
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            background: var(--white);
         }
 
-        .thinking-dots {
-            display: flex;
-            gap: 4px;
+        .arrow {
+            transition: all 0.45s cubic-bezier(0.65,0,.076,1);
+            left: 0.625rem;
+            width: 1.125rem;
+            height: 0.125rem;
+            background: none;
         }
 
-        .dot {
-            width: 8px;
-            height: 8px;
-            background-color: #888;
-            border-radius: 50%;
+        .arrow::before {
+            position: absolute;
+            content: '';
+            top: -0.25rem;
+            right: 0.0625rem;
+            width: 0.625rem;
+            height: 0.625rem;
+            border-top: 0.125rem solid #fff;
+            border-right: 0.125rem solid #fff;
+            transform: rotate(45deg);
         }
 
-        .dot:nth-child(1) {
-            animation: bounce 1.4s -0.32s infinite ease-in-out;
+        .button-text {
+            transition: all 0.45s cubic-bezier(0.65,0,.076,1);
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 0.75rem 0;
+            margin: 0 0 0 1.85rem;
+            color: var(--black);
+            font-weight: 700;
+            line-height: 1.6;
+            text-align: center;
+            text-transform: uppercase;
         }
 
-        .dot:nth-child(2) {
-            animation: bounce 1.4s -0.16s infinite ease-in-out;
+        .learn-more-button:hover .circle {
+            width: 100%;
         }
 
-        .dot:nth-child(3) {
-            animation: bounce 1.4s 0s infinite ease-in-out;
+        .learn-more-button:hover .arrow {
+            background: var(--white);
+            transform: translate(1rem, 0);
         }
 
-        @keyframes bounce {
-            0%, 100% {
-                transform: translateY(0);
+        .learn-more-button:hover .button-text {
+            color: var(--white);
+        }
+
+        @supports (display: grid) {
+            .card-button-container {
+                display: grid;
+                place-items: center;
             }
-            50% {
-                transform: translateY(-5px);
-            }
         }
 
-        @keyframes fadeInOut {
-            0%, 100% {
-                opacity: 0.7;
+        /* Responsive Styles */
+        @media (max-width: 991px) {
+            .navbar {
+                padding: 10px 0;
             }
-            50% {
+
+            .navbar-brand {
+                font-size: 34px;
+                font-weight: 700;
+            }
+
+            .burger {
+                display: block;
+                width: 24px;
+                height: 18px;
+            }
+
+            .burger span {
+                height: 2.2px;
+            }
+
+            .burger input:checked ~ span:nth-of-type(1) {
+                top: -1px;
+                left: 2px;
+            }
+
+            .burger input:checked ~ span:nth-of-type(3) {
+                top: 16px;
+                left: 2px;
+            }
+
+            .navbar-toggler {
+                display: none;
+            }
+
+            .navbar-collapse {
+                position: fixed;
+                top: 60px;
+                left: 0;
+                width: 100vw;
+                height: calc(100vh - 60px);
+                background: white;
+                padding: 25px 20px 5px 20px;
+                border-radius: 0;
+                margin-top: 0;
+                box-shadow: none;
+                transform: translateX(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: flex-start;
+                z-index: 1000;
+                overflow-y: auto;
+                overflow-x: hidden;
+            }
+
+            .navbar-collapse.show {
+                transform: translateX(0);
                 opacity: 1;
+                visibility: visible;
+            }
+
+            .navbar-nav {
+                gap: 8px;
+                width: 100%;
+                text-align: left;
+                margin-left: 0;
+            }
+
+            .nav-link {
+                padding: 18px 20px !important;
+                margin: 0;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                gap: 15px;
+                font-size: 17px;
+                width: 100%;
+                border-radius: 14px;
+                background: rgba(102, 126, 234, 0.03);
+            }
+
+            .nav-link:hover {
+                background: rgba(102, 126, 234, 0.08);
+            }
+
+            .nav-link.active {
+                background: var(--gradient-1);
+                color: white !important;
+            }
+
+            .nav-icon {
+                width: 24px;
+                height: 24px;
+                flex-shrink: 0;
+            }
+
+            .dropdown-icon {
+                width: 24px;
+                height: 24px;
+                flex-shrink: 0;
+            }
+
+            .dropdown-menu {
+                border: none;
+                box-shadow: none;
+                background: transparent;
+                margin-top: 8px;
+                margin-left: 0;
+                margin-bottom: 15px;
+                transform: scaleY(0);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                display: block;
+                position: static;
+                width: 100%;
+                padding: 8px 0;
+            }
+
+            .dropdown.show .dropdown-menu {
+                transform: scaleY(1);
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .dropdown-item {
+                padding: 18px 20px;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                gap: 15px;
+                font-size: 17px;
+                background: transparent;
+                margin-bottom: 8px;
+                border-radius: 14px;
+                width: 100%;
+            }
+
+            .dropdown-item:hover {
+                background: rgba(102, 126, 234, 0.08);
+            }
+
+            .dropdown-item:last-child {
+                margin-bottom: 0;
+            }
+
+            .mobile-menu-bottom {
+                display: flex;
+                margin-top: auto;
+                padding-top: 10px;
             }
         }
 
-/*         ifirime kodlari */
-         .cards-container {
-            width: 90%;
-            height: 500px; /* Kartalar balandligiga qarab o'zgartiring */
+        @media (max-width: 767px) {
+            .hero-section {
+                padding: 70px 0;
+                border-radius: 15px;
+                margin-bottom: 50px;
+                display: flex;
+                align-items: center;
+                min-height: auto;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+                text-align: center;
+                margin-bottom: 30px;
+                margin-top: 0;
+            }
+
+            .hero-text {
+                font-size: 1.1rem;
+                text-align: center;
+                margin-bottom: 25px;
+            }
+
+            .hero-buttons-container {
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 15px;
+            }
+
+            .hero-btn {
+                font-size: 0.9rem;
+                padding: 10px 20px;
+                width: 100%;
+                max-width: 200px;
+                height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .d-flex {
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .navbar-brand {
+                font-size: 30px;
+                font-weight: 700;
+            }
+
+            .burger {
+                width: 22px;
+                height: 16px;
+            }
+
+            .burger span {
+                height: 2px;
+            }
+
+            .burger input:checked ~ span:nth-of-type(1) {
+                top: -1px;
+                left: 2px;
+            }
+
+            .burger input:checked ~ span:nth-of-type(3) {
+                top: 14px;
+                left: 2px;
+            }
+
+            body {
+                padding-top: 55px;
+            }
+
+            .navbar-collapse {
+                top: 55px;
+                height: calc(100vh - 55px);
+                padding: 20px 15px 5px 15px;
+            }
+
+            .nav-link {
+                padding: 16px 18px !important;
+                font-size: 16px;
+            }
+
+            .nav-icon {
+                width: 22px;
+                height: 22px;
+            }
+
+            .dropdown-icon {
+                width: 22px;
+                height: 22px;
+            }
+
+            .dropdown-item {
+                padding: 16px 18px;
+                font-size: 16px;
+            }
+
+            .social-link {
+                width: 42px;
+                height: 42px;
+            }
+
+            .social-link i {
+                font-size: 18px;
+            }
+
+            .help-button {
+                padding: 12px 18px;
+                font-size: 15px;
+            }
+
+            .mobile-menu-bottom {
+                padding-bottom: 70px;
+                padding-top: 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-card {
+                border-radius: 16px !important;
+            }
+
+            .card-button-container {
+                margin-top: 10px;
+            }
+        }
+
+        @media (max-width: 375px) {
+            .navbar-brand {
+                font-size: 28px;
+                font-weight: 700;
+            }
+
+            .burger {
+                width: 20px;
+                height: 14px;
+            }
+
+            .burger span {
+                height: 1.8px;
+            }
+
+            .burger input:checked ~ span:nth-of-type(1) {
+                top: -1px;
+                left: 1px;
+            }
+
+            .burger input:checked ~ span:nth-of-type(3) {
+                top: 12px;
+                left: 1px;
+            }
+
+            .nav-link {
+                padding: 14px 16px !important;
+                font-size: 15px;
+                gap: 12px;
+            }
+
+            .dropdown-item {
+                padding: 14px 16px;
+                font-size: 15px;
+                gap: 12px;
+            }
+
+            .social-links {
+                gap: 20px;
+            }
+
+            .social-link {
+                width: 40px;
+                height: 40px;
+            }
+
+            .help-button {
+                padding: 10px 16px;
+                font-size: 14px;
+            }
+
+            .mobile-menu-bottom {
+                padding-bottom: 60px;
+                padding-top: 6px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .card-container {
+                margin-bottom: 50px;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .mobile-menu-bottom {
+                display: none !important;
+            }
+        }
+
+        /* Custom scrollbar for mobile menu */
+        @media (max-width: 991px) {
+            .navbar-collapse::-webkit-scrollbar {
+                width: 5px;
+            }
+
+            .navbar-collapse::-webkit-scrollbar-track {
+                background: rgba(102, 126, 234, 0.05);
+                border-radius: 10px;
+            }
+
+            .navbar-collapse::-webkit-scrollbar-thumb {
+                background: rgba(102, 126, 234, 0.3);
+                border-radius: 10px;
+            }
+
+            .navbar-collapse::-webkit-scrollbar-thumb:hover {
+                background: rgba(102, 126, 234, 0.5);
+            }
         }
     </style>
 </head>
-
 <body>
-  <!-- Simple Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-light fixed-top">
-    <div class="container">
-        <!-- Site Name -->
-        <a class="navbar-brand" href="index.html">Tezkor Quiz</a>
-        
-        <!-- Mobile Toggle Button -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        
-        <!-- Navbar Links -->
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link active" href="index.html">Bosh sahifa</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="segment25.html">Segment</a>
-                </li>
-               
-                <li class="nav-item">
-                    <a class="nav-link" href="faq.html">Yordam</a>
-                </li>
-             <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="quiztanlovi.html" id="quizDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Quiz Test
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="quizDropdown">
-                            <li><a class="dropdown-item" href="quiztest/tezkorquiz.html">Tezkor Quiz</a></li>
-                            <li><a class="dropdown-item" href="quiztest/bilim.html">Bilim Quiz</a></li>
-                            <li><a class="dropdown-item" href="quiztest/smart.html">Smart Quiz</a></li>
-                            <li><a class="dropdown-item" href="quiztest/pro.html">Pro Quiz</a></li>
-                            <li><a class="dropdown-item" href="quiztest/imtihon.html">Imtihon Quiz</a></li> 
-                        </ul>
-             </li>
-            </ul>
-        </div>
-    </div>
-</nav>
-<br> <br> 
-  <!-- Hero Section -->
-  <section class="container mt-5" data-aos="fade-up" data-aos-duration="1000">
-    <div class="hero-section">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNavbar">
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-7">
-                    <h1 class="hero-title">Tezkor Quiz bilan bilimlaringizni sinovdan o'tkazing</h1>
-                    <p class="hero-text">Testlarni yaratish, boshqarish va yechish uchun eng qulay platforma. 
-                    O'z bilimlaringizni sinab ko'ring va yangi ma'lumotlarni o'rganing.</p>
-                    <div class="d-flex flex-wrap">
-                        <a href="quiztest.html" class="btn btn-light hero-btn mb-3 mb-md-0">
-                            <i class="fas fa-play me-2"></i>Testni boshlash
+            <a class="navbar-brand" href="index.html">
+                Tezkor Quiz
+            </a>
+            <label class="burger" for="burger">
+                <input type="checkbox" id="burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <svg class="nav-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                            </svg>
+                            <span>Bosh sahifa</span>
                         </a>
-                        <a href="testyaratish" class="btn btn-outline-light hero-btn >
-                            <i class="fas fa-file-alt me-2"></i>Test yaratish
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="segment25.html">
+                            <svg class="nav-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M11 2v20c-5.07-.5-9-4.79-9-10s3.93-9.5 9-10zm2.03 0v8.99H22c-.47-4.74-4.24-8.52-8.97-8.99zm0 11.01V22c4.74-.47 8.5-4.25 8.97-8.99h-8.97z"/>
+                            </svg>
+                            <span>Segment</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="aloqa.html">
+                            <svg class="nav-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56-.35-.12-.74-.03-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/>
+                            </svg>
+                            <span>Aloqa</span>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="quizDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <svg class="nav-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                            </svg>
+                            <span>Testni boshlash</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="quizDropdown">
+                            <li>
+                                <a class="dropdown-item" href="quiztest/tezkorquiz.html">
+                                    <svg class="dropdown-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M7 2v11h3v9l7-12h-4l4-8z"/>
+                                    </svg>
+                                    <span>Tezkor Quiz</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="quiztest/bilim.html">
+                                    <svg class="dropdown-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/>
+                                        <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>
+                                    </svg>
+                                    <span>Bilim Quiz</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="quiztest/smart.html">
+                                    <svg class="dropdown-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7zm1 19h-2a1 1 0 0 0-1 1v1h4v-1a1 1 0 0 0-1-1z"/>
+                                    </svg>
+                                    <span>Smart Quiz</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="quiztest/pro.html">
+                                    <svg class="dropdown-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1s.4-1 1-1h12c.6 0 1 .4 1 1z"/>
+                                    </svg>
+                                    <span>Pro Quiz</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="quiztest/imtihon.html">
+                                    <svg class="dropdown-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M4,3H18A2,2 0 0,1 20,5V12.5L18.5,11H4V19H12.5L14,20.5V21A2,2 0 0,1 12,23H4A2,2 0 0,1 2,21V5A2,2 0 0,1 4,3M4,7H18V9H4V7M4,11H18V13H4V11M4,15H13V17H4V15M23.7,16.3L17,23L13,19L14.4,17.6L17,20.2L22.3,14.9L23.7,16.3Z"/>
+                                    </svg>
+                                    <span>Imtihon Quiz</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="mobile-menu-bottom">
+                    <div class="social-links">
+                        <a href="https://t.me/quiztezkor" class="social-link" aria-label="Telegram">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                        <a href="https://www.instagram.com/tezkorquiz.uz" class="social-link" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://www.youtube.com/@QuizTezkor" class="social-link" aria-label="YouTube">
+                            <i class="fab fa-youtube"></i>
                         </a>
                     </div>
+                    <a href="https://t.me/sobirweb">
+                        <button class="help-button">
+                            <i class="fas fa-headset"></i>
+                            <span>Yordam</span>
+                        </button>
+                    </a>
                 </div>
+            </div>
+        </div>
+    </nav>
 
-                <div class="col-md-5 d-none d-md-block">
-                    <div style="max-width: 350px; margin: 0 auto;">
-                        <img src="aga/kamlogo.webp" alt="Tezkor Quiz Logosi" class="img-fluid rounded">
+    <!-- Hero Section -->
+    <section class="container mt-5" data-aos="fade-up" data-aos-duration="1000">
+        <div class="hero-section">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-7">
+                        <h1 class="hero-title">Tezkor Quiz bilan bilimlaringizni sinovdan o'tkazing</h1>
+                        <p class="hero-text">Testlarni yaratish, boshqarish va yechish uchun eng qulay platforma. 
+                        O'z bilimlaringizni sinab ko'ring va yangi ma'lumotlarni o'rganing.</p>
+                        <div class="hero-buttons-container">
+                            <a href="quiztest.html" class="btn btn-light hero-btn">
+                                <i class="fas fa-play me-2"></i>Testni boshlash
+                            </a>
+                            <a href="testyaratish.html" class="btn btn-outline-light hero-btn">
+                                <i class="fas fa-file-alt me-2"></i>Test yaratish
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-5 d-none d-md-block">
+                        <div style="max-width: 350px; margin: 0 auto;">
+                            <img src="aga/kamlogo.webp" alt="Tezkor Quiz Logosi" class="img-fluid rounded">
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-  </section>
+    </section>
 
-<div class="container mt-3">
-    <div class="row">
-        <div class="col-lg-6 mb-4">
-            <a href="segment25.html" class="text-decoration-none">
-                <div class="card">
-                    <img src="aga/segy02.png" class="card-image rounded" alt="rasm">
-                    <div class="card__content">
-                        <p class="card__title">Segment 25</p>
-                        <p><br>Testlarni 25 taga ajratish va yuklab olish imkoniyati
-                            <br></p>
-                        <p class="card__description text-black">Men sizga masalan: 150 ta test bo'lsa shuni test ko'rinishini to'g'irlayman va 25 ta txt ko'rinishida Yuklab olish imkoniyati va Quiz Testda boshlash imkoniyati mavjud.  
-                        <br>
-                        <br>
-                        <br>Agar xatolik yoki format noto'g'ri bo'lsa buni ham to'g'irlash imkoniyati mavjud.
-                        <br>
-                        <br>
-                        Quiz Test faqat satandart formatni qo'llab quvvatlaydi. 
-                        <br>
-                        </p>
-                    </div>
-                </div>
-            </a>
-        </div>
-
-        <div class="col-lg-6 mb-4">
-            <a href="umumiyboshqaruv.html" class="text-decoration-none">
-                <div class="card">
-                    <img src="aga/segy01.png" class="card-image rounded" alt="rasm">
-                    <div class="card__content">
-                        <p class="card__title">Segment Umumiy</p>
-                        <p><br>Testlarni to'g'irlab umumiy .txt formatda yuklab olish
-                        <br></p>
-                        <p class="card__description text-black">Men sizga masalan: 150 ta test bo'lsa shuni test ko'rinishini to'g'irlayman albatta Yuklab olish imkoniyati va Quiz Testda boshlash imkoniyati bilan.                         <br>
-                            <br>
-                            
-                            <br>Agar xatolik yoki format noto'g'ri bo'lsa buni ham to'g'irlash imkoniyati mavjud.
-                            <br>
-                            <br>
-                            Quiz Test faqat satandart formatni qo'llab quvvatlaydi. 
-                            <br>
-                    </div>
-                </div>
-            </a>
-        </div>
-
-
-        <div class="col-lg-6 mb-4">
-            <a href="testyaratish.html" class="text-decoration-none">
-                <div class="card">
-                    <img src="aga/testyaratish.webp" class="card-image rounded" alt="rasm">
-                    <div class="card__content">
-                        <p class="card__title">Test Yaratish</p>
-                        <p><br>Sizda test yaratish imkoniyati mavjud keling meni sinab ko'ring!
-                        </p>
-                    </div>
-                </div>
-            </a>
-        </div>
-        
-        <div class="col-lg-6 mb-4">
-            <a href="quiztest.html" class="text-decoration-none">
-                <div class="card">
-                    <img src="aga/quiztest.webp" class="card-image rounded" alt="rasm">
-                    <div class="card__content">
-                        <p class="card__title">Quiz Test</p>
-                        <p class="card__description text-black">Testning bazasini .txt formatda menga yuboring va darhol shu testni boshlang!
-                         <br>
-                         <br>Tezkor Quiz   
-                         <br>    
-                         <br>Sekin Quiz
-                         <br> 
-                         <br>Telegram Quiz
-                         <br>
-                         <br>Imtihon Quiz
-                        </p>
-                    </div>
-                </div>
-            </a>
-        </div>
-        
-    </div>
-</div>
-    
-<!-- Footer -->
- <footer class="footer">
+    <!-- Cards Section -->
     <div class="container">
-        <div class="row">
-            <div class="col-lg-4 mb-4 mb-lg-0">
-                <h5 class="footer-title">Tezkor Quiz</h5>
-                <p>Talabalarga sessiyaga tayyorlanish uchun moslashtirilgan mukammal sayt.</p>
-                <div class="mt-4">
-                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-                    <a href="https://t.me/quiztezkor" class="social-icon"><i class="fab fa-telegram"></i></a>
-                    <a href="https://www.instagram.com/tezkorquiz.uz" class="social-icon"><i class="fab fa-instagram"></i></a>
-                    <a href="https://www.youtube.com/@QuizTezkor" class="social-icon"><i class="fab fa-youtube"></i></a>
+        <div class="row g-4">
+            <!-- First Card -->
+            <div class="col-12 col-md-6">
+                <div class="card-container">
+                    <div class="hero-card card-1" onclick="handleCardClick(1)">
+                        <div class="card-image"></div>
+                    </div>
+                    <div class="card-button-container">
+                        <div class="learn-more-button" onclick="handleEnter(1)">
+                            <span class="circle" aria-hidden="true">
+                                <span class="icon arrow"></span>
+                            </span>
+                            <span class="button-text">Kirish</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
-                <h5 class="footer-title">Havolalar</h5>
-                <a href="index.html" class="footer-link">Bosh sahifa</a>
-                <a href="segment25.html" class="footer-link">Segment</a>
-                <a href="faq.html" class="footer-link">Yordam</a>
+            <!-- Second Card -->
+            <div class="col-12 col-md-6">
+                <div class="card-container">
+                    <div class="hero-card card-2" onclick="handleCardClick(2)">
+                        <div class="card-image"></div>
+                    </div>
+                    <div class="card-button-container">
+                        <div class="learn-more-button" onclick="handleEnter(2)">
+                            <span class="circle" aria-hidden="true">
+                                <span class="icon arrow"></span>
+                            </span>
+                            <span class="button-text">Kirish</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
-                <h5 class="footer-title">Quiz Testlar</h5>
-                <a href="quiztest/tezkorquiz.html" class="footer-link">Tezkor Quiz</a>
-                <a href="quiztest/bilim.html" class="footer-link">Bilim Quiz</a>
-                <a href="quiztest/smart.html" class="footer-link">Smart Quiz</a>
-                <a href="quiztest/pro.html" class="footer-link">Pro Quiz</a>
-                <a href="quiztest/imtihon.html" class="footer-link">Imtihon Quiz</a>
+            <!-- Third Card -->
+            <div class="col-12 col-md-6">
+                <div class="card-container">
+                    <div class="hero-card card-3" onclick="handleCardClick(3)">
+                        <div class="card-image"></div>
+                    </div>
+                    <div class="card-button-container">
+                        <div class="learn-more-button" onclick="handleEnter(3)">
+                            <span class="circle" aria-hidden="true">
+                                <span class="icon arrow"></span>
+                            </span>
+                            <span class="button-text">Kirish</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-lg-4 col-md-4">
-                <h5 class="footer-title">Biz bilan bog'laning</h5>
-                <p class="mb-2"><i class="fas fa-envelope me-2"></i> tezkorquiz@gmail.com</p>
-                <p class="mb-2"><i class="fas fa-phone me-2"></i> +998 90 577 08 32</p>
-                <p><i class="fas fa-map-marker-alt me-2"></i> O'zbekiston</p>
+            <!-- Fourth Card -->
+            <div class="col-12 col-md-6">
+                <div class="card-container">
+                    <div class="hero-card card-4" onclick="handleCardClick(4)">
+                        <div class="card-image"></div>
+                    </div>
+                    <div class="card-button-container">
+                        <div class="learn-more-button" onclick="handleEnter(4)">
+                            <span class="circle" aria-hidden="true">
+                                <span class="icon arrow"></span>
+                            </span>
+                            <span class="button-text">Kirish</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="copyright">
-            <p>© 2025 Tezkor Quiz. Barcha huquqlar himoyalangan.</p>
         </div>
     </div>
-  </footer>
-    
-<script src="//code.tidio.co/dp3xu5h0swhcq9n7ir1qs8kzethsdome.js" async></script>
-    
-<!-- Initialize AOS -->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        AOS.init({
-            duration: 800,
-            once: true
-        });
-    });
-  </script>
-<!-- chat tidio api -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
 
-    
-<script>
-        // Navbar toggle muammosini hal qilish
-        const navLinks = document.querySelectorAll('.navbar-nav a');
-        const navbarToggler = document.querySelector('.navbar-toggler');
-        const navbarCollapse = document.querySelector('.navbar-collapse');
-        
-        // Har bir havolaga bosish hodisasini qo'shish
-        navLinks.forEach(function(link) {
-            link.addEventListener('click', function() {
-                if (navbarCollapse.classList.contains('show')) {
-                    navbarToggler.click();
-                }
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <h5 class="footer-title">Tezkor Quiz</h5>
+                    <p>Talabalarga sessiyaga tayyorlanish uchun moslashtirilgan mukammal sayt.</p>
+                    <div class="mt-4">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://t.me/quiztezkor" class="social-icon"><i class="fab fa-telegram"></i></a>
+                        <a href="https://www.instagram.com/tezkorquiz.uz" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/@QuizTezkor" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
+                    <h5 class="footer-title">Havolalar</h5>
+                    <a href="index.html" class="footer-link">Bosh sahifa</a>
+                    <a href="segment25.html" class="footer-link">Segment</a>
+                    <a href="faq.html" class="footer-link">Yordam</a>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
+                    <h5 class="footer-title">Quiz Testlar</h5>
+                    <a href="quiztest/tezkorquiz.html" class="footer-link">Tezkor Quiz</a>
+                    <a href="quiztest/bilim.html" class="footer-link">Bilim Quiz</a>
+                    <a href="quiztest/smart.html" class="footer-link">Smart Quiz</a>
+                    <a href="quiztest/pro.html" class="footer-link">Pro Quiz</a>
+                    <a href="quiztest/imtihon.html" class="footer-link">Imtihon Quiz</a>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <h5 class="footer-title">Biz bilan bog'laning</h5>
+                    <p class="mb-2"><i class="fas fa-envelope me-2"></i> tezkorquiz@gmail.com</p>
+                    <p class="mb-2"><i class="fas fa-phone me-2"></i> +998 90 577 08 32</p>
+                    <p><i class="fas fa-map-marker-alt me-2"></i> O'zbekiston</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>© 2025 Tezkor Quiz. Barcha huquqlar himoyalangan.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="//code.tidio.co/dp3xu5h0swhcq9n7ir1qs8kzethsdome.js" async></script>
+
+    <script>
+        // Initialize AOS
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 800,
+                once: true
             });
         });
-    });
-</script>
+
+        // Navbar JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            const navbar = document.getElementById('mainNavbar');
+            const navLinks = document.querySelectorAll('.navbar-nav a:not(.dropdown-toggle)');
+            const burgerInput = document.querySelector('#burger');
+            const navbarCollapse = document.querySelector('.navbar-collapse');
+            const dropdown = document.querySelector('.dropdown');
+            const dropdownToggle = document.getElementById('quizDropdown');
+            const dropdownMenu = document.querySelector('.dropdown-menu');
+
+            // Scroll effect for navbar
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            }, { passive: true });
+
+            // Burger menu toggle
+            burgerInput.addEventListener('change', function() {
+                if (this.checked) {
+                    navbarCollapse.classList.add('show');
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    navbarCollapse.classList.remove('show');
+                    dropdown.classList.remove('show');
+                    dropdownToggle.setAttribute('aria-expanded', 'false');
+                    dropdownMenu.classList.remove('show');
+                    document.body.style.overflow = 'auto';
+                }
+            });
+
+            // Close mobile menu on link click (except dropdown toggle)
+            navLinks.forEach(function(link) {
+                link.addEventListener('click', function() {
+                    if (navbarCollapse.classList.contains('show')) {
+                        burgerInput.checked = false;
+                        navbarCollapse.classList.remove('show');
+                        document.body.style.overflow = 'auto';
+                    }
+                });
+            });
+
+            // Click handling for dropdown
+            let isDropdownClicked = false;
+
+            dropdownToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                isDropdownClicked = !dropdown.classList.contains('show');
+                dropdown.classList.toggle('show');
+                dropdownToggle.setAttribute('aria-expanded', isDropdownClicked);
+                dropdownMenu.classList.toggle('show');
+            });
+
+            // Close dropdown on outside click
+            document.addEventListener('click', function(e) {
+                if (!dropdown.contains(e.target) && dropdown.classList.contains('show')) {
+                    isDropdownClicked = false;
+                    dropdown.classList.remove('show');
+                    dropdownToggle.setAttribute('aria-expanded', 'false');
+                    dropdownMenu.classList.remove('show');
+                }
+            });
+
+            // Prevent dropdown menu clicks from closing the dropdown
+            dropdownMenu.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        });
+
+        // Cards JavaScript
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const focusedButton = document.activeElement;
+                if (focusedButton.classList.contains('learn-more-button')) {
+                    focusedButton.click();
+                }
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.hero-card');
+            const animateCard = (card, delay) => {
+                setTimeout(() => {
+                    card.classList.add('animate');
+                }, delay);
+            };
+            cards.forEach((card, index) => {
+                animateCard(card, index * 200);
+            });
+        });
+
+        if ('IntersectionObserver' in window) {
+            const observerOptions = {
+                threshold: 0.2,
+                rootMargin: '0px 0px -100px 0px'
+            };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            document.querySelectorAll('.hero-card').forEach(card => {
+                observer.observe(card);
+            }); 
+        } else {
+            document.querySelectorAll('.hero-card').forEach(card => {
+                card.classList.add('animate');
+            });
+        }
+
+        document.addEventListener('scroll', () => {}, { passive: true });
+        document.addEventListener('touchstart', () => {}, { passive: true });
+
+        function handleEnter(cardNumber) {
+            const pages = {
+                1: 'segment25.html',
+                2: 'quiztest.html',
+                3: 'testyaratish.html',
+                4: 'quiztest.html'
+            };
+            if (pages[cardNumber]) {
+                window.location.href = pages[cardNumber];
+            }
+        }
+
+        function handleCardClick(cardNumber) {
+            handleEnter(cardNumber);
+        }
+    </script>
 </body>
 </html>
-
-
-
-
-
-
