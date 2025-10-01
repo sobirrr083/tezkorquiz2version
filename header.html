@@ -210,8 +210,8 @@
 
         .burger {
             position: relative;
-            width: 32px;
-            height: 24px;
+            width: 26px;
+            height: 20px;
             background: transparent;
             cursor: pointer;
             display: none;
@@ -226,7 +226,7 @@
         .burger span {
             display: block;
             position: absolute;
-            height: 3px;
+            height: 2.5px;
             width: 100%;
             background: var(--black);
             border-radius: 8px;
@@ -259,8 +259,8 @@
 
         .burger input:checked ~ span:nth-of-type(1) {
             transform: rotate(45deg);
-            top: 0px;
-            left: 4px;
+            top: -1px;
+            left: 3px;
         }
 
         .burger input:checked ~ span:nth-of-type(2) {
@@ -270,8 +270,8 @@
 
         .burger input:checked ~ span:nth-of-type(3) {
             transform: rotate(-45deg);
-            top: 22px;
-            left: 4px;
+            top: 18px;
+            left: 3px;
         }
 
         /* Mobile menu bottom section styles */
@@ -280,6 +280,10 @@
             padding: 20px;
             border-top: 2px solid rgba(102, 126, 234, 0.1);
             margin-top: auto;
+            padding-bottom: 80px; /* Increased for bottom spacing */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .social-links {
@@ -318,6 +322,7 @@
 
         .help-button {
             width: 100%;
+            max-width: 200px; /* Limit width for centering */
             padding: 14px;
             background: var(--gradient-1);
             border: none;
@@ -347,8 +352,29 @@
                 padding: 10px 0;
             }
 
+            .navbar-brand {
+                font-size: 34px; /* Increased font size for mobile */
+                font-weight: 900;
+            }
+
             .burger {
                 display: block;
+                width: 22px; /* Smaller burger menu */
+                height: 16px; /* Smaller burger menu */
+            }
+
+            .burger span {
+                height: 2px; /* Thinner lines for smaller burger */
+            }
+
+            .burger input:checked ~ span:nth-of-type(1) {
+                top: -1px;
+                left: 2px;
+            }
+
+            .burger input:checked ~ span:nth-of-type(3) {
+                top: 14px; /* Adjusted for smaller burger */
+                left: 2px;
             }
 
             .navbar-toggler {
@@ -376,6 +402,7 @@
                 align-items: flex-start;
                 z-index: 1000;
                 overflow-y: auto;
+                overflow-x: hidden;
             }
 
             .navbar-collapse.show {
@@ -388,7 +415,6 @@
                 gap: 8px;
                 width: 100%;
                 text-align: left;
-                flex: 1;
             }
 
             .nav-link {
@@ -428,17 +454,18 @@
             .dropdown-menu {
                 border: none;
                 box-shadow: none;
-                background: rgba(102, 126, 234, 0.05);
+                background: transparent;
                 margin-top: 8px;
-                margin-left: 20px;
+                margin-left: 0;
+                margin-bottom: 20px; /* Added spacing below dropdown */
                 transform: scaleY(0);
                 opacity: 0;
                 visibility: hidden;
                 transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
                 display: block;
                 position: static;
-                width: calc(100% - 20px);
-                padding: 8px;
+                width: 100%;
+                padding: 8px 0;
             }
 
             .dropdown.show .dropdown-menu {
@@ -448,14 +475,20 @@
             }
 
             .dropdown-item {
-                padding: 14px 18px;
+                padding: 18px 20px; /* Same padding as nav-link */
                 display: flex;
                 align-items: center;
                 justify-content: flex-start;
                 gap: 15px;
-                font-size: 16px;
-                background: white;
-                margin-bottom: 6px;
+                font-size: 17px; /* Same font size as nav-link */
+                background: transparent; /* Removed background */
+                margin-bottom: 8px;
+                border-radius: 14px;
+                width: 100%; /* Full width like nav-link */
+            }
+
+            .dropdown-item:hover {
+                background: rgba(102, 126, 234, 0.08); /* Same hover effect as nav-link */
             }
 
             .dropdown-item:last-child {
@@ -467,13 +500,36 @@
             }
 
             .mobile-menu-bottom {
-                display: block;
+                display: flex;
+                margin-top: auto;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
             }
         }
 
         @media (max-width: 576px) {
             .navbar-brand {
-                font-size: 22px;
+                font-size: 30px; /* Slightly smaller but still larger than original */
+            }
+
+            .burger {
+                width: 20px; /* Even smaller for smaller screens */
+                height: 14px;
+            }
+
+            .burger span {
+                height: 1.8px;
+            }
+
+            .burger input:checked ~ span:nth-of-type(1) {
+                top: -1px;
+                left: 2px;
+            }
+
+            .burger input:checked ~ span:nth-of-type(3) {
+                top: 12px;
+                left: 2px;
             }
 
             body {
@@ -502,8 +558,8 @@
             }
 
             .dropdown-item {
-                padding: 12px 16px;
-                font-size: 15px;
+                padding: 16px 18px;
+                font-size: 16px;
             }
 
             .social-link {
@@ -518,12 +574,36 @@
             .help-button {
                 padding: 12px;
                 font-size: 15px;
+                max-width: 180px; /* Slightly smaller for smaller screens */
+            }
+
+            .mobile-menu-bottom {
+                padding-bottom: 70px; /* Adjusted bottom padding */
             }
         }
 
         @media (max-width: 375px) {
             .navbar-brand {
-                font-size: 20px;
+                font-size: 28px;
+            }
+
+            .burger {
+                width: 18px;
+                height: 12px;
+            }
+
+            .burger span {
+                height: 1.5px;
+            }
+
+            .burger input:checked ~ span:nth-of-type(1) {
+                top: -1px;
+                left: 1px;
+            }
+
+            .burger input:checked ~ span:nth-of-type(3) {
+                top: 10px;
+                left: 1px;
             }
 
             .nav-link {
@@ -533,8 +613,8 @@
             }
 
             .dropdown-item {
-                padding: 11px 14px;
-                font-size: 14px;
+                padding: 14px 16px;
+                font-size: 15px;
                 gap: 12px;
             }
 
@@ -545,6 +625,31 @@
             .social-link {
                 width: 40px;
                 height: 40px;
+            }
+
+            .mobile-menu-bottom {
+                padding-bottom: 60px;
+            }
+        }
+
+        /* Custom scrollbar for mobile menu */
+        @media (max-width: 991px) {
+            .navbar-collapse::-webkit-scrollbar {
+                width: 5px;
+            }
+
+            .navbar-collapse::-webkit-scrollbar-track {
+                background: rgba(102, 126, 234, 0.05);
+                border-radius: 10px;
+            }
+
+            .navbar-collapse::-webkit-scrollbar-thumb {
+                background: rgba(102, 126, 234, 0.3);
+                border-radius: 10px;
+            }
+
+            .navbar-collapse::-webkit-scrollbar-thumb:hover {
+                background: rgba(102, 126, 234, 0.5);
             }
         }
     </style>
@@ -731,32 +836,6 @@
             // Prevent dropdown menu clicks from closing the dropdown
             dropdownMenu.addEventListener('click', function(e) {
                 e.stopPropagation();
-            });
-
-            // Active link highlight
-            const currentPath = window.location.pathname;
-            navLinks.forEach(link => {
-                if (link.getAttribute('href') === currentPath.split('/').pop()) {
-                    link.classList.add('active');
-                }
-            });
-
-            // Help button click handler
-            const helpButton = document.querySelector('.help-button');
-            if (helpButton) {
-                helpButton.addEventListener('click', function() {
-                    alert('Yordam xizmati tez orada ishga tushadi!');
-                });
-            }
-
-            // Social links click handlers
-            const socialLinks = document.querySelectorAll('.social-link');
-            socialLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    // Add your social media URLs here
-                    console.log('Social link clicked');
-                });
             });
         });
     </script>
