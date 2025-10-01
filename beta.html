@@ -359,7 +359,7 @@
         }
 
         /* Hero section */
-       .hero-section {
+        .hero-section {
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             padding: 70px 0;
             border-radius: 15px;
@@ -367,6 +367,7 @@
             position: relative;
             overflow: hidden;
         }
+
         .hero-section::before {
             content: "";
             position: absolute;
@@ -377,17 +378,20 @@
             top: -100px;
             right: -100px;
         }
+
         .hero-title {
             color: white;
             font-size: 2.5rem;
             font-weight: 700;
             margin-bottom: 20px;
         }
+
         .hero-text {
             color: rgba(255, 255, 255, 0.9);
             font-size: 1.1rem;
             margin-bottom: 30px;
         }
+
         .hero-btn {
             padding: 12px 30px;
             font-weight: 600;
@@ -395,20 +399,24 @@
             transition: all 0.3s ease;
             margin-right: 15px;
         }
+
         .btn-light {
             background: white;
             color: var(--primary-color);
             border: none;
         }
+
         .btn-light:hover {
             background: rgba(255, 255, 255, 0.9);
             transform: translateY(-3px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
+
         .btn-outline-light {
             border: 2px solid white;
             color: white;
         }
+
         .btn-outline-light:hover {
             background: rgba(255, 255, 255, 0.1);
             transform: translateY(-3px);
@@ -847,10 +855,10 @@
             }
 
             .hero-section {
-                min-height: 100vh;
-                padding: 40px 0;
+                padding: 30px 0; /* Reduced padding for less height */
                 display: flex;
                 align-items: center;
+                min-height: auto; /* Removed min-height: 100vh */
             }
 
             .hero-card {
@@ -869,24 +877,27 @@
             .hero-title {
                 font-size: 1.8rem;
                 text-align: left;
+                margin-bottom: 15px; /* Reduced margin */
             }
 
             .hero-text {
                 font-size: 1rem;
                 text-align: left;
+                margin-bottom: 20px; /* Reduced margin */
             }
 
             .hero-btn {
-                font-size: 0.9rem;
-                padding: 10px 25px;
-                margin: 0 15px 10px 0;
-                display: block;
+                font-size: 1rem; /* Slightly larger font */
+                padding: 12px 30px; /* Increased padding for larger buttons */
+                margin: 0 0 10px 0;
+                width: 100%; /* Full-width buttons */
+                max-width: 300px; /* Max width for buttons */
             }
 
             .d-flex {
                 flex-direction: column;
                 justify-content: start;
-                align-items: flex-start;
+                align-items: center; /* Center buttons */
             }
         }
 
@@ -1132,8 +1143,8 @@
                             </li>
                             <li>
                                 <a class="dropdown-item" href="quiztest/smart.html">
-                                    <svg class="dropdown-icon" viewBox="0 0 24 24">
-                                        <path d="M9,21C9,22.1 9.9,23 11,23H13C14.1,23 15,22.1 0,21V20H9V21M12,2A7,7 0 0,0 5,9C5,11.38 6.19,13.47 8,14.74V17A1,1 0 0,0 9,18H15A1,1 0 0,0 16,17V14.74C17.81,13.47 19,11.38 19,9A7,7 0 0,0 12,2Z"/>
+                                    <svg class="dropdown-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7zm1 19h-2a1 1 0 0 0-1 1v1h4v-1a1 1 0 0 0-1-1z"/>
                                     </svg>
                                     <span>Smart Quiz</span>
                                 </a>
@@ -1148,7 +1159,7 @@
                             </li>
                             <li>
                                 <a class="dropdown-item" href="quiztest/imtihon.html">
-                                    <svg class="dropdown-icon" viewBox="0 0 24 24">
+                                    <svg class="dropdown-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M4,3H18A2,2 0 0,1 20,5V12.5L18.5,11H4V19H12.5L14,20.5V21A2,2 0 0,1 12,23H4A2,2 0 0,1 2,21V5A2,2 0 0,1 4,3M4,7H18V9H4V7M4,11H18V13H4V11M4,15H13V17H4V15M23.7,16.3L17,23L13,19L14.4,17.6L17,20.2L22.3,14.9L23.7,16.3Z"/>
                                     </svg>
                                     <span>Imtihon Quiz</span>
