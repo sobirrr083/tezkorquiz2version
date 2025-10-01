@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biz Bilan Aloqa</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #fafbfc;
+            min-height: 100vh;
+            padding: 60px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #718096;
+            font-weight: 300;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 32px;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .telegram .card-image {
+            background: linear-gradient(135deg, #e8f4f8 0%, #d4e9f7 100%);
+        }
+
+        .email .card-image {
+            background: linear-gradient(135deg, #fef3e8 0%, #fce8d4 100%);
+        }
+
+        .phone .card-image {
+            background: linear-gradient(135deg, #e8f8f0 0%, #d4f3e4 100%);
+        }
+
+        .card-icon {
+            width: 90px;
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: white;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        .card-icon svg {
+            width: 48px;
+            height: 48px;
+        }
+
+        .telegram .card-icon svg {
+            fill: #0088cc;
+        }
+
+        .email .card-icon svg {
+            fill: #ea6c3d;
+        }
+
+        .phone .card-icon svg {
+            fill: #10b981;
+        }
+
+        .card-content {
+            padding: 32px;
+        }
+
+        .card-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 16px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        .telegram .card-badge {
+            background: #e8f4f8;
+            color: #0088cc;
+        }
+
+        .email .card-badge {
+            background: #fef3e8;
+            color: #ea6c3d;
+        }
+
+        .phone .card-badge {
+            background: #e8f8f0;
+            color: #10b981;
+        }
+
+        .card h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 12px;
+            letter-spacing: -0.3px;
+        }
+
+        .card-description {
+            color: #718096;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 24px;
+            font-weight: 400;
+        }
+
+        .card-info {
+            display: flex;
+            align-items: center;
+            padding: 14px 16px;
+            background: #f7fafc;
+            border-radius: 12px;
+            gap: 12px;
+            margin-bottom: 16px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .info-text {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #4a5568;
+            word-break: break-all;
+            flex: 1;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            color: white;
+        }
+
+        .telegram .btn-primary {
+            background: #0088cc;
+        }
+
+        .telegram .btn-primary:hover {
+            background: #006699;
+        }
+
+        .email .btn-primary {
+            background: #ea6c3d;
+        }
+
+        .email .btn-primary:hover {
+            background: #d85a2b;
+        }
+
+        .phone .btn-primary {
+            background: #10b981;
+        }
+
+        .phone .btn-primary:hover {
+            background: #059669;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #4a5568;
+            border: 1.5px solid #e2e8f0;
+        }
+
+        .btn-secondary:hover {
+            background: #f7fafc;
+            border-color: #cbd5e0;
+        }
+
+        .btn svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.2rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .card h2 {
+                font-size: 1.5rem;
+            }
+
+            .card-actions {
+                flex-direction: column;
+            }
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #2d3748;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            display: none;
+            align-items: center;
+            gap: 12px;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        }
+
+        .toast.show {
+            display: flex;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Biz Bilan Bog'laning</h1>
+            <p>Savollaringiz bormi? Biz sizga yordam berishdan mamnunmiz. Qulay usulni tanlang va aloqaga chiqing.</p>
+        </div>
+
+        <div class="cards-grid">
+            <!-- Telegram Card -->
+            <div class="card telegram">
+                <div class="card-image">
+                    <div class="card-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <span class="card-badge">Telegram Guruh</span>
+                    <h2>Telegram Guruh</h2>
+                    <p class="card-description">Rasmiy Telegram guruximizga qo'shiling va jamoa bilan muloqot qiling, savol-javoblar almashing.</p>
+                    <div class="card-info">
+                        <span class="info-text" id="telegram-link">https://t.me/tezkorquiz_group</span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="https://t.me/tezkorquiz_group" target="_blank" class="btn btn-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/>
+                            </svg>
+                            Kirish
+                        </a>
+                        <button onclick="copyToClipboard('telegram-link', 'Telegram')" class="btn btn-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                            Nusxa
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Email Card -->
+            <div class="card email">
+                <div class="card-image">
+                    <div class="card-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <span class="card-badge">Elektron Pochta</span>
+                    <h2>Yordam Markazi</h2>
+                    <p class="card-description">Savollaringizni bizga email orqali yuboring. Bizning jamoamiz 24 soat ichida sizning murojaatingizga javob beradi.</p>
+                    <div class="card-info">
+                        <span class="info-text" id="email-text">tezkorquiz@gmail.com</span>
+                    </div>
+                    <div class="card-actions">
+                        <button onclick="openGmail()" class="btn btn-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                            Yuborish
+                        </button>
+                        <button onclick="copyToClipboard('email-text', 'Email')" class="btn btn-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                            Nusxa
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phone Card -->
+            <div class="card phone">
+                <div class="card-image">
+                    <div class="card-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <span class="card-badge">Telefon Aloqa</span>
+                    <h2>Tezkor Aloqa</h2>
+                    <p class="card-description">To'g'ridan-to'g'ri bizga qo'ng'iroq qiling. Ish kunlari 9:00 dan 18:00 gacha xizmat ko'rsatamiz.</p>
+                    <div class="card-info">
+                        <span class="info-text" id="phone-text">+998 90 577 08 32</span>
+                    </div>
+                    <div class="card-actions">
+                        <button onclick="makePhoneCall()" class="btn btn-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                            </svg>
+                            Qo'ng'iroq
+                        </button>
+                        <button onclick="copyToClipboard('phone-text', 'Telefon')" class="btn btn-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                            Nusxa
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        <span id="toast-message">Nusxa olindi!</span>
+    </div>
+
+    <script>
+        function openGmail() {
+            const email = 'tezkorquiz@gmail.com';
+            const subject = 'Tezkor Quiz bo\'yicha savol';
+            const body = 'Salom,%0D%0A%0D%0A';
+            
+            // Gmail ochish (yangi tab)
+            window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${subject}&body=${body}`, '_blank');
+        }
+
+        function makePhoneCall() {
+            const phoneNumber = '+998905770832';
+            
+            // Mobil qurilma ekanligini tekshirish
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            
+            if (isMobile) {
+                // Mobil qurilmada telefon qilish
+                window.location.href = `tel:${phoneNumber}`;
+            } else {
+                // Kompyuterda xabar ko'rsatish
+                showToast('Ushbu xizmat faqat mobil qurilmalarda mavjud', 'error');
+            }
+        }
+
+        function copyToClipboard(elementId, type) {
+            const text = document.getElementById(elementId).textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                showToast(`${type} nusxa olindi!`);
+            }).catch(err => {
+                showToast('Xatolik yuz berdi!', 'error');
+            });
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            toastMessage.textContent = message;
+            
+            // Xato uchun qizil rang
+            if (type === 'error') {
+                toast.style.background = '#dc2626';
+            } else {
+                toast.style.background = '#2d3748';
+            }
+            
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3500);
+        }
+    </script>
+</body>
+</html>
