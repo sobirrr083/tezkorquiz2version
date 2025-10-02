@@ -1,22 +1,22 @@
 <!DOCTYPE html>
-<html lang="uz">
+<html lang="en">
 <head>
-    <title>Tezkor Quiz</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="icon" href="aga/iconcha.png">
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tezkor Quiz</title>
+    <!-- Favicon -->
+    <link rel="icon" href="aga/iconcha.png">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- AOS Animation CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
     <meta name="description" content="Tezkor Quiz - testlarni yaratish, boshqarish va yechish uchun qulay platforma">
-    <audio id="openSound" preload="auto">
-        <source src="https://cdnjs.cloudflare.com/ajax/libs/simple-sounds/1.0.0/sounds/pop-up.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="messageSound" preload="auto">
-        <source src="https://cdnjs.cloudflare.com/ajax/libs/simple-sounds/1.0.0/sounds/notification.mp3" type="audio/mpeg">
-    </audio>
     <style>
+        /* Navbar styling */
         :root {
             --primary-color: #4361ee;
             --secondary-color: #3a0ca3;
@@ -26,7 +26,6 @@
             --success-color: #4cc9f0;
             --warning-color: #f8961e;
             --gradient-1: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             --white: #fff;
             --black: #282936;
             --burger-active-color: #ff0000;
@@ -42,7 +41,6 @@
             font-family: 'Nunito', 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #ECF2FF;
             min-height: 100vh;
-            padding-top: 80px;
         }
 
         .navbar {
@@ -59,7 +57,7 @@
         }
 
         .navbar-brand {
-            font-family: 'Nunito', sans-serif;
+            font-family: 'Roboto';
             font-weight: 800;
             font-size: 28px;
             color: var(--primary-color) !important;
@@ -76,6 +74,7 @@
 
         .navbar-nav {
             gap: 5px;
+            margin-left: auto;
         }
 
         .nav-link {
@@ -188,17 +187,6 @@
             transform: scaleY(1);
         }
 
-        @keyframes dropdownSlideIn {
-            from {
-                opacity: 0;
-                transform: scaleY(0);
-            }
-            to {
-                opacity: 1;
-                transform: scaleY(1);
-            }
-        }
-
         .dropdown-item {
             padding: 12px 18px;
             border-radius: 12px;
@@ -217,10 +205,6 @@
             width: 100%;
         }
 
-        .dropdown-item:last-child {
-            margin-bottom: 0;
-        }
-
         .dropdown-item:hover {
             background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
             color: var(--primary-color);
@@ -231,44 +215,10 @@
             transform: scale(1.15);
         }
 
-        .dropdown-item:active {
-            background: none;
-        }
-
-        .dropdown-item:active .dropdown-icon {
-            fill: var(--dark-color);
-        }
-
-        .dropdown-item::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 0;
-            background: rgba(102, 126, 234, 0.3);
-            top: 50%;
-            left: 50%;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.4s ease, height 0.4s ease;
-            z-index: 0;
-        }
-
-        .dropdown-item:active::after {
-            width: 200px;
-            height: 200px;
-            transition: width 0.4s ease, height 0.4s ease, opacity 0.4s ease;
-            opacity: 0;
-        }
-
-        .dropdown-item span {
-            flex-grow: 1;
-            text-align: left;
-        }
-
         .burger {
             position: relative;
-            width: 32px;
-            height: 24px;
+            width: 26px;
+            height: 20px;
             background: transparent;
             cursor: pointer;
             display: none;
@@ -283,7 +233,7 @@
         .burger span {
             display: block;
             position: absolute;
-            height: 3px;
+            height: 2.5px;
             width: 100%;
             background: var(--black);
             border-radius: 8px;
@@ -316,8 +266,8 @@
 
         .burger input:checked ~ span:nth-of-type(1) {
             transform: rotate(45deg);
-            top: 0px;
-            left: 4px;
+            top: -1px;
+            left: 3px;
         }
 
         .burger input:checked ~ span:nth-of-type(2) {
@@ -327,8 +277,87 @@
 
         .burger input:checked ~ span:nth-of-type(3) {
             transform: rotate(-45deg);
-            top: 22px;
-            left: 4px;
+            top: 18px;
+            left: 3px;
+        }
+
+        /* Mobile menu bottom section styles */
+        .mobile-menu-bottom {
+            display: none;
+            padding: 20px;
+            border-top: 2px solid rgba(102, 126, 234, 0.1);
+            margin-top: auto;
+            padding-bottom: 80px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 25px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+        }
+
+        .social-link {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        }
+
+        .social-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            background: var(--gradient-1);
+        }
+
+        .social-link i {
+            font-size: 20px;
+            color: var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover i {
+            color: white;
+        }
+
+        .help-button {
+            width: auto;
+            padding: 14px 20px;
+            background: var(--gradient-1);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .help-button:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .help-button i {
+            font-size: 18px;
+        }
+
+        @media (min-width: 992px) {
+            .mobile-menu-bottom {
+                display: none !important;
+            }
         }
 
         @media (max-width: 991px) {
@@ -336,8 +365,29 @@
                 padding: 10px 0;
             }
 
+            .navbar-brand {
+                font-size: 34px;
+                font-weight: 700;
+            }
+
             .burger {
                 display: block;
+                width: 24px;
+                height: 18px;
+            }
+
+            .burger span {
+                height: 2.2px;
+            }
+
+            .burger input:checked ~ span:nth-of-type(1) {
+                top: -1px;
+                left: 2px;
+            }
+
+            .burger input:checked ~ span:nth-of-type(3) {
+                top: 16px;
+                left: 2px;
             }
 
             .navbar-toggler {
@@ -346,52 +396,83 @@
 
             .navbar-collapse {
                 position: fixed;
-                top: 60px; /* Keep navbar header visible */
+                top: 60px;
                 left: 0;
                 width: 100vw;
-                height: calc(100vh - 60px); /* Adjust height to leave space for header */
+                height: calc(100vh - 60px);
                 background: white;
-                padding: 20px;
+                padding: 25px 20px 5px 20px;
                 border-radius: 0;
                 margin-top: 0;
                 box-shadow: none;
-                transform: translateY(-100%);
+                transform: translateX(-100%);
                 opacity: 0;
                 visibility: hidden;
                 transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
                 display: flex;
                 flex-direction: column;
-                justify-content: center;
-                align-items: center;
+                justify-content: flex-start;
+                align-items: flex-start;
                 z-index: 1000;
+                overflow-y: auto;
+                overflow-x: hidden;
             }
 
             .navbar-collapse.show {
-                transform: translateY(0);
+                transform: translateX(0);
                 opacity: 1;
                 visibility: visible;
             }
 
             .navbar-nav {
-                gap: 15px;
+                gap: 8px;
                 width: 100%;
-                max-width: 300px;
                 text-align: left;
+                margin-left: 0;
+                flex-direction: column; /* Ensure vertical alignment */
             }
 
             .nav-link {
-                padding: 14px 18px !important;
+                padding: 18px 20px !important;
                 margin: 0;
                 display: flex;
                 align-items: center;
-                gap: 10px;
+                justify-content: flex-start;
+                gap: 15px;
+                font-size: 17px;
+                width: 100%;
+                border-radius: 14px;
+                background: rgba(102, 126, 234, 0.03);
+            }
+
+            .nav-link:hover {
+                background: rgba(102, 126, 234, 0.08);
+            }
+
+            .nav-link.active {
+                background: var(--gradient-1);
+                color: white !important;
+            }
+
+            .nav-icon {
+                width: 24px;
+                height: 24px;
+                flex-shrink: 0;
+            }
+
+            .dropdown-icon {
+                width: 24px;
+                height: 24px;
+                flex-shrink: 0;
             }
 
             .dropdown-menu {
                 border: none;
                 box-shadow: none;
-                background: rgba(102, 126, 234, 0.05);
+                background: transparent;
                 margin-top: 8px;
+                margin-left: 0;
+                margin-bottom: 15px;
                 transform: scaleY(0);
                 opacity: 0;
                 visibility: hidden;
@@ -399,9 +480,7 @@
                 display: block;
                 position: static;
                 width: 100%;
-                max-width: 300px;
-                margin-left: auto;
-                margin-right: auto;
+                padding: 8px 0;
             }
 
             .dropdown.show .dropdown-menu {
@@ -411,385 +490,414 @@
             }
 
             .dropdown-item {
-                padding: 12px 18px;
+                padding: 18px 20px;
                 display: flex;
                 align-items: center;
-                gap: 10px;
+                justify-content: flex-start;
+                gap: 15px;
+                font-size: 17px;
+                background: transparent;
+                margin-bottom: 8px;
+                border-radius: 14px;
+                width: 100%;
+            }
+
+            .dropdown-item:hover {
+                background: rgba(102, 126, 234, 0.08);
+            }
+
+            .dropdown-item:last-child {
+                margin-bottom: 0;
+            }
+
+            .dropdown-item span {
+                flex-grow: 0;
+            }
+
+            .mobile-menu-bottom {
+                display: flex;
+                margin-top: auto;
+                padding-top: 10px;
             }
         }
 
         @media (max-width: 576px) {
             .navbar-brand {
-                font-size: 24px;
+                font-size: 30px;
+                font-weight: 700;
+            }
+
+            .burger {
+                width: 22px;
+                height: 16px;
+            }
+
+            .burger span {
+                height: 2px;
+            }
+
+            .burger input:checked ~ span:nth-of-type(1) {
+                top: -1px;
+                left: 2px;
+            }
+
+            .burger input:checked ~ span:nth-of-type(3) {
+                top: 14px;
+                left: 2px;
             }
 
             body {
-                padding-top: 70px;
-            }
-
-            .nav-icon {
-                width: 18px;
-                height: 18px;
-            }
-
-            .dropdown-icon {
-                width: 20px;
-                height: 20px;
+                padding-top: 65px;
             }
 
             .navbar-collapse {
-                top: 50px;
-                height: calc(100vh - 50px);
+                top: 55px;
+                height: calc(100vh - 55px);
+                padding: 20px 15px 5px 15px;
+            }
+
+            .nav-link {
+                padding: 16px 18px !important;
+                font-size: 16px;
+            }
+
+            .nav-icon {
+                width: 22px;
+                height: 22px;
+            }
+
+            .dropdown-icon {
+                width: 22px;
+                height: 22px;
+            }
+
+            .dropdown-item {
+                padding: 16px 18px;
+                font-size: 16px;
+            }
+
+            .social-link {
+                width: 42px;
+                height: 42px;
+            }
+
+            .social-link i {
+                font-size: 18px;
+            }
+
+            .help-button {
+                padding: 12px 18px;
+                font-size: 15px;
+            }
+
+            .mobile-menu-bottom {
+                padding-bottom: 70px;
+                padding-top: 8px;
             }
         }
 
-        .hero-section {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            padding: 70px 0;
-            border-radius: 15px;
-            margin-bottom: 50px;
-            position: relative;
-            overflow: hidden;
+        @media (max-width: 375px) {
+            .navbar-brand {
+                font-size: 28px;
+                font-weight: 700;
+            }
+
+            .burger {
+                width: 20px;
+                height: 14px;
+            }
+
+            .burger span {
+                height: 1.8px;
+            }
+
+            .burger input:checked ~ span:nth-of-type(1) {
+                top: -1px;
+                left: 1px;
+            }
+
+            .burger input:checked ~ span:nth-of-type(3) {
+                top: 12px;
+                left: 1px;
+            }
+
+            .nav-link {
+                padding: 14px 16px !important;
+                font-size: 15px;
+                gap: 12px;
+            }
+
+            .dropdown-item {
+                padding: 14px 16px;
+                font-size: 15px;
+                gap: 12px;
+            }
+
+            .social-links {
+                gap: 20px;
+            }
+
+            .social-link {
+                width: 40px;
+                height: 40px;
+            }
+
+            .help-button {
+                padding: 10px 16px;
+                font-size: 14px;
+            }
+
+            .mobile-menu-bottom {
+                padding-bottom: 60px;
+                padding-top: 6px;
+            }
         }
 
-        .hero-section::before {
-            content: "";
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            top: -100px;
-            right: -100px;
+        /* Custom scrollbar for mobile menu */
+        @media (max-width: 991px) {
+            .navbar-collapse::-webkit-scrollbar {
+                width: 5px;
+            }
+
+            .navbar-collapse::-webkit-scrollbar-track {
+                background: rgba(102, 126, 234, 0.05);
+                border-radius: 10px;
+            }
+
+            .navbar-collapse::-webkit-scrollbar-thumb {
+                background: rgba(102, 126, 234, 0.3);
+                border-radius: 10px;
+            }
+
+            .navbar-collapse::-webkit-scrollbar-thumb:hover {
+                background: rgba(102, 126, 234, 0.5);
+            }
         }
 
-        .hero-title {
-            color: white;
-            font-size: 2.5rem;
+        /* Original styles for the rest of the page */
+        .navbar {
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            background-color: #fff;
+        }
+        body {
+            background-color: #ECF2FF;
+        }
+        .navbar-brand {
             font-weight: 700;
-            margin-bottom: 20px;
+            font-size: 26px;
+            color: #3a56e4 !important;
+            letter-spacing: 0.5px;
         }
-
-        .hero-text {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 1.1rem;
-            margin-bottom: 30px;
+        .nav-link {
+            font-weight: 500;
+            font-size: 16px;
+            margin: 0 15px;
+            color: #333 !important;
+            transition: color 0.3s ease;
         }
-
-        .hero-btn {
-            padding: 12px 30px;
+        .nav-link:hover {
+            color: #3a56e4 !important;
+        }
+        .nav-link.active {
+            color: #3a56e4 !important;
             font-weight: 600;
-            border-radius: 50px;
-            transition: all 0.3s ease;
-            margin-right: 15px;
         }
-
-        .btn-light {
-            background: white;
-            color: var(--primary-color);
+        .beta-badge {
+            font-size: 12px;
+            background-color: #ff6b6b;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+        .navbar-toggler {
             border: none;
+            padding: 0;
+            outline: none;
         }
-
-        .btn-light:hover {
-            background: rgba(255, 255, 255, 0.9);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        .navbar-toggler:focus {
+            box-shadow: none;
         }
-
-        .btn-outline-light {
-            border: 2px solid white;
-            color: white;
-        }
-
-        .btn-outline-light:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-3px);
-        }
-
-        .footer {
-            padding: 50px 0 20px;
-            background-color: var(--dark-color);
-            color: white;
-            margin-top: 50px;
-        }
-
-        .footer-title {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
-
-        .footer-link {
-            display: block;
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 10px;
-            transition: all 0.3s ease;
-            text-decoration: none;
-        }
-
-        .footer-link:hover {
-            color: white;
-            padding-left: 5px;
-        }
-
-        .social-icon {
-            display: inline-flex;
+        /* Book card styling */
+        .book-card {
+            position: relative;
+            border-radius: 10px;
+            width: 100%;
+            height: 380px;
+            background-color: whitesmoke;
+            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.08);
+            transform: preserve-3d;
+            perspective: 2000px;
+            display: flex;
             align-items: center;
             justify-content: center;
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.1);
-            color: white;
-            margin-right: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .social-icon:hover {
-            background-color: var(--primary-color);
-            transform: translateY(-3px);
-        }
-
-        .copyright {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.6);
-            text-align: center;
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .card-container {
-            margin-bottom: 40px;
-            transition: all 0.3s ease;
-        }
-
-        .hero-card {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 16/9;
-            border-radius: 24px !important;
-            overflow: hidden;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
+            color: #000;
             margin-bottom: 20px;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
         }
-
-        .hero-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 35px 70px rgba(0, 0, 0, 0.3);
-        }
-
-        .card-container:hover .hero-card {
-            transform: translateY(-10px);
-            box-shadow: 0 35px 70px rgba(0, 0, 0, 0.3);
-        }
-
-        .card-container:hover .learn-more-button .circle {
-            width: 100%;
-        }
-
-        .card-container:hover .learn-more-button .arrow {
-            background: var(--white);
-            transform: translate(1rem, 0);
-        }
-
-        .card-container:hover .learn-more-button .button-text {
-            color: var(--white);
-        }
-
-        .card-image {
-            position: absolute;
-            top: 0;
-            left: 0;
+        .book-content {
+            padding: 20px;
             width: 100%;
             height: 100%;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
         }
-
-        .card-1 .card-image { background-image: url('aga/segy02.png'); }
-        .card-2 .card-image { background-image: url('aga/segy01.png'); }
-        .card-3 .card-image { background-image: url('aga/testyaratish.webp'); }
-        .card-4 .card-image { background-image: url('aga/quiztest.webp'); }
-
-        .hero-card:hover .card-image {
-            transform: scale(1.05);
+        .book-cover {
+            top: 0;
+            position: absolute;
+            background-color: #fff;
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.5s;
+            transform-origin: 0;
+            box-shadow: 1px 1px 12px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            z-index: 2;
         }
-
-        .card-container:hover .card-image {
-            transform: scale(1.05);
+        .book-card:hover .book-cover {
+            transition: all 0.5s;
+            transform: rotatey(-80deg);
         }
-
-        .card-button-container {
+        .book-cover img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .book-cover-content {
+            padding: 20px;
+            text-align: center;
+        }
+        .book-card-title {
+            font-weight: 600;
+            color: #333;
+            margin-top: 10px;
+            font-size: 1.5rem;
+        }
+        .book-card-text {
+            color: #666;
+        }
+        .card-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 3;
+        }
+        /* Button styling */
+        .container-eg-btn-3 {
+            font-family: sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-top: 15px;
-            z-index: 10;
-        }
-
-        @media (max-width: 767px) {
-            .hero-card {
-                border-radius: 20px !important;
-                margin-bottom: 15px;
-            }
-            .card-button-container {
-                margin-top: 12px;
-            }
-            .card-container {
-                margin-bottom: 30px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero-card {
-                border-radius: 16px !important;
-            }
-            .card-button-container {
-                margin-top: 10px;
-            }
-        }
-
-        @media (min-width: 768px) {
-            .card-container {
-                margin-bottom: 50px;
-            }
-        }
-
-        .hero-card::after {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 100px;
-            background: linear-gradient(transparent, rgba(0, 0, 0, 0.2));
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-
-        .hero-card:hover::after {
-            opacity: 0.7;
-        }
-
-        .card-container:hover .hero-card::after {
-            opacity: 0.7;
-        }
-
-        .hero-card {
+            align-content: center;
+            flex-wrap: wrap;
+            margin: 20px auto 10px;
+            padding: .5em;
+            line-height: normal;
             opacity: 0;
-            transform: translateY(50px);
-            transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s ease;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            transition-delay: 0s;
         }
-
-        .hero-card.animate {
+        .book-card:hover .container-eg-btn-3 {
             opacity: 1;
             transform: translateY(0);
+            transition-delay: 0.3s;
         }
-
-        .learn-more-button {
-            position: relative;
-            display: inline-block;
-            cursor: pointer;
-            outline: none;
-            border: 0;
-            vertical-align: middle;
-            text-decoration: none;
-            background: transparent;
-            padding: 0;
-            font-size: inherit;
-            font-family: 'Mukta', sans-serif;
-            width: 12rem;
-            height: auto;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-
-        .circle {
-            transition: all 0.45s cubic-bezier(0.65,0,.076,1);
-            position: relative;
-            display: block;
-            margin: 0;
-            width: 3rem;
-            height: 3rem;
-            background: var(--dark-color);
-            border-radius: 1.625rem;
-        }
-
-        .icon {
-            transition: all 0.45s cubic-bezier(0.65,0,.076,1);
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            margin: auto;
-            background: var(--white);
-        }
-
-        .arrow {
-            transition: all 0.45s cubic-bezier(0.65,0,.076,1);
-            left: 0.625rem;
-            width: 1.125rem;
-            height: 0.125rem;
-            background: none;
-        }
-
-        .arrow::before {
-            position: absolute;
-            content: '';
-            top: -0.25rem;
-            right: 0.0625rem;
-            width: 0.625rem;
-            height: 0.625rem;
-            border-top: 0.125rem solid #fff;
-            border-right: 0.125rem solid #fff;
-            transform: rotate(45deg);
-        }
-
-        .button-text {
-            transition: all 0.45s cubic-bezier(0.65,0,.076,1);
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            padding: 0.75rem 0;
-            margin: 0 0 0 1.85rem;
-            color: var(--dark-color);
-            font-weight: 700;
-            line-height: 1.6;
+        .container-eg-btn-3 .button {
+            color: #fff;
+            margin: 10px 0;
+            padding: 12px 15px;
             text-align: center;
             text-transform: uppercase;
+            position: relative;
+            transition: .3s;
+            z-index: 1;
+            background: #4361ee;
+            cursor: pointer;
+            border-radius: 6px;
+            text-decoration: none;
+            display: inline-block;
+            width: 150px;
         }
-
-        .learn-more-button:hover .circle {
+        .container-eg-btn-3 .button-8:before {
+            content: '';
+            background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+            position: absolute;
+            top: -2px;
+            left:-2px;
+            background-size: 400%;
+            z-index: -1;
+            filter: blur(5px);
+            width: calc(100% + 4px);
+            height: calc(100% + 4px);
+            animation: glowing 20s linear infinite;
+            opacity: 0;
+            transition: opacity .3s ease-in-out;
+            border-radius: 6px;
+        }
+        .container-eg-btn-3 .button-8:hover:before, .container-eg-btn-3 .button-8:hover:after {
+            opacity: 1;
+        }
+        .container-eg-btn-3 .button-8:after {
+            z-index: -1;
+            content: '';
+            position: absolute;
             width: 100%;
+            height: 100%;
+            background: #111;
+            left: 0;
+            top: 0;
+            border-radius: 6px;
+            opacity: 0;
         }
-
-        .learn-more-button:hover .arrow {
-            background: var(--white);
-            transform: translate(1rem, 0);
+        .container-eg-btn-3 .button-8:active:after {
+            background: transparent;
         }
-
-        .learn-more-button:hover .button-text {
-            color: var(--white);
+        @keyframes glowing {
+            0% { background-position: 0 0; }
+            50% { background-position: 400% 0; }
+            100% { background-position: 0 0; }
+        }
+        /* Spacing for content */
+        .main-content {
+            margin-top: 100px;
+        }
+        /* Animation for book content */
+        .book-card .book-content h5,
+        .book-card .book-content p {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.5s ease;
+            transition-delay: 0s;
+        }
+        .book-card:hover .book-content h5 {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.1s;
+        }
+        .book-card:hover .book-content p {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.2s;
         }
     </style>
 </head>
 <body>
+    <!-- New Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNavbar">
         <div class="container">
             <a class="navbar-brand" href="index.html">
-                <img src="aga/iconcha.png" alt="Tezkor Quiz Logo" style="width: 32px; height: 32px;">
                 Tezkor Quiz
             </a>
             <label class="burger" for="burger">
@@ -799,13 +907,13 @@
                 <span></span>
             </label>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link" href="index.html">
                             <svg class="nav-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
                             </svg>
-                            Bosh sahifa
+                            <span>Bosh sahifa</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -813,15 +921,15 @@
                             <svg class="nav-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M11 2v20c-5.07-.5-9-4.79-9-10s3.93-9.5 9-10zm2.03 0v8.99H22c-.47-4.74-4.24-8.52-8.97-8.99zm0 11.01V22c4.74-.47 8.5-4.25 8.97-8.99h-8.97z"/>
                             </svg>
-                            Segment
+                            <span>Segment</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="faq.html">
+                        <a class="nav-link" href="aloqa.html">
                             <svg class="nav-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56-.35-.12-.74-.03-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/>
                             </svg>
-                            Aloqa
+                            <span>Aloqa</span>
                         </a>
                     </li>
                     <li class="nav-item dropdown">
@@ -829,7 +937,7 @@
                             <svg class="nav-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
                             </svg>
-                            Testni boshlash
+                            <span>Testni boshlash</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="quizDropdown">
                             <li>
@@ -851,8 +959,8 @@
                             </li>
                             <li>
                                 <a class="dropdown-item" href="quiztest/smart.html">
-                                    <svg class="dropdown-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6C7.8 12.16 7 10.63 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z"/>
+                                    <svg class="dropdown-icon" viewBox="0 0 24 24">
+                                        <path d="M9,21C9,22.1 9.9,23 11,23H13C14.1,23 15,22.1 15,21V20H9V21M12,2A7,7 0 0,0 5,9C5,11.38 6.19,13.47 8,14.74V17A1,1 0 0,0 9,18H15A1,1 0 0,0 16,17V14.74C17.81,13.47 19,11.38 19,9A7,7 0 0,0 12,2Z"/>
                                     </svg>
                                     <span>Smart Quiz</span>
                                 </a>
@@ -867,8 +975,8 @@
                             </li>
                             <li>
                                 <a class="dropdown-item" href="quiztest/imtihon.html">
-                                    <svg class="dropdown-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11zM8.82 13.05L7.4 14.46 10.94 18l5.66-5.66-1.41-1.41-4.24 4.24-2.13-2.12z"/>
+                                    <svg class="dropdown-icon" viewBox="0 0 24 24">
+                                        <path d="M4,3H18A2,2 0 0,1 20,5V12.5L18.5,11H4V19H12.5L14,20.5V21A2,2 0 0,1 12,23H4A2,2 0 0,1 2,21V5A2,2 0 0,1 4,3M4,7H18V9H4V7M4,11H18V13H4V11M4,15H13V17H4V15M23.7,16.3L17,23L13,19L14.4,17.6L17,20.2L22.3,14.9L23.7,16.3Z"/>
                                     </svg>
                                     <span>Imtihon Quiz</span>
                                 </a>
@@ -876,95 +984,146 @@
                         </ul>
                     </li>
                 </ul>
+                
+                <div class="mobile-menu-bottom">
+                    <div class="social-links">
+                        <a href="https://t.me/tezkorquiz_rasmiy" class="social-link" aria-label="Telegram">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                        <a href="https://www.instagram.com/tezkorquiz.uz?igsh=bWc0a3Fodnk0cnBo" class="social-link" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://www.youtube.com/@QuizTezkor" class="social-link" aria-label="YouTube">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                    <a href="https://t.me/sobirweb">
+                        <button class="help-button">
+                            <i class="fas fa-headset"></i>
+                            <span>Yordam</span>
+                        </button>
+                    </a>
+                </div>
             </div>
         </div>
     </nav>
 
-    <section class="container mt-5" data-aos="fade-up" data-aos-duration="1000">
-        <div class="hero-section">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-md-7">
-                        <h1 class="hero-title">Tezkor Quiz bilan bilimlaringizni sinovdan o'tkazing</h1>
-                        <p class="hero-text">Testlarni yaratish, boshqarish va yechish uchun eng qulay platforma. 
-                        O'z bilimlaringizni sinab ko'ring va yangi ma'lumotlarni o'rganing.</p>
-                        <div class="d-flex flex-wrap">
-                            <a href="quiztest.html" class="btn btn-light hero-btn mb-3 mb-md-0">
-                                <i class="fas fa-play me-2"></i>Testni boshlash
-                            </a>
-                            <a href="testyaratish.html" class="btn btn-outline-light hero-btn">
-                                <i class="fas fa-file-alt me-2"></i>Test yaratish
-                            </a>
+    <!-- Main Content -->
+    <div class="container main-content py-5">
+        <h1 class="text-center mb-2" data-aos="fade-up">Testni boshlash</h1>
+        <p class="text-center text-muted mb-5" data-aos="fade-up" data-aos-delay="100">Testni boshlash uchun o'zingizga qulay test turini tanlang. O'qish rejimidan imtihon testigacha — barchasi bir joyda!</p>
+        <div class="row">
+            <!-- O'qish rejimi -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="book-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="book-content">
+                        <h5 class="book-card-title">O'qish Rejimi</h5>
+                        <p class="book-card-text">Test faylni yuklagan holda o'qish imkoni sizda mavjud</p>
+                        <div class="container-eg-btn-3">
+                            <a href="quiztest/oqishrejimi.html" class="button button-8">Boshlash</a>
                         </div>
                     </div>
-                    <div class="col-md-5 d-none d-md-block">
-                        <div style="max-width: 350px; margin: 0 auto;">
-                            <img src="aga/kamlogo.webp" alt="Tezkor Quiz Logosi" class="img-fluid rounded">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div class="container">
-        <div class="row g-4">
-            <div class="col-12 col-md-6">
-                <div class="card-container">
-                    <div class="hero-card card-1" onclick="handleCardClick(1)">
-                        <div class="card-image"></div>
-                    </div>
-                    <div class="card-button-container">
-                        <div class="learn-more-button" onclick="handleEnter(1)">
-                            <span class="circle" aria-hidden="true">
-                                <span class="icon arrow"></span>
-                            </span>
-                            <span class="button-text">Kirish</span>
+                    <div class="book-cover">
+                        <img src="aga/rejimi.png" alt="O'qish rejimi">
+                        <div class="book-cover-content">
+                            <h5 class="book-card-title">O'qish Rejimi</h5>
+                            <p class="book-card-text">Ochish uchun ustiga bosing</p>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-md-6">
-                <div class="card-container">
-                    <div class="hero-card card-2" onclick="handleCardClick(2)">
-                        <div class="card-image"></div>
+            <!-- Tezkor Quiz -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="book-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="book-content">
+                        <h5 class="book-card-title">Tezkor Quiz</h5>
+                        <p class="book-card-text">Testning bazasini .txt formatda menga yuboring va darhol shu testni boshlang!</p>
+                        <div class="container-eg-btn-3">
+                            <a href="quiztest/tezkorquiz.html" class="button button-8">Boshlash</a>
+                        </div>
                     </div>
-                    <div class="card-button-container">
-                        <div class="learn-more-button" onclick="handleEnter(2)">
-                            <span class="circle" aria-hidden="true">
-                                <span class="icon arrow"></span>
-                            </span>
-                            <span class="button-text">Kirish</span>
+                    <div class="book-cover">
+                        <img src="aga/asosiy (1).png" alt="Tezkor Quiz">
+                        <div class="book-cover-content">
+                            <h5 class="book-card-title">Tezkor Quiz</h5>
+                            <p class="book-card-text">Ochish uchun ustiga bosing</p>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-md-6">
-                <div class="card-container">
-                    <div class="hero-card card-3" onclick="handleCardClick(3)">
-                        <div class="card-image"></div>
+            <!-- Bilim Quiz -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="book-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="book-content">
+                        <h5 class="book-card-title">Bilim Quiz</h5>
+                        <p class="book-card-text">Testga tayyorlangan holda bu testni boshlash tavsiya etiladi.</p>
+                        <div class="container-eg-btn-3">
+                            <a href="quiztest/bilim.html" class="button button-8">Boshlash</a>
+                        </div>
                     </div>
-                    <div class="card-button-container">
-                        <div class="learn-more-button" onclick="handleEnter(3)">
-                            <span class="circle" aria-hidden="true">
-                                <span class="icon arrow"></span>
-                            </span>
-                            <span class="button-text">Kirish</span>
+                    <div class="book-cover">
+                        <img src="aga/bilim.webp" alt="Bilim Quiz">
+                        <div class="book-cover-content">
+                            <h5 class="book-card-title">Bilim Quiz</h5>
+                            <p class="book-card-text">Ochish uchun ustiga bosing</p>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-md-6">
-                <div class="card-container">
-                    <div class="hero-card card-4" onclick="handleCardClick(4)">
-                        <div class="card-image"></div>
+            <!-- Smart Quiz -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="book-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="book-content">
+                        <h5 class="book-card-title">Smart Quiz</h5>
+                        <p class="book-card-text">Mobil telefonlarda judayam uzun savol va variantlar uchun moslashtirilgan.</p>
+                        <div class="container-eg-btn-3">
+                            <a href="quiztest/smart.html" class="button button-8">Boshlash</a>
+                        </div>
                     </div>
-                    <div class="card-button-container">
-                        <div class="learn-more-button" onclick="handleEnter(4)">
-                            <span class="circle" aria-hidden="true">
-                                <span class="icon arrow"></span>
-                            </span>
-                            <span class="button-text">Kirish</span>
+                    <div class="book-cover">
+                        <img src="aga/smart.webp" alt="Smart Quiz">
+                        <div class="book-cover-content">
+                            <h5 class="book-card-title">Smart Quiz</h5>
+                            <p class="book-card-text">Ochish uchun ustiga bosing</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Pro Quiz -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="book-card" data-aos="fade-up" data-aos-delay="300">
+                    <span class="badge bg-success card-badge">tavsiya</span>
+                    <div class="book-content">
+                        <h5 class="book-card-title">Pro Quiz</h5>
+                        <p class="book-card-text">Kampyuter va telefon uchun keng, optimallashtirilgan qulayliklar.</p>
+                        <div class="container-eg-btn-3">
+                            <a href="quiztest/pro.html" class="button button-8">Boshlash</a>
+                        </div>
+                    </div>
+                    <div class="book-cover">
+                        <img src="aga/pro.webp" alt="Pro Quiz">
+                        <div class="book-cover-content">
+                            <h5 class="book-card-title">Pro Quiz</h5>
+                            <p class="book-card-text">Ochish uchun ustiga bosing</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Imtihon Quiz -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="book-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="book-content">
+                        <h5 class="book-card-title">Imtihon Quiz</h5>
+                        <p class="book-card-text">Imtihon ko'rinishidagi testlar, tasdiqlaganingizdan keyin natija chiqadi!</p>
+                        <div class="container-eg-btn-3">
+                            <a href="quiztest/imtihon.html" class="button button-8">Boshlash</a>
+                        </div>
+                    </div>
+                    <div class="book-cover">
+                        <img src="aga/asosiy (3).png" alt="Imtihon Quiz">
+                        <div class="book-cover-content">
+                            <h5 class="book-card-title">Imtihon Quiz</h5>
+                            <p class="book-card-text">Ochish uchun ustiga bosing</p>
                         </div>
                     </div>
                 </div>
@@ -972,57 +1131,16 @@
         </div>
     </div>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 mb-4 mb-lg-0">
-                    <h5 class="footer-title">Tezkor Quiz</h5>
-                    <p>Talabalarga sessiyaga tayyorlanish uchun moslashtirilgan mukammal sayt.</p>
-                    <div class="mt-4">
-                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-                        <a href="https://t.me/quiztezkor" class="social-icon"><i class="fab fa-telegram"></i></a>
-                        <a href="https://www.instagram.com/tezkorquiz.uz" class="social-icon"><i class="fab fa-instagram"></i></a>
-                        <a href="https://www.youtube.com/@QuizTezkor" class="social-icon"><i class="fab fa-youtube"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
-                    <h5 class="footer-title">Havolalar</h5>
-                    <a href="index.html" class="footer-link">Bosh sahifa</a>
-                    <a href="segment25.html" class="footer-link">Segment</a>
-                    <a href="faq.html" class="footer-link">Yordam</a>
-                </div>
-                <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
-                    <h5 class="footer-title">Quiz Testlar</h5>
-                    <a href="quiztest/tezkorquiz.html" class="footer-link">Tezkor Quiz</a>
-                    <a href="quiztest/bilim.html" class="footer-link">Bilim Quiz</a>
-                    <a href="quiztest/smart.html" class="footer-link">Smart Quiz</a>
-                    <a href="quiztest/pro.html" class="footer-link">Pro Quiz</a>
-                    <a href="quiztest/imtihon.html" class="footer-link">Imtihon Quiz</a>
-                </div>
-                <div class="col-lg-4 col-md-4">
-                    <h5 class="footer-title">Biz bilan bog'laning</h5>
-                    <p class="mb-2"><i class="fas fa-envelope me-2"></i> tezkorquiz@gmail.com</p>
-                    <p class="mb-2"><i class="fas fa-phone me-2"></i> +998 90 577 08 32</p>
-                    <p><i class="fas fa-map-marker-alt me-2"></i> O'zbekiston</p>
-                </div>
-            </div>
-            <div class="copyright">
-                <p>© 2025 Tezkor Quiz. Barcha huquqlar himoyalangan.</p>
-            </div>
-        </div>
-    </footer>
-
+    <!-- Required JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-    <script src="//code.tidio.co/dp3xu5h0swhcq9n7ir1qs8kzethsdome.js" async></script>
-
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            AOS.init({
-                duration: 800,
-                once: true
-            });
+        AOS.init({
+            duration: 800,
+            once: true
+        });
 
+        document.addEventListener('DOMContentLoaded', function() {
             const navbar = document.getElementById('mainNavbar');
             const navLinks = document.querySelectorAll('.navbar-nav a:not(.dropdown-toggle)');
             const burgerInput = document.querySelector('#burger');
@@ -1054,7 +1172,7 @@
                 }
             });
 
-            // Close mobile menu on link click
+            // Close mobile menu on link click (except dropdown toggle)
             navLinks.forEach(function(link) {
                 link.addEventListener('click', function() {
                     if (navbarCollapse.classList.contains('show')) {
@@ -1084,11 +1202,6 @@
                     dropdown.classList.remove('show');
                     dropdownToggle.setAttribute('aria-expanded', 'false');
                     dropdownMenu.classList.remove('show');
-                    if (navbarCollapse.classList.contains('show') && window.innerWidth <= 991) {
-                        burgerInput.checked = false;
-                        navbarCollapse.classList.remove('show');
-                        document.body.style.overflow = 'auto';
-                    }
                 }
             });
 
@@ -1096,76 +1209,7 @@
             dropdownMenu.addEventListener('click', function(e) {
                 e.stopPropagation();
             });
-
-            // Active link highlight
-            const currentPath = window.location.pathname;
-            navLinks.forEach(link => {
-                if (link.getAttribute('href') === currentPath.split('/').pop()) {
-                    link.classList.add('active');
-                }
-            });
-
-            // Card animations
-            const cards = document.querySelectorAll('.hero-card');
-            const animateCard = (card, delay) => {
-                setTimeout(() => {
-                    card.classList.add('animate');
-                }, delay);
-            };
-            cards.forEach((card, index) => {
-                animateCard(card, index * 200);
-            });
-
-            // Intersection observer for card animations
-            if ('IntersectionObserver' in window) {
-                const observerOptions = {
-                    threshold: 0.2,
-                    rootMargin: '0px 0px -100px 0px'
-                };
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            entry.target.classList.add('animate');
-                            observer.unobserve(entry.target);
-                        }
-                    });
-                }, observerOptions);
-                document.querySelectorAll('.hero-card').forEach(card => {
-                    observer.observe(card);
-                });
-            } else {
-                document.querySelectorAll('.hero-card').forEach(card => {
-                    card.classList.add('animate');
-                });
-            }
         });
-
-        // Keyboard navigation for cards
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                const focusedButton = document.activeElement;
-                if (focusedButton.classList.contains('learn-more-button')) {
-                    focusedButton.click();
-                }
-            }
-        });
-
-        // Handle card navigation
-        function handleEnter(cardNumber) {
-            const pages = {
-                1: 'segment25.html',
-                2: 'quiztest.html',
-                3: 'testyaratish.html',
-                4: 'faq.html'
-            };
-            if (pages[cardNumber]) {
-                window.location.href = pages[cardNumber];
-            }
-        }
-
-        function handleCardClick(cardNumber) {
-            handleEnter(cardNumber);
-        }
     </script>
 </body>
 </html>
