@@ -19,7 +19,7 @@
       max-width: 900px;
       margin: 20px auto;
       background-color: #fff;
-      padding: 20px;
+      padding: 15px;
       border-radius: 6px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
@@ -200,16 +200,17 @@
     }
     .stats-container {
       display: flex;
-      justify-content: space-around;
-      flex-wrap: wrap;
+      flex-direction: column;
       margin: 20px 0;
     }
     .stat-item {
       padding: 10px 20px;
       border-radius: 8px;
-      margin: 5px;
+      margin: 5px 0;
       font-weight: bold;
-      min-width: 150px;
+      width: 100%;
+      box-sizing: border-box;
+      text-align: center;
     }
     .total-questions {
       background-color: #E3F2FD;
@@ -306,6 +307,18 @@
       flex: 1;
       overflow-y: auto;
       padding-right: 10px;
+      scrollbar-width: thin;
+      scrollbar-color: #2c7fbb #f0f4f8;
+    }
+    #infoModal .modal-content::-webkit-scrollbar {
+      width: 8px;
+    }
+    #infoModal .modal-content::-webkit-scrollbar-track {
+      background: #f0f4f8;
+    }
+    #infoModal .modal-content::-webkit-scrollbar-thumb {
+      background-color: #2c7fbb;
+      border-radius: 4px;
     }
     #infoModal h4 {
       margin-top: 0;
@@ -325,6 +338,7 @@
       overflow-x: auto;
       white-space: pre-wrap;
       word-wrap: break-word;
+      max-height: 300px;
     }
     #infoModal .confirm-btn-group {
       margin-top: 20px;
@@ -360,22 +374,24 @@
     /* Responsive Design */
     @media (min-width: 768px) {
       #infoRow {
-        flex-direction: column;
-        gap: 10px;
+        flex-direction: row;
+        gap: 15px;
       }
       .stats-container {
         flex-direction: row;
         justify-content: space-between;
+        flex-wrap: wrap;
       }
       .stat-item {
         flex: 1;
         margin: 5px;
+        min-width: 150px;
       }
       .timer-container.compact-timer {
         position: fixed !important;
         top: 15px !important;
         right: 15px !important;
-        width: 200px !important;
+        width: 120px !important;
         padding: 8px !important;
         z-index: 2000;
         background-color: white !important;
@@ -384,6 +400,11 @@
         box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         opacity: 0;
         animation: fadeIn 0.5s forwards;
+        justify-content: center;
+        gap: 5px;
+      }
+      .timer-container.compact-timer .timer-text {
+        display: none;
       }
       @keyframes fadeIn {
         to { opacity: 1; }
@@ -393,7 +414,7 @@
     @media (min-width: 576px) and (max-width: 767px) {
       .container {
         margin: 10px;
-        padding: 15px;
+        padding: 12px;
       }
       .question-container {
         padding: 12px;
@@ -420,12 +441,11 @@
         margin: 2px;
       }
       .stats-container {
-        flex-direction: row;
-        flex-wrap: wrap;
+        flex-direction: column;
       }
       .stat-item {
-        flex: 0 0 48%;
-        margin: 5px;
+        margin: 5px 0;
+        width: 100%;
       }
       .gif-container {
         max-width: 250px;
@@ -436,14 +456,14 @@
         max-width: 500px;
       }
       #infoRow {
-        flex-direction: column;
+        flex-direction: row;
         gap: 10px;
       }
       .timer-container.compact-timer {
         position: fixed !important;
         top: 15px !important;
         right: 15px !important;
-        width: 160px !important;
+        width: 100px !important;
         padding: 8px !important;
         z-index: 2000;
         background-color: white !important;
@@ -452,6 +472,11 @@
         box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         opacity: 0;
         animation: fadeIn 0.5s forwards;
+        justify-content: center;
+        gap: 5px;
+      }
+      .timer-container.compact-timer .timer-text {
+        display: none;
       }
     }
 
@@ -484,7 +509,7 @@
         position: fixed !important;
         top: 15px !important;
         right: 15px !important;
-        width: 100px !important;
+        width: 80px !important;
         padding: 8px !important;
         z-index: 2000;
         background-color: white !important;
@@ -530,7 +555,7 @@
         max-width: 350px;
       }
       #infoRow {
-        flex-direction: row;
+        flex-direction: column;
         gap: 10px;
       }
       #finishBtn {
@@ -634,19 +659,19 @@
       <div class="stats-container">
         <div class="stat-item total-questions">
           <i class="fas fa-clipboard-list"></i>
-          <div>Jami savollar</div>
+          <div>Jamiga</div>
           <div id="totalQuestions">0</div>
         </div>
         
         <div class="stat-item correct-answers">
           <i class="fas fa-check-circle"></i>
-          <div>To'g'ri javoblar</div>
+          <div>To'g'ri</div>
           <div id="correctAnswers">0</div>
         </div>
         
         <div class="stat-item incorrect-answers">
           <i class="fas fa-times-circle"></i>
-          <div>Xato tanlanganlar</div>
+          <div>Xato</div>
           <div id="incorrectAnswers">0</div>
         </div>
         
@@ -811,6 +836,8 @@ ANSWER: C
   // Info modal
   infoBtn.addEventListener("click", () => {
     infoModal.classList.add("show");
+    confirmModal.classList.remove("show");
+    exitModal.classList.remove("show");
   });
 
   closeInfo.addEventListener("click", () => {
@@ -870,7 +897,9 @@ ANSWER: C
   });
 
   function showExitModal() {
-    if (examStarted && !confirmModal.classList.contains("show")) {
+    if (examStarted) {
+      confirmModal.classList.remove("show");
+      infoModal.classList.remove("show");
       exitModal.classList.add("show");
     }
   }
@@ -1064,6 +1093,7 @@ ANSWER: C
     
     confirmMessage.innerHTML = `<strong>${answeredCount}</strong> ta savolga javob berildi, <strong>${totalQuestions - answeredCount}</strong> ta savol javobsiz. <br><br>Testni yakunlashni tasdiqlaysizmi?`;
     exitModal.classList.remove("show");
+    infoModal.classList.remove("show");
     confirmModal.classList.add("show");
   });
   
