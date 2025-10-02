@@ -102,7 +102,7 @@
       position: sticky;
       top: 10px;
       z-index: 1000;
-      transition: all 0.3s ease;
+      transition: all 0.3s ease, opacity 0.5s ease;
     }
     .timer {
       font-size: 1.5rem;
@@ -158,6 +158,18 @@
       margin-top: 20px;
       width: 100%;
       text-align: center;
+      background-color: #E3F2FD;
+      color: #0D47A1;
+      border: 1px solid #0D47A1;
+      padding: 10px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .new-test-btn i {
+      color: #0D47A1;
     }
     .results-card {
       border-radius: 10px;
@@ -278,8 +290,6 @@
     .modal-overlay.show .confirm-modal {
       transform: translateY(0);
     }
-
-    /* Info Modal Styling */
     #infoModal .confirm-modal {
       max-width: 90%;
       width: 600px;
@@ -348,7 +358,39 @@
     }
 
     /* Responsive Design */
-    @media (max-width: 768px) {
+    @media (min-width: 768px) {
+      #infoRow {
+        flex-direction: column;
+        gap: 10px;
+      }
+      .stats-container {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+      .stat-item {
+        flex: 1;
+        margin: 5px;
+      }
+      .timer-container.compact-timer {
+        position: fixed !important;
+        top: 15px !important;
+        right: 15px !important;
+        width: 200px !important;
+        padding: 8px !important;
+        z-index: 2000;
+        background-color: white !important;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        opacity: 0;
+        animation: fadeIn 0.5s forwards;
+      }
+      @keyframes fadeIn {
+        to { opacity: 1; }
+      }
+    }
+
+    @media (min-width: 576px) and (max-width: 767px) {
       .container {
         margin: 10px;
         padding: 15px;
@@ -378,12 +420,12 @@
         margin: 2px;
       }
       .stats-container {
-        flex-direction: column;
-        align-items: center;
+        flex-direction: row;
+        flex-wrap: wrap;
       }
       .stat-item {
-        width: 100%;
-        max-width: 300px;
+        flex: 0 0 48%;
+        margin: 5px;
       }
       .gif-container {
         max-width: 250px;
@@ -392,6 +434,24 @@
       #infoModal .confirm-modal {
         width: 95%;
         max-width: 500px;
+      }
+      #infoRow {
+        flex-direction: column;
+        gap: 10px;
+      }
+      .timer-container.compact-timer {
+        position: fixed !important;
+        top: 15px !important;
+        right: 15px !important;
+        width: 160px !important;
+        padding: 8px !important;
+        z-index: 2000;
+        background-color: white !important;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        opacity: 0;
+        animation: fadeIn 0.5s forwards;
       }
     }
 
@@ -424,7 +484,7 @@
         position: fixed !important;
         top: 15px !important;
         right: 15px !important;
-        width: 140px !important;
+        width: 100px !important;
         padding: 8px !important;
         z-index: 2000;
         background-color: white !important;
@@ -432,11 +492,15 @@
         border-radius: 8px;
         box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         justify-content: center !important;
-        flex-direction: column !important;
+        flex-direction: row !important;
         align-items: center !important;
+        gap: 5px;
+      }
+      .timer-container.compact-timer .timer-text {
+        display: none;
       }
       .timer-container.compact-timer .timer {
-        font-size: 1.1rem !important;
+        font-size: 1rem !important;
       }
       .timer {
         font-size: 1.2rem;
@@ -462,11 +526,11 @@
         height: 120px;
       }
       #infoModal .confirm-modal {
-        width: 90%;
-        max-width: 400px;
+        width: 95%;
+        max-width: 350px;
       }
       #infoRow {
-        flex-direction: column;
+        flex-direction: row;
         gap: 10px;
       }
       #finishBtn {
@@ -509,7 +573,6 @@
 <div class="container">
   <h1 class="text-center mb-4">Siz Imtihondasiz!</h1>
 
-  <!-- Info button + emoji placeholder -->
   <div id="infoRow">
     <button id="infoBtn" class="btn btn-info">Imtihon Quiz qanday ishlaydi?</button>
     <div id="emojiPlaceholder"></div>
@@ -538,7 +601,7 @@
   </div>
 
   <div id="timerContainer" class="timer-container initial-center" style="display: none;">
-    <div>
+    <div class="timer-text">
       <i class="fas fa-clock me-2"></i>
       <span>Qolgan vaqt:</span>
     </div>
@@ -589,7 +652,7 @@
         
         <div class="stat-item unanswered">
           <i class="fas fa-question-circle"></i>
-          <div>Javobsiz qoldirilganlar</div>
+          <div>Javobsiz</div>
           <div id="unanswered">0</div>
         </div>
       </div>
@@ -600,7 +663,9 @@
     </div>
   </div>
 
-  <button id="newTestBtn" class="btn btn-success new-test-btn" style="display: none;">Yangi test boshlamoq</button>
+  <button id="newTestBtn" class="btn new-test-btn" style="display: none;">
+    <i class="fas fa-plus"></i> Yangi test
+  </button>
 
   <div id="confettiContainer" class="confetti-container"></div>
   <div id="saluteContainer"></div>
