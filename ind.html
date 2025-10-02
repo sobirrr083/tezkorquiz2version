@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uz">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,19 +30,16 @@
             --black: #282936;
             --burger-active-color: #ff0000;
         }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: 'Nunito', 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #ECF2FF;
             min-height: 100vh;
         }
-
         .navbar {
             padding: 12px 0;
             background: rgba(255, 255, 255, 0.98);
@@ -50,12 +47,10 @@
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
         .navbar.scrolled {
             padding: 8px 0;
             box-shadow: 0 6px 40px rgba(0, 0, 0, 0.15);
         }
-
         .navbar-brand {
             font-family: 'Roboto';
             font-weight: 800;
@@ -67,16 +62,13 @@
             align-items: center;
             gap: 10px;
         }
-
         .navbar-brand:hover {
             transform: scale(1.05);
         }
-
         .navbar-nav {
             gap: 5px;
             margin-left: auto;
         }
-
         .nav-link {
             font-family: 'Roboto', sans-serif;
             font-weight: 600;
@@ -90,7 +82,6 @@
             display: flex;
             align-items: center;
         }
-
         .nav-link::before {
             content: '';
             position: absolute;
@@ -103,34 +94,27 @@
             transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: -1;
         }
-
         .nav-link:hover::before {
             left: 0;
         }
-
         .nav-link:hover {
             color: var(--primary-color) !important;
         }
-
         .nav-link:hover .nav-icon {
             fill: var(--primary-color);
             transform: scale(1.1);
         }
-
         .nav-link.active {
             background: var(--gradient-1);
             color: white !important;
             box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
         }
-
         .nav-link.active .nav-icon {
             fill: white;
         }
-
         .nav-link.active::before {
             display: none;
         }
-
         .nav-icon {
             width: 20px;
             height: 20px;
@@ -140,7 +124,6 @@
             display: inline-block;
             vertical-align: middle;
         }
-
         .dropdown-icon {
             width: 22px;
             height: 22px;
@@ -152,16 +135,13 @@
             z-index: 1;
             flex-shrink: 0;
         }
-
         .dropdown-toggle::after {
             transition: transform 0.3s ease;
             margin-left: 8px;
         }
-
         .dropdown-toggle[aria-expanded="true"]::after {
             transform: rotate(180deg);
         }
-
         .dropdown-menu {
             border: none;
             border-radius: 16px;
@@ -180,13 +160,11 @@
             position: absolute;
             right: 0;
         }
-
         .dropdown.show .dropdown-menu {
             opacity: 1;
             visibility: visible;
             transform: scaleY(1);
         }
-
         .dropdown-item {
             padding: 12px 18px;
             border-radius: 12px;
@@ -204,17 +182,14 @@
             overflow: hidden;
             width: 100%;
         }
-
         .dropdown-item:hover {
             background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
             color: var(--primary-color);
         }
-
         .dropdown-item:hover .dropdown-icon {
             fill: var(--primary-color);
             transform: scale(1.15);
         }
-
         .burger {
             position: relative;
             width: 26px;
@@ -225,11 +200,9 @@
             margin-left: auto;
             transition: all 0.3s ease;
         }
-
         .burger input {
             display: none;
         }
-
         .burger span {
             display: block;
             position: absolute;
@@ -242,45 +215,37 @@
             transform: rotate(0deg);
             transition: all 0.3s ease-in-out;
         }
-
         .burger input:checked ~ span {
             background: var(--burger-active-color);
         }
-
         .burger span:nth-of-type(1) {
             top: 0px;
             transform-origin: left center;
         }
-
         .burger span:nth-of-type(2) {
             top: 50%;
             transform: translateY(-50%);
             transform-origin: left center;
         }
-
         .burger span:nth-of-type(3) {
             top: 100%;
             transform-origin: left center;
             transform: translateY(-100%);
         }
-
         .burger input:checked ~ span:nth-of-type(1) {
             transform: rotate(45deg);
             top: -1px;
             left: 3px;
         }
-
         .burger input:checked ~ span:nth-of-type(2) {
             width: 0%;
             opacity: 0;
         }
-
         .burger input:checked ~ span:nth-of-type(3) {
             transform: rotate(-45deg);
             top: 18px;
             left: 3px;
         }
-
         /* Mobile menu bottom section styles */
         .mobile-menu-bottom {
             display: none;
@@ -294,13 +259,11 @@
             justify-content: center;
             gap: 25px;
         }
-
         .social-links {
             display: flex;
             justify-content: center;
             gap: 25px;
         }
-
         .social-link {
             width: 45px;
             height: 45px;
@@ -311,23 +274,19 @@
             transition: all 0.3s ease;
             background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
         }
-
         .social-link:hover {
             transform: translateY(-3px);
             box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
             background: var(--gradient-1);
         }
-
         .social-link i {
             font-size: 20px;
             color: var(--primary-color);
             transition: all 0.3s ease;
         }
-
         .social-link:hover i {
             color: white;
         }
-
         .help-button {
             width: auto;
             padding: 14px 20px;
@@ -344,56 +303,45 @@
             justify-content: center;
             gap: 10px;
         }
-
         .help-button:hover {
             transform: scale(1.02);
             box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
         }
-
         .help-button i {
             font-size: 18px;
         }
-
         @media (min-width: 992px) {
             .mobile-menu-bottom {
                 display: none !important;
             }
         }
-
         @media (max-width: 991px) {
             .navbar {
                 padding: 10px 0;
             }
-
             .navbar-brand {
                 font-size: 34px;
                 font-weight: 700;
             }
-
             .burger {
                 display: block;
                 width: 24px;
                 height: 18px;
             }
-
             .burger span {
                 height: 2.2px;
             }
-
             .burger input:checked ~ span:nth-of-type(1) {
                 top: -1px;
                 left: 2px;
             }
-
             .burger input:checked ~ span:nth-of-type(3) {
                 top: 16px;
                 left: 2px;
             }
-
             .navbar-toggler {
                 display: none;
             }
-
             .navbar-collapse {
                 position: fixed;
                 top: 60px;
@@ -417,21 +365,19 @@
                 overflow-y: auto;
                 overflow-x: hidden;
             }
-
             .navbar-collapse.show {
                 transform: translateX(0);
                 opacity: 1;
                 visibility: visible;
             }
-
             .navbar-nav {
                 gap: 8px;
                 width: 100%;
                 text-align: left;
                 margin-left: 0;
                 flex-direction: column;
+                padding-left: 0;
             }
-
             .nav-link {
                 padding: 18px 10px !important;
                 margin: 0;
@@ -444,28 +390,23 @@
                 border-radius: 14px;
                 background: rgba(102, 126, 234, 0.03);
             }
-
             .nav-link:hover {
                 background: rgba(102, 126, 234, 0.08);
             }
-
             .nav-link.active {
                 background: var(--gradient-1);
                 color: white !important;
             }
-
             .nav-icon {
                 width: 24px;
                 height: 24px;
                 flex-shrink: 0;
             }
-
             .dropdown-icon {
                 width: 24px;
                 height: 24px;
                 flex-shrink: 0;
             }
-
             .dropdown-menu {
                 border: none;
                 box-shadow: none;
@@ -482,15 +423,13 @@
                 width: 100%;
                 padding: 8px 0;
             }
-
             .dropdown.show .dropdown-menu {
                 transform: scaleY(1);
                 opacity: 1;
                 visibility: visible;
             }
-
             .dropdown-item {
-                padding: 18px 10px;
+                padding: 18px 10px; /* ← CHAPDAN 10px — nav-link bilan BIR XIL */
                 display: flex;
                 align-items: center;
                 justify-content: flex-start;
@@ -501,179 +440,144 @@
                 border-radius: 14px;
                 width: 100%;
             }
-
             .dropdown-item:hover {
                 background: rgba(102, 126, 234, 0.08);
             }
-
             .dropdown-item:last-child {
                 margin-bottom: 0;
             }
-
             .dropdown-item span {
                 flex-grow: 0;
             }
-
             .mobile-menu-bottom {
                 display: flex;
                 margin-top: auto;
                 padding-top: 10px;
             }
         }
-
         @media (max-width: 576px) {
             .navbar-brand {
                 font-size: 30px;
                 font-weight: 700;
             }
-
             .burger {
                 width: 22px;
                 height: 16px;
             }
-
             .burger span {
                 height: 2px;
             }
-
             .burger input:checked ~ span:nth-of-type(1) {
                 top: -1px;
                 left: 2px;
             }
-
             .burger input:checked ~ span:nth-of-type(3) {
                 top: 14px;
                 left: 2px;
             }
-
             body {
                 padding-top: 65px;
             }
-
             .navbar-collapse {
                 top: 55px;
                 height: calc(100vh - 55px);
                 padding: 20px 10px 5px 10px;
             }
-
             .nav-link {
                 padding: 16px 10px !important;
                 font-size: 16px;
             }
-
             .nav-icon {
                 width: 22px;
                 height: 22px;
             }
-
             .dropdown-icon {
                 width: 22px;
                 height: 22px;
             }
-
             .dropdown-item {
-                padding: 16px 10px;
+                padding: 16px 10px; /* CHAPDAN 10px — doim bir xil */
                 font-size: 16px;
             }
-
             .social-link {
                 width: 42px;
                 height: 42px;
             }
-
             .social-link i {
                 font-size: 18px;
             }
-
             .help-button {
                 padding: 12px 18px;
                 font-size: 15px;
             }
-
             .mobile-menu-bottom {
                 padding-bottom: 70px;
                 padding-top: 8px;
             }
         }
-
         @media (max-width: 375px) {
             .navbar-brand {
                 font-size: 28px;
                 font-weight: 700;
             }
-
             .burger {
                 width: 20px;
                 height: 14px;
             }
-
             .burger span {
                 height: 1.8px;
             }
-
             .burger input:checked ~ span:nth-of-type(1) {
                 top: -1px;
                 left: 1px;
             }
-
             .burger input:checked ~ span:nth-of-type(3) {
                 top: 12px;
                 left: 1px;
             }
-
             .nav-link {
                 padding: 14px 10px !important;
                 font-size: 15px;
                 gap: 12px;
             }
-
             .dropdown-item {
-                padding: 14px 10px;
+                padding: 14px 10px; /* CHAPDAN 10px — doim bir xil */
                 font-size: 15px;
                 gap: 12px;
             }
-
             .social-links {
                 gap: 20px;
             }
-
             .social-link {
                 width: 40px;
                 height: 40px;
             }
-
             .help-button {
                 padding: 10px 16px;
                 font-size: 14px;
             }
-
             .mobile-menu-bottom {
                 padding-bottom: 60px;
                 padding-top: 6px;
             }
         }
-
         /* Custom scrollbar for mobile menu */
         @media (max-width: 991px) {
             .navbar-collapse::-webkit-scrollbar {
                 width: 5px;
             }
-
             .navbar-collapse::-webkit-scrollbar-track {
                 background: rgba(102, 126, 234, 0.05);
                 border-radius: 10px;
             }
-
             .navbar-collapse::-webkit-scrollbar-thumb {
                 background: rgba(102, 126, 234, 0.3);
                 border-radius: 10px;
             }
-
             .navbar-collapse::-webkit-scrollbar-thumb:hover {
                 background: rgba(102, 126, 234, 0.5);
             }
         }
-
         /* Original styles for the rest of the page */
         .navbar {
             padding: 15px 0;
@@ -984,7 +888,6 @@
                         </ul>
                     </li>
                 </ul>
-                
                 <div class="mobile-menu-bottom">
                     <div class="social-links">
                         <a href="https://t.me/tezkorquiz_rasmiy" class="social-link" aria-label="Telegram">
@@ -1007,7 +910,6 @@
             </div>
         </div>
     </nav>
-
     <!-- Main Content -->
     <div class="container main-content py-5">
         <h1 class="text-center mb-2" data-aos="fade-up">Testni boshlash</h1>
@@ -1130,7 +1032,6 @@
             </div>
         </div>
     </div>
-
     <!-- Required JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
@@ -1139,7 +1040,6 @@
             duration: 800,
             once: true
         });
-
         document.addEventListener('DOMContentLoaded', function() {
             const navbar = document.getElementById('mainNavbar');
             const navLinks = document.querySelectorAll('.navbar-nav a:not(.dropdown-toggle)');
@@ -1148,7 +1048,6 @@
             const dropdown = document.querySelector('.dropdown');
             const dropdownToggle = document.getElementById('quizDropdown');
             const dropdownMenu = document.querySelector('.dropdown-menu');
-
             // Scroll effect for navbar
             window.addEventListener('scroll', function() {
                 if (window.scrollY > 50) {
@@ -1157,7 +1056,6 @@
                     navbar.classList.remove('scrolled');
                 }
             }, { passive: true });
-
             // Burger menu toggle
             burgerInput.addEventListener('change', function() {
                 if (this.checked) {
@@ -1171,7 +1069,6 @@
                     document.body.style.overflow = 'auto';
                 }
             });
-
             // Close mobile menu on link click (except dropdown toggle)
             navLinks.forEach(function(link) {
                 link.addEventListener('click', function() {
@@ -1182,10 +1079,8 @@
                     }
                 });
             });
-
             // Click handling for dropdown
             let isDropdownClicked = false;
-
             dropdownToggle.addEventListener('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -1194,7 +1089,6 @@
                 dropdownToggle.setAttribute('aria-expanded', isDropdownClicked);
                 dropdownMenu.classList.toggle('show');
             });
-
             // Close dropdown on outside click
             document.addEventListener('click', function(e) {
                 if (!dropdown.contains(e.target) && dropdown.classList.contains('show')) {
@@ -1204,7 +1098,6 @@
                     dropdownMenu.classList.remove('show');
                 }
             });
-
             // Prevent dropdown menu clicks from closing the dropdown
             dropdownMenu.addEventListener('click', function(e) {
                 e.stopPropagation();
