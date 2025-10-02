@@ -102,22 +102,6 @@
       z-index: 1000;
       transition: all 0.3s ease;
     }
-    .timer-container.compact-timer {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      width: 180px;
-      padding: 8px;
-      font-size: 1rem;
-      background-color: #ffffff;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-      justify-content: center;
-    }
-    .timer-container.compact-timer .timer {
-      font-size: 1.1rem;
-    }
     .timer {
       font-size: 1.5rem;
       font-weight: bold;
@@ -168,26 +152,6 @@
         opacity: 0;
       }
     }
-    .sad-emoji {
-      font-size: 3rem;
-      margin: 10px 0;
-      animation: shake 0.5s ease-in-out;
-    }
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-10px); }
-      50% { transform: translateX(10px); }
-      75% { transform: translateX(-10px); }
-    }
-    .neutral-emoji {
-      font-size: 3rem;
-      margin: 10px 0;
-      animation: bounce 1s ease-in-out;
-    }
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-15px); }
-    }
     .new-test-btn {
       margin-top: 20px;
     }
@@ -202,20 +166,40 @@
       .form-check {
         margin-bottom: 5px;
       }
-      .timer-container {
-        flex-direction: column;
-        align-items: flex-start;
+      .timer-container.initial-center {
+        position: static !important;
+        flex-direction: row !important;
+        justify-content: center !important;
+        align-items: center !important;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        background-color: #ffffff;
+        padding: 10px 15px;
+        width: auto;
+        top: auto;
+        right: auto;
+        border-radius: 8px;
       }
       .timer-container.compact-timer {
-        width: 140px;
-        padding: 6px;
-        right: 5px;
+        position: fixed !important;
+        top: 15px !important;
+        right: 15px !important;
+        width: 140px !important;
+        padding: 8px !important;
+        z-index: 2000;
+        background-color: white !important;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        justify-content: center !important;
+        flex-direction: column !important;
+        align-items: center !important;
+      }
+      .timer-container.compact-timer .timer {
+        font-size: 1.1rem !important;
       }
       .timer {
         font-size: 1.2rem;
-      }
-      .timer-container.compact-timer .timer {
-        font-size: 1rem;
       }
       .question-text {
         font-size: 1rem;
@@ -225,9 +209,6 @@
       }
       .feedback-text {
         font-size: 1rem;
-      }
-      .sad-emoji, .neutral-emoji {
-        font-size: 2.5rem;
       }
       .time-settings {
         padding: 10px;
@@ -360,27 +341,76 @@
     .modal-overlay.show .confirm-modal {
       transform: translateY(0);
     }
-    .confirm-btn-group {
+
+    /* Info Modal Styling */
+    #infoModal .confirm-modal {
+      max-width: 600px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      background-color: #fff;
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+      position: relative;
+    }
+
+    #infoModal h4 {
+      margin-top: 0;
+      color: #2c7fbb;
+      font-size: 1.4rem;
+    }
+
+    #infoModal p, #infoModal pre {
+      margin-bottom: 15px;
+      line-height: 1.6;
+    }
+
+    #infoModal pre {
+      background-color: #f0f4f8;
+      border-left: 4px solid #2c7fbb;
+      padding: 12px;
+      border-radius: 0 6px 6px 0;
+      font-size: 0.95rem;
+      overflow-x: auto;
+    }
+
+    #infoModal .confirm-btn-group {
       margin-top: 20px;
       display: flex;
       justify-content: center;
-      gap: 10px;
     }
-    #infoModal .confirm-modal {
-      max-width: 600px;
+
+    #infoModal .confirm-btn-group button {
+      width: auto;
+      padding: 8px 20px;
     }
-    #infoModal p {
-      text-align: left;
-      font-size: 1rem;
-      line-height: 1.6;
+
+    /* Emoji placeholder */
+    #emojiPlaceholder {
+      text-align: center;
+      min-height: 48px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2rem;
+      color: #2c7fbb;
     }
-    #infoModal pre {
-      background-color: #f8f9fa;
-      padding: 10px;
-      border-radius: 6px;
-      text-align: left;
-      font-size: 0.9rem;
-      overflow-x: auto;
+
+    #infoRow {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 400px) {
+      #infoRow {
+        flex-direction: column;
+        gap: 10px;
+      }
     }
   </style>
 </head>
@@ -388,8 +418,10 @@
 <div class="container">
   <h1 class="text-center mb-4">Siz Imtihondasiz!</h1>
 
-  <div class="text-center mb-3">
+  <!-- Info button + emoji placeholder -->
+  <div id="infoRow">
     <button id="infoBtn" class="btn btn-info">Imtihon Quiz qanday ishlaydi?</button>
+    <div id="emojiPlaceholder"></div>
   </div>
 
   <div id="timeSettings" class="time-settings">
@@ -414,7 +446,7 @@
     </div>
   </div>
 
-  <div id="timerContainer" class="timer-container" style="display: none;">
+  <div id="timerContainer" class="timer-container initial-center" style="display: none;">
     <div>
       <i class="fas fa-clock me-2"></i>
       <span>Qolgan vaqt:</span>
@@ -422,7 +454,7 @@
     <div id="timer" class="timer">00:00</div>
   </div>
 
-  <div class="mb-3" id="fileSection">
+  <div id="fileSection" class="mb-3">
     <label for="fileInput" class="form-label file-label">Fayl tanlash (.txt)</label>
     <input type="file" class="form-control" id="fileInput" accept=".txt" />
     <div id="uploadStatus"></div>
@@ -431,59 +463,55 @@
   <div id="quizList" style="display: none;">
     <p id="testCount" class="text-success fw-bold"></p>
     <div id="questionsContainer"></div>
-
     <button id="finishBtn" class="btn btn-primary">Testni yakunlash</button>
-
-    <div id="scoreContainer" class="score-container">
-      <div class="results-card">
-        <h3 class="mb-3">Imtihon Natijalari</h3>
-        
-        <div class="progress-container">
-          <div class="progress-bar">
-            <div id="progressFill" class="progress-fill" style="width: 0%"></div>
-          </div>
-          <div id="progressText" class="mt-2">0%</div>
-        </div>
-        
-        <div class="stats-container">
-          <div class="stat-item total-questions">
-            <i class="fas fa-clipboard-list"></i>
-            <div>Jami savollar</div>
-            <div id="totalQuestions">0</div>
-          </div>
-          
-          <div class="stat-item correct-answers">
-            <i class="fas fa-check-circle"></i>
-            <div>To'g'ri javoblar</div>
-            <div id="correctAnswers">0</div>
-          </div>
-          
-          <div class="stat-item incorrect-answers">
-            <i class="fas fa-times-circle"></i>
-            <div>Xato tanlanganlar</div>
-            <div id="incorrectAnswers">0</div>
-          </div>
-          
-          <div class="stat-item unanswered">
-            <i class="fas fa-question-circle"></i>
-            <div>Javobsiz qoldirilganlar</div>
-            <div id="unanswered">0</div>
-          </div>
-        </div>
-        
-        <div id="gifContainer" class="gif-container"></div>
-        
-        <div id="feedbackText" class="feedback-text mt-3"></div>
-      </div>
-    </div>
-
-    <button id="newTestBtn" class="btn btn-success new-test-btn" style="display: none; text-align: center; width: 100%;">
-      Yangi test boshlamoq
-    </button>
   </div>
 
+  <div id="scoreContainer" class="score-container">
+    <div class="results-card">
+      <h3 class="mb-3">Imtihon Natijalari</h3>
+      
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div id="progressFill" class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div id="progressText" class="mt-2">0%</div>
+      </div>
+      
+      <div class="stats-container">
+        <div class="stat-item total-questions">
+          <i class="fas fa-clipboard-list"></i>
+          <div>Jami savollar</div>
+          <div id="totalQuestions">0</div>
+        </div>
+        
+        <div class="stat-item correct-answers">
+          <i class="fas fa-check-circle"></i>
+          <div>To'g'ri javoblar</div>
+          <div id="correctAnswers">0</div>
+        </div>
+        
+        <div class="stat-item incorrect-answers">
+          <i class="fas fa-times-circle"></i>
+          <div>Xato tanlanganlar</div>
+          <div id="incorrectAnswers">0</div>
+        </div>
+        
+        <div class="stat-item unanswered">
+          <i class="fas fa-question-circle"></i>
+          <div>Javobsiz qoldirilganlar</div>
+          <div id="unanswered">0</div>
+        </div>
+      </div>
+      
+      <div id="gifContainer" class="gif-container"></div>
+      
+      <div id="feedbackText" class="feedback-text mt-3"></div>
+    </div>
+  </div>
+
+  <button id="newTestBtn" class="btn btn-success new-test-btn" style="display: none; width: 100%;">Yangi test boshlamoq</button>
+
   <div id="confettiContainer" class="confetti-container"></div>
-  
   <div id="saluteContainer"></div>
   
   <div id="confirmModal" class="modal-overlay">
@@ -510,7 +538,7 @@
 
   <div id="infoModal" class="modal-overlay">
     <div class="confirm-modal">
-      <h4 class="mb-3">Imtihon Quiz qanday ishlaydi?</h4>
+      <h4>Imtihon Quiz qanday ishlaydi?</h4>
       <p>
         Testlarni boshlash uchun yuqoridagi "Fayl tanlash" orqali .txt faylini yuklang. Fayl quyidagi formatda bo'lishi kerak:
       </p>
@@ -620,6 +648,7 @@ ANSWER: C
   const infoModal = document.getElementById("infoModal");
   const closeInfo = document.getElementById("closeInfo");
   const fileSection = document.getElementById("fileSection");
+  const emojiPlaceholder = document.getElementById("emojiPlaceholder");
 
   // Info modal
   infoBtn.addEventListener("click", () => {
@@ -630,14 +659,16 @@ ANSWER: C
     infoModal.classList.remove("show");
   });
 
-  // Timer kompakt holatga o'tishi uchun scroll eventi
+  // Scroll behavior for timer
   window.addEventListener('scroll', () => {
     if (examStarted) {
       const scrollY = window.scrollY;
       if (scrollY > 100) {
+        timerContainer.classList.remove('initial-center');
         timerContainer.classList.add('compact-timer');
       } else {
         timerContainer.classList.remove('compact-timer');
+        timerContainer.classList.add('initial-center');
       }
     }
   });
@@ -754,7 +785,7 @@ ANSWER: C
 
     if (originalTests.length > 0) {
       uploadStatus.textContent = "Fayl yuklandi!";
-      fileSection.style.display = "none"; // Fayl tanlash bo‘limini yashirish
+      fileSection.style.display = "none";
       randomizeTests();
       startExam();
     } else {
@@ -777,6 +808,7 @@ ANSWER: C
     timeSettings.style.display = "none";
     fileInput.disabled = true;
     timerContainer.style.display = "flex";
+    timerContainer.classList.add("initial-center");
     updateTimerDisplay();
     startTimer();
     showTests();
@@ -957,13 +989,13 @@ ANSWER: C
       emoji = "🎉 🥳 🎊";
     }
 
+    // Emoji placeholder yangilash
+    emojiPlaceholder.textContent = emoji;
+
     const currentIndex = gifIndices[gifGroupKey];
     const selectedGif = gifGroups[gifGroupKey][currentIndex];
     gifContainer.innerHTML = `
       <img src="${selectedGif.url}" alt="${selectedGif.alt}" style="width: 100%; height: 180px; object-fit: cover;">
-      <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 32px;">
-        ${emoji}
-      </div>
     `;
     
     gifIndices[gifGroupKey] = (currentIndex + 1) % gifGroups[gifGroupKey].length;
@@ -975,30 +1007,15 @@ ANSWER: C
 
     let feedback = "";
     if (percentage < 30) {
-      feedback = `
-          Natijangiz <span>qoniqarli emas</span>.
-          <br>Hali hammasi oldinda! Ko'proq o'qib, mashq qiling va qayta urinib ko'ring!
-      `;
+      feedback = `Natijangiz <span>qoniqarli emas</span>.<br>Hali hammasi oldinda! Ko'proq o'qib, mashq qiling va qayta urinib ko'ring!`;
     } else if (percentage < 60) {
-      feedback = `
-          Natijangiz <span>o'rtacha</span>.
-          <br>Yana biroz harakat qilsangiz, yaxshi natijaga erishasiz!
-      `;
+      feedback = `Natijangiz <span>o'rtacha</span>.<br>Yana biroz harakat qilsangiz, yaxshi natijaga erishasiz!`;
     } else if (percentage <= 70) {
-      feedback = `
-          Natijangiz <span>yaxshi</span>!
-          <br>Siz yaxshi bilimga egasiz, lekin yanada yaxshiroq bo'lishingiz mumkin.
-      `;
+      feedback = `Natijangiz <span>yaxshi</span>!<br>Siz yaxshi bilimga egasiz, lekin yanada yaxshiroq bo'lishingiz mumkin.`;
     } else if (percentage <= 81) {
-      feedback = `
-          Natijangiz <span>juda yaxshi</span>!
-          <br>Siz mavzuni yaxshi o'zlashtirgansiz. Ajoyib!
-      `;
+      feedback = `Natijangiz <span>juda yaxshi</span>!<br>Siz mavzuni yaxshi o'zlashtirgansiz. Ajoyib!`;
     } else {
-      feedback = `
-          Natijangiz <span>a'lo darajada</span>!
-          <br>Siz mavzuni chuqur o'zlashtirgan ko'rinasiz. Tabriklaymiz!
-      `;
+      feedback = `Natijangiz <span>a'lo darajada</span>!<br>Siz mavzuni chuqur o'zlashtirgan ko'rinasiz. Tabriklaymiz!`;
     }
 
     feedbackText.innerHTML = feedback;
@@ -1022,16 +1039,17 @@ ANSWER: C
     scoreContainer.classList.remove("show-feedback");
     timerElement.classList.remove("warning");
     timerContainer.style.display = "none";
-    timerContainer.classList.remove("compact-timer");
+    timerContainer.classList.remove("compact-timer", "initial-center");
     newTestBtn.style.display = "none";
     finishBtn.style.display = "block";
     timeSettings.style.display = "block";
-    fileSection.style.display = "block"; // Fayl tanlash bo‘limini qayta ko‘rsatish
+    fileSection.style.display = "block";
     timeButtons.forEach(btn => btn.classList.remove("active"));
     customTimeCheck.checked = false;
     customTimeInput.style.display = "none";
     totalSeconds = 0;
     minutesInput.value = "15";
+    emojiPlaceholder.textContent = "";
   }
 
   function createConfetti() {
