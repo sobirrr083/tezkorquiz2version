@@ -12,6 +12,8 @@
       background-color: #f4f6f9;
       overflow-x: hidden;
       font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
     }
     .container {
       max-width: 900px;
@@ -94,32 +96,13 @@
       padding: 10px 15px;
       margin-bottom: 20px;
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
       box-shadow: 0 1px 3px rgba(0,0,0,0.1);
       position: sticky;
       top: 10px;
       z-index: 1000;
-      transition: all 0.4s ease;
-    }
-    .timer-container.compact-timer {
-      position: fixed;
-      top: 15px;
-      right: 15px;
-      width: auto;
-      min-width: 130px;
-      padding: 10px 15px;
-      justify-content: center;
-      background-color: white;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    .timer-container.compact-timer.show {
-      opacity: 1;
-      transform: translateY(0);
+      transition: all 0.3s ease;
     }
     .timer {
       font-size: 1.5rem;
@@ -173,6 +156,8 @@
     }
     .new-test-btn {
       margin-top: 20px;
+      width: 100%;
+      text-align: center;
     }
     .results-card {
       border-radius: 10px;
@@ -270,7 +255,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      z-index: 2000;
+      z-index: 1000;
       visibility: hidden;
       opacity: 0;
       transition: all 0.3s;
@@ -281,31 +266,36 @@
     }
     .confirm-modal {
       background-color: white;
-      border-radius: 12px;
-      padding: 25px;
-      max-width: 600px;
+      border-radius: 10px;
+      padding: 20px;
+      max-width: 450px;
       width: 90%;
-      max-height: 85vh;
-      overflow-y: auto;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
-      position: relative;
-      text-align: left;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      text-align: center;
+      transform: translateY(-20px);
+      transition: transform 0.3s;
     }
+    .modal-overlay.show .confirm-modal {
+      transform: translateY(0);
+    }
+
+    /* Info Modal Styling */
     #infoModal .confirm-modal {
+      max-width: 90%;
+      width: 600px;
+      max-height: 80vh;
       display: flex;
       flex-direction: column;
+      background-color: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+      position: relative;
     }
     #infoModal .modal-content {
       flex: 1;
       overflow-y: auto;
-    }
-    #infoModal .sticky-footer {
-      margin-top: auto;
-      padding-top: 15px;
-      border-top: 1px solid #eee;
-      background: white;
-      position: sticky;
-      bottom: 0;
+      padding-right: 10px;
     }
     #infoModal h4 {
       margin-top: 0;
@@ -323,17 +313,22 @@
       border-radius: 0 6px 6px 0;
       font-size: 0.95rem;
       overflow-x: auto;
+      white-space: pre-wrap;
+      word-wrap: break-word;
     }
     #infoModal .confirm-btn-group {
+      margin-top: 20px;
       display: flex;
       justify-content: center;
+      position: sticky;
+      bottom: 0;
+      background-color: #fff;
+      padding: 10px 0;
     }
     #infoModal .confirm-btn-group button {
       width: auto;
       padding: 8px 20px;
     }
-
-    /* Emoji placeholder */
     #emojiPlaceholder {
       text-align: center;
       min-height: 48px;
@@ -343,7 +338,6 @@
       font-size: 2rem;
       color: #2c7fbb;
     }
-
     #infoRow {
       display: flex;
       justify-content: center;
@@ -353,10 +347,160 @@
       flex-wrap: wrap;
     }
 
-    @media (max-width: 400px) {
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .container {
+        margin: 10px;
+        padding: 15px;
+      }
+      .question-container {
+        padding: 12px;
+      }
+      .timer {
+        font-size: 1.3rem;
+      }
+      .question-text {
+        font-size: 1rem;
+      }
+      .form-check-label {
+        font-size: 0.95rem;
+      }
+      .time-settings {
+        padding: 12px;
+      }
+      .btn-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+      }
+      .btn-group button {
+        flex: 1 0 45%;
+        margin: 2px;
+      }
+      .stats-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      .stat-item {
+        width: 100%;
+        max-width: 300px;
+      }
+      .gif-container {
+        max-width: 250px;
+        height: 150px;
+      }
+      #infoModal .confirm-modal {
+        width: 95%;
+        max-width: 500px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .container {
+        padding: 10px;
+        margin: 5px;
+      }
+      .question-container {
+        padding: 10px;
+      }
+      .form-check {
+        margin-bottom: 5px;
+      }
+      .timer-container.initial-center {
+        position: static !important;
+        flex-direction: row !important;
+        justify-content: center !important;
+        align-items: center !important;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        background-color: #ffffff;
+        padding: 10px 15px;
+        width: auto;
+        top: auto;
+        right: auto;
+        border-radius: 8px;
+      }
+      .timer-container.compact-timer {
+        position: fixed !important;
+        top: 15px !important;
+        right: 15px !important;
+        width: 140px !important;
+        padding: 8px !important;
+        z-index: 2000;
+        background-color: white !important;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        justify-content: center !important;
+        flex-direction: column !important;
+        align-items: center !important;
+      }
+      .timer-container.compact-timer .timer {
+        font-size: 1.1rem !important;
+      }
+      .timer {
+        font-size: 1.2rem;
+      }
+      .question-text {
+        font-size: 0.95rem;
+      }
+      .form-check-label {
+        font-size: 0.9rem;
+      }
+      .feedback-text {
+        font-size: 1rem;
+      }
+      .btn-group button {
+        flex: 1 0 48%;
+        font-size: 0.9rem;
+      }
+      .results-card {
+        padding: 15px;
+      }
+      .gif-container {
+        max-width: 200px;
+        height: 120px;
+      }
+      #infoModal .confirm-modal {
+        width: 90%;
+        max-width: 400px;
+      }
       #infoRow {
         flex-direction: column;
         gap: 10px;
+      }
+      #finishBtn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .container {
+        padding: 8px;
+      }
+      .question-text {
+        font-size: 0.9rem;
+      }
+      .form-check-label {
+        font-size: 0.85rem;
+      }
+      .timer {
+        font-size: 1rem;
+      }
+      .btn-group button {
+        flex: 1 0 100%;
+        margin: 2px 0;
+      }
+      .gif-container {
+        max-width: 180px;
+        height: 100px;
+      }
+      #infoModal .confirm-modal {
+        width: 95%;
+        max-width: 350px;
       }
     }
   </style>
@@ -393,7 +537,7 @@
     </div>
   </div>
 
-  <div id="timerContainer" class="timer-container" style="display: none;">
+  <div id="timerContainer" class="timer-container initial-center" style="display: none;">
     <div>
       <i class="fas fa-clock me-2"></i>
       <span>Qolgan vaqt:</span>
@@ -456,7 +600,7 @@
     </div>
   </div>
 
-  <button id="newTestBtn" class="btn btn-success new-test-btn" style="display: none; width: 100%;">Yangi test boshlamoq</button>
+  <button id="newTestBtn" class="btn btn-success new-test-btn" style="display: none;">Yangi test boshlamoq</button>
 
   <div id="confettiContainer" class="confetti-container"></div>
   <div id="saluteContainer"></div>
@@ -485,11 +629,12 @@
 
   <div id="infoModal" class="modal-overlay">
     <div class="confirm-modal">
-      <h4>Imtihon Quiz qanday ishlaydi?</h4>
-      <p>
-        Testlarni boshlash uchun yuqoridagi "Fayl tanlash" orqali .txt faylini yuklang. Fayl quyidagi formatda bo'lishi kerak:
-      </p>
-      <pre>
+      <div class="modal-content">
+        <h4>Imtihon Quiz qanday ishlaydi?</h4>
+        <p>
+          Testlarni boshlash uchun yuqoridagi "Fayl tanlash" orqali .txt faylini yuklang. Fayl quyidagi formatda bo'lishi kerak:
+        </p>
+        <pre>
 O'zbekiston poytaxti qayer?
 A. Toshkent
 B. Samarqand
@@ -503,16 +648,15 @@ B. Sichqoncha
 C. Klaviatura
 D. Printer
 ANSWER: C
-      </pre>
-      <p>
-        <strong>Izoh:</strong> Har bir savol bir qatordan boshlanadi, undan keyin A, B, C, D variantlari va ANSWER: so'zidan keyin bitta probel bilan to'g'ri javob (A, B, C yoki D) ko'rsatiladi va bir qator ochiq joy (Enter) qoldiriladi va keyingi savol namunadek davom etadi.
-        <br><br>
-        Barcha testlar shu ko'rinishda bo'lishi lozim. Yordam: <a href="https://t.me/sobirweb" target="_blank">@sobirweb</a> | <a href="https://www.tezkorquiz.uz" target="_blank">www.tezkorquiz.uz</a>
-      </p>
-      <div class="sticky-footer">
-        <div class="confirm-btn-group">
-          <button id="closeInfo" class="btn btn-primary">Yopish</button>
-        </div>
+        </pre>
+        <p>
+          <strong>Izoh:</strong> Har bir savol bir qatordan boshlanadi, undan keyin A, B, C, D variantlari va ANSWER: so'zidan keyin bitta probel bilan to'g'ri javob (A, B, C yoki D) ko'rsatiladi va bir qator ochiq joy (Enter) qoldiriladi va keyingi savol namunadek davom etadi.
+          <br><br>
+          Barcha testlar shu ko'rinishda bo'lishi lozim. Yordam: <a href="https://t.me/sobirweb" target="_blank">@sobirweb</a>
+        </p>
+      </div>
+      <div class="confirm-btn-group">
+        <button id="closeInfo" class="btn btn-primary">Yopish</button>
       </div>
     </div>
   </div>
@@ -598,15 +742,8 @@ ANSWER: C
   const closeInfo = document.getElementById("closeInfo");
   const fileSection = document.getElementById("fileSection");
   const emojiPlaceholder = document.getElementById("emojiPlaceholder");
-  const infoRow = document.getElementById("infoRow");
 
-  // Info modal: overlay click → close
-  infoModal.addEventListener("click", (e) => {
-    if (e.target === infoModal) {
-      infoModal.classList.remove("show");
-    }
-  });
-
+  // Info modal
   infoBtn.addEventListener("click", () => {
     infoModal.classList.add("show");
   });
@@ -615,22 +752,17 @@ ANSWER: C
     infoModal.classList.remove("show");
   });
 
-  // Timer scroll behavior
-  let ticking = false;
+  // Scroll behavior for timer
   window.addEventListener('scroll', () => {
-    if (!ticking && examStarted) {
-      requestAnimationFrame(() => {
-        const scrollY = window.scrollY;
-        if (scrollY > 100) {
-          timerContainer.classList.remove('initial-center');
-          timerContainer.classList.add('compact-timer');
-          setTimeout(() => timerContainer.classList.add('show'), 10);
-        } else {
-          timerContainer.classList.remove('compact-timer', 'show');
-        }
-        ticking = false;
-      });
-      ticking = true;
+    if (examStarted) {
+      const scrollY = window.scrollY;
+      if (scrollY > 100) {
+        timerContainer.classList.remove('initial-center');
+        timerContainer.classList.add('compact-timer');
+      } else {
+        timerContainer.classList.remove('compact-timer');
+        timerContainer.classList.add('initial-center');
+      }
     }
   });
 
@@ -769,9 +901,7 @@ ANSWER: C
     timeSettings.style.display = "none";
     fileInput.disabled = true;
     timerContainer.style.display = "flex";
-    // Info tugmasini yashirish, emoji joyini qoldirish
-    infoBtn.style.display = "none";
-    emojiPlaceholder.style.display = "flex";
+    timerContainer.classList.add("initial-center");
     updateTimerDisplay();
     startTimer();
     showTests();
@@ -957,7 +1087,7 @@ ANSWER: C
     const currentIndex = gifIndices[gifGroupKey];
     const selectedGif = gifGroups[gifGroupKey][currentIndex];
     gifContainer.innerHTML = `
-      <img src="${selectedGif.url}" alt="${selectedGif.alt}" style="width: 100%; height: 180px; object-fit: cover;">
+      <img src="${selectedGif.url}" alt="${selectedGif.alt}" style="width: 100%; height: 100%; object-fit: cover;">
     `;
     
     gifIndices[gifGroupKey] = (currentIndex + 1) % gifGroups[gifGroupKey].length;
@@ -1001,20 +1131,17 @@ ANSWER: C
     scoreContainer.classList.remove("show-feedback");
     timerElement.classList.remove("warning");
     timerContainer.style.display = "none";
-    timerContainer.classList.remove("compact-timer", "show");
+    timerContainer.classList.remove("compact-timer", "initial-center");
     newTestBtn.style.display = "none";
     finishBtn.style.display = "block";
     timeSettings.style.display = "block";
     fileSection.style.display = "block";
-    // Tugma qayta ko'rinadi
-    infoBtn.style.display = "inline-block";
-    emojiPlaceholder.style.display = "none";
-    emojiPlaceholder.textContent = "";
     timeButtons.forEach(btn => btn.classList.remove("active"));
     customTimeCheck.checked = false;
     customTimeInput.style.display = "none";
     totalSeconds = 0;
     minutesInput.value = "15";
+    emojiPlaceholder.textContent = "";
   }
 
   function createConfetti() {
