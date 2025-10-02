@@ -94,13 +94,32 @@
       padding: 10px 15px;
       margin-bottom: 20px;
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
       box-shadow: 0 1px 3px rgba(0,0,0,0.1);
       position: sticky;
       top: 10px;
       z-index: 1000;
-      transition: all 0.3s ease;
+      transition: all 0.4s ease;
+    }
+    .timer-container.compact-timer {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      width: auto;
+      min-width: 130px;
+      padding: 10px 15px;
+      justify-content: center;
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    .timer-container.compact-timer.show {
+      opacity: 1;
+      transform: translateY(0);
     }
     .timer {
       font-size: 1.5rem;
@@ -154,73 +173,6 @@
     }
     .new-test-btn {
       margin-top: 20px;
-    }
-    @media (max-width: 576px) {
-      .container {
-        padding: 10px;
-        margin: 10px;
-      }
-      .question-container {
-        padding: 10px;
-      }
-      .form-check {
-        margin-bottom: 5px;
-      }
-      .timer-container.initial-center {
-        position: static !important;
-        flex-direction: row !important;
-        justify-content: center !important;
-        align-items: center !important;
-        margin-bottom: 15px;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        background-color: #ffffff;
-        padding: 10px 15px;
-        width: auto;
-        top: auto;
-        right: auto;
-        border-radius: 8px;
-      }
-      .timer-container.compact-timer {
-        position: fixed !important;
-        top: 15px !important;
-        right: 15px !important;
-        width: 140px !important;
-        padding: 8px !important;
-        z-index: 2000;
-        background-color: white !important;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        justify-content: center !important;
-        flex-direction: column !important;
-        align-items: center !important;
-      }
-      .timer-container.compact-timer .timer {
-        font-size: 1.1rem !important;
-      }
-      .timer {
-        font-size: 1.2rem;
-      }
-      .question-text {
-        font-size: 1rem;
-      }
-      .form-check-label {
-        font-size: 0.95rem;
-      }
-      .feedback-text {
-        font-size: 1rem;
-      }
-      .time-settings {
-        padding: 10px;
-      }
-      .btn-group {
-        display: flex;
-        flex-wrap: wrap;
-      }
-      .btn-group button {
-        flex: 1 0 45%;
-        margin: 2px;
-      }
     }
     .results-card {
       border-radius: 10px;
@@ -318,7 +270,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      z-index: 1000;
+      z-index: 2000;
       visibility: hidden;
       opacity: 0;
       transition: all 0.3s;
@@ -329,43 +281,41 @@
     }
     .confirm-modal {
       background-color: white;
-      border-radius: 10px;
-      padding: 20px;
-      max-width: 450px;
-      width: 90%;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-      text-align: center;
-      transform: translateY(-20px);
-      transition: transform 0.3s;
-    }
-    .modal-overlay.show .confirm-modal {
-      transform: translateY(0);
-    }
-
-    /* Info Modal Styling */
-    #infoModal .confirm-modal {
-      max-width: 600px;
-      width: 90%;
-      max-height: 80vh;
-      overflow-y: auto;
-      background-color: #fff;
       border-radius: 12px;
       padding: 25px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+      max-width: 600px;
+      width: 90%;
+      max-height: 85vh;
+      overflow-y: auto;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
       position: relative;
+      text-align: left;
     }
-
+    #infoModal .confirm-modal {
+      display: flex;
+      flex-direction: column;
+    }
+    #infoModal .modal-content {
+      flex: 1;
+      overflow-y: auto;
+    }
+    #infoModal .sticky-footer {
+      margin-top: auto;
+      padding-top: 15px;
+      border-top: 1px solid #eee;
+      background: white;
+      position: sticky;
+      bottom: 0;
+    }
     #infoModal h4 {
       margin-top: 0;
       color: #2c7fbb;
       font-size: 1.4rem;
     }
-
     #infoModal p, #infoModal pre {
       margin-bottom: 15px;
       line-height: 1.6;
     }
-
     #infoModal pre {
       background-color: #f0f4f8;
       border-left: 4px solid #2c7fbb;
@@ -374,13 +324,10 @@
       font-size: 0.95rem;
       overflow-x: auto;
     }
-
     #infoModal .confirm-btn-group {
-      margin-top: 20px;
       display: flex;
       justify-content: center;
     }
-
     #infoModal .confirm-btn-group button {
       width: auto;
       padding: 8px 20px;
@@ -446,7 +393,7 @@
     </div>
   </div>
 
-  <div id="timerContainer" class="timer-container initial-center" style="display: none;">
+  <div id="timerContainer" class="timer-container" style="display: none;">
     <div>
       <i class="fas fa-clock me-2"></i>
       <span>Qolgan vaqt:</span>
@@ -560,10 +507,12 @@ ANSWER: C
       <p>
         <strong>Izoh:</strong> Har bir savol bir qatordan boshlanadi, undan keyin A, B, C, D variantlari va ANSWER: so'zidan keyin bitta probel bilan to'g'ri javob (A, B, C yoki D) ko'rsatiladi va bir qator ochiq joy (Enter) qoldiriladi va keyingi savol namunadek davom etadi.
         <br><br>
-        Barcha testlar shu ko'rinishda bo'lishi lozim. Yordam: <a href="https://t.me/sobirweb" target="_blank">@sobirweb</a>
+        Barcha testlar shu ko'rinishda bo'lishi lozim. Yordam: <a href="https://t.me/sobirweb" target="_blank">@sobirweb</a> | <a href="https://www.tezkorquiz.uz" target="_blank">www.tezkorquiz.uz</a>
       </p>
-      <div class="confirm-btn-group">
-        <button id="closeInfo" class="btn btn-primary">Yopish</button>
+      <div class="sticky-footer">
+        <div class="confirm-btn-group">
+          <button id="closeInfo" class="btn btn-primary">Yopish</button>
+        </div>
       </div>
     </div>
   </div>
@@ -649,8 +598,15 @@ ANSWER: C
   const closeInfo = document.getElementById("closeInfo");
   const fileSection = document.getElementById("fileSection");
   const emojiPlaceholder = document.getElementById("emojiPlaceholder");
+  const infoRow = document.getElementById("infoRow");
 
-  // Info modal
+  // Info modal: overlay click → close
+  infoModal.addEventListener("click", (e) => {
+    if (e.target === infoModal) {
+      infoModal.classList.remove("show");
+    }
+  });
+
   infoBtn.addEventListener("click", () => {
     infoModal.classList.add("show");
   });
@@ -659,17 +615,22 @@ ANSWER: C
     infoModal.classList.remove("show");
   });
 
-  // Scroll behavior for timer
+  // Timer scroll behavior
+  let ticking = false;
   window.addEventListener('scroll', () => {
-    if (examStarted) {
-      const scrollY = window.scrollY;
-      if (scrollY > 100) {
-        timerContainer.classList.remove('initial-center');
-        timerContainer.classList.add('compact-timer');
-      } else {
-        timerContainer.classList.remove('compact-timer');
-        timerContainer.classList.add('initial-center');
-      }
+    if (!ticking && examStarted) {
+      requestAnimationFrame(() => {
+        const scrollY = window.scrollY;
+        if (scrollY > 100) {
+          timerContainer.classList.remove('initial-center');
+          timerContainer.classList.add('compact-timer');
+          setTimeout(() => timerContainer.classList.add('show'), 10);
+        } else {
+          timerContainer.classList.remove('compact-timer', 'show');
+        }
+        ticking = false;
+      });
+      ticking = true;
     }
   });
 
@@ -808,7 +769,9 @@ ANSWER: C
     timeSettings.style.display = "none";
     fileInput.disabled = true;
     timerContainer.style.display = "flex";
-    timerContainer.classList.add("initial-center");
+    // Info tugmasini yashirish, emoji joyini qoldirish
+    infoBtn.style.display = "none";
+    emojiPlaceholder.style.display = "flex";
     updateTimerDisplay();
     startTimer();
     showTests();
@@ -989,7 +952,6 @@ ANSWER: C
       emoji = "🎉 🥳 🎊";
     }
 
-    // Emoji placeholder yangilash
     emojiPlaceholder.textContent = emoji;
 
     const currentIndex = gifIndices[gifGroupKey];
@@ -1039,17 +1001,20 @@ ANSWER: C
     scoreContainer.classList.remove("show-feedback");
     timerElement.classList.remove("warning");
     timerContainer.style.display = "none";
-    timerContainer.classList.remove("compact-timer", "initial-center");
+    timerContainer.classList.remove("compact-timer", "show");
     newTestBtn.style.display = "none";
     finishBtn.style.display = "block";
     timeSettings.style.display = "block";
     fileSection.style.display = "block";
+    // Tugma qayta ko'rinadi
+    infoBtn.style.display = "inline-block";
+    emojiPlaceholder.style.display = "none";
+    emojiPlaceholder.textContent = "";
     timeButtons.forEach(btn => btn.classList.remove("active"));
     customTimeCheck.checked = false;
     customTimeInput.style.display = "none";
     totalSeconds = 0;
     minutesInput.value = "15";
-    emojiPlaceholder.textContent = "";
   }
 
   function createConfetti() {
