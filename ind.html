@@ -96,7 +96,7 @@
       padding: 10px 15px;
       margin-bottom: 20px;
       display: flex;
-      justify-content: space-between;
+      justify-content: center; /* Markazga joylashtirish */
       align-items: center;
       box-shadow: 0 1px 3px rgba(0,0,0,0.1);
       position: sticky;
@@ -321,7 +321,7 @@
     #infoModal .confirm-modal {
       max-width: 90%;
       width: 600px;
-      max-height: 80vh;
+      max-height: 80vh; /* Maksimal balandlik */
       display: flex;
       flex-direction: column;
       background-color: #fff;
@@ -332,7 +332,7 @@
     }
     #infoModal .modal-content {
       flex: 1;
-      overflow-y: auto;
+      overflow-y: auto; /* Scroll qo'shish */
       padding-right: 10px;
       scrollbar-width: thin;
       scrollbar-color: #2c7fbb #f0f4f8;
@@ -367,9 +367,9 @@
       overflow-x: auto;
       white-space: pre-wrap;
       word-wrap: break-word;
-      max-height: 300px;
+      max-height: 300px; /* Maksimal balandlik */
       text-align: left;
-      overflow-y: auto;
+      overflow-y: auto; /* Agar kerak bo'lsa scroll */
     }
     #infoModal .confirm-btn-group {
       margin-top: 20px;
@@ -415,7 +415,6 @@
       font-weight: bold;
       color: #333;
     }
-
     /* Responsive Design */
     @media (min-width: 768px) {
       #infoRow {
@@ -436,7 +435,7 @@
         position: fixed !important;
         top: 15px !important;
         right: 15px !important;
-        width: 120px !important;
+        width: 150px !important; /* Kengaytirilgan */
         padding: 8px !important;
         z-index: 2000;
         background-color: white !important;
@@ -445,11 +444,17 @@
         box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         opacity: 0;
         animation: fadeIn 0.5s forwards;
-        justify-content: center;
+        justify-content: center; /* Markazga joylashtirish */
+        align-items: center; /* Markazga joylashtirish */
         gap: 5px;
       }
       .timer-container.compact-timer .timer-text {
-        display: none;
+        display: block; /* Hozir ko'rsatiladi */
+        font-size: 0.8rem; /* Kichiklashtirilgan */
+        margin-right: 5px; /* Oraliq */
+      }
+      .timer-container.compact-timer .timer {
+        font-size: 1rem; /* Kichiklashtirilgan */
       }
       @keyframes fadeIn {
         to { opacity: 1; }
@@ -459,7 +464,6 @@
         max-width: 120px;
       }
     }
-
     @media (min-width: 576px) and (max-width: 767px) {
       .container {
         margin: 10px;
@@ -518,7 +522,7 @@
         position: fixed !important;
         top: 15px !important;
         right: 15px !important;
-        width: 100px !important;
+        width: 140px !important; /* Kengaytirilgan */
         padding: 8px !important;
         z-index: 2000;
         background-color: white !important;
@@ -527,17 +531,22 @@
         box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         opacity: 0;
         animation: fadeIn 0.5s forwards;
-        justify-content: center;
+        justify-content: center; /* Markazga joylashtirish */
+        align-items: center; /* Markazga joylashtirish */
         gap: 5px;
       }
       .timer-container.compact-timer .timer-text {
-        display: none;
+        display: block; /* Hozir ko'rsatiladi */
+        font-size: 0.8rem; /* Kichiklashtirilgan */
+        margin-right: 5px; /* Oraliq */
+      }
+      .timer-container.compact-timer .timer {
+        font-size: 1rem; /* Kichiklashtirilgan */
       }
       #fileSection .form-label::before {
         content: none;
       }
     }
-
     @media (max-width: 576px) {
       .container {
         padding: 10px;
@@ -552,7 +561,7 @@
       .timer-container.initial-center {
         position: static !important;
         flex-direction: row !important;
-        justify-content: center !important;
+        justify-content: center !important; /* Markazga joylashtirish */
         align-items: center !important;
         margin-bottom: 15px;
         box-shadow: 0 2px 6px rgba(0,0,0,0.1);
@@ -567,7 +576,7 @@
         position: fixed !important;
         top: 15px !important;
         right: 15px !important;
-        width: 80px !important;
+        width: 120px !important; /* Kengaytirilgan */
         padding: 8px !important;
         z-index: 2000;
         background-color: white !important;
@@ -580,10 +589,12 @@
         gap: 5px;
       }
       .timer-container.compact-timer .timer-text {
-        display: none;
+        display: block; /* Hozir ko'rsatiladi */
+        font-size: 0.8rem; /* Kichiklashtirilgan */
+        margin-right: 5px; /* Oraliq */
       }
       .timer-container.compact-timer .timer {
-        font-size: 1rem !important;
+        font-size: 1rem; /* Kichiklashtirilgan */
       }
       .timer {
         font-size: 1.2rem;
@@ -641,7 +652,6 @@
         content: none;
       }
     }
-
     @media (max-width: 400px) {
       .container {
         padding: 8px;
@@ -686,12 +696,10 @@
 <body>
 <div class="container">
   <h1 class="text-center mb-4">Siz Imtihondasiz!</h1>
-
   <div id="infoRow">
     <button id="infoBtn" class="btn btn-info">Imtihon Quiz qanday ishlaydi?</button>
     <div id="emojiPlaceholder"></div>
   </div>
-
   <div id="timeSettings" class="time-settings">
     <h5>Imtihon vaqtini tanlang:</h5>
     <div class="btn-group mb-3" role="group">
@@ -712,77 +720,63 @@
       </div>
     </div>
   </div>
-
   <div id="timerContainer" class="timer-container initial-center" style="display: none;">
     <div class="timer-text">
-      <i class="fas fa-clock me-2"></i>
+      <i class="fas fa-clock me-2"></i> <!-- Soat ikonkasi qo'shildi -->
       <span>Qolgan vaqt:</span>
     </div>
     <div id="timer" class="timer">00:00</div>
   </div>
-
   <div id="fileSection" class="mb-3">
     <label for="fileInput" class="form-label file-label">Fayl tanlash (.txt)</label>
     <input type="file" class="form-control" id="fileInput" accept=".txt" />
     <div id="uploadStatus"></div>
   </div>
-
   <div id="quizList" style="display: none;">
     <p id="testCount" class="text-success fw-bold"></p>
     <div id="questionsContainer"></div>
     <button id="finishBtn" class="btn btn-primary">Testni yakunlash</button>
   </div>
-
   <div id="scoreContainer" class="score-container">
     <div class="results-card">
       <h3 class="mb-3">Imtihon Natijalari</h3>
-      
       <div class="progress-container">
         <div class="progress-bar">
           <div id="progressFill" class="progress-fill" style="width: 0%"></div>
         </div>
         <div id="progressText" class="mt-2">0%</div>
       </div>
-      
       <div class="stats-container">
         <div class="stat-item total-questions">
           <i class="fas fa-clipboard-list"></i>
           <span>Jami: </span>
           <span id="totalQuestions">0</span>
         </div>
-        
         <div class="stat-item correct-answers">
           <i class="fas fa-check-circle"></i>
           <span>To'g'ri: </span>
           <span id="correctAnswers">0</span>
         </div>
-        
         <div class="stat-item incorrect-answers">
           <i class="fas fa-times-circle"></i>
           <span>Xato: </span>
           <span id="incorrectAnswers">0</span>
         </div>
-        
         <div class="stat-item unanswered">
           <i class="fas fa-question-circle"></i>
           <span>Javobsiz: </span>
           <span id="unanswered">0</span>
         </div>
       </div>
-      
       <div id="gifContainer" class="gif-container"></div>
-      
       <div id="feedbackText" class="feedback-text mt-3"></div>
     </div>
   </div>
-
   <button id="newTestBtn" class="btn new-test-btn" style="display: none;">
     <i class="fas fa-plus"></i> Yangi test
   </button>
-
   <div id="confettiContainer" class="confetti-container"></div>
   <div id="saluteContainer"></div>
-  
   <div id="confirmModal" class="modal-overlay">
     <div class="confirm-modal">
       <h4 class="mb-3">Diqqat!</h4>
@@ -793,7 +787,6 @@
       </div>
     </div>
   </div>
-
   <div id="exitModal" class="modal-overlay">
     <div class="confirm-modal">
       <h4 class="mb-3">Diqqat!</h4>
@@ -804,7 +797,6 @@
       </div>
     </div>
   </div>
-
   <div id="infoModal" class="modal-overlay">
     <div class="confirm-modal">
       <div class="modal-content">
@@ -819,14 +811,12 @@ B. Samarqand
 C. Namangan
 D. Buxoro
 ANSWER: A
-
 Kompyuterda yozish uchun nima kerak?
 A. Monitor
 B. Sichqoncha
 C. Klaviatura
 D. Printer
 ANSWER: C
-
 Internet brauzeri sifatida qaysi dastur ishlatilmaydi?
 A. Google Chrome
 B. Mozilla Firefox
@@ -846,14 +836,12 @@ ANSWER: C
     </div>
   </div>
 </div>
-
 <script>
   let originalTests = [];
   let randomizedTests = [];
   let timerInterval;
   let totalSeconds = 25 * 60; // Default 25 daqiqa
   let examStarted = false;
-
   const gifGroups = {
     veryLow: [
       { url: "https://media.giphy.com/media/26ufnwz3wDUli7GU0/giphy.gif", alt: "Xafa 1" },
@@ -888,7 +876,6 @@ ANSWER: C
     high: 0,
     excellent: 0
   };
-
   const fileInput = document.getElementById("fileInput");
   const uploadStatus = document.getElementById("uploadStatus");
   const quizList = document.getElementById("quizList");
@@ -927,13 +914,24 @@ ANSWER: C
   const cancelExit = document.getElementById("cancelExit");
   const confirmExit = document.getElementById("confirmExit");
 
+  // Info tugmasini boshqarish: test boshlanganda yashirish
+  function updateInfoButtonVisibility() {
+    if (examStarted) {
+      infoBtn.style.display = 'none';
+    } else {
+      infoBtn.style.display = 'inline-block';
+    }
+  }
+
+  // Boshlanganda visibilityni o'rnatish
+  updateInfoButtonVisibility();
+
   // Info modal
   infoBtn.addEventListener("click", () => {
     infoModal.classList.add("show");
     confirmModal.classList.remove("show");
     exitModal.classList.remove("show");
   });
-
   closeInfo.addEventListener("click", () => {
     infoModal.classList.remove("show");
   });
@@ -1000,7 +998,6 @@ ANSWER: C
   cancelExit.addEventListener("click", () => {
     exitModal.classList.remove("show");
   });
-
   confirmExit.addEventListener("click", () => {
     exitModal.classList.remove("show");
     resetTest();
@@ -1018,16 +1015,13 @@ ANSWER: C
   fileInput.addEventListener("change", (e) => {
     const file = e.target.files[0];
     if (!file) return;
-
     if (!examStarted) {
       if (totalSeconds <= 0) {
         uploadStatus.textContent = "Xatolik: Iltimos, avval imtihon vaqtini tanlang!";
         fileInput.value = "";
         return;
       }
-
       uploadStatus.textContent = "Fayl yuklanmoqda...";
-
       const reader = new FileReader();
       reader.onload = (ev) => {
         const content = ev.target.result;
@@ -1039,36 +1033,69 @@ ANSWER: C
 
   function parseTestFile(content) {
     originalTests = [];
-    const lines = content.split("\n").map(line => line.trim()).filter(Boolean);
-
     let currentTest = null;
+
+    // Qatorlarga bo'lishda CRLF ham e'tiborga olinadi
+    const lines = content.split(/\r?
+/g).map(line => line.trim()).filter(Boolean);
+
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
+
+      // ANSWER: qatorini topish
       if (line.startsWith("ANSWER:")) {
         if (currentTest) {
-          currentTest.answer = line.replace("ANSWER:", "").trim();
-          originalTests.push(currentTest);
+          const answerLetter = line.replace("ANSWER:", "").trim().charAt(0).toUpperCase(); // Birinchi belgi olinadi
+          if (["A", "B", "C", "D"].includes(answerLetter)) {
+            currentTest.answer = answerLetter;
+            originalTests.push(currentTest);
+          }
           currentTest = null;
         }
-      } else if (/^[A-D]\./.test(line)) {
+        continue; // Keyingi qatorga o'tish
+      }
+
+      // Variantlarni aniqlash (A., A. , A )
+      if (/^[A-D]\.?\s/.test(line)) {
         if (currentTest) {
-          const optionText = line.replace(/^[A-D]\.\s*/, "").trim();
-          const optionLetter = line.split(".")[0].trim();
-          currentTest.options.push({ letter: optionLetter, text: optionText });
+          const cleanLine = line.replace(/^[A-D]\.?\s*/, "").trim(); // Harf va nuqtani olib tashlash
+          const optionLetter = line.charAt(0).toUpperCase(); // A, B, C yoki D
+          if (cleanLine) { // Agar matn bo'sh bo'lmasa
+            currentTest.options.push({ letter: optionLetter, text: cleanLine });
+          }
         }
-      } else {
-        if (currentTest) {}
+        continue;
+      }
+
+      // Agar yangi savol boshlanayotgan bo'lsa (A, B, C, D dan boshqa bo'lsa)
+      if (currentTest && !/^[A-D]\.?\s/.test(line) && !line.startsWith("ANSWER:")) {
+        // Bu savolning davomi bo'lishi mumkin
+        currentTest.question += " " + line;
+        continue;
+      }
+
+      // Yangi savolni boshlash
+      if (!/^[A-D]\.?\s/.test(line) && !line.startsWith("ANSWER:")) {
+        if (currentTest) {
+          // Avvalgi savol tugamagan bo'lsa, uni saqlash kerak (ANSWER topilmagan bo'lsa)
+          // Lekin biz hozircha shuni e'tiborsiz qoldiramiz, chunki format to'g'ri bo'lsa kerak
+        }
         currentTest = { question: line, options: [], answer: "" };
       }
     }
 
+    // Agar fayl oxirida ANSWER bo'lmasa oxirgi test saqlanmay qoladi, shuning uchun tekshirish kerak
+    if (currentTest && currentTest.options.length > 0 && currentTest.answer) {
+      originalTests.push(currentTest);
+    }
+
     if (originalTests.length > 0) {
-      uploadStatus.textContent = "Fayl yuklandi!";
+      uploadStatus.textContent = `Fayl yuklandi! ${originalTests.length} ta test aniqlandi.`;
       fileSection.style.display = "none";
       randomizeTests();
       startExam();
     } else {
-      uploadStatus.textContent = "Xatolik: Test ma'lumotlari topilmadi yoki noto'g'ri format!";
+      uploadStatus.textContent = "Xatolik: Test ma'lumotlari topilmadi yoki noto'g'ri format! Iltimos, namunaga qarang.";
       fileInput.value = "";
     }
   }
@@ -1084,6 +1111,7 @@ ANSWER: C
 
   function startExam() {
     examStarted = true;
+    updateInfoButtonVisibility(); // Test boshlanganda tugmani yashirish
     timeSettings.style.display = "none";
     fileInput.disabled = true;
     timerContainer.style.display = "flex";
@@ -1105,12 +1133,10 @@ ANSWER: C
       const questionDiv = document.createElement("div");
       questionDiv.className = "question-container";
       questionDiv.dataset.correctOptionIndex = test.correctOptionIndex;
-
       const qText = document.createElement("div");
       qText.className = "question-text";
       qText.textContent = (index + 1) + ". " + test.question;
       questionDiv.appendChild(qText);
-
       const optionsDiv = document.createElement("div");
       optionsDiv.className = "options-container";
       test.options.forEach((opt, optIndex) => {
@@ -1174,7 +1200,6 @@ ANSWER: C
   finishBtn.addEventListener("click", () => {
     const totalQuestions = randomizedTests.length;
     let answeredCount = 0;
-    
     randomizedTests.forEach((test, index) => {
       const radios = document.querySelectorAll(`input[name="question_${index}"]`);
       let answered = false;
@@ -1183,16 +1208,15 @@ ANSWER: C
       });
       if (answered) answeredCount++;
     });
-    
     confirmMessage.innerHTML = `<strong>${answeredCount}</strong> ta savolga javob berildi, <strong>${totalQuestions - answeredCount}</strong> ta savol javobsiz. <br><br>Testni yakunlashni tasdiqlaysizmi?`;
     confirmModal.classList.add("show");
     exitModal.classList.remove("show");
   });
-  
+
   cancelFinish.addEventListener("click", () => {
     confirmModal.classList.remove("show");
   });
-  
+
   confirmFinish.addEventListener("click", () => {
     confirmModal.classList.remove("show");
     endExam("Test yakunlandi!");
@@ -1203,7 +1227,6 @@ ANSWER: C
     let incorrectCount = 0;
     let unansweredCount = 0;
     const totalQuestions = randomizedTests.length;
-    
     randomizedTests.forEach((test, index) => {
       const correctOptionIndex = test.correctOptionIndex;
       const radios = document.querySelectorAll(`input[name="question_${index}"]`);
@@ -1213,10 +1236,8 @@ ANSWER: C
         const checkIcon = label.querySelector(".check-icon");
         if (checkIcon) checkIcon.remove();
       });
-
       let selectedOptionIndex = -1;
       radios.forEach((radio, idx) => { if (radio.checked) selectedOptionIndex = idx; });
-
       if (selectedOptionIndex >= 0) {
         const chosenLabel = document.querySelector(`label[for="question_${index}_option_${selectedOptionIndex}"]`);
         if (selectedOptionIndex === correctOptionIndex) {
@@ -1238,19 +1259,15 @@ ANSWER: C
         correctLabel.innerHTML += '<span class="check-icon">✅</span>';
       }
     });
-
     const ratio = correctCount / totalQuestions;
     const percentage = Math.round(ratio * 100);
-    
     progressFill.style.width = `${percentage}%`;
     progressFill.classList.toggle('low', ratio < 0.6);
     progressText.textContent = `${percentage}%`;
-    
     totalQuestionsEl.textContent = totalQuestions;
     correctAnswersEl.textContent = correctCount;
     incorrectAnswersEl.textContent = incorrectCount;
     unansweredEl.textContent = unansweredCount;
-    
     let gifGroupKey, emoji;
     if (percentage <= 29) {
       gifGroupKey = "veryLow";
@@ -1268,22 +1285,17 @@ ANSWER: C
       gifGroupKey = "excellent";
       emoji = "🎉 🥳 🎊";
     }
-
     emojiPlaceholder.textContent = emoji;
-
     const currentIndex = gifIndices[gifGroupKey];
     const selectedGif = gifGroups[gifGroupKey][currentIndex];
     gifContainer.innerHTML = `
       <img src="${selectedGif.url}" alt="${selectedGif.alt}" style="width: 100%; height: 100%; object-fit: cover;">
     `;
-    
     gifIndices[gifGroupKey] = (currentIndex + 1) % gifGroups[gifGroupKey].length;
-
     if (percentage >= 60) {
       createConfetti();
       createSalute();
     }
-
     let feedback = "";
     if (percentage < 30) {
       feedback = `Natijangiz <span>qoniqarli emas</span>.<br>Hali hammasi oldinda! Ko'proq o'qib, mashq qiling va qayta urinib ko'ring!`;
@@ -1296,7 +1308,6 @@ ANSWER: C
     } else {
       feedback = `Natijangiz <span>a'lo darajada</span>!<br>Siz mavzuni chuqur o'zlashtirgan ko'rinasiz. Tabriklaymiz!`;
     }
-
     feedbackText.innerHTML = feedback;
     scoreContainer.classList.add("show-feedback");
     finishBtn.style.display = "none";
@@ -1311,6 +1322,7 @@ ANSWER: C
 
   function resetTest() {
     examStarted = false;
+    updateInfoButtonVisibility(); // Test tugaganda tugmani qayta ko'rsatish
     stopTimer();
     fileInput.disabled = false;
     fileInput.value = "";
@@ -1337,7 +1349,6 @@ ANSWER: C
   function createConfetti() {
     confettiContainer.innerHTML = '';
     const colors = ["#fd5e53", "#3cc47c", "#1e1f26", "#df678c", "#3d8eb9", "#f9c80e"];
-    
     for (let i = 0; i < 100; i++) {
       const confetti = document.createElement('div');
       confetti.className = 'confetti';
@@ -1349,16 +1360,14 @@ ANSWER: C
       confetti.style.height = (Math.random() * 10 + 5) + 'px';
       confettiContainer.appendChild(confetti);
     }
-    
     setTimeout(() => {
       confettiContainer.innerHTML = '';
     }, 8000);
   }
-  
+
   function createSalute() {
     saluteContainer.innerHTML = '';
     const colors = ["#ff4136", "#0074d9", "#2ecc40", "#ffdc00", "#f012be", "#ff851b"];
-    
     for (let i = 0; i < 50; i++) {
       setTimeout(() => {
         const salute = document.createElement('div');
@@ -1367,7 +1376,6 @@ ANSWER: C
         salute.style.left = Math.random() * 100 + 'vw';
         salute.style.bottom = Math.random() * 20 + 'vh';
         saluteContainer.appendChild(salute);
-        
         setTimeout(() => {
           salute.remove();
         }, 2000);
