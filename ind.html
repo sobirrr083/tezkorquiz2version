@@ -125,6 +125,17 @@
       border-radius: 6px;
       background-color: #f8f9fa;
     }
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+    }
+    .btn-group button {
+      flex: 1 1 45%;
+      max-width: 150px;
+      white-space: nowrap;
+    }
     .confetti-container {
       position: fixed;
       top: 0;
@@ -309,6 +320,7 @@
       padding-right: 10px;
       scrollbar-width: thin;
       scrollbar-color: #2c7fbb #f0f4f8;
+      text-align: left;
     }
     #infoModal .modal-content::-webkit-scrollbar {
       width: 8px;
@@ -324,6 +336,7 @@
       margin-top: 0;
       color: #2c7fbb;
       font-size: 1.4rem;
+      text-align: left;
     }
     #infoModal p, #infoModal pre {
       margin-bottom: 15px;
@@ -338,7 +351,8 @@
       overflow-x: auto;
       white-space: pre-wrap;
       word-wrap: break-word;
-      max-height: 300px;
+      max-height: 400px;
+      text-align: left;
     }
     #infoModal .confirm-btn-group {
       margin-top: 20px;
@@ -409,6 +423,10 @@
       @keyframes fadeIn {
         to { opacity: 1; }
       }
+      .btn-group button {
+        flex: 1 1 30%;
+        max-width: 120px;
+      }
     }
 
     @media (min-width: 576px) and (max-width: 767px) {
@@ -431,14 +449,10 @@
       .time-settings {
         padding: 12px;
       }
-      .btn-group {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 5px;
-      }
       .btn-group button {
-        flex: 1 0 45%;
-        margin: 2px;
+        flex: 1 1 45%;
+        max-width: 140px;
+        font-size: 0.9rem;
       }
       .stats-container {
         flex-direction: column;
@@ -540,8 +554,9 @@
         font-size: 1rem;
       }
       .btn-group button {
-        flex: 1 0 48%;
-        font-size: 0.9rem;
+        flex: 1 1 48%;
+        max-width: 130px;
+        font-size: 0.85rem;
       }
       .results-card {
         padding: 15px;
@@ -563,6 +578,7 @@
         justify-content: center;
         align-items: center;
         text-align: center;
+        width: 100%;
       }
     }
 
@@ -580,7 +596,8 @@
         font-size: 1rem;
       }
       .btn-group button {
-        flex: 1 0 100%;
+        flex: 1 1 100%;
+        max-width: none;
         margin: 2px 0;
       }
       .gif-container {
@@ -608,9 +625,7 @@
     <div class="btn-group mb-3" role="group">
       <button type="button" class="btn btn-outline-primary" data-time="5">5 daqiqa</button>
       <button type="button" class="btn btn-outline-primary" data-time="10">10 daqiqa</button>
-      <button type="button" class="btn btn-outline-primary" data-time="15">15 daqiqa</button>
       <button type="button" class="btn btn-outline-primary" data-time="20">20 daqiqa</button>
-      <button type="button" class="btn btn-outline-primary" data-time="25">25 daqiqa</button>
       <button type="button" class="btn btn-outline-primary" data-time="30">30 daqiqa</button>
     </div>
     <div class="form-check">
@@ -706,17 +721,6 @@
     </div>
   </div>
 
-  <div id="exitModal" class="modal-overlay">
-    <div class="confirm-modal">
-      <h4 class="mb-3">Diqqat!</h4>
-      <p id="exitMessage">Imtihondan chiqishni hohlaysizmi (yiqilmoqchimisiz)?</p>
-      <div class="confirm-btn-group">
-        <button id="cancelExit" class="btn btn-secondary">Yo'q</button>
-        <button id="confirmExit" class="btn btn-primary">Ha</button>
-      </div>
-    </div>
-  </div>
-
   <div id="infoModal" class="modal-overlay">
     <div class="confirm-modal">
       <div class="modal-content">
@@ -738,6 +742,13 @@ B. Sichqoncha
 C. Klaviatura
 D. Printer
 ANSWER: C
+
+Internet brauzeri sifatida qaysi dastur ishlatilmaydi?
+A. Google Chrome
+B. Mozilla Firefox
+C. Microsoft Word
+D. Safari
+ANSWER: C
         </pre>
         <p>
           <strong>Izoh:</strong> Har bir savol bir qatordan boshlanadi, undan keyin A, B, C, D variantlari va ANSWER: so'zidan keyin bitta probel bilan to'g'ri javob (A, B, C yoki D) ko'rsatiladi va bir qator ochiq joy (Enter) qoldiriladi va keyingi savol namunadek davom etadi.
@@ -758,8 +769,6 @@ ANSWER: C
   let timerInterval;
   let totalSeconds = 0;
   let examStarted = false;
-  let allowExit = false;
-  let lastExitAttempt = 0;
 
   const gifGroups = {
     veryLow: [
@@ -824,9 +833,6 @@ ANSWER: C
   const unansweredEl = document.getElementById("unanswered");
   const gifContainer = document.getElementById("gifContainer");
   const saluteContainer = document.getElementById("saluteContainer");
-  const exitModal = document.getElementById("exitModal");
-  const cancelExit = document.getElementById("cancelExit");
-  const confirmExit = document.getElementById("confirmExit");
   const infoBtn = document.getElementById("infoBtn");
   const infoModal = document.getElementById("infoModal");
   const closeInfo = document.getElementById("closeInfo");
@@ -837,7 +843,6 @@ ANSWER: C
   infoBtn.addEventListener("click", () => {
     infoModal.classList.add("show");
     confirmModal.classList.remove("show");
-    exitModal.classList.remove("show");
   });
 
   closeInfo.addEventListener("click", () => {
@@ -883,35 +888,6 @@ ANSWER: C
     if (customTimeCheck.checked) {
       totalSeconds = parseInt(minutesInput.value) * 60;
     }
-  });
-
-  window.addEventListener("beforeunload", (e) => {
-    const now = Date.now();
-    if (examStarted && !allowExit && now - lastExitAttempt > 200) {
-      lastExitAttempt = now;
-      e.preventDefault();
-      e.returnValue = "Imtihondan chiqishni hohlaysizmi?";
-      showExitModal();
-      return "Imtihondan chiqishni hohlaysizmi?";
-    }
-  });
-
-  function showExitModal() {
-    if (examStarted) {
-      confirmModal.classList.remove("show");
-      infoModal.classList.remove("show");
-      exitModal.classList.add("show");
-    }
-  }
-
-  cancelExit.addEventListener("click", () => {
-    exitModal.classList.remove("show");
-  });
-
-  confirmExit.addEventListener("click", () => {
-    allowExit = true;
-    exitModal.classList.remove("show");
-    window.location.reload();
   });
 
   function shuffleArray(array) {
@@ -1075,7 +1051,8 @@ ANSWER: C
     allRadios.forEach(radio => {
       radio.disabled = true;
     });
-    allowExit = true;
+    examStarted = false;
+    scoreContainer.classList.add("show-feedback");
   }
 
   finishBtn.addEventListener("click", () => {
@@ -1092,8 +1069,6 @@ ANSWER: C
     });
     
     confirmMessage.innerHTML = `<strong>${answeredCount}</strong> ta savolga javob berildi, <strong>${totalQuestions - answeredCount}</strong> ta savol javobsiz. <br><br>Testni yakunlashni tasdiqlaysizmi?`;
-    exitModal.classList.remove("show");
-    infoModal.classList.remove("show");
     confirmModal.classList.add("show");
   });
   
@@ -1216,8 +1191,6 @@ ANSWER: C
 
   function resetTest() {
     examStarted = false;
-    allowExit = false;
-    lastExitAttempt = 0;
     stopTimer();
     fileInput.disabled = false;
     fileInput.value = "";
