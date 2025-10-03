@@ -137,9 +137,9 @@
       white-space: nowrap;
     }
     .btn-group button:hover {
-      background-color: #0D47A1;
+      background-color: #42A5F5; /* Ochroq ko'k rang */
       color: white;
-      border-color: #0D47A1;
+      border-color: #42A5F5;
     }
     .btn-group button.active {
       background-color: #0D6EFD;
@@ -408,6 +408,13 @@
       width: 100%;
       margin-top: 20px;
     }
+    #fileSection .form-label::before {
+      content: "Iltimos, umumiy test faylini tanlang";
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #333;
+    }
 
     /* Responsive Design */
     @media (min-width: 768px) {
@@ -488,10 +495,12 @@
       .stats-container {
         flex-direction: row;
         flex-wrap: wrap;
+        justify-content: center;
       }
       .stat-item {
         margin: 5px;
         min-width: 120px;
+        justify-content: center;
       }
       .gif-container {
         max-width: 250px;
@@ -523,6 +532,9 @@
       }
       .timer-container.compact-timer .timer-text {
         display: none;
+      }
+      #fileSection .form-label::before {
+        content: none;
       }
     }
 
@@ -600,9 +612,11 @@
       .stats-container {
         flex-direction: row;
         flex-wrap: wrap;
+        justify-content: center;
       }
       .stat-item {
         min-width: 100px;
+        justify-content: center;
       }
       .gif-container {
         max-width: 200px;
@@ -622,6 +636,9 @@
         align-items: center;
         text-align: center;
         width: 100%;
+      }
+      #fileSection .form-label::before {
+        content: none;
       }
     }
 
@@ -649,9 +666,11 @@
       }
       .stats-container {
         flex-direction: column;
+        justify-content: center;
       }
       .stat-item {
         min-width: 100%;
+        justify-content: center;
       }
       .gif-container {
         max-width: 180px;
@@ -778,7 +797,7 @@
   <div id="exitModal" class="modal-overlay">
     <div class="confirm-modal">
       <h4 class="mb-3">Diqqat!</h4>
-      <p id="exitMessage">Chiqishni xohlaysizmi?</p>
+      <p id="exitMessage">Yangi testni boshlashga tayyormisiz?</p>
       <div class="confirm-btn-group">
         <button id="cancelExit" class="btn btn-secondary">Yo'q</button>
         <button id="confirmExit" class="btn btn-primary">Ha</button>
@@ -904,6 +923,7 @@ ANSWER: C
   const fileSection = document.getElementById("fileSection");
   const emojiPlaceholder = document.getElementById("emojiPlaceholder");
   const exitModal = document.getElementById("exitModal");
+  const exitMessage = document.getElementById("exitMessage");
   const cancelExit = document.getElementById("cancelExit");
   const confirmExit = document.getElementById("confirmExit");
 
@@ -962,9 +982,9 @@ ANSWER: C
   window.addEventListener("beforeunload", (e) => {
     if (examStarted) {
       e.preventDefault();
-      e.returnValue = "Chiqishni xohlaysizmi?";
+      e.returnValue = "Yangi testni boshlashga tayyormisiz?";
       showExitModal();
-      return "Chiqishni xohlaysizmi?";
+      return "Yangi testni boshlashga tayyormisiz?";
     }
   });
 
@@ -972,6 +992,7 @@ ANSWER: C
     if (examStarted) {
       confirmModal.classList.remove("show");
       infoModal.classList.remove("show");
+      exitMessage.textContent = "Yangi testni boshlashga tayyormisiz?";
       exitModal.classList.add("show");
     }
   }
@@ -1104,7 +1125,7 @@ ANSWER: C
         const label = document.createElement("label");
         label.className = "form-check-label";
         label.setAttribute("for", input.id);
-        label.textContent = opt.text; // Faqat matn ko'rsatiladi, harf yo'q
+        label.textContent = opt.text;
         formCheck.appendChild(input);
         formCheck.appendChild(label);
         optionsDiv.appendChild(formCheck);
@@ -1282,6 +1303,7 @@ ANSWER: C
   }
 
   newTestBtn.addEventListener("click", () => {
+    exitMessage.textContent = "Yangi testni boshlashga tayyormisiz?";
     exitModal.classList.add("show");
     confirmModal.classList.remove("show");
     infoModal.classList.remove("show");
