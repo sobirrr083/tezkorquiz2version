@@ -546,8 +546,7 @@
       gap: 10px;
       justify-content: center;
       margin-top: 20px;
-      padding-bottom: 15px; 
-      /* hozir o'zgartiridim */
+      padding-bottom: 15px;
     }
     
     .confirm-btn-group .btn-primary {
@@ -849,7 +848,6 @@ ANSWER: C</pre>
   const newTestModal = document.getElementById("newTestModal");
   const cancelNewTest = document.getElementById("cancelNewTest");
   const confirmNewTest = document.getElementById("confirmNewTest");
-  const infoRow = document.getElementById("infoRow");
 
   // Info modal
   infoBtn.addEventListener("click", () => {
@@ -1063,7 +1061,6 @@ ANSWER: C</pre>
       radio.disabled = true;
     });
     examStarted = false;
-    scoreContainer.classList.add("show-feedback");
   }
 
   finishBtn.addEventListener("click", () => {
@@ -1117,6 +1114,8 @@ ANSWER: C</pre>
     randomizedTests.forEach((test, index) => {
       const correctOptionIndex = test.correctOptionIndex;
       const radios = document.querySelectorAll(`input[name="question_${index}"]`);
+      
+      // Barcha labellarni tozalash
       radios.forEach(radio => {
         const label = document.querySelector(`label[for="${radio.id}"]`);
         label.classList.remove("correct", "incorrect", "unanswered-correct");
@@ -1125,7 +1124,9 @@ ANSWER: C</pre>
       });
 
       let selectedOptionIndex = -1;
-      radios.forEach((radio, idx) => { if (radio.checked) selectedOptionIndex = idx; });
+      radios.forEach((radio, idx) => { 
+        if (radio.checked) selectedOptionIndex = idx; 
+      });
 
       if (selectedOptionIndex >= 0) {
         const chosenLabel = document.querySelector(`label[for="question_${index}_option_${selectedOptionIndex}"]`);
@@ -1152,15 +1153,20 @@ ANSWER: C</pre>
     const ratio = correctCount / totalQuestions;
     const percentage = Math.round(ratio * 100);
     
-    progressFill.style.width = `${percentage}%`;
-    progressFill.classList.toggle('low', ratio < 0.6);
-    progressText.textContent = `${percentage}%`;
+    // Progress bar yangilash
+    setTimeout(() => {
+      progressFill.style.width = `${percentage}%`;
+      progressFill.classList.toggle('low', ratio < 0.6);
+      progressText.textContent = `${percentage}%`;
+    }, 100);
     
+    // Statistikani yangilash
     totalQuestionsEl.textContent = totalQuestions;
     correctAnswersEl.textContent = correctCount;
     incorrectAnswersEl.textContent = incorrectCount;
     unansweredEl.textContent = unansweredCount;
     
+    // GIF va emoji tanlash
     let gifGroupKey, emoji;
     if (percentage <= 29) {
       gifGroupKey = "veryLow";
@@ -1194,6 +1200,7 @@ ANSWER: C</pre>
       createSalute();
     }
 
+    // Feedback matnini yaratish
     let feedback = "";
     if (percentage < 30) {
       feedback = `Natijangiz <span>qoniqarli emas</span>.<br>Hali hammasi oldinda! Ko'proq o'qib, mashq qiling va qayta urinib ko'ring!`;
@@ -1208,8 +1215,18 @@ ANSWER: C</pre>
     }
 
     feedbackText.innerHTML = feedback;
+    
+    // Natijalar containerini ko'rsatish
+    scoreContainer.style.opacity = "1";
     scoreContainer.classList.add("show-feedback");
+    
+    // Finish tugmasini yashirish
     finishBtn.style.display = "none";
+    
+    // Sahifani yuqoriga scroll qilish
+    setTimeout(() => {
+      scoreContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 300);
   }
 
   function resetTest() {
@@ -1219,6 +1236,7 @@ ANSWER: C</pre>
     fileInput.value = "";
     uploadStatus.textContent = "";
     quizList.style.display = "none";
+    scoreContainer.style.opacity = "0";
     scoreContainer.classList.remove("show-feedback");
     timerElement.classList.remove("warning");
     timerContainer.style.display = "none";
@@ -1235,6 +1253,17 @@ ANSWER: C</pre>
     totalSeconds = 25 * 60;
     minutesInput.value = "25";
     emojiPlaceholder.textContent = "";
+    
+    // Statistikalarni reset qilish
+    progressFill.style.width = "0%";
+    progressText.textContent = "0%";
+    totalQuestionsEl.textContent = "0";
+    correctAnswersEl.textContent = "0";
+    incorrectAnswersEl.textContent = "0";
+    unansweredEl.textContent = "0";
+    gifContainer.innerHTML = "";
+    feedbackText.innerHTML = "";
+    
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -1282,4 +1311,3 @@ ANSWER: C</pre>
 </script>
 </body>
 </html>
-  const
