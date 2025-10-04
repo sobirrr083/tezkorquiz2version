@@ -190,8 +190,9 @@
     }
     
     .btn-group button:hover {
-      background-color: var(--primary-light);
-      border-color: var(--primary-hover);
+      background-color: var(--primary-color);
+      color: white;
+      border-color: var(--primary-color);
       transform: translateY(-1px);
     }
     
@@ -414,10 +415,26 @@
       position: relative;
     }
     
+    #infoModal .modal-header {
+      padding: 20px 25px;
+      border-bottom: 1px solid #e0e0e0;
+      position: sticky;
+      top: 0;
+      background-color: #fff;
+      z-index: 10;
+      border-radius: 12px 12px 0 0;
+    }
+    
+    #infoModal .modal-header h4 {
+      margin: 0;
+      color: var(--primary-color);
+      font-size: 1.4rem;
+    }
+    
     #infoModal .modal-content {
       flex: 1;
       overflow-y: auto;
-      padding: 25px;
+      padding: 20px 25px;
       scrollbar-width: thin;
       scrollbar-color: var(--primary-color) #f0f4f8;
       text-align: left;
@@ -436,19 +453,13 @@
       border-radius: 4px;
     }
     
-    #infoModal h4 {
-      margin-top: 0;
-      color: var(--primary-color);
-      font-size: 1.4rem;
-      text-align: left;
-    }
-    
-    #infoModal p, #infoModal pre {
+    #infoModal .modal-content p {
       margin-bottom: 15px;
       line-height: 1.6;
+      color: #333;
     }
     
-    #infoModal pre {
+    #infoModal .scrollable-section {
       background-color: #f0f4f8;
       border-left: 4px solid var(--primary-color);
       padding: 12px;
@@ -457,12 +468,13 @@
       overflow-x: auto;
       white-space: pre-wrap;
       word-wrap: break-word;
-      max-height: 300px;
-      text-align: left;
+      max-height: 250px;
       overflow-y: auto;
+      margin-bottom: 15px;
+      font-family: monospace;
     }
     
-    #infoModal .confirm-btn-group {
+    #infoModal .modal-footer {
       display: flex;
       justify-content: center;
       position: sticky;
@@ -470,9 +482,10 @@
       background-color: #fff;
       padding: 15px 25px;
       border-top: 1px solid #e0e0e0;
+      border-radius: 0 0 12px 12px;
     }
     
-    #infoModal .confirm-btn-group button {
+    #infoModal .modal-footer button {
       width: auto;
       padding: 10px 24px;
     }
@@ -496,7 +509,7 @@
     }
     
     #infoBtn {
-      background-color: var(--primary-light);
+      background-color: white;
       color: var(--primary-color);
       border: 1.5px solid var(--primary-color);
       font-weight: 500;
@@ -533,6 +546,8 @@
       gap: 10px;
       justify-content: center;
       margin-top: 20px;
+      padding-bottom: 15px; 
+      /* hozir o'zgartiridim */
     }
     
     .confirm-btn-group .btn-primary {
