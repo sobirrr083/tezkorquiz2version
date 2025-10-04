@@ -8,6 +8,13 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
   <style>
+    :root {
+      --primary-color: #5B9BD5;
+      --primary-hover: #4A8BC2;
+      --primary-light: #E3F2FD;
+      --border-radius: 8px;
+    }
+    
     body {
       background-color: #f4f6f9;
       overflow-x: hidden;
@@ -15,61 +22,74 @@
       margin: 0;
       padding: 0;
     }
+    
     .container {
       max-width: 900px;
       margin: 20px auto;
       background-color: #fff;
       padding: 15px;
-      border-radius: 6px;
+      border-radius: var(--border-radius);
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
+    
     .file-label {
       margin-bottom: 10px;
     }
+    
     #uploadStatus {
       font-weight: bold;
       margin-top: 10px;
     }
+    
     .question-container {
       border: 1px solid #ddd;
-      border-radius: 6px;
+      border-radius: var(--border-radius);
       padding: 15px;
       margin-bottom: 15px;
     }
+    
     .question-text {
       font-weight: bold;
       margin-bottom: 10px;
       word-wrap: break-word;
       white-space: normal;
     }
+    
     .options-container .form-check {
       margin-bottom: 8px;
       display: flex;
       align-items: flex-start;
     }
+    
     .form-check-input {
       transform: scale(1.2);
       margin-right: 10px;
       margin-top: 5px;
     }
+    
     .form-check-label {
       word-wrap: break-word;
       white-space: normal;
       flex: 1;
     }
+    
     .correct {
       background-color: #d1e7dd !important;
     }
+    
     .incorrect {
       background-color: #f8d7da !important;
     }
+    
     .unanswered-correct {
       background-color: #fff3e0 !important;
     }
+    
     .check-icon {
       font-weight: bold;
       margin-left: 8px;
     }
+    
     .score-container {
       margin-top: 20px;
       text-align: center;
@@ -78,74 +98,109 @@
       opacity: 0;
       transition: opacity 1s ease-in;
     }
+    
     .show-feedback {
       opacity: 1 !important;
     }
+    
     .feedback-text {
       font-size: 1.1rem;
       margin-top: 10px;
       color: #444;
     }
+    
     .feedback-text span {
       font-weight: bold;
-      color: #2c7fbb;
+      color: var(--primary-color);
     }
+    
     .timer-container {
       background-color: #f8f9fa;
-      border-radius: 6px;
-      padding: 10px 15px;
+      border-radius: var(--border-radius);
+      padding: 12px 20px;
       margin-bottom: 20px;
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-      position: sticky;
-      top: 10px;
-      z-index: 1000;
-      transition: all 0.3s ease, opacity 0.5s ease;
+      gap: 10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
     }
+    
+    .timer-container.compact-timer {
+      position: fixed !important;
+      top: 15px !important;
+      right: 15px !important;
+      width: auto !important;
+      padding: 8px 12px !important;
+      z-index: 2000;
+      background-color: white !important;
+      border: 1px solid #ddd;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      animation: fadeIn 0.5s forwards;
+    }
+    
+    .timer-container.compact-timer .timer-text span {
+      display: none;
+    }
+    
     .timer {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       font-weight: bold;
       color: #333;
     }
+    
     .timer.warning {
       color: #dc3545;
       animation: pulse 1s infinite;
     }
+    
     @keyframes pulse {
-      0% { opacity: 1; }
+      0%, 100% { opacity: 1; }
       50% { opacity: 0.7; }
-      100% { opacity: 1; }
     }
+    
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+    
     .time-settings {
       margin: 15px 0;
       padding: 15px;
       border: 1px solid #ddd;
-      border-radius: 6px;
+      border-radius: var(--border-radius);
       background-color: #f8f9fa;
     }
+    
     .btn-group {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
       justify-content: flex-start;
     }
+    
     .btn-group button {
       flex: 1 1 45%;
       max-width: 150px;
       white-space: nowrap;
+      border: 1.5px solid var(--primary-color);
+      color: var(--primary-color);
+      background-color: white;
+      transition: all 0.2s ease;
     }
+    
     .btn-group button:hover {
-      background-color: #42A5F5; /* Ochroq ko'k rang */
-      color: white;
-      border-color: #42A5F5;
+      background-color: var(--primary-light);
+      border-color: var(--primary-hover);
+      transform: translateY(-1px);
     }
+    
     .btn-group button.active {
-      background-color: #0D6EFD;
+      background-color: var(--primary-color);
       color: white;
-      border-color: #0D6EFD;
+      border-color: var(--primary-color);
     }
+    
     .confetti-container {
       position: fixed;
       top: 0;
@@ -155,6 +210,7 @@
       pointer-events: none;
       z-index: 999;
     }
+    
     .confetti {
       position: absolute;
       width: 10px;
@@ -163,6 +219,7 @@
       border-radius: 50%;
       animation: fall 5s ease-in-out;
     }
+    
     @keyframes fall {
       0% {
         top: -10px;
@@ -175,23 +232,31 @@
         opacity: 0;
       }
     }
+    
     .new-test-btn {
-      margin-top: 20px;
-      width: 100%;
-      text-align: center;
-      background-color: #E3F2FD;
-      color: #0D47A1;
-      border: 1px solid #0D47A1;
-      padding: 10px;
-      font-weight: bold;
+      margin: 20px auto;
+      max-width: 200px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
+      gap: 8px;
+      background-color: var(--primary-light);
+      color: var(--primary-color);
+      border: 1.5px solid var(--primary-color);
+      padding: 10px 20px;
+      font-weight: 600;
+      border-radius: var(--border-radius);
+      transition: all 0.2s ease;
+      cursor: pointer;
     }
-    .new-test-btn i {
-      color: #0D47A1;
+    
+    .new-test-btn:hover {
+      background-color: var(--primary-color);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(91, 155, 213, 0.3);
     }
+    
     .results-card {
       border-radius: 10px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
@@ -200,9 +265,11 @@
       margin-top: 30px;
       text-align: center;
     }
+    
     .progress-container {
       margin: 25px 0;
     }
+    
     .progress-bar {
       height: 20px;
       border-radius: 10px;
@@ -210,15 +277,18 @@
       overflow: hidden;
       margin-bottom: 10px;
     }
+    
     .progress-fill {
       height: 100%;
       background: linear-gradient(90deg, #4CAF50, #8BC34A);
       transition: width 1.5s ease-in-out;
       border-radius: 10px;
     }
+    
     .progress-fill.low {
       background: linear-gradient(90deg, #FF5252, #FF8A80);
     }
+    
     .stats-container {
       display: flex;
       flex-wrap: wrap;
@@ -226,6 +296,7 @@
       margin: 20px 0;
       gap: 10px;
     }
+    
     .stat-item {
       display: flex;
       align-items: center;
@@ -239,22 +310,27 @@
       text-align: center;
       gap: 8px;
     }
+    
     .total-questions {
       background-color: #E3F2FD;
       color: #1976D2;
     }
+    
     .correct-answers {
       background-color: #E8F5E9;
       color: #388E3C;
     }
+    
     .incorrect-answers {
       background-color: #FFEBEE;
       color: #D32F2F;
     }
+    
     .unanswered {
       background-color: #FFF3E0;
       color: #F57C00;
     }
+    
     .gif-container {
       margin: 20px auto;
       text-align: center;
@@ -264,6 +340,7 @@
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
+    
     .salute {
       position: fixed;
       width: 10px;
@@ -272,6 +349,7 @@
       animation: salute 2s forwards;
       opacity: 0;
     }
+    
     @keyframes salute {
       0% {
         transform: translateY(0);
@@ -285,6 +363,7 @@
         opacity: 0;
       }
     }
+    
     .modal-overlay {
       position: fixed;
       top: 0;
@@ -300,14 +379,16 @@
       opacity: 0;
       transition: all 0.3s;
     }
+    
     .modal-overlay.show {
       visibility: visible;
       opacity: 1;
     }
+    
     .confirm-modal {
       background-color: white;
       border-radius: 10px;
-      padding: 20px;
+      padding: 25px;
       max-width: 450px;
       width: 90%;
       box-shadow: 0 5px 15px rgba(0,0,0,0.2);
@@ -315,9 +396,11 @@
       transform: translateY(-20px);
       transition: transform 0.3s;
     }
+    
     .modal-overlay.show .confirm-modal {
       transform: translateY(0);
     }
+    
     #infoModal .confirm-modal {
       max-width: 90%;
       width: 600px;
@@ -326,41 +409,48 @@
       flex-direction: column;
       background-color: #fff;
       border-radius: 12px;
-      padding: 20px;
+      padding: 0;
       box-shadow: 0 6px 20px rgba(0,0,0,0.15);
       position: relative;
     }
+    
     #infoModal .modal-content {
       flex: 1;
       overflow-y: auto;
-      padding-right: 10px;
+      padding: 25px;
       scrollbar-width: thin;
-      scrollbar-color: #2c7fbb #f0f4f8;
+      scrollbar-color: var(--primary-color) #f0f4f8;
       text-align: left;
     }
+    
     #infoModal .modal-content::-webkit-scrollbar {
       width: 8px;
     }
+    
     #infoModal .modal-content::-webkit-scrollbar-track {
       background: #f0f4f8;
     }
+    
     #infoModal .modal-content::-webkit-scrollbar-thumb {
-      background-color: #2c7fbb;
+      background-color: var(--primary-color);
       border-radius: 4px;
     }
+    
     #infoModal h4 {
       margin-top: 0;
-      color: #2c7fbb;
+      color: var(--primary-color);
       font-size: 1.4rem;
       text-align: left;
     }
+    
     #infoModal p, #infoModal pre {
       margin-bottom: 15px;
       line-height: 1.6;
     }
+    
     #infoModal pre {
       background-color: #f0f4f8;
-      border-left: 4px solid #2c7fbb;
+      border-left: 4px solid var(--primary-color);
       padding: 12px;
       border-radius: 0 6px 6px 0;
       font-size: 0.95rem;
@@ -371,19 +461,22 @@
       text-align: left;
       overflow-y: auto;
     }
+    
     #infoModal .confirm-btn-group {
-      margin-top: 20px;
       display: flex;
       justify-content: center;
       position: sticky;
       bottom: 0;
       background-color: #fff;
-      padding: 10px 0;
+      padding: 15px 25px;
+      border-top: 1px solid #e0e0e0;
     }
+    
     #infoModal .confirm-btn-group button {
       width: auto;
-      padding: 8px 20px;
+      padding: 10px 24px;
     }
+    
     #emojiPlaceholder {
       text-align: center;
       min-height: 48px;
@@ -391,8 +484,8 @@
       justify-content: center;
       align-items: center;
       font-size: 2rem;
-      color: #2c7fbb;
     }
+    
     #infoRow {
       display: flex;
       justify-content: center;
@@ -401,141 +494,55 @@
       margin-bottom: 15px;
       flex-wrap: wrap;
     }
+    
+    #infoBtn {
+      background-color: var(--primary-light);
+      color: var(--primary-color);
+      border: 1.5px solid var(--primary-color);
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+    
+    #infoBtn:hover {
+      background-color: var(--primary-color);
+      color: white;
+      border-color: var(--primary-color);
+      transform: translateY(-1px);
+    }
+    
     #finishBtn {
-      position: sticky;
-      bottom: 10px;
-      z-index: 1000;
-      width: 100%;
+      max-width: 250px;
+      margin: 20px auto;
+      display: block;
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+      font-weight: 600;
+      padding: 12px 24px;
+      transition: all 0.2s ease;
+    }
+    
+    #finishBtn:hover {
+      background-color: var(--primary-hover);
+      border-color: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(91, 155, 213, 0.3);
+    }
+    
+    .confirm-btn-group {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
       margin-top: 20px;
     }
-    #fileSection .form-label::before {
-      content: "Iltimos, umumiy test faylini tanlang";
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-      color: #333;
+    
+    .confirm-btn-group .btn-primary {
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
     }
-
-    /* Responsive Design */
-    @media (min-width: 768px) {
-      #infoRow {
-        flex-direction: row;
-        gap: 15px;
-      }
-      .stats-container {
-        flex-direction: row;
-        justify-content: space-between;
-        flex-wrap: wrap;
-      }
-      .stat-item {
-        flex: 1;
-        margin: 5px;
-        min-width: 150px;
-      }
-      .timer-container.compact-timer {
-        position: fixed !important;
-        top: 15px !important;
-        right: 15px !important;
-        width: 120px !important;
-        padding: 8px !important;
-        z-index: 2000;
-        background-color: white !important;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        opacity: 0;
-        animation: fadeIn 0.5s forwards;
-        justify-content: center;
-        gap: 5px;
-      }
-      .timer-container.compact-timer .timer-text {
-        display: none;
-      }
-      @keyframes fadeIn {
-        to { opacity: 1; }
-      }
-      .btn-group button {
-        flex: 1 1 30%;
-        max-width: 120px;
-      }
-    }
-
-    @media (min-width: 576px) and (max-width: 767px) {
-      .container {
-        margin: 10px;
-        padding: 12px;
-      }
-      .question-container {
-        padding: 12px;
-      }
-      .timer {
-        font-size: 1.3rem;
-      }
-      .question-text {
-        font-size: 1rem;
-      }
-      .form-check-label {
-        font-size: 0.95rem;
-      }
-      .time-settings {
-        padding: 12px;
-      }
-      .btn-group {
-        justify-content: center;
-      }
-      .btn-group button {
-        flex: 1 1 45%;
-        max-width: 140px;
-        font-size: 0.9rem;
-      }
-      .btn-group button:nth-child(3),
-      .btn-group button:nth-child(4) {
-        flex: 1 1 45%;
-      }
-      .stats-container {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-      }
-      .stat-item {
-        margin: 5px;
-        min-width: 120px;
-        justify-content: center;
-      }
-      .gif-container {
-        max-width: 250px;
-        height: 150px;
-      }
-      #infoModal .confirm-modal {
-        width: 95%;
-        max-width: 500px;
-      }
-      #infoRow {
-        flex-direction: row;
-        gap: 10px;
-      }
-      .timer-container.compact-timer {
-        position: fixed !important;
-        top: 15px !important;
-        right: 15px !important;
-        width: 100px !important;
-        padding: 8px !important;
-        z-index: 2000;
-        background-color: white !important;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        opacity: 0;
-        animation: fadeIn 0.5s forwards;
-        justify-content: center;
-        gap: 5px;
-      }
-      .timer-container.compact-timer .timer-text {
-        display: none;
-      }
-      #fileSection .form-label::before {
-        content: none;
-      }
+    
+    .confirm-btn-group .btn-primary:hover {
+      background-color: var(--primary-hover);
+      border-color: var(--primary-hover);
     }
 
     @media (max-width: 576px) {
@@ -543,142 +550,44 @@
         padding: 10px;
         margin: 5px;
       }
+      
       .question-container {
         padding: 10px;
       }
-      .form-check {
-        margin-bottom: 5px;
-      }
-      .timer-container.initial-center {
-        position: static !important;
-        flex-direction: row !important;
-        justify-content: center !important;
-        align-items: center !important;
-        margin-bottom: 15px;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        background-color: #ffffff;
-        padding: 10px 15px;
-        width: auto;
-        top: auto;
-        right: auto;
-        border-radius: 8px;
-      }
+      
       .timer-container.compact-timer {
-        position: fixed !important;
-        top: 15px !important;
-        right: 15px !important;
-        width: 80px !important;
-        padding: 8px !important;
-        z-index: 2000;
-        background-color: white !important;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        justify-content: center !important;
-        flex-direction: row !important;
-        align-items: center !important;
-        gap: 5px;
+        width: 85px !important;
+        padding: 6px 10px !important;
+        font-size: 0.9rem !important;
       }
-      .timer-container.compact-timer .timer-text {
-        display: none;
-      }
-      .timer-container.compact-timer .timer {
-        font-size: 1rem !important;
-      }
+      
       .timer {
         font-size: 1.2rem;
       }
+      
       .question-text {
         font-size: 0.95rem;
       }
+      
       .form-check-label {
         font-size: 0.9rem;
       }
-      .feedback-text {
-        font-size: 1rem;
-      }
-      .btn-group {
-        justify-content: center;
-      }
+      
       .btn-group button {
         flex: 1 1 48%;
         max-width: 130px;
         font-size: 0.85rem;
       }
-      .btn-group button:nth-child(3),
-      .btn-group button:nth-child(4) {
-        flex: 1 1 48%;
-      }
-      .stats-container {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-      }
-      .stat-item {
-        min-width: 100px;
-        justify-content: center;
-      }
-      .gif-container {
-        max-width: 200px;
-        height: 120px;
-      }
-      #infoModal .confirm-modal {
-        width: 95%;
-        max-width: 350px;
-      }
-      #infoRow {
-        flex-direction: column;
-        gap: 10px;
-      }
-      #finishBtn {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        width: 100%;
-      }
-      #fileSection .form-label::before {
-        content: none;
-      }
-    }
-
-    @media (max-width: 400px) {
-      .container {
-        padding: 8px;
-      }
-      .question-text {
+      
+      .new-test-btn {
+        max-width: 180px;
+        padding: 10px 16px;
         font-size: 0.9rem;
       }
-      .form-check-label {
-        font-size: 0.85rem;
-      }
-      .timer {
-        font-size: 1rem;
-      }
-      .btn-group button {
-        flex: 1 1 100%;
-        max-width: none;
-        margin: 2px 0;
-      }
-      .btn-group button:nth-child(3),
-      .btn-group button:nth-child(4) {
-        flex: 1 1 100%;
-      }
-      .stats-container {
-        flex-direction: column;
-        justify-content: center;
-      }
-      .stat-item {
-        min-width: 100%;
-        justify-content: center;
-      }
-      .gif-container {
-        max-width: 180px;
-        height: 100px;
-      }
-      #infoModal .confirm-modal {
-        width: 95%;
-        max-width: 350px;
+      
+      #finishBtn {
+        max-width: 200px;
+        padding: 10px 20px;
       }
     }
   </style>
@@ -688,7 +597,9 @@
   <h1 class="text-center mb-4">Siz Imtihondasiz!</h1>
 
   <div id="infoRow">
-    <button id="infoBtn" class="btn btn-info">Imtihon Quiz qanday ishlaydi?</button>
+    <button id="infoBtn" class="btn">
+      <i class="fas fa-info-circle me-2"></i>Imtihon Quiz qanday ishlaydi?
+    </button>
     <div id="emojiPlaceholder"></div>
   </div>
 
@@ -713,9 +624,9 @@
     </div>
   </div>
 
-  <div id="timerContainer" class="timer-container initial-center" style="display: none;">
+  <div id="timerContainer" class="timer-container" style="display: none;">
     <div class="timer-text">
-      <i class="fas fa-clock me-2"></i>
+      <i class="fas fa-clock"></i>
       <span>Qolgan vaqt:</span>
     </div>
     <div id="timer" class="timer">00:00</div>
@@ -794,13 +705,13 @@
     </div>
   </div>
 
-  <div id="exitModal" class="modal-overlay">
+  <div id="newTestModal" class="modal-overlay">
     <div class="confirm-modal">
-      <h4 class="mb-3">Diqqat!</h4>
-      <p id="exitMessage">Yangi testni boshlashga tayyormisiz?</p>
+      <h4 class="mb-3">Yangi imtihon</h4>
+      <p>Yangi imtihonga tayyormisiz?</p>
       <div class="confirm-btn-group">
-        <button id="cancelExit" class="btn btn-secondary">Yo'q</button>
-        <button id="confirmExit" class="btn btn-primary">Ha</button>
+        <button id="cancelNewTest" class="btn btn-secondary">Yo'q</button>
+        <button id="confirmNewTest" class="btn btn-primary">Ha</button>
       </div>
     </div>
   </div>
@@ -812,8 +723,7 @@
         <p>
           Testlarni boshlash uchun yuqoridagi "Fayl tanlash" orqali .txt faylini yuklang. Fayl quyidagi formatda bo'lishi kerak:
         </p>
-        <pre>
-O'zbekiston poytaxti qayer?
+        <pre>O'zbekiston poytaxti qayer?
 A. Toshkent
 B. Samarqand
 C. Namangan
@@ -832,8 +742,7 @@ A. Google Chrome
 B. Mozilla Firefox
 C. Microsoft Word
 D. Safari
-ANSWER: C
-        </pre>
+ANSWER: C</pre>
         <p>
           <strong>Izoh:</strong> Har bir savol bir qatordan boshlanadi, undan keyin A, B, C, D variantlari va ANSWER: so'zidan keyin bitta probel bilan to'g'ri javob (A, B, C yoki D) ko'rsatiladi va bir qator ochiq joy (Enter) qoldiriladi va keyingi savol namunadek davom etadi.
           <br><br>
@@ -851,7 +760,7 @@ ANSWER: C
   let originalTests = [];
   let randomizedTests = [];
   let timerInterval;
-  let totalSeconds = 25 * 60; // Default 25 daqiqa
+  let totalSeconds = 25 * 60;
   let examStarted = false;
 
   const gifGroups = {
@@ -922,16 +831,16 @@ ANSWER: C
   const closeInfo = document.getElementById("closeInfo");
   const fileSection = document.getElementById("fileSection");
   const emojiPlaceholder = document.getElementById("emojiPlaceholder");
-  const exitModal = document.getElementById("exitModal");
-  const exitMessage = document.getElementById("exitMessage");
-  const cancelExit = document.getElementById("cancelExit");
-  const confirmExit = document.getElementById("confirmExit");
+  const newTestModal = document.getElementById("newTestModal");
+  const cancelNewTest = document.getElementById("cancelNewTest");
+  const confirmNewTest = document.getElementById("confirmNewTest");
+  const infoRow = document.getElementById("infoRow");
 
   // Info modal
   infoBtn.addEventListener("click", () => {
     infoModal.classList.add("show");
     confirmModal.classList.remove("show");
-    exitModal.classList.remove("show");
+    newTestModal.classList.remove("show");
   });
 
   closeInfo.addEventListener("click", () => {
@@ -943,11 +852,9 @@ ANSWER: C
     if (examStarted) {
       const scrollY = window.scrollY;
       if (scrollY > 100) {
-        timerContainer.classList.remove('initial-center');
         timerContainer.classList.add('compact-timer');
       } else {
         timerContainer.classList.remove('compact-timer');
-        timerContainer.classList.add('initial-center');
       }
     }
   });
@@ -977,33 +884,6 @@ ANSWER: C
     if (customTimeCheck.checked) {
       totalSeconds = parseInt(minutesInput.value) * 60;
     }
-  });
-
-  window.addEventListener("beforeunload", (e) => {
-    if (examStarted) {
-      e.preventDefault();
-      e.returnValue = "Yangi testni boshlashga tayyormisiz?";
-      showExitModal();
-      return "Yangi testni boshlashga tayyormisiz?";
-    }
-  });
-
-  function showExitModal() {
-    if (examStarted) {
-      confirmModal.classList.remove("show");
-      infoModal.classList.remove("show");
-      exitMessage.textContent = "Yangi testni boshlashga tayyormisiz?";
-      exitModal.classList.add("show");
-    }
-  }
-
-  cancelExit.addEventListener("click", () => {
-    exitModal.classList.remove("show");
-  });
-
-  confirmExit.addEventListener("click", () => {
-    exitModal.classList.remove("show");
-    resetTest();
   });
 
   function shuffleArray(array) {
@@ -1085,9 +965,9 @@ ANSWER: C
   function startExam() {
     examStarted = true;
     timeSettings.style.display = "none";
+    infoBtn.style.display = "none";
     fileInput.disabled = true;
     timerContainer.style.display = "flex";
-    timerContainer.classList.add("initial-center");
     updateTimerDisplay();
     startTimer();
     showTests();
@@ -1186,7 +1066,7 @@ ANSWER: C
     
     confirmMessage.innerHTML = `<strong>${answeredCount}</strong> ta savolga javob berildi, <strong>${totalQuestions - answeredCount}</strong> ta savol javobsiz. <br><br>Testni yakunlashni tasdiqlaysizmi?`;
     confirmModal.classList.add("show");
-    exitModal.classList.remove("show");
+    newTestModal.classList.remove("show");
   });
   
   cancelFinish.addEventListener("click", () => {
@@ -1196,6 +1076,21 @@ ANSWER: C
   confirmFinish.addEventListener("click", () => {
     confirmModal.classList.remove("show");
     endExam("Test yakunlandi!");
+  });
+
+  newTestBtn.addEventListener("click", () => {
+    newTestModal.classList.add("show");
+    confirmModal.classList.remove("show");
+    infoModal.classList.remove("show");
+  });
+
+  cancelNewTest.addEventListener("click", () => {
+    newTestModal.classList.remove("show");
+  });
+
+  confirmNewTest.addEventListener("click", () => {
+    newTestModal.classList.remove("show");
+    resetTest();
   });
 
   function checkAnswers() {
@@ -1302,13 +1197,6 @@ ANSWER: C
     finishBtn.style.display = "none";
   }
 
-  newTestBtn.addEventListener("click", () => {
-    exitMessage.textContent = "Yangi testni boshlashga tayyormisiz?";
-    exitModal.classList.add("show");
-    confirmModal.classList.remove("show");
-    infoModal.classList.remove("show");
-  });
-
   function resetTest() {
     examStarted = false;
     stopTimer();
@@ -1319,11 +1207,12 @@ ANSWER: C
     scoreContainer.classList.remove("show-feedback");
     timerElement.classList.remove("warning");
     timerContainer.style.display = "none";
-    timerContainer.classList.remove("compact-timer", "initial-center");
+    timerContainer.classList.remove("compact-timer");
     newTestBtn.style.display = "none";
     finishBtn.style.display = "block";
     timeSettings.style.display = "block";
     fileSection.style.display = "block";
+    infoBtn.style.display = "block";
     timeButtons.forEach(btn => btn.classList.remove("active"));
     document.querySelector('button[data-time="25"]').classList.add("active");
     customTimeCheck.checked = false;
@@ -1335,6 +1224,7 @@ ANSWER: C
   }
 
   function createConfetti() {
+    const confettiContainer = document.getElementById('confettiContainer');
     confettiContainer.innerHTML = '';
     const colors = ["#fd5e53", "#3cc47c", "#1e1f26", "#df678c", "#3d8eb9", "#f9c80e"];
     
@@ -1377,3 +1267,4 @@ ANSWER: C
 </script>
 </body>
 </html>
+  const
