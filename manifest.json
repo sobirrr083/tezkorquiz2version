@@ -1,11 +1,11 @@
 {
-  "name": "Sizning Ilova Nomi",
+  "name": "Tezkor Quiz",
   "short_name": "Ilova",
-  "start_url": "/",
+  "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#007bff",
-  "description": "Bu mening Ruby on Rails ilovamning PWA manifest fayli.",
+  "description": "Bu tezkor quiz saytining rasmiy ilovasi",
   "icons": [
     {
       "src": "/icons/icon-192x192.png",
