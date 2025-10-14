@@ -1,8 +1,11 @@
 {
   "name": "Tezkor Quiz",
   "short_name": "Ilova",
-  "start_url": "/index.html",
+  "lang": "uz",
+  "dir": "ltr",
+  "start_url": "/",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#ffffff",
   "theme_color": "#007bff",
   "description": "Bu tezkor quiz saytining rasmiy ilovasi",
@@ -10,7 +13,8 @@
     {
       "src": "/appicon/maskable.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "maskable"
     },
     {
       "src": "/appicon/icon.png",
