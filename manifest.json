@@ -3,7 +3,7 @@
   "short_name": "Tezkor Quiz",
   "lang": "uz",
   "dir": "ltr",
-  "start_url": "/indeks.html",
+  "start_url": "/",
   "display": "standalone",
   "orientation": "any",
   "background_color": "#ffffff",
