@@ -7,7 +7,7 @@
   "display": "standalone",
   "orientation": "any",
   "background_color": "#ffffff",
-  "theme_color": "#e9effd",
+  "theme_color": "#ffffff",
   "description": "Bu tezkor quiz saytining rasmiy ilovasi",
   "icons": [
     {
