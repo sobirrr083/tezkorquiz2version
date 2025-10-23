@@ -74,6 +74,37 @@
     
     .page.active {
       display: block;
+      animation: fadeIn 0.4s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    .logo {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .logo-icon {
+      width: 70px;
+      height: 70px;
+      background: linear-gradient(135deg, #4361ee 0%, #3651d4 100%);
+      border-radius: 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      margin-bottom: 15px;
+      box-shadow: 0 10px 30px rgba(67, 97, 238, 0.3);
+      overflow: hidden;
+    }
+    
+    .logo-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
     
     h2 {
@@ -82,6 +113,14 @@
       text-align: center;
       font-size: 32px;
       font-weight: 700;
+    }
+    
+    .subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 35px;
+      font-size: 15px;
+      line-height: 1.5;
     }
     
     .description {
@@ -127,15 +166,19 @@
     
     .btn {
       width: 100%;
-      padding: 15px;
+      padding: 16px;
       border: none;
       border-radius: 12px;
       font-size: 16px;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s;
-      margin-top: 10px;
+      margin-bottom: 12px;
       position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
     }
     
     .btn:disabled {
@@ -154,14 +197,21 @@
       box-shadow: 0 12px 24px rgba(67, 97, 238, 0.3);
     }
     
+    .btn-secondary {
+      background: white;
+      border: 2px solid #e1e8ed;
+      color: #333;
+    }
+    
+    .btn-secondary:hover:not(:disabled) {
+      background: #f8f9fa;
+      border-color: #4361ee;
+    }
+    
     .btn-google {
       background: white;
       border: 2px solid #e1e8ed;
       color: #444;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
     }
     
     .btn-google:hover:not(:disabled) {
@@ -182,6 +232,7 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      width: auto;
     }
     
     .btn-help:hover {
@@ -236,17 +287,26 @@
       text-decoration: underline;
     }
     
-    .forgot-help-row {
-      display: flex;
-      justify-content: space-between;
+    .back-btn {
+      display: inline-flex;
       align-items: center;
-      margin-top: 10px;
+      gap: 6px;
+      color: #4361ee;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
       margin-bottom: 20px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .back-btn:hover {
       gap: 10px;
     }
     
     .forgot-password {
       text-align: right;
+      margin-bottom: 20px;
     }
     
     .forgot-password a {
@@ -370,6 +430,57 @@
       text-decoration: underline;
     }
     
+    /* Password Strength Indicator */
+    .password-strength {
+      margin-top: 8px;
+      height: 4px;
+      background: #e1e8ed;
+      border-radius: 2px;
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+    
+    .password-strength-bar {
+      height: 100%;
+      width: 0;
+      transition: all 0.3s;
+      border-radius: 2px;
+    }
+    
+    .password-strength-text {
+      font-size: 12px;
+      margin-top: 6px;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+    
+    .strength-weak .password-strength-bar {
+      width: 33%;
+      background: #ff4757;
+    }
+    
+    .strength-weak .password-strength-text {
+      color: #ff4757;
+    }
+    
+    .strength-good .password-strength-bar {
+      width: 66%;
+      background: #ffa502;
+    }
+    
+    .strength-good .password-strength-text {
+      color: #ffa502;
+    }
+    
+    .strength-strong .password-strength-bar {
+      width: 100%;
+      background: #26de81;
+    }
+    
+    .strength-strong .password-strength-text {
+      color: #26de81;
+    }
+    
     /* Modal Styles */
     .modal {
       display: none;
@@ -386,11 +497,6 @@
     
     .modal.show {
       display: flex;
-    }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
     }
     
     .modal-content {
@@ -421,6 +527,11 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 20px;
+      position: sticky;
+      top: 0;
+      background: white;
+      z-index: 10;
+      padding-bottom: 10px;
     }
     
     .modal-header h3 {
@@ -439,6 +550,7 @@
       font-size: 20px;
       line-height: 1;
       transition: all 0.3s;
+      flex-shrink: 0;
     }
     
     .modal-close:hover {
@@ -462,46 +574,86 @@
     .modal-body p {
       margin-bottom: 15px;
     }
+    
+    /* Contact Links */
+    .contact-links {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    
+    .contact-link {
+      flex: 1;
+      min-width: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 20px;
+      background: white;
+      border: 2px solid #e1e8ed;
+      border-radius: 12px;
+      text-decoration: none;
+      color: #333;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.3s;
+    }
+    
+    .contact-link:hover {
+      border-color: #4361ee;
+      background: #f8f9fa;
+      transform: translateY(-2px);
+    }
+    
+    .contact-link.telegram {
+      border-color: #0088cc;
+      color: #0088cc;
+    }
+    
+    .contact-link.telegram:hover {
+      background: #e8f5fa;
+    }
+    
+    .contact-link.email {
+      border-color: #4361ee;
+      color: #4361ee;
+    }
+    
+    .contact-link.email:hover {
+      background: #e8ecfb;
+    }
   </style>
 </head>
 <body>
   <div class="main-wrapper">
     <div class="container">
-      <!-- Login Page -->
-      <div id="loginPage" class="page active">
-        <h2>Kirish</h2>
-        <div id="loginAlert" class="alert"></div>
+      <!-- Welcome Page (Boshlang'ich sahifa) -->
+      <div id="welcomePage" class="page active">
+        <div class="logo">
+          <div class="logo-icon">
+            <!-- BU YERGA O'Z LOGOTIPINGIZ RASMINI QO'YING -->
+            <img src="https://via.placeholder.com/70x70/4361ee/ffffff?text=LOGO" alt="Logo" id="mainLogo">
+          
+          </div>
+        </div>
+        <h2>Xush kelibsiz!</h2>
+        <p class="subtitle">Davom etish uchun kirish usulini tanlang</p>
         
-        <form id="loginForm">
-          <div class="input-group">
-            <label>Email</label>
-            <input type="email" id="loginEmail" placeholder="example@email.com" required>
-          </div>
-          
-          <div class="input-group">
-            <label>Parol</label>
-            <input type="password" id="loginPassword" placeholder="••••••••" required>
-          </div>
-          
-          <div class="forgot-help-row">
-            <button type="button" class="btn-help" onclick="showModal('helpModal')">
-              <span>❓</span>
-              Yordam
-            </button>
-            <div class="forgot-password">
-              <a onclick="showPage('resetPage')">Parolni unutdingizmi?</a>
-            </div>
-          </div>
-          
-          <button type="submit" class="btn btn-primary">
-            <span class="btn-text">Kirish</span>
-            <div class="spinner"></div>
-          </button>
-        </form>
+        <div id="welcomeAlert" class="alert"></div>
+        
+        <button class="btn btn-secondary" onclick="showPage('emailLoginPage')">
+          <span>Email orqali kirish</span>
+        </button>
+        
+        <button class="btn btn-primary" onclick="showPage('signupPage')">
+          <span>Ro'yxatdan o'tish</span>
+        </button>
         
         <div class="divider">yoki</div>
         
-        <button id="loginGoogle" class="btn btn-google">
+        <button id="welcomeGoogle" class="btn btn-google">
           <svg class="google-icon" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
             <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -512,6 +664,42 @@
           <div class="spinner"></div>
         </button>
         
+        <div class="links" style="margin-top: 30px;">
+          <button type="button" class="btn-help" onclick="showModal('helpModal')">
+            Yordam kerakmi?
+          </button>
+        </div>
+      </div>
+
+      <!-- Email Login Page -->
+      <div id="emailLoginPage" class="page">
+        <a class="back-btn" onclick="showPage('welcomePage')">
+          ← Orqaga
+        </a>
+        <h2>Email bilan kirish</h2>
+        <div id="loginAlert" class="alert"></div>
+        
+        <form id="loginForm">
+          <div class="input-group">
+            <label>Email</label>
+            <input type="email" id="loginEmail" placeholder="namuna@gmail.com" required>
+          </div>
+          
+          <div class="input-group">
+            <label>Parol</label>
+            <input type="password" id="loginPassword" placeholder="parolni kiriting" required>
+          </div>
+          
+          <div class="forgot-password">
+            <a onclick="showPage('resetPage')">Parolni unutdingizmi?</a>
+          </div>
+          
+          <button type="submit" class="btn btn-primary">
+            <span class="btn-text">Kirish</span>
+            <div class="spinner"></div>
+          </button>
+        </form>
+        
         <div class="links">
           Hisobingiz yo'qmi? <a onclick="showPage('signupPage')">Ro'yxatdan o'tish</a>
         </div>
@@ -519,6 +707,9 @@
 
       <!-- Signup Page -->
       <div id="signupPage" class="page">
+        <a class="back-btn" onclick="showPage('welcomePage')">
+          ← Orqaga
+        </a>
         <h2>Ro'yxatdan o'tish</h2>
         <div id="signupAlert" class="alert"></div>
         
@@ -535,13 +726,17 @@
           
           <div class="input-group">
             <label>Parol</label>
-            <input type="password" id="signupPassword" placeholder="Kamida 6 ta belgi" required minlength="6">
+            <input type="password" id="signupPassword" placeholder="Kamida 8 ta belgi" required minlength="8">
+            <div class="password-strength">
+              <div class="password-strength-bar"></div>
+            </div>
+            <div class="password-strength-text"></div>
           </div>
           
           <div class="checkbox-group">
             <input type="checkbox" id="termsCheckbox" required>
             <label for="termsCheckbox">
-              Men <a onclick="showModal('termsModal')">Foydalanish shartlari</a> va <a onclick="showModal('privacyModal')">Maxfiylik siyosati</a> bilan tanishdim va roziman
+              Men <a href="https://yourwebsite.com/terms" target="_blank">Foydalanish shartlari</a> va <a href="https://yourwebsite.com/privacy" target="_blank">Maxfiylik siyosati</a> bilan tanishdim va roziman
             </label>
           </div>
           
@@ -565,12 +760,15 @@
         </button>
         
         <div class="links">
-          Hisobingiz bormi? <a onclick="showPage('loginPage')">Kirish</a>
+          Hisobingiz bormi? <a onclick="showPage('emailLoginPage')">Kirish</a>
         </div>
       </div>
 
       <!-- Password Reset Page -->
       <div id="resetPage" class="page">
+        <a class="back-btn" onclick="showPage('emailLoginPage')">
+          ← Orqaga
+        </a>
         <div class="icon">🔒</div>
         <h2>Parolni tiklash</h2>
         <p class="description">
@@ -589,10 +787,6 @@
             <div class="spinner"></div>
           </button>
         </form>
-        
-        <div class="links">
-          <a onclick="showPage('loginPage')">← Kirish sahifasiga qaytish</a>
-        </div>
       </div>
     </div>
   </div>
@@ -607,68 +801,35 @@
       <div class="modal-body">
         <h4>Kirish muammolari</h4>
         <p><strong>Parolni unutdingizmi?</strong><br>
-        "Parolni unutdingizmi?" tugmasini bosing va email manzilingizga parolni tiklash havolasi yuboriladi.</p>
+        "Email orqali kirish" tugmasini bosing va "Parolni unutdingizmi?" havolasiga o'ting. Email manzilingizga parolni tiklash havolasi yuboriladi.</p>
         
         <p><strong>Email yoki parol noto'g'ri?</strong><br>
         Email manzilingiz va parolingizni to'g'ri kiritganingizga ishonch hosil qiling. Caps Lock yoqilmaganligini tekshiring.</p>
         
         <h4>Google orqali kirish</h4>
-        <p>Google hisobingiz orqali tezkor va xavfsiz kirish mumkin. Shunchaki "Google orqali kirish" tugmasini bosing.</p>
+        <p>Google hisobingiz orqali tezkor va xavfsiz kirish mumkin. Shunchaki "Google orqali kirish" tugmasini bosing va Google hisobingizni tanlang.</p>
         
         <h4>Texnik muammolar</h4>
         <p>Agar internet aloqangizda muammo bo'lsa, ulanishni tekshiring va qaytadan urinib ko'ring.</p>
         
-        <p><strong>Qo'shimcha yordam kerakmi?</strong><br>
-        Bizga support@example.com manziliga murojaat qiling.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Terms Modal -->
-  <div id="termsModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>📋 Foydalanish shartlari</h3>
-        <button class="modal-close" onclick="closeModal('termsModal')">×</button>
-      </div>
-      <div class="modal-body">
-        <h4>1. Xizmatlardan foydalanish</h4>
-        <p>Ushbu platformadan foydalanish orqali siz quyidagi shartlarga rozilik bildirasiz.</p>
+        <h4>📞 Biz bilan bog'lanish</h4>
+        <p>Qo'shimcha yordam kerak bo'lsa, quyidagi orqali murojaat qilishingiz mumkin:</p>
         
-        <h4>2. Foydalanuvchi majburiyatlari</h4>
-        <p>Siz hisobingiz xavfsizligi uchun javobgarsiz va parolingizni boshqalar bilan bo'lishmasligingiz kerak.</p>
-        
-        <h4>3. Taqiqlangan harakatlar</h4>
-        <p>Platformadan noqonuniy maqsadlarda foydalanish, spam yuborish va boshqa foydalanuvchilarga zarar etkazish qat'iyan man etiladi.</p>
-        
-        <h4>4. Shartlardagi o'zgarishlar</h4>
-        <p>Biz ushbu shartlarni istalgan vaqtda o'zgartirish huquqini o'zida saqlaymiz.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Privacy Modal -->
-  <div id="privacyModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>🔒 Maxfiylik siyosati</h3>
-        <button class="modal-close" onclick="closeModal('privacyModal')">×</button>
-      </div>
-      <div class="modal-body">
-        <h4>Ma'lumotlar to'plash</h4>
-        <p>Biz faqat xizmatlarni taqdim etish uchun zarur bo'lgan ma'lumotlarni to'playmiz: email, ism va autentifikatsiya ma'lumotlari.</p>
-        
-        <h4>Ma'lumotlar xavfsizligi</h4>
-        <p>Barcha ma'lumotlar shifrlangan holda saqlanadi va uchinchi shaxslarga berilmaydi.</p>
-        
-        <h4>Cookie va kuzatuv</h4>
-        <p>Biz foydalanuvchi tajribasini yaxshilash uchun cookie-lardan foydalanamiz.</p>
-        
-        <h4>Sizning huquqlaringiz</h4>
-        <p>Siz istalgan vaqtda o'z ma'lumotlaringizni ko'rish, o'zgartirish yoki o'chirish huquqiga egasiz.</p>
-        
-        <h4>Aloqa</h4>
-        <p>Maxfiylik bilan bog'liq savollar uchun: privacy@example.com</p>
+        <div class="contact-links">
+          <a href="https://t.me/yourusername" target="_blank" class="contact-link telegram">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+            </svg>
+            Telegram
+          </a>
+          <a href="mailto:support@example.com" class="contact-link email">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+            Email
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -705,7 +866,75 @@
       console.log('✅ Firebase muvaffaqiyatli ulandi');
     } catch (error) {
       console.error('❌ Firebase ulanishda xatolik:', error);
-      showAlert('loginAlert', 'Firebase ulanishda xatolik. Console ni tekshiring.', 'error');
+      showAlert('welcomeAlert', 'Firebase ulanishda xatolik. Console ni tekshiring.', 'error');
+    }
+
+    // ===== PAROL KUCHINI TEKSHIRISH =====
+    const signupPasswordInput = document.getElementById('signupPassword');
+    
+    function checkPasswordStrength(password) {
+      let strength = 0;
+      const checks = {
+        length: password.length >= 8,
+        uppercase: /[A-Z]/.test(password),
+        lowercase: /[a-z]/.test(password),
+        number: /[0-9]/.test(password),
+        special: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)
+      };
+      
+      // Hisoblash
+      if (checks.length) strength++;
+      if (checks.uppercase) strength++;
+      if (checks.lowercase) strength++;
+      if (checks.number) strength++;
+      if (checks.special) strength++;
+      
+      // Natija
+      if (strength <= 2) return { level: 'weak', text: '⚠️ Kuchsiz', class: 'strength-weak' };
+      if (strength <= 3) return { level: 'good', text: '✓ Yaxshi', class: 'strength-good' };
+      return { level: 'strong', text: '✓✓ Ajoyib', class: 'strength-strong' };
+    }
+    
+    signupPasswordInput?.addEventListener('input', (e) => {
+      const password = e.target.value;
+      const strengthContainer = e.target.parentElement.querySelector('.password-strength');
+      const strengthBar = strengthContainer?.querySelector('.password-strength-bar');
+      const strengthText = e.target.parentElement.querySelector('.password-strength-text');
+      
+      if (!strengthContainer || !strengthBar || !strengthText) return;
+      
+      if (password.length === 0) {
+        strengthContainer.className = 'password-strength';
+        strengthText.textContent = '';
+        return;
+      }
+      
+      const result = checkPasswordStrength(password);
+      strengthContainer.className = `password-strength ${result.class}`;
+      strengthText.textContent = result.text;
+    });
+
+    // ===== PAROL VALIDATSIYA =====
+    function validatePassword(password) {
+      const errors = [];
+      
+      if (password.length < 8) {
+        errors.push('Parol kamida 8 ta belgidan iborat bo\'lishi kerak');
+      }
+      if (!/[A-Z]/.test(password)) {
+        errors.push('Parolda kamida 1 ta katta harf bo\'lishi kerak (A-Z)');
+      }
+      if (!/[a-z]/.test(password)) {
+        errors.push('Parolda kamida 1 ta kichik harf bo\'lishi kerak (a-z)');
+      }
+      if (!/[0-9]/.test(password)) {
+        errors.push('Parolda kamida 1 ta raqam bo\'lishi kerak (0-9)');
+      }
+      if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
+        errors.push('Parolda kamida 1 ta maxsus belgi bo\'lishi kerak (!@#$%^&*)');
+      }
+      
+      return errors;
     }
 
     // ===== MODAL FUNCTIONS =====
@@ -734,14 +963,14 @@
       // Alertlarni tozalash
       document.querySelectorAll('.alert').forEach(a => {
         a.classList.remove('show');
-        a.textContent = '';
+        a.innerHTML = '';
       });
     };
 
     // ===== ALERT KO'RSATISH =====
     function showAlert(elementId, message, type = 'error') {
       const alert = document.getElementById(elementId);
-      alert.textContent = message;
+      alert.innerHTML = message;
       alert.className = `alert alert-${type} show`;
       
       if (type === 'success') {
@@ -770,7 +999,7 @@
         'auth/user-not-found': 'Bunday foydalanuvchi topilmadi',
         'auth/wrong-password': 'Noto\'g\'ri parol kiritildi',
         'auth/email-already-in-use': 'Bu email allaqachon ro\'yxatdan o\'tgan',
-        'auth/weak-password': 'Parol juda oddiy. Kamida 6 ta belgi kiriting',
+        'auth/weak-password': 'Parol juda oddiy. Kamida 8 ta belgi kiriting',
         'auth/network-request-failed': 'Internet aloqasi yo\'q. Iltimos, ulanishni tekshiring',
         'auth/too-many-requests': 'Juda ko\'p urinish. Iltimos, biroz kutib qaytadan urinib ko\'ring',
         'auth/operation-not-allowed': 'Bu amal ruxsat etilmagan',
@@ -785,7 +1014,28 @@
       return errors[errorCode] || `Xatolik: ${errorCode}`;
     }
 
-    // ===== KIRISH (LOGIN) =====
+    // ===== WELCOME PAGE - GOOGLE KIRISH =====
+    document.getElementById('welcomeGoogle').addEventListener('click', async () => {
+      const button = document.getElementById('welcomeGoogle');
+      setLoading(button, true);
+      
+      try {
+        const result = await signInWithPopup(auth, googleProvider);
+        console.log('✅ Google orqali muvaffaqiyatli kirildi:', result.user);
+        showAlert('welcomeAlert', 'Muvaffaqiyatli kirildi! Sahifa yangilanmoqda...', 'success');
+        
+        setTimeout(() => {
+          window.location.href = 'dashboard.html'; // Bu sahifani o'zgartiring
+        }, 1500);
+        
+      } catch (error) {
+        console.error('❌ Google kirish xatosi:', error.code, error.message);
+        showAlert('welcomeAlert', getErrorMessage(error.code), 'error');
+        setLoading(button, false);
+      }
+    });
+
+    // ===== EMAIL ORQALI KIRISH (LOGIN) =====
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const button = e.target.querySelector('.btn-primary');
@@ -824,8 +1074,10 @@
         return;
       }
       
-      if (password.length < 6) {
-        showAlert('signupAlert', 'Parol kamida 6 ta belgidan iborat bo\'lishi kerak', 'error');
+      // Parolni tekshirish
+      const passwordErrors = validatePassword(password);
+      if (passwordErrors.length > 0) {
+        showAlert('signupAlert', passwordErrors.join('<br>'), 'error');
         return;
       }
       
@@ -849,27 +1101,6 @@
       } catch (error) {
         console.error('❌ Ro\'yxatdan o\'tish xatosi:', error.code, error.message);
         showAlert('signupAlert', getErrorMessage(error.code), 'error');
-        setLoading(button, false);
-      }
-    });
-
-    // ===== GOOGLE ORQALI KIRISH (LOGIN) =====
-    document.getElementById('loginGoogle').addEventListener('click', async () => {
-      const button = document.getElementById('loginGoogle');
-      setLoading(button, true);
-      
-      try {
-        const result = await signInWithPopup(auth, googleProvider);
-        console.log('✅ Google orqali muvaffaqiyatli kirildi:', result.user);
-        showAlert('loginAlert', 'Muvaffaqiyatli kirildi! Sahifa yangilanmoqda...', 'success');
-        
-        setTimeout(() => {
-          window.location.href = 'dashboard.html'; // Bu sahifani o'zgartiring
-        }, 1500);
-        
-      } catch (error) {
-        console.error('❌ Google kirish xatosi:', error.code, error.message);
-        showAlert('loginAlert', getErrorMessage(error.code), 'error');
         setLoading(button, false);
       }
     });
@@ -916,7 +1147,7 @@
         showAlert('resetAlert', 'Parolni tiklash havolasi emailingizga yuborildi. Iltimos, email qutingizni tekshiring.', 'success');
         
         setTimeout(() => {
-          showPage('loginPage');
+          showPage('emailLoginPage');
         }, 3000);
         
       } catch (error) {
