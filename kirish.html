@@ -1,4 +1,43 @@
-<!DOCTYPE html>
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
 <html lang="uz">
 <head>
   <meta charset="UTF-8">
@@ -9,6 +48,10 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
     }
     
     body {
@@ -575,7 +618,6 @@
       margin-bottom: 15px;
     }
     
-    /* Contact Links */
     .contact-links {
       display: flex;
       gap: 15px;
@@ -624,18 +666,92 @@
     .contact-link.email:hover {
       background: #e8ecfb;
     }
+
+    /* Copy Protection Notification */
+    .copy-notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #ff4757;
+      color: white;
+      padding: 15px 20px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 14px;
+      box-shadow: 0 10px 30px rgba(255, 71, 87, 0.3);
+      z-index: 10000;
+      animation: slideInRight 0.3s ease;
+      display: none;
+    }
+
+    .copy-notification.show {
+      display: block;
+    }
+
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(100px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
   </style>
 </head>
 <body>
+  <script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+  </script>
+  <div class="copy-notification" id="copyNotification">
+    www.tezkorquiz.uz saytida parolni nusxalash mumkin emas
+  </div>
+
   <div class="main-wrapper">
     <div class="container">
       <!-- Welcome Page (Boshlang'ich sahifa) -->
       <div id="welcomePage" class="page active">
         <div class="logo">
           <div class="logo-icon">
-            <!-- BU YERGA O'Z LOGOTIPINGIZ RASMINI QO'YING -->
             <img src="appicon/icon.png" alt="Logo" id="mainLogo">
-          
           </div>
         </div>
         <h2>Xush kelibsiz!</h2>
@@ -677,17 +793,18 @@
           ← Orqaga
         </a>
         <h2>Email bilan kirish</h2>
+        <p class="subtitle">Hisobingizga kirish uchun email va parolni kiriting</p>
         <div id="loginAlert" class="alert"></div>
         
         <form id="loginForm">
           <div class="input-group">
             <label>Email</label>
-            <input type="email" id="loginEmail" placeholder="namuna@gmail.com" required>
+            <input type="email" id="loginEmail" placeholder="namuna@gmail.com" required autocomplete="off" oncopy="handleCopy(event)">
           </div>
           
           <div class="input-group">
             <label>Parol</label>
-            <input type="password" id="loginPassword" placeholder="parolni kiriting" required>
+            <input type="password" id="loginPassword" placeholder="parolni kiriting" required autocomplete="off" oncopy="handleCopy(event)">
           </div>
           
           <div class="forgot-password">
@@ -711,22 +828,23 @@
           ← Orqaga
         </a>
         <h2>Ro'yxatdan o'tish</h2>
+        <p class="subtitle">Yangi hisob ochish uchun ma'lumotlarni to'ldiring</p>
         <div id="signupAlert" class="alert"></div>
         
         <form id="signupForm">
           <div class="input-group">
             <label>Ism</label>
-            <input type="text" id="signupName" placeholder="Ismingiz" required>
+            <input type="text" id="signupName" placeholder="Ismingiz" required autocomplete="off" oncopy="handleCopy(event)">
           </div>
           
           <div class="input-group">
             <label>Email</label>
-            <input type="email" id="signupEmail" placeholder="example@email.com" required>
+            <input type="email" id="signupEmail" placeholder="example@email.com" required autocomplete="off" oncopy="handleCopy(event)">
           </div>
           
           <div class="input-group">
             <label>Parol</label>
-            <input type="password" id="signupPassword" placeholder="Kamida 8 ta belgi" required minlength="8">
+            <input type="password" id="signupPassword" placeholder="Kamida 8 ta belgi" required minlength="8" autocomplete="off" oncopy="handleCopy(event)">
             <div class="password-strength">
               <div class="password-strength-bar"></div>
             </div>
@@ -779,7 +897,7 @@
         <form id="resetForm">
           <div class="input-group">
             <label>Email</label>
-            <input type="email" id="resetEmail" placeholder="example@email.com" required>
+            <input type="email" id="resetEmail" placeholder="example@email.com" required autocomplete="off" oncopy="handleCopy(event)">
           </div>
           
           <button type="submit" class="btn btn-primary">
@@ -818,7 +936,7 @@
         <div class="contact-links">
           <a href="https://t.me/yourusername" target="_blank" class="contact-link telegram">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.40-.36-.01-1.04-.20-1.55-.37-.63-.20-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
             </svg>
             Telegram
           </a>
@@ -848,18 +966,15 @@
     } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 
     // ===== FIREBASE CONFIG - BU YERGA O'Z MA'LUMOTLARINGIZNI KIRITING =====
-  
-
-        const firebaseConfig = {
+    const firebaseConfig = {
       apiKey: "AIzaSyBxIpLY5WasiSIlDL4japBLnnXRwOLUKEQ",
       authDomain: "tezkor-quiz-bbe3c.firebaseapp.com",
       projectId: "tezkor-quiz-bbe3c",
       storageBucket: "tezkor-quiz-bbe3c.firebasestorage.app",
       messagingSenderId: "143161522496",
       appId: "1:143161522496:web:252108ace3a4c19f35e2a5",
-          };
+    };
 
-    
     // Firebase Initialize
     let app, auth, googleProvider;
     try {
@@ -869,33 +984,180 @@
       console.log('✅ Firebase muvaffaqiyatli ulandi');
     } catch (error) {
       console.error('❌ Firebase ulanishda xatolik:', error);
-      showAlert('welcomeAlert', 'Firebase ulanishda xatolik. Console ni tekshiring.', 'error');
+      showAlert('welcomeAlert', 'Firebase ulanishida xatolik. Console ni tekshiring.', 'error');
     }
 
-    // ===== PAROL KUCHINI TEKSHIRISH =====
+    // ===== XAVFSIZLIK: F12 VA NUSXA OLISHNI BOSHQARISH =====
+    
+    // F12 va DevTools ni bloklash
+    document.addEventListener('keydown', function(e) {
+      // F12
+      if (e.key === 'F12') {
+        e.preventDefault();
+        return false;
+      }
+      
+      // Ctrl+Shift+I (DevTools)
+      if (e.ctrlKey && e.shiftKey && e.key === 'I') {
+        e.preventDefault();
+        return false;
+      }
+      
+      // Ctrl+Shift+J (Console)
+      if (e.ctrlKey && e.shiftKey && e.key === 'J') {
+        e.preventDefault();
+        return false;
+      }
+      
+      // Ctrl+Shift+C (Inspect)
+      if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+        e.preventDefault();
+        return false;
+      }
+      
+      // Ctrl+U (View Source)
+      if (e.ctrlKey && e.key === 'u') {
+        e.preventDefault();
+        return false;
+      }
+    });
+
+    // Right click ni bloklash
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+      return false;
+    });
+
+    // Input maydonlarida faqat matnni nusxalashga ruxsat berish
+    window.handleCopy = function(e) {
+      e.preventDefault();
+      const input = e.target;
+      const text = input.value;
+      if (text) {
+        navigator.clipboard.writeText(text).then(() => {
+          console.log('✅ Matn nusxalandi');
+        }).catch(err => {
+          console.error('❌ Nusxalashda xatolik:', err);
+          showCopyNotification();
+        });
+      } else {
+        showCopyNotification();
+      }
+    };
+
+    // Copy, Cut, Paste ni bloklash (input maydonlardan tashqari)
+    document.addEventListener('copy', function(e) {
+      if (e.target.tagName !== 'INPUT') {
+        e.preventDefault();
+        showCopyNotification();
+        return false;
+      }
+    });
+
+    document.addEventListener('cut', function(e) {
+      if (e.target.tagName !== 'INPUT') {
+        e.preventDefault();
+        showCopyNotification();
+        return false;
+      }
+    });
+
+    document.addEventListener('paste', function(e) {
+      if (e.target.tagName !== 'INPUT') {
+        e.preventDefault();
+        return false;
+      }
+    });
+
+    // Drag and select ni bloklash
+    document.addEventListener('selectstart', function(e) {
+      if (e.target.tagName !== 'INPUT') {
+        e.preventDefault();
+        return false;
+      }
+    });
+
+    // Copy notification ko'rsatish
+    function showCopyNotification() {
+      const notification = document.getElementById('copyNotification');
+      notification.classList.add('show');
+      
+      setTimeout(() => {
+        notification.classList.remove('show');
+      }, 3000);
+    }
+
+    // DevTools ochilganini aniqlash
+    const devToolsChecker = setInterval(() => {
+      const threshold = 160;
+      if (window.outerWidth - window.innerWidth > threshold || 
+          window.outerHeight - window.innerHeight > threshold) {
+        document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-size:24px;color:#ff4757;text-align:center;padding:20px;">⚠️ Developer Tools aniqlandi!<br>Iltimos, brauzeringizni qayta yuklang.</div>';
+        clearInterval(devToolsChecker);
+      }
+    }, 1000);
+
+    // ===== BROWSER HISTORY BOSHQARUVI =====
+    let currentPage = 'welcomePage';
+    let modalOpen = false;
+
+    // History state ni yangilash
+    function updateHistory(pageId) {
+      currentPage = pageId;
+      history.pushState({ page: pageId }, '', '');
+    }
+
+    // Orqaga tugmasi bosilganda
+    window.addEventListener('popstate', function(e) {
+      if (modalOpen) {
+        // Agar modal ochiq bo'lsa, uni yopish
+        closeModal('helpModal');
+        modalOpen = false;
+        history.pushState({ page: currentPage }, '', '');
+      } else {
+        // Agar modal yopiq bo'lsa, login sahifasiga o'tish
+        if (currentPage !== 'welcomePage') {
+          showPage('welcomePage');
+        }
+      }
+    });
+
+    // Modal ochilganda history state ni yangilash
+    window.showModal = function(modalId) {
+      document.getElementById(modalId).classList.add('show');
+      modalOpen = true;
+      history.pushState({ modal: modalId }, '', '');
+    };
+
+    window.closeModal = function(modalId) {
+      document.getElementById(modalId).classList.remove('show');
+      modalOpen = false;
+      history.back();
+    };
+
+    // Close modal on outside click
+    document.querySelectorAll('.modal').forEach(modal => {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          const modalId = modal.id;
+          closeModal(modalId);
+        }
+      });
+    });
+
+    // ===== PAROL KUCHINI TEKSHIRISH (SODDALASHTIRILGAN) =====
     const signupPasswordInput = document.getElementById('signupPassword');
     
     function checkPasswordStrength(password) {
-      let strength = 0;
-      const checks = {
-        length: password.length >= 8,
-        uppercase: /[A-Z]/.test(password),
-        lowercase: /[a-z]/.test(password),
-        number: /[0-9]/.test(password),
-        special: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)
-      };
+      const length = password.length;
       
-      // Hisoblash
-      if (checks.length) strength++;
-      if (checks.uppercase) strength++;
-      if (checks.lowercase) strength++;
-      if (checks.number) strength++;
-      if (checks.special) strength++;
-      
-      // Natija
-      if (strength <= 2) return { level: 'weak', text: '⚠️ Kuchsiz', class: 'strength-weak' };
-      if (strength <= 3) return { level: 'good', text: '✓ Yaxshi', class: 'strength-good' };
-      return { level: 'strong', text: '✓✓ Ajoyib', class: 'strength-strong' };
+      if (length < 6) {
+        return { level: 'weak', text: '⚠️ Kuchsiz', class: 'strength-weak' };
+      } else if (length < 10) {
+        return { level: 'good', text: '✓ Yaxshi', class: 'strength-good' };
+      } else {
+        return { level: 'strong', text: '✓✓ Ajoyib', class: 'strength-strong' };
+      }
     }
     
     signupPasswordInput?.addEventListener('input', (e) => {
@@ -917,47 +1179,6 @@
       strengthText.textContent = result.text;
     });
 
-    // ===== PAROL VALIDATSIYA =====
-    function validatePassword(password) {
-      const errors = [];
-      
-      if (password.length < 8) {
-        errors.push('Parol kamida 8 ta belgidan iborat bo\'lishi kerak');
-      }
-      if (!/[A-Z]/.test(password)) {
-        errors.push('Parolda kamida 1 ta katta harf bo\'lishi kerak (A-Z)');
-      }
-      if (!/[a-z]/.test(password)) {
-        errors.push('Parolda kamida 1 ta kichik harf bo\'lishi kerak (a-z)');
-      }
-      if (!/[0-9]/.test(password)) {
-        errors.push('Parolda kamida 1 ta raqam bo\'lishi kerak (0-9)');
-      }
-      if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
-        errors.push('Parolda kamida 1 ta maxsus belgi bo\'lishi kerak (!@#$%^&*)');
-      }
-      
-      return errors;
-    }
-
-    // ===== MODAL FUNCTIONS =====
-    window.showModal = function(modalId) {
-      document.getElementById(modalId).classList.add('show');
-    };
-
-    window.closeModal = function(modalId) {
-      document.getElementById(modalId).classList.remove('show');
-    };
-
-    // Close modal on outside click
-    document.querySelectorAll('.modal').forEach(modal => {
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-          modal.classList.remove('show');
-        }
-      });
-    });
-
     // ===== SAHIFALAR ORASIDA O'TISH =====
     window.showPage = function(pageId) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -968,6 +1189,9 @@
         a.classList.remove('show');
         a.innerHTML = '';
       });
+
+      // History state ni yangilash
+      updateHistory(pageId);
     };
 
     // ===== ALERT KO'RSATISH =====
@@ -983,14 +1207,38 @@
       }
     }
 
-    // ===== LOADING HOLATINI BOSHQARISH =====
-    function setLoading(button, isLoading) {
+    // ===== LOADING HOLATINI BOSHQARISH (AUTO RESET) =====
+    function setLoading(button, isLoading, duration = 5000) {
       if (isLoading) {
         button.disabled = true;
         button.classList.add('loading');
+        
+        // Avtomatik ravishda default holatga qaytarish
+        setTimeout(() => {
+          button.disabled = false;
+          button.classList.remove('loading');
+        }, duration);
       } else {
         button.disabled = false;
         button.classList.remove('loading');
+      }
+    }
+
+    // ===== FORMANI TOZALASH =====
+    function clearForm(formId) {
+      const form = document.getElementById(formId);
+      if (form) {
+        form.reset();
+        
+        // Password strength indikatorini tozalash
+        const strengthContainer = form.querySelector('.password-strength');
+        const strengthText = form.querySelector('.password-strength-text');
+        if (strengthContainer) {
+          strengthContainer.className = 'password-strength';
+        }
+        if (strengthText) {
+          strengthText.textContent = '';
+        }
       }
     }
 
@@ -1020,7 +1268,7 @@
     // ===== WELCOME PAGE - GOOGLE KIRISH =====
     document.getElementById('welcomeGoogle').addEventListener('click', async () => {
       const button = document.getElementById('welcomeGoogle');
-      setLoading(button, true);
+      setLoading(button, true, 5000);
       
       try {
         const result = await signInWithPopup(auth, googleProvider);
@@ -1028,7 +1276,7 @@
         showAlert('welcomeAlert', 'Muvaffaqiyatli kirildi! Sahifa yangilanmoqda...', 'success');
         
         setTimeout(() => {
-          window.location.href = 'dashboard.html'; // Bu sahifani o'zgartiring
+          window.location.href = 'dashboard.html';
         }, 1500);
         
       } catch (error) {
@@ -1045,15 +1293,18 @@
       const email = document.getElementById('loginEmail').value;
       const password = document.getElementById('loginPassword').value;
       
-      setLoading(button, true);
+      setLoading(button, true, 5000);
       
       try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         console.log('✅ Muvaffaqiyatli kirildi:', userCredential.user);
         showAlert('loginAlert', 'Muvaffaqiyatli kirildi! Sahifa yangilanmoqda...', 'success');
         
+        // Formani tozalash
+        clearForm('loginForm');
+        
         setTimeout(() => {
-          window.location.href = 'dashboard.html'; // Bu sahifani o'zgartiring
+          window.location.href = 'dashboard.html';
         }, 1500);
         
       } catch (error) {
@@ -1077,14 +1328,7 @@
         return;
       }
       
-      // Parolni tekshirish
-      const passwordErrors = validatePassword(password);
-      if (passwordErrors.length > 0) {
-        showAlert('signupAlert', passwordErrors.join('<br>'), 'error');
-        return;
-      }
-      
-      setLoading(button, true);
+      setLoading(button, true, 5000);
       
       try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -1097,8 +1341,11 @@
         console.log('✅ Muvaffaqiyatli ro\'yxatdan o\'tdingiz:', userCredential.user);
         showAlert('signupAlert', 'Muvaffaqiyatli ro\'yxatdan o\'tdingiz! Sahifa yangilanmoqda...', 'success');
         
+        // Formani tozalash
+        clearForm('signupForm');
+        
         setTimeout(() => {
-          window.location.href = 'dashboard.html'; // Bu sahifani o'zgartiring
+          window.location.href = 'dashboard.html';
         }, 1500);
         
       } catch (error) {
@@ -1118,15 +1365,18 @@
         return;
       }
       
-      setLoading(button, true);
+      setLoading(button, true, 5000);
       
       try {
         const result = await signInWithPopup(auth, googleProvider);
         console.log('✅ Google orqali muvaffaqiyatli ro\'yxatdan o\'tdingiz:', result.user);
         showAlert('signupAlert', 'Muvaffaqiyatli ro\'yxatdan o\'tdingiz! Sahifa yangilanmoqda...', 'success');
         
+        // Formani tozalash
+        clearForm('signupForm');
+        
         setTimeout(() => {
-          window.location.href = 'dashboard.html'; // Bu sahifani o'zgartiring
+          window.location.href = 'dashboard.html';
         }, 1500);
         
       } catch (error) {
@@ -1142,12 +1392,15 @@
       const button = e.target.querySelector('.btn-primary');
       const email = document.getElementById('resetEmail').value;
       
-      setLoading(button, true);
+      setLoading(button, true, 5000);
       
       try {
         await sendPasswordResetEmail(auth, email);
         console.log('✅ Parolni tiklash emaili yuborildi:', email);
         showAlert('resetAlert', 'Parolni tiklash havolasi emailingizga yuborildi. Iltimos, email qutingizni tekshiring.', 'success');
+        
+        // Formani tozalash
+        clearForm('resetForm');
         
         setTimeout(() => {
           showPage('emailLoginPage');
@@ -1170,12 +1423,13 @@
     auth.onAuthStateChanged((user) => {
       if (user) {
         console.log('👤 Foydalanuvchi tizimda:', user.email);
-        // Agar foydalanuvchi allaqachon kirsa, dashboard ga yo'naltirish
-        // window.location.href = 'dashboard.html';
       } else {
         console.log('👤 Foydalanuvchi tizimda emas');
       }
     });
+
+    // Initial history state
+    history.replaceState({ page: 'welcomePage' }, '', '');
   </script>
 </body>
 </html>
