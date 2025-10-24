@@ -1,49 +1,10 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script>
 <!DOCTYPE html>
 <html lang="uz">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tizimga Kirish</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -56,7 +17,7 @@
     }
     
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
       background: #ffffff;
       min-height: 100vh;
       position: relative;
@@ -71,7 +32,7 @@
       background: #ffffff;
       background-image: radial-gradient(
         circle at top left,
-        rgba(70, 130, 180, 0.5),
+        rgba(70, 130, 180, 0.3),
         transparent 70%
       );
       filter: blur(80px);
@@ -90,15 +51,15 @@
     }
     
     .container {
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba(255, 255, 255, 0.98);
       backdrop-filter: blur(10px);
-      border-radius: 24px;
-      box-shadow: 0 20px 60px rgba(67, 97, 238, 0.15);
-      padding: 45px;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(67, 97, 238, 0.08);
+      padding: 40px;
       width: 100%;
-      max-width: 440px;
+      max-width: 420px;
       animation: slideUp 0.5s ease;
-      border: 1px solid rgba(67, 97, 238, 0.1);
+      border: 1px solid rgba(67, 97, 238, 0.05);
     }
     
     @keyframes slideUp {
@@ -132,16 +93,16 @@
     }
     
     .logo-icon {
-      width: 70px;
-      height: 70px;
+      width: 64px;
+      height: 64px;
       background: linear-gradient(135deg, #4361ee 0%, #3651d4 100%);
-      border-radius: 20px;
+      border-radius: 16px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      font-size: 36px;
-      margin-bottom: 15px;
-      box-shadow: 0 10px 30px rgba(67, 97, 238, 0.3);
+      font-size: 32px;
+      margin-bottom: 12px;
+      box-shadow: 0 8px 24px rgba(67, 97, 238, 0.2);
       overflow: hidden;
     }
     
@@ -153,18 +114,19 @@
     
     h2 {
       color: #1a1a2e;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       text-align: center;
-      font-size: 32px;
-      font-weight: 700;
+      font-size: 28px;
+      font-weight: 500;
     }
     
     .subtitle {
       text-align: center;
       color: #666;
       margin-bottom: 35px;
-      font-size: 15px;
+      font-size: 14px;
       line-height: 1.5;
+      font-weight: 400;
     }
     
     .description {
@@ -173,6 +135,7 @@
       margin-bottom: 30px;
       font-size: 14px;
       line-height: 1.6;
+      font-weight: 400;
     }
     
     .input-group {
@@ -185,23 +148,24 @@
       margin-bottom: 8px;
       color: #333;
       font-size: 14px;
-      font-weight: 600;
+      font-weight: 500;
     }
     
     input {
       width: 100%;
-      padding: 14px 16px;
-      border: 2px solid #e1e8ed;
-      border-radius: 12px;
+      padding: 12px 16px;
+      border: 1px solid #e1e8ed;
+      border-radius: 10px;
       font-size: 15px;
       transition: all 0.3s;
       outline: none;
       background: white;
+      font-weight: 400;
     }
     
     input:focus {
       border-color: #4361ee;
-      box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.1);
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.08);
     }
     
     input.error {
@@ -210,11 +174,11 @@
     
     .btn {
       width: 100%;
-      padding: 16px;
+      padding: 14px;
       border: none;
-      border-radius: 12px;
-      font-size: 16px;
-      font-weight: 600;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 500;
       cursor: pointer;
       transition: all 0.3s;
       margin-bottom: 12px;
@@ -222,7 +186,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
+      gap: 8px;
     }
     
     .btn:disabled {
@@ -237,13 +201,13 @@
     
     .btn-primary:hover:not(:disabled) {
       background: #3651d4;
-      transform: translateY(-2px);
-      box-shadow: 0 12px 24px rgba(67, 97, 238, 0.3);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(67, 97, 238, 0.2);
     }
     
     .btn-secondary {
       background: white;
-      border: 2px solid #e1e8ed;
+      border: 1px solid #e1e8ed;
       color: #333;
     }
     
@@ -254,7 +218,7 @@
     
     .btn-google {
       background: white;
-      border: 2px solid #e1e8ed;
+      border: 1px solid #e1e8ed;
       color: #444;
     }
     
@@ -265,12 +229,12 @@
     
     .btn-help {
       background: transparent;
-      border: 2px solid #4361ee;
+      border: 1px solid #4361ee;
       color: #4361ee;
       padding: 10px 20px;
-      border-radius: 10px;
+      border-radius: 8px;
       font-size: 14px;
-      font-weight: 600;
+      font-weight: 500;
       cursor: pointer;
       transition: all 0.3s;
       display: inline-flex;
@@ -296,6 +260,7 @@
       margin: 25px 0;
       color: #999;
       font-size: 14px;
+      font-weight: 400;
     }
     
     .divider::before,
@@ -318,12 +283,13 @@
       margin-top: 25px;
       font-size: 14px;
       color: #666;
+      font-weight: 400;
     }
     
     .links a {
       color: #4361ee;
       text-decoration: none;
-      font-weight: 600;
+      font-weight: 500;
       cursor: pointer;
     }
     
@@ -338,7 +304,7 @@
       color: #4361ee;
       text-decoration: none;
       font-size: 14px;
-      font-weight: 600;
+      font-weight: 500;
       margin-bottom: 20px;
       cursor: pointer;
       transition: all 0.3s;
@@ -357,7 +323,7 @@
       color: #4361ee;
       text-decoration: none;
       font-size: 14px;
-      font-weight: 500;
+      font-weight: 400;
       cursor: pointer;
     }
     
@@ -372,13 +338,13 @@
     }
     
     .alert {
-      padding: 14px 18px;
-      border-radius: 10px;
+      padding: 12px 16px;
+      border-radius: 8px;
       margin-bottom: 20px;
       font-size: 14px;
       display: none;
       animation: slideDown 0.3s ease;
-      font-weight: 500;
+      font-weight: 400;
     }
     
     @keyframes slideDown {
@@ -416,9 +382,9 @@
     
     .spinner {
       display: none;
-      width: 20px;
-      height: 20px;
-      border: 3px solid rgba(255,255,255,0.3);
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255,255,255,0.3);
       border-top-color: white;
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
@@ -448,8 +414,8 @@
     }
     
     .checkbox-group input[type="checkbox"] {
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
       cursor: pointer;
       margin-top: 2px;
       flex-shrink: 0;
@@ -462,12 +428,13 @@
       line-height: 1.5;
       cursor: pointer;
       user-select: none;
+      font-weight: 400;
     }
     
     .checkbox-group label a {
       color: #4361ee;
       text-decoration: none;
-      font-weight: 600;
+      font-weight: 500;
     }
     
     .checkbox-group label a:hover {
@@ -477,7 +444,7 @@
     /* Password Strength Indicator */
     .password-strength {
       margin-top: 8px;
-      height: 4px;
+      height: 3px;
       background: #e1e8ed;
       border-radius: 2px;
       overflow: hidden;
@@ -494,7 +461,7 @@
     .password-strength-text {
       font-size: 12px;
       margin-top: 6px;
-      font-weight: 600;
+      font-weight: 500;
       transition: all 0.3s;
     }
     
@@ -530,7 +497,7 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(0, 0, 0, 0.4);
       backdrop-filter: blur(4px);
       z-index: 1000;
       align-items: center;
@@ -545,14 +512,14 @@
     
     .modal-content {
       background: white;
-      border-radius: 20px;
-      padding: 30px;
-      max-width: 500px;
+      border-radius: 16px;
+      padding: 28px;
+      max-width: 480px;
       width: 100%;
       max-height: 80vh;
       overflow-y: auto;
       animation: modalSlideUp 0.3s ease;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
     }
     
     @keyframes modalSlideUp {
@@ -580,39 +547,41 @@
     
     .modal-header h3 {
       color: #1a1a2e;
-      font-size: 24px;
-      font-weight: 700;
+      font-size: 22px;
+      font-weight: 500;
     }
     
     .modal-close {
-      background: #f0f0f0;
+      background: #f8f9fa;
       border: none;
-      width: 32px;
-      height: 32px;
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
       cursor: pointer;
-      font-size: 20px;
+      font-size: 18px;
       line-height: 1;
       transition: all 0.3s;
       flex-shrink: 0;
     }
     
     .modal-close:hover {
-      background: #e0e0e0;
+      background: #e9ecef;
       transform: rotate(90deg);
     }
     
     .modal-body {
       color: #555;
-      line-height: 1.8;
+      line-height: 1.6;
       font-size: 14px;
+      font-weight: 400;
     }
     
     .modal-body h4 {
       color: #1a1a2e;
       margin-top: 20px;
       margin-bottom: 10px;
-      font-size: 18px;
+      font-size: 16px;
+      font-weight: 500;
     }
     
     .modal-body p {
@@ -621,25 +590,25 @@
     
     .contact-links {
       display: flex;
-      gap: 15px;
+      gap: 12px;
       margin-top: 20px;
       flex-wrap: wrap;
     }
     
     .contact-link {
       flex: 1;
-      min-width: 140px;
+      min-width: 130px;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      padding: 12px 20px;
+      padding: 12px 16px;
       background: white;
-      border: 2px solid #e1e8ed;
-      border-radius: 12px;
+      border: 1px solid #e1e8ed;
+      border-radius: 10px;
       text-decoration: none;
       color: #333;
-      font-weight: 600;
+      font-weight: 500;
       font-size: 14px;
       transition: all 0.3s;
     }
@@ -647,7 +616,7 @@
     .contact-link:hover {
       border-color: #4361ee;
       background: #f8f9fa;
-      transform: translateY(-2px);
+      transform: translateY(-1px);
     }
     
     .contact-link.telegram {
@@ -675,11 +644,11 @@
       right: 20px;
       background: #ff4757;
       color: white;
-      padding: 15px 20px;
-      border-radius: 12px;
-      font-weight: 600;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-weight: 500;
       font-size: 14px;
-      box-shadow: 0 10px 30px rgba(255, 71, 87, 0.3);
+      box-shadow: 0 8px 24px rgba(255, 71, 87, 0.2);
       z-index: 10000;
       animation: slideInRight 0.3s ease;
       display: none;
