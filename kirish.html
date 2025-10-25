@@ -24,7 +24,6 @@
       overflow-x: hidden;
     }
     
-    /* Cool Blue Glow Background */
     body::before {
       content: '';
       position: fixed;
@@ -63,14 +62,8 @@
     }
     
     @keyframes slideUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     
     .page {
@@ -348,14 +341,8 @@
     }
     
     @keyframes slideDown {
-      from {
-        opacity: 0;
-        transform: translateY(-10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     
     .alert.show {
@@ -441,7 +428,6 @@
       text-decoration: underline;
     }
     
-    /* Password Strength Indicator */
     .password-strength {
       margin-top: 8px;
       height: 3px;
@@ -492,7 +478,6 @@
       color: #26de81;
     }
     
-    /* Modal Styles */
     .modal {
       display: none;
       position: fixed;
@@ -523,14 +508,8 @@
     }
     
     @keyframes modalSlideUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     
     .modal-header {
@@ -636,8 +615,7 @@
     .contact-link.email:hover {
       background: #e8ecfb;
     }
-
-    /* Copy Protection Notification */
+    
     .copy-notification {
       position: fixed;
       top: 20px;
@@ -653,20 +631,14 @@
       animation: slideInRight 0.3s ease;
       display: none;
     }
-
+    
     .copy-notification.show {
       display: block;
     }
-
+    
     @keyframes slideInRight {
-      from {
-        opacity: 0;
-        transform: translateX(100px);
-      }
-      to {
-        opacity: 1;
-        transform: translateX(0);
-      }
+      from { opacity: 0; transform: translateX(100px); }
+      to { opacity: 1; transform: translateX(0); }
     }
   </style>
 </head>
@@ -927,7 +899,7 @@
       updateProfile
     } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 
-    // ===== FIREBASE CONFIG - BU YERGA O'Z MA'LUMOTLARINGIZNI KIRITING =====
+    // Firebase Configuration
     const firebaseConfig = {
       apiKey: "AIzaSyBxIpLY5WasiSIlDL4japBLnnXRwOLUKEQ",
       authDomain: "tezkor-quiz-bbe3c.firebaseapp.com",
@@ -949,17 +921,16 @@
       showAlert('welcomeAlert', 'Firebase ulanishida xatolik. Console ni tekshiring.', 'error');
     }
 
-    // ===== DYNAMIC GREETING BASED ON TIME =====
+    // Dynamic Greeting Based on Time
     function getDynamicGreeting() {
       const greetings = {
         timeBased: [
-          { text: 'Xayrli tong!', startHour: 5, endHour: 12 }, // 5:00 AM - 11:59 AM
-          { text: 'Baxtli tong!', startHour: 5, endHour: 12 }, // 5:00 AM - 11:59 AM
+          { text: 'Xayrli tong!', startHour: 5, endHour: 9 }, // 5:00 AM - 8:59 AM
+          { text: 'Baxtli tong!', startHour: 5, endHour: 9 }, // 5:00 AM - 8:59 AM
           { text: 'Xayrli kun!', startHour: 12, endHour: 17 }, // 12:00 PM - 4:59 PM
-          { text: 'Xayrli kech!', startHour: 17, endHour: 23 }  // 5:00 PM - 11:59 PM
+          { text: 'Xayrli kech!', startHour: 18, endHour: 24 }  // 6:00 PM - 11:59 PM
         ],
         random: [
-          'Xush kelibsiz!',
           'Salom do‘stim!',
           'Assalomu aleykum!',
           'Marhamat kiring!',
@@ -976,20 +947,17 @@
       const now = new Date();
       const currentHour = now.getHours();
 
-      // Check for time-based greetings
+      // Get time-based greetings that match the current hour
       const matchingTimeGreetings = greetings.timeBased.filter(greeting => 
         currentHour >= greeting.startHour && currentHour < greeting.endHour
       );
 
-      if (matchingTimeGreetings.length > 0) {
-        // Randomly select one of the matching time-based greetings
-        const randomIndex = Math.floor(Math.random() * matchingTimeGreetings.length);
-        return matchingTimeGreetings[randomIndex].text;
-      }
+      // Combine time-based greetings (if any) with random greetings
+      const allGreetings = [...matchingTimeGreetings.map(g => g.text), ...greetings.random];
 
-      // If no time-based greeting matches, select a random greeting
-      const randomIndex = Math.floor(Math.random() * greetings.random.length);
-      return greetings.random[randomIndex];
+      // Select a random greeting from the combined list
+      const randomIndex = Math.floor(Math.random() * allGreetings.length);
+      return allGreetings[randomIndex];
     }
 
     // Update the welcome page greeting
@@ -1003,48 +971,21 @@
     // Call updateGreeting when the page loads
     document.addEventListener('DOMContentLoaded', updateGreeting);
 
-    // ===== XAVFSIZLIK: F12 VA NUSXA OLISHNI BOSHQARISH =====
-    
-    // F12 va DevTools ni bloklash
+    // Security: Block F12, DevTools, and Copy Actions
     document.addEventListener('keydown', function(e) {
-      // F12
-      if (e.key === 'F12') {
-        e.preventDefault();
-        return false;
-      }
-      
-      // Ctrl+Shift+I (DevTools)
-      if (e.ctrlKey && e.shiftKey && e.key === 'I') {
-        e.preventDefault();
-        return false;
-      }
-      
-      // Ctrl+Shift+J (Console)
-      if (e.ctrlKey && e.shiftKey && e.key === 'J') {
-        e.preventDefault();
-        return false;
-      }
-      
-      // Ctrl+Shift+C (Inspect)
-      if (e.ctrlKey && e.shiftKey && e.key === 'C') {
-        e.preventDefault();
-        return false;
-      }
-      
-      // Ctrl+U (View Source)
-      if (e.ctrlKey && e.key === 'u') {
+      if (e.key === 'F12' || 
+          (e.ctrlKey && e.shiftKey && ['I', 'J', 'C'].includes(e.key)) || 
+          (e.ctrlKey && e.key === 'u')) {
         e.preventDefault();
         return false;
       }
     });
 
-    // Right click ni bloklash
     document.addEventListener('contextmenu', function(e) {
       e.preventDefault();
       return false;
     });
 
-    // Input maydonlarida faqat matnni nusxalashga ruxsat berish
     window.handleCopy = function(e) {
       e.preventDefault();
       const input = e.target;
@@ -1061,7 +1002,6 @@
       }
     };
 
-    // Copy, Cut, Paste ni bloklash (input maydonlardan tashqari)
     document.addEventListener('copy', function(e) {
       if (e.target.tagName !== 'INPUT') {
         e.preventDefault();
@@ -1085,7 +1025,6 @@
       }
     });
 
-    // Drag and select ni bloklash
     document.addEventListener('selectstart', function(e) {
       if (e.target.tagName !== 'INPUT') {
         e.preventDefault();
@@ -1093,17 +1032,14 @@
       }
     });
 
-    // Copy notification ko'rsatish
     function showCopyNotification() {
       const notification = document.getElementById('copyNotification');
       notification.classList.add('show');
-      
       setTimeout(() => {
         notification.classList.remove('show');
       }, 3000);
     }
 
-    // DevTools ochilganini aniqlash
     const devToolsChecker = setInterval(() => {
       const threshold = 160;
       if (window.outerWidth - window.innerWidth > threshold || 
@@ -1113,32 +1049,27 @@
       }
     }, 1000);
 
-    // ===== BROWSER HISTORY BOSHQARUVI =====
+    // Browser History Management
     let currentPage = 'welcomePage';
     let modalOpen = false;
 
-    // History state ni yangilash
     function updateHistory(pageId) {
       currentPage = pageId;
       history.pushState({ page: pageId }, '', '');
     }
 
-    // Orqaga tugmasi bosilganda
     window.addEventListener('popstate', function(e) {
       if (modalOpen) {
-        // Agar modal ochiq bo'lsa, uni yopish
         closeModal('helpModal');
         modalOpen = false;
         history.pushState({ page: currentPage }, '', '');
       } else {
-        // Agar modal yopiq bo'lsa, login sahifasiga o'tish
         if (currentPage !== 'welcomePage') {
           showPage('welcomePage');
         }
       }
     });
 
-    // Modal ochilganda history state ni yangilash
     window.showModal = function(modalId) {
       document.getElementById(modalId).classList.add('show');
       modalOpen = true;
@@ -1151,7 +1082,6 @@
       history.back();
     };
 
-    // Close modal on outside click
     document.querySelectorAll('.modal').forEach(modal => {
       modal.addEventListener('click', (e) => {
         if (e.target === modal) {
@@ -1161,41 +1091,26 @@
       });
     });
 
-    // Override showPage to update greeting
-    const originalShowPage = window.showPage;
-    window.showPage = function(pageId) {
-      originalShowPage ? originalShowPage(pageId) : showPage(pageId);
-      if (pageId === 'welcomePage') {
-        updateGreeting();
-      }
-    };
-
-    // ===== SAHIFALAR ORASIDA O'TISH =====
     window.showPage = function(pageId) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById(pageId).classList.add('active');
       
-      // Alertlarni tozalash
       document.querySelectorAll('.alert').forEach(a => {
         a.classList.remove('show');
         a.innerHTML = '';
       });
 
-      // History state ni yangilash
       updateHistory(pageId);
-
-      // Update greeting if welcome page is shown
       if (pageId === 'welcomePage') {
         updateGreeting();
       }
     };
 
-    // ===== PAROL KUCHINI TEKSHIRISH (SODDALASHTIRILGAN) =====
+    // Password Strength Checker
     const signupPasswordInput = document.getElementById('signupPassword');
     
     function checkPasswordStrength(password) {
       const length = password.length;
-      
       if (length < 6) {
         return { level: 'weak', text: '⚠️ Kuchsiz', class: 'strength-weak' };
       } else if (length < 10) {
@@ -1224,7 +1139,7 @@
       strengthText.textContent = result.text;
     });
 
-    // ===== ALERT KO'RSATISH =====
+    // Show Alert
     function showAlert(elementId, message, type = 'error') {
       const alert = document.getElementById(elementId);
       alert.innerHTML = message;
@@ -1237,13 +1152,11 @@
       }
     }
 
-    // ===== LOADING HOLATINI BOSHQARISH (AUTO RESET) =====
+    // Manage Loading State
     function setLoading(button, isLoading, duration = 5000) {
       if (isLoading) {
         button.disabled = true;
         button.classList.add('loading');
-        
-        // Avtomatik ravishda default holatga qaytarish
         setTimeout(() => {
           button.disabled = false;
           button.classList.remove('loading');
@@ -1254,13 +1167,11 @@
       }
     }
 
-    // ===== FORMANI TOZALASH =====
+    // Clear Form
     function clearForm(formId) {
       const form = document.getElementById(formId);
       if (form) {
         form.reset();
-        
-        // Password strength indikatorini tozalash
         const strengthContainer = form.querySelector('.password-strength');
         const strengthText = form.querySelector('.password-strength-text');
         if (strengthContainer) {
@@ -1272,7 +1183,7 @@
       }
     }
 
-    // ===== FIREBASE XATOLARINI TARJIMA QILISH =====
+    // Translate Firebase Errors
     function getErrorMessage(errorCode) {
       const errors = {
         'auth/invalid-email': 'Noto\'g\'ri email format',
@@ -1291,11 +1202,10 @@
         'auth/missing-password': 'Parol kiritilmagan',
         'auth/invalid-login-credentials': 'Email yoki parol noto\'g\'ri'
       };
-      
       return errors[errorCode] || `Xatolik: ${errorCode}`;
     }
 
-    // ===== WELCOME PAGE - GOOGLE KIRISH =====
+    // Welcome Page - Google Sign-In
     document.getElementById('welcomeGoogle').addEventListener('click', async () => {
       const button = document.getElementById('welcomeGoogle');
       setLoading(button, true, 5000);
@@ -1316,7 +1226,7 @@
       }
     });
 
-    // ===== EMAIL ORQALI KIRISH (LOGIN) =====
+    // Email Login
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const button = e.target.querySelector('.btn-primary');
@@ -1330,7 +1240,6 @@
         console.log('✅ Muvaffaqiyatli kirildi:', userCredential.user);
         showAlert('loginAlert', 'Muvaffaqiyatli kirildi! Sahifa yangilanmoqda...', 'success');
         
-        // Formani tozalash
         clearForm('loginForm');
         
         setTimeout(() => {
@@ -1344,7 +1253,7 @@
       }
     });
 
-    // ===== RO'YXATDAN O'TISH (SIGNUP) =====
+    // Signup
     document.getElementById('signupForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const button = e.target.querySelector('.btn-primary');
@@ -1362,16 +1271,10 @@
       
       try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        
-        // Foydalanuvchi ismini yangilash
-        await updateProfile(userCredential.user, {
-          displayName: name
-        });
-        
+        await updateProfile(userCredential.user, { displayName: name });
         console.log('✅ Muvaffaqiyatli ro\'yxatdan o\'tdingiz:', userCredential.user);
         showAlert('signupAlert', 'Muvaffaqiyatli ro\'yxatdan o\'tdingiz! Sahifa yangilanmoqda...', 'success');
         
-        // Formani tozalash
         clearForm('signupForm');
         
         setTimeout(() => {
@@ -1385,7 +1288,7 @@
       }
     });
 
-    // ===== GOOGLE ORQALI RO'YXATDAN O'TISH (SIGNUP) =====
+    // Google Signup
     document.getElementById('signupGoogle').addEventListener('click', async () => {
       const button = document.getElementById('signupGoogle');
       const termsChecked = document.getElementById('termsCheckbox').checked;
@@ -1402,7 +1305,6 @@
         console.log('✅ Google orqali muvaffaqiyatli ro\'yxatdan o\'tdingiz:', result.user);
         showAlert('signupAlert', 'Muvaffaqiyatli ro\'yxatdan o\'tdingiz! Sahifa yangilanmoqda...', 'success');
         
-        // Formani tozalash
         clearForm('signupForm');
         
         setTimeout(() => {
@@ -1416,7 +1318,7 @@
       }
     });
 
-    // ===== PAROLNI TIKLASH =====
+    // Password Reset
     document.getElementById('resetForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const button = e.target.querySelector('.btn-primary');
@@ -1429,7 +1331,6 @@
         console.log('✅ Parolni tiklash emaili yuborildi:', email);
         showAlert('resetAlert', 'Parolni tiklash havolasi emailingizga yuborildi. Iltimos, email qutingizni tekshiring.', 'success');
         
-        // Formani tozalash
         clearForm('resetForm');
         
         setTimeout(() => {
@@ -1438,18 +1339,16 @@
         
       } catch (error) {
         console.error('❌ Parolni tiklash xatosi:', error.code, error.message);
-        
         if (error.code === 'auth/user-not-found') {
           showAlert('resetAlert', 'Bu email bilan ro\'yxatdan o\'tilmagan', 'error');
         } else {
           showAlert('resetAlert', getErrorMessage(error.code), 'error');
         }
-        
         setLoading(button, false);
       }
     });
 
-    // ===== AUTH STATE O'ZGARISHINI KUZATISH =====
+    // Auth State Listener
     auth.onAuthStateChanged((user) => {
       if (user) {
         console.log('👤 Foydalanuvchi tizimda:', user.email);
