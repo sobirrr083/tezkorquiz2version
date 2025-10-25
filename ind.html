@@ -16,7 +16,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
     <meta name="description" content="Tezkor Quiz - testlarni yaratish, boshqarish va yechish uchun qulay platforma">
     <style>
-        /* Navbar styling from saytdagi header.html */
+        /* Navbar styling */
         :root {
             --primary-color: #4361ee;
             --secondary-color: #3a0ca3;
@@ -50,11 +50,23 @@
             backdrop-filter: blur(10px);
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
         }
 
         .navbar.scrolled {
             padding: 8px 0;
+            backdrop-filter: blur(15px); /* Increased blur on scroll */
+            background: rgba(255, 255, 255, 0.95); /* Slightly more opaque */
             box-shadow: 0 6px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .navbar.centered {
+            /* Applied when scrolled further for centering effect */
+            display: flex;
+            justify-content: center;
         }
 
         .navbar-brand {
@@ -63,19 +75,29 @@
             font-size: 28px;
             color: var(--primary-color) !important;
             letter-spacing: -0.5px;
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, opacity 0.3s ease;
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
+        .navbar.scrolled .navbar-brand {
+            transform: scale(1.1); /* Slightly more prominent */
+            opacity: 1;
+        }
+
         .navbar-brand:hover {
-            transform: scale(1.05);
+            transform: scale(1.15);
         }
 
         .navbar-nav {
             gap: 5px;
             margin-left: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .navbar.centered .navbar-nav {
+            transform: translateX(-10px); /* Subtle shift toward center */
         }
 
         .nav-link {
@@ -140,6 +162,11 @@
             margin-right: 8px;
             display: inline-block;
             vertical-align: middle;
+        }
+
+        .navbar.scrolled .nav-icon {
+            transform: scale(1.1); /* Slightly more prominent */
+            opacity: 1;
         }
 
         .dropdown-icon {
@@ -280,6 +307,10 @@
             transform: rotate(-45deg);
             top: 18px;
             left: 3px;
+        }
+
+        .navbar.scrolled .burger {
+            transform: scale(1.1); /* Slightly more prominent */
         }
 
         /* Mobile menu bottom section styles */
@@ -868,7 +899,7 @@
     </style>
 </head>
 <body>
-    <!-- Navbar from saytdagi header.html -->
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNavbar">
         <div class="container">
             <a class="navbar-brand" href="index.html">
@@ -1129,6 +1160,13 @@
                     navbar.classList.add('scrolled');
                 } else {
                     navbar.classList.remove('scrolled');
+                }
+
+                // Add centered class when scrolled further (e.g., past 200px)
+                if (window.scrollY > 200) {
+                    navbar.classList.add('centered');
+                } else {
+                    navbar.classList.remove('centered');
                 }
             }, { passive: true });
 
