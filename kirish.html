@@ -672,44 +672,36 @@
 </head>
 <body>
   <script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
+    var gk_isXlsx = false;
+    var gk_xlsxFileLookup = {};
+    var gk_fileData = {};
+    function filledCell(cell) {
+      return cell !== '' && cell != null;
+    }
+    function loadFileData(filename) {
+      if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+        try {
+          var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+          var firstSheetName = workbook.SheetNames[0];
+          var worksheet = workbook.Sheets[firstSheetName];
+          var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+          var filteredData = jsonData.filter(row => row.some(filledCell));
+          var headerRowIndex = filteredData.findIndex((row, index) =>
+            row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+          );
+          if (headerRowIndex === -1 || headerRowIndex > 25) {
+            headerRowIndex = 0;
+          }
+          var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex));
+          csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+          return csv;
+        } catch (e) {
+          console.error(e);
+          return "";
         }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
+      }
+      return gk_fileData[filename] || "";
+    }
   </script>
   <div class="copy-notification" id="copyNotification">
     www.tezkorquiz.uz saytida parolni nusxalash mumkin emas
@@ -957,6 +949,60 @@
       showAlert('welcomeAlert', 'Firebase ulanishida xatolik. Console ni tekshiring.', 'error');
     }
 
+    // ===== DYNAMIC GREETING BASED ON TIME =====
+    function getDynamicGreeting() {
+      const greetings = {
+        timeBased: [
+          { text: 'Xayrli tong!', startHour: 5, endHour: 12 }, // 5:00 AM - 11:59 AM
+          { text: 'Baxtli tong!', startHour: 5, endHour: 12 }, // 5:00 AM - 11:59 AM
+          { text: 'Xayrli kun!', startHour: 12, endHour: 17 }, // 12:00 PM - 4:59 PM
+          { text: 'Xayrli kech!', startHour: 17, endHour: 23 }  // 5:00 PM - 11:59 PM
+        ],
+        random: [
+          'Xush kelibsiz!',
+          'Salom do‘stim!',
+          'Assalomu aleykum!',
+          'Marhamat kiring!',
+          'Harakatni boshlang!',
+          'Yaxshi kayfiyat!',
+          'Tabassum qiling!',
+          'Yangi start!',
+          'Omadli kun!',
+          'Salom mehmon!',
+          'Omadli boshlang!'
+        ]
+      };
+
+      const now = new Date();
+      const currentHour = now.getHours();
+
+      // Check for time-based greetings
+      const matchingTimeGreetings = greetings.timeBased.filter(greeting => 
+        currentHour >= greeting.startHour && currentHour < greeting.endHour
+      );
+
+      if (matchingTimeGreetings.length > 0) {
+        // Randomly select one of the matching time-based greetings
+        const randomIndex = Math.floor(Math.random() * matchingTimeGreetings.length);
+        return matchingTimeGreetings[randomIndex].text;
+      }
+
+      // If no time-based greeting matches, select a random greeting
+      const randomIndex = Math.floor(Math.random() * greetings.random.length);
+      return greetings.random[randomIndex];
+    }
+
+    // Update the welcome page greeting
+    function updateGreeting() {
+      const welcomeHeading = document.querySelector('#welcomePage h2');
+      if (welcomeHeading) {
+        welcomeHeading.textContent = getDynamicGreeting();
+      }
+    }
+
+    // Call updateGreeting when the page loads
+    document.addEventListener('DOMContentLoaded', updateGreeting);
+
     // ===== XAVFSIZLIK: F12 VA NUSXA OLISHNI BOSHQARISH =====
     
     // F12 va DevTools ni bloklash
@@ -1115,6 +1161,35 @@
       });
     });
 
+    // Override showPage to update greeting
+    const originalShowPage = window.showPage;
+    window.showPage = function(pageId) {
+      originalShowPage ? originalShowPage(pageId) : showPage(pageId);
+      if (pageId === 'welcomePage') {
+        updateGreeting();
+      }
+    };
+
+    // ===== SAHIFALAR ORASIDA O'TISH =====
+    window.showPage = function(pageId) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
+      
+      // Alertlarni tozalash
+      document.querySelectorAll('.alert').forEach(a => {
+        a.classList.remove('show');
+        a.innerHTML = '';
+      });
+
+      // History state ni yangilash
+      updateHistory(pageId);
+
+      // Update greeting if welcome page is shown
+      if (pageId === 'welcomePage') {
+        updateGreeting();
+      }
+    };
+
     // ===== PAROL KUCHINI TEKSHIRISH (SODDALASHTIRILGAN) =====
     const signupPasswordInput = document.getElementById('signupPassword');
     
@@ -1148,21 +1223,6 @@
       strengthContainer.className = `password-strength ${result.class}`;
       strengthText.textContent = result.text;
     });
-
-    // ===== SAHIFALAR ORASIDA O'TISH =====
-    window.showPage = function(pageId) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.getElementById(pageId).classList.add('active');
-      
-      // Alertlarni tozalash
-      document.querySelectorAll('.alert').forEach(a => {
-        a.classList.remove('show');
-        a.innerHTML = '';
-      });
-
-      // History state ni yangilash
-      updateHistory(pageId);
-    };
 
     // ===== ALERT KO'RSATISH =====
     function showAlert(elementId, message, type = 'error') {
