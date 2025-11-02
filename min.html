@@ -20,14 +20,15 @@
             align-items: center;
             justify-content: center;
             overflow-x: hidden;
+            padding: 1rem;
         }
         .quiz-container {
             background: white;
             border-radius: 16px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            padding: 2.5rem;
-            margin: 2rem;
-            max-width: 900px;
+            padding: 2rem;
+            margin: 1rem auto;
+            max-width: 1000px;
             width: 100%;
             transition: all 0.3s ease;
         }
@@ -105,7 +106,7 @@
             padding: 2rem;
             margin-bottom: 2rem;
             border: 1px solid #e8e8e8;
-            min-height: calc(100vh - 300px); /* Savolni maksimal joy egallashi uchun */
+            min-height: calc(100vh - 280px);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -115,25 +116,33 @@
             font-weight: 500;
             color: #2c2c2c;
             margin-bottom: 2rem;
-            line-height: 1.6;
+            line-height: 1.8;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
         .answer-option {
             background: white;
             border: 2px solid #e8e8e8;
             border-radius: 10px;
-            padding: 1rem 1.5rem;
+            padding: 1.2rem 1.5rem;
             margin-bottom: 1rem;
             cursor: pointer;
             transition: all 0.2s ease;
             color: #2c2c2c;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            line-height: 1.6;
         }
         .answer-option:hover {
             border-color: #2c2c2c;
-            background: #f0f0f0;
+            background: #e0e0e0;
             transform: translateX(4px);
         }
         .answer-option.selected {
-            background: #e0e0e0; /* Hover stili bilan bir xil, to'liq qora emas */
+            background: #e0e0e0;
             color: #2c2c2c;
             border-color: #2c2c2c;
             font-weight: 600;
@@ -158,20 +167,27 @@
         }
         .btn-primary-custom {
             background: #2c2c2c;
-            color: white;
+            color: white !important;
         }
         .btn-primary-custom:hover {
             background: #1a1a1a;
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            color: white !important;
+        }
+        .btn-primary-custom:active {
+            background: #0a0a0a;
+            color: white !important;
+            transform: translateY(0);
         }
         .btn-secondary-custom {
             background: #e8e8e8;
-            color: #2c2c2c;
+            color: #2c2c2c !important;
             margin-right: 1rem;
         }
         .btn-secondary-custom:hover {
             background: #d0d0d0;
+            color: #2c2c2c !important;
         }
         .start-screen, .result-screen {
             text-align: center;
@@ -189,10 +205,10 @@
             margin-bottom: 2rem;
         }
         .quiz-stats {
-            display: flex;
-            justify-content: space-around;
-            margin: 2rem 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1rem;
+            margin: 2rem 0;
         }
         .stat-item {
             text-align: center;
@@ -200,7 +216,6 @@
             background: #fafafa;
             border-radius: 12px;
             border: 1px solid #e8e8e8;
-            flex: 1;
         }
         .stat-number {
             font-size: 2rem;
@@ -277,11 +292,6 @@
                 opacity: 0.8;
             }
         }
-        .alert-custom {
-            border-radius: 8px;
-            border: none;
-            margin: 1rem 0;
-        }
         #reviewSummary {
             margin-top: 2rem;
             text-align: center;
@@ -302,14 +312,16 @@
             font-weight: 600;
             margin-bottom: 1rem;
             color: #2c2c2c;
+            word-wrap: break-word;
         }
         .review-options {
-            margin-left: 1rem;
+            margin-left: 0;
         }
         .review-option {
             margin-bottom: 0.5rem;
-            padding: 0.5rem;
+            padding: 0.8rem;
             border-radius: 6px;
+            word-wrap: break-word;
         }
         .review-correct {
             color: #10b981;
@@ -317,6 +329,17 @@
         }
         .review-incorrect {
             color: #ef4444;
+            font-weight: 600;
+        }
+        .user-answer-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        .user-answer-info strong {
             font-weight: 600;
         }
         .format-info {
@@ -334,11 +357,10 @@
         }
         .format-info p {
             color: #6c757d;
-            font-size: 0.9rem;
-            line-height: 1.8;
+            font-size: 0.85rem;
+            line-height: 1.6;
             margin: 0;
         }
-        /* Toast/Popup styles */
         .toast-container {
             position: fixed;
             top: 20px;
@@ -401,30 +423,66 @@
             align-items: center;
             justify-content: center;
         }
-        .user-answer-info {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
+        .result-progress-bar {
+            background: #e8e8e8;
+            border-radius: 10px;
+            height: 12px;
+            overflow: hidden;
             margin-top: 0.5rem;
-            color: #6c757d;
-            font-size: 0.9rem;
+            position: relative;
         }
-        .user-answer-info strong {
+        .result-progress-fill {
+            height: 100%;
+            transition: width 1.5s ease-out;
+            border-radius: 10px;
+        }
+        .result-progress-fill.correct {
+            background: linear-gradient(90deg, #10b981, #059669);
+        }
+        .result-progress-fill.incorrect {
+            background: linear-gradient(90deg, #ef4444, #dc2626);
+        }
+        .result-progress-fill.total {
+            background: linear-gradient(90deg, #2c2c2c, #1a1a1a);
+        }
+        #timeUpMessage {
+            color: #ef4444;
             font-weight: 600;
+            margin: 1rem 0;
+            font-size: 1.1rem;
         }
-        @media (max-width: 768px) {
+        @media (max-width: 992px) {
             .quiz-container {
-                margin: 1rem;
                 padding: 1.5rem;
-            }
-            .start-screen h1 {
-                font-size: 1.75rem;
             }
             .question-text {
                 font-size: 1.1rem;
             }
+            .answer-option {
+                padding: 1rem 1.2rem;
+            }
+        }
+        @media (max-width: 768px) {
+            body {
+                padding: 0.5rem;
+            }
+            .quiz-container {
+                margin: 0.5rem auto;
+                padding: 1.2rem;
+                border-radius: 12px;
+            }
+            .start-screen h1 {
+                font-size: 2rem;
+            }
+            .question-text {
+                font-size: 1rem;
+            }
+            .answer-option {
+                padding: 1rem;
+                font-size: 0.95rem;
+            }
             .quiz-stats {
-                flex-direction: column;
+                grid-template-columns: 1fr;
             }
             .toast-container {
                 right: 10px;
@@ -440,9 +498,51 @@
             .progress-info {
                 justify-content: center;
             }
+            .file-upload-area {
+                padding: 2rem 1rem;
+            }
+            .btn-custom {
+                padding: 10px 24px;
+                font-size: 0.9rem;
+            }
+            .btn-secondary-custom {
+                margin-right: 0;
+                margin-bottom: 0.5rem;
+            }
+            .result-badge {
+                font-size: 1.1rem;
+                padding: 0.8rem 1.5rem;
+            }
             .question-card {
-                min-height: calc(100vh - 250px);
+                min-height: calc(100vh - 240px);
                 padding: 1.5rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .quiz-container {
+                padding: 1rem;
+            }
+            .start-screen h1 {
+                font-size: 1.75rem;
+            }
+            .start-screen p {
+                font-size: 1rem;
+            }
+            .question-text {
+                font-size: 0.95rem;
+            }
+            .answer-option {
+                padding: 0.9rem;
+                font-size: 0.9rem;
+            }
+            .stat-number {
+                font-size: 1.75rem;
+            }
+            .upload-icon {
+                font-size: 2.5rem;
+            }
+            .question-card {
+                min-height: calc(100vh - 220px);
             }
         }
     </style>
@@ -451,7 +551,6 @@
     <div class="toast-container" id="toastContainer"></div>
     
     <div class="quiz-container">
-        <!-- Boshlash ekrani -->
         <div id="startScreen" class="start-screen">
             <h1><i class="fas fa-brain"></i> Bilim Quiz</h1>
             <p>Test savollarini yuklang va bilimlaringizni sinab ko'ring</p>
@@ -502,7 +601,6 @@
             </div>
         </div>
         
-        <!-- Quiz ekrani -->
         <div id="quizScreen" style="display: none;">
             <div class="progress-container">
                 <div class="progress">
@@ -518,40 +616,48 @@
             <div id="questionContainer"></div>
         </div>
         
-        <!-- Natija ekrani -->
         <div id="resultScreen" class="result-screen" style="display: none;">
             <div class="result-center">
                 <h2 class="quiz-title">Test Yakunlandi</h2>
                 <div id="resultBadge" class="result-badge"></div>
-                <div id="timeUpMessage" style="display: none; color: #ef4444; font-weight: 600; margin: 1rem 0;"></div>
+                <div id="timeUpMessage" style="display: none;"></div>
                
                 <div class="quiz-stats">
                     <div class="stat-item">
                         <div class="stat-number" style="color: #10b981;" id="correctAnswers">0</div>
                         <div class="stat-label">To'g'ri javoblar</div>
+                        <div class="result-progress-bar">
+                            <div class="result-progress-fill correct" id="correctProgress" style="width: 0%"></div>
+                        </div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-number" style="color: #ef4444;" id="wrongAnswers">0</div>
                         <div class="stat-label">Noto'g'ri javoblar</div>
+                        <div class="result-progress-bar">
+                            <div class="result-progress-fill incorrect" id="incorrectProgress" style="width: 0%"></div>
+                        </div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-number" id="finalScore">0%</div>
                         <div class="stat-label">Ball</div>
+                        <div class="result-progress-bar">
+                            <div class="result-progress-fill total" id="totalProgress" style="width: 0%"></div>
+                        </div>
                     </div>
                 </div>
                 <div id="reviewSummary">
-                    <h4 style="color: #2c2c2c; font-weight: 600; margin-bottom: 1rem;">Javoblar soni:</h4>
-                    <p>To'g'ri: <strong style="color: #10b981;" id="summaryCorrect">0</strong> | Noto'g'ri: <strong style="color: #ef4444;" id="summaryWrong">0</strong></p>
+                    <h5 style="color: #2c2c2c; font-weight: 600; margin-bottom: 1rem;">Natija</h5>
+                    <p style="font-size: 0.95rem;">To'g'ri: <strong style="color: #10b981;" id="summaryCorrect">0</strong> | Noto'g'ri: <strong style="color: #ef4444;" id="summaryWrong">0</strong></p>
                     <button id="showMoreBtn" class="btn btn-custom btn-secondary-custom mt-3">
-                        Ko'proq ko'rsatish <i class="fas fa-chevron-down"></i>
+                        Batafsil ko'rish <i class="fas fa-chevron-down"></i>
                     </button>
                 </div>
                 <div id="reviewList"></div>
                 <div class="mt-4">
-                    <button id="restartBtn" class="btn btn-custom btn-primary-custom me-3">
+                    <button id="restartBtn" class="btn btn-custom btn-primary-custom me-2 mb-2">
                         <i class="fas fa-redo"></i> Qayta Boshlash
                     </button>
-                    <button id="newTestBtn" class="btn btn-custom btn-secondary-custom">
+                    <button id="newTestBtn" class="btn btn-custom btn-secondary-custom mb-2">
                         <i class="fas fa-file-upload"></i> Yangi Test
                     </button>
                 </div>
@@ -894,6 +1000,15 @@
                 document.getElementById('summaryCorrect').textContent = correctAnswers;
                 document.getElementById('summaryWrong').textContent = wrongAnswers;
                 
+                setTimeout(() => {
+                    const correctPercent = (correctAnswers / this.questions.length) * 100;
+                    const incorrectPercent = (wrongAnswers / this.questions.length) * 100;
+                    
+                    document.getElementById('correctProgress').style.width = `${correctPercent}%`;
+                    document.getElementById('incorrectProgress').style.width = `${incorrectPercent}%`;
+                    document.getElementById('totalProgress').style.width = `${percentage}%`;
+                }, 100);
+                
                 const resultBadge = document.getElementById('resultBadge');
                 if (percentage >= 90) {
                     resultBadge.textContent = 'A\'lo! 🏆';
@@ -910,7 +1025,7 @@
                 }
                 
                 const reviewList = document.getElementById('reviewList');
-                reviewList.innerHTML = '<h4 style="color: #2c2c2c; font-weight: 600; margin-bottom: 1.5rem; text-align: center;">Batafsil natijalar:</h4>';
+                reviewList.innerHTML = '<h5 style="color: #2c2c2c; font-weight: 600; margin-bottom: 1.5rem; text-align: center;">Batafsil natijalar</h5>';
                 
                 for (let disp = 0; disp < this.questions.length; disp++) {
                     const qIdx = this.questionOrder[disp];
@@ -971,10 +1086,10 @@
                 const reviewList = document.getElementById('reviewList');
                 if (reviewList.style.display === 'block') {
                     reviewList.style.display = 'none';
-                    this.showMoreBtn.innerHTML = 'Ko\'proq ko\'rsatish <i class="fas fa-chevron-down"></i>';
+                    this.showMoreBtn.innerHTML = 'Batafsil ko\'rish <i class="fas fa-chevron-down"></i>';
                 } else {
                     reviewList.style.display = 'block';
-                    this.showMoreBtn.innerHTML = 'Kamroq ko\'rsatish <i class="fas fa-chevron-up"></i>';
+                    this.showMoreBtn.innerHTML = 'Yashirish <i class="fas fa-chevron-up"></i>';
                 }
             }
             
@@ -1026,7 +1141,7 @@
                 this.startScreen.style.display = 'block';
                 this.loadedQuestionsInfo.style.display = 'none';
                 document.getElementById('reviewList').style.display = 'none';
-                this.showMoreBtn.innerHTML = 'Ko\'proq ko\'rsatish <i class="fas fa-chevron-down"></i>';
+                this.showMoreBtn.innerHTML = 'Batafsil ko\'rish <i class="fas fa-chevron-down"></i>';
                 this.fileInput.value = '';
             }
         }
