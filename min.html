@@ -26,27 +26,13 @@
             border-radius: 16px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             padding: 2.5rem;
-            margin: 2rem;
+            margin: 1rem;
             max-width: 900px;
             width: 100%;
             transition: all 0.3s ease;
         }
         .quiz-header {
-            text-align: center;
-            margin-bottom: 2rem;
-            border-bottom: 1px solid #e8e8e8;
-            padding-bottom: 1.5rem;
             display: none; /* Sarlavha olib tashlandi */
-        }
-        .quiz-title {
-            color: #2c2c2c;
-            font-size: 2rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-        .quiz-subtitle {
-            color: #6c757d;
-            font-size: 1rem;
         }
         .file-upload-area {
             border: 2px dashed #d0d0d0;
@@ -111,7 +97,7 @@
         }
         .question-container {
             display: none;
-            animation: scaleIn 0.3s ease; /* Tezroq markazdan ochilish */
+            animation: scaleIn 0.3s ease;
         }
         .question-container.active {
             display: block;
@@ -123,58 +109,54 @@
             margin-bottom: 2rem;
             border: 1px solid #e8e8e8;
         }
-        .question-number {
-            color: #6c757d;
-            font-weight: 600;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+        /* Savol raqami olib tashlandi */
         .question-text {
-            font-size: 1.25rem;
+            font-size: 1.4rem;
             font-weight: 500;
             color: #2c2c2c;
             margin-bottom: 2rem;
             line-height: 1.6;
         }
+        .answers {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
         .answer-option {
             background: white;
             border: 2px solid #e8e8e8;
-            border-radius: 10px;
-            padding: 1rem 1.5rem;
-            margin-bottom: 1rem;
+            border-radius: 12px;
+            padding: 1.2rem 1.5rem;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.25s ease;
             color: #2c2c2c;
+            font-size: 1.1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
         .answer-option:hover {
-            border-color: #a0a0a0;
-            transform: translateX(4px);
+            border-color: #2c2c2c;
+            background: #f0f0f0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
         }
         .answer-option.selected {
             background: #2c2c2c;
             color: white;
             border-color: #2c2c2c;
+            box-shadow: 0 4px 16px rgba(44,44,44,0.3);
         }
-        .answer-option.correct {
-            background: #10b981;
-            color: white;
-            border-color: #10b981;
-        }
-        .answer-option.incorrect {
-            background: #ef4444;
-            color: white;
-            border-color: #ef4444;
+        .answer-option.selected:hover {
+            background: #1a1a1a;
+            border-color: #1a1a1a;
         }
         .control-buttons {
-            display: none; /* Keyingi tugmasi olib tashlandi */
+            display: none;
         }
         .btn-custom {
             padding: 12px 32px;
             border-radius: 8px;
             font-weight: 500;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
             border: none;
             font-size: 0.95rem;
         }
@@ -183,9 +165,9 @@
             color: white;
         }
         .btn-primary-custom:hover {
-            background: #1a1a1a;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            background: #1a1a1a !important;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
         }
         .btn-secondary-custom {
             background: #e8e8e8;
@@ -194,6 +176,7 @@
         }
         .btn-secondary-custom:hover {
             background: #d0d0d0;
+            transform: translateY(-2px);
         }
         .start-screen, .result-screen {
             text-align: center;
@@ -212,37 +195,49 @@
         }
         .quiz-stats {
             display: flex;
-            justify-content: space-around;
+            justify-content: center;
+            gap: 2rem;
             margin: 2rem 0;
-            gap: 1rem;
+            flex-wrap: wrap;
         }
         .stat-item {
             text-align: center;
-            padding: 1.5rem;
+            padding: 1.5rem 2rem;
             background: #fafafa;
             border-radius: 12px;
             border: 1px solid #e8e8e8;
-            flex: 1;
+            min-width: 180px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUpStat 0.6s ease forwards;
         }
+        .stat-item:nth-child(1) { animation-delay: 0.2s; }
+        .stat-item:nth-child(2) { animation-delay: 0.4s; }
+        .stat-item:nth-child(3) { animation-delay: 0.6s; }
         .stat-number {
-            font-size: 2rem;
+            font-size: 2.5rem;
             font-weight: 600;
             color: #2c2c2c;
         }
+        .stat-number.correct { color: #10b981; }
+        .stat-number.wrong { color: #ef4444; }
         .stat-label {
             color: #6c757d;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             text-transform: uppercase;
             letter-spacing: 1px;
             margin-top: 0.5rem;
         }
         .result-badge {
             display: inline-block;
-            padding: 1rem 2rem;
+            padding: 1rem 2.5rem;
             border-radius: 50px;
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             font-weight: 600;
             margin: 1rem 0;
+            opacity: 0;
+            transform: scale(0.9);
+            animation: scaleInBadge 0.5s ease 0.1s forwards;
         }
         .result-excellent {
             background: #10b981;
@@ -291,6 +286,18 @@
                 transform: scale(1);
             }
         }
+        @keyframes scaleInBadge {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        @keyframes fadeInUpStat {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
         @keyframes pulse {
             0%, 100% {
                 opacity: 1;
@@ -299,22 +306,22 @@
                 opacity: 0.8;
             }
         }
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-        .alert-custom {
-            border-radius: 8px;
-            border: none;
-            margin: 1rem 0;
-        }
         #reviewSummary {
             margin-top: 2rem;
-            text-align: left;
+            text-align: center;
+            font-size: 1.2rem;
+            opacity: 0;
+            transform: translateY(10px);
+            animation: fadeInUpStat 0.6s ease 0.8s forwards;
+        }
+        #reviewSummary p {
+            margin: 1rem 0;
+            font-weight: 500;
         }
         #reviewList {
             margin-top: 2rem;
             text-align: left;
-            display: none; /* Dastlab yashirin */
+            display: none;
         }
         .review-question {
             background: #fafafa;
@@ -423,17 +430,33 @@
         }
         @media (max-width: 768px) {
             .quiz-container {
-                margin: 1rem;
+                margin: 0.5rem;
                 padding: 1.5rem;
-            }
-            .quiz-title {
-                font-size: 1.75rem;
+                border-radius: 12px;
             }
             .question-text {
-                font-size: 1.1rem;
+                font-size: 1.2rem;
+            }
+            .answer-option {
+                padding: 1.4rem 1.2rem;
+                font-size: 1rem;
             }
             .quiz-stats {
+                gap: 1rem;
+            }
+            .stat-item {
+                padding: 1.2rem;
+                min-width: 140px;
+            }
+            .stat-number {
+                font-size: 2rem;
+            }
+            .progress-container {
                 flex-direction: column;
+                align-items: stretch;
+            }
+            .progress-info {
+                justify-content: center;
             }
             .toast-container {
                 right: 10px;
@@ -442,12 +465,14 @@
             .custom-toast {
                 min-width: auto;
             }
-            .progress-container {
-                flex-direction: column;
-                align-items: stretch;
+        }
+        @media (max-width: 480px) {
+            .question-text {
+                font-size: 1.1rem;
             }
-            .progress-info {
-                justify-content: center;
+            .answer-option {
+                padding: 1.3rem 1rem;
+                font-size: 0.95rem;
             }
         }
     </style>
@@ -531,16 +556,16 @@
         
         <!-- Natija ekrani -->
         <div id="resultScreen" class="result-screen" style="display: none;">
-            <h2 class="quiz-title">Test Yakunlandi</h2>
+            <h2 class="quiz-title d-none d-md-block">Test Yakunlandi</h2>
             <div id="resultBadge" class="result-badge"></div>
            
             <div class="quiz-stats">
                 <div class="stat-item">
-                    <div class="stat-number" style="color: #10b981;" id="correctAnswers">0</div>
+                    <div class="stat-number correct" id="correctAnswers">0</div>
                     <div class="stat-label">To'g'ri javoblar</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-number" style="color: #ef4444;" id="wrongAnswers">0</div>
+                    <div class="stat-number wrong" id="wrongAnswers">0</div>
                     <div class="stat-label">Noto'g'ri javoblar</div>
                 </div>
                 <div class="stat-item">
@@ -550,7 +575,7 @@
             </div>
             <div id="reviewSummary">
                 <h4 style="color: #2c2c2c; font-weight: 600; margin-bottom: 1rem;">Javoblar soni:</h4>
-                <p>To'g'ri: <strong style="color: #10b981;" id="summaryCorrect">0</strong> | Noto'g'ri: <strong style="color: #ef4444;" id="summaryWrong">0</strong></p>
+                <p>To'g'ri: <strong class="correct" id="summaryCorrect">0</strong> | Noto'g'ri: <strong class="wrong" id="summaryWrong">0</strong></p>
                 <button id="showMoreBtn" class="btn btn-custom btn-secondary-custom mt-3">
                     Ko'proq ko'rsatish <i class="fas fa-chevron-down"></i>
                 </button>
@@ -807,9 +832,6 @@
                 this.questionContainer.innerHTML = `
                     <div class="question-container active">
                         <div class="question-card">
-                            <div class="question-number">
-                                Savol ${this.currentQuestion + 1}
-                            </div>
                             <div class="question-text">
                                 ${question.question}
                             </div>
@@ -838,7 +860,7 @@
             }
             
             selectAnswer(e, qIdx) {
-                if (this.userAnswers[qIdx] !== undefined) return; // Oldin tanlangan bo'lsa o'tkazmasin
+                if (this.userAnswers[qIdx] !== undefined) return;
                 
                 const selectedIndex = parseInt(e.currentTarget.dataset.index);
                 
