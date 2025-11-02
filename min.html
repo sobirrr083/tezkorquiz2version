@@ -20,19 +20,17 @@
             align-items: center;
             justify-content: center;
             overflow-x: hidden;
+            padding: 1rem;
         }
         .quiz-container {
             background: white;
             border-radius: 16px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            padding: 2.5rem;
-            margin: 1rem;
-            max-width: 900px;
+            padding: 2rem;
+            margin: 1rem auto;
+            max-width: 1000px;
             width: 100%;
             transition: all 0.3s ease;
-        }
-        .quiz-header {
-            display: none; /* Sarlavha olib tashlandi */
         }
         .file-upload-area {
             border: 2px dashed #d0d0d0;
@@ -109,74 +107,89 @@
             margin-bottom: 2rem;
             border: 1px solid #e8e8e8;
         }
-        /* Savol raqami olib tashlandi */
+        .question-number {
+            color: #6c757d;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
         .question-text {
-            font-size: 1.4rem;
+            font-size: 1.25rem;
             font-weight: 500;
             color: #2c2c2c;
             margin-bottom: 2rem;
-            line-height: 1.6;
-        }
-        .answers {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
+            line-height: 1.8;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
         .answer-option {
             background: white;
             border: 2px solid #e8e8e8;
-            border-radius: 12px;
+            border-radius: 10px;
             padding: 1.2rem 1.5rem;
+            margin-bottom: 1rem;
             cursor: pointer;
-            transition: all 0.25s ease;
+            transition: all 0.2s ease;
             color: #2c2c2c;
-            font-size: 1.1rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            line-height: 1.6;
         }
         .answer-option:hover {
-            border-color: #2c2c2c;
-            background: #f0f0f0;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            border-color: #a0a0a0;
+            transform: translateX(4px);
         }
         .answer-option.selected {
             background: #2c2c2c;
             color: white;
             border-color: #2c2c2c;
-            box-shadow: 0 4px 16px rgba(44,44,44,0.3);
         }
-        .answer-option.selected:hover {
-            background: #1a1a1a;
-            border-color: #1a1a1a;
+        .answer-option.correct {
+            background: #10b981;
+            color: white;
+            border-color: #10b981;
         }
-        .control-buttons {
-            display: none;
+        .answer-option.incorrect {
+            background: #ef4444;
+            color: white;
+            border-color: #ef4444;
         }
         .btn-custom {
             padding: 12px 32px;
             border-radius: 8px;
             font-weight: 500;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             border: none;
             font-size: 0.95rem;
         }
         .btn-primary-custom {
             background: #2c2c2c;
-            color: white;
+            color: white !important;
         }
         .btn-primary-custom:hover {
-            background: #1a1a1a !important;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            background: #1a1a1a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            color: white !important;
+        }
+        .btn-primary-custom:active {
+            background: #0a0a0a;
+            color: white !important;
+            transform: translateY(0);
         }
         .btn-secondary-custom {
             background: #e8e8e8;
-            color: #2c2c2c;
+            color: #2c2c2c !important;
             margin-right: 1rem;
         }
         .btn-secondary-custom:hover {
             background: #d0d0d0;
-            transform: translateY(-2px);
+            color: #2c2c2c !important;
         }
         .start-screen, .result-screen {
             text-align: center;
@@ -194,50 +207,37 @@
             margin-bottom: 2rem;
         }
         .quiz-stats {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
             margin: 2rem 0;
-            flex-wrap: wrap;
         }
         .stat-item {
             text-align: center;
-            padding: 1.5rem 2rem;
+            padding: 1.5rem;
             background: #fafafa;
             border-radius: 12px;
             border: 1px solid #e8e8e8;
-            min-width: 180px;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUpStat 0.6s ease forwards;
         }
-        .stat-item:nth-child(1) { animation-delay: 0.2s; }
-        .stat-item:nth-child(2) { animation-delay: 0.4s; }
-        .stat-item:nth-child(3) { animation-delay: 0.6s; }
         .stat-number {
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 600;
             color: #2c2c2c;
         }
-        .stat-number.correct { color: #10b981; }
-        .stat-number.wrong { color: #ef4444; }
         .stat-label {
             color: #6c757d;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 1px;
             margin-top: 0.5rem;
         }
         .result-badge {
             display: inline-block;
-            padding: 1rem 2.5rem;
+            padding: 1rem 2rem;
             border-radius: 50px;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 600;
             margin: 1rem 0;
-            opacity: 0;
-            transform: scale(0.9);
-            animation: scaleInBadge 0.5s ease 0.1s forwards;
         }
         .result-excellent {
             background: #10b981;
@@ -286,18 +286,6 @@
                 transform: scale(1);
             }
         }
-        @keyframes scaleInBadge {
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-        @keyframes fadeInUpStat {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
         @keyframes pulse {
             0%, 100% {
                 opacity: 1;
@@ -308,15 +296,7 @@
         }
         #reviewSummary {
             margin-top: 2rem;
-            text-align: center;
-            font-size: 1.2rem;
-            opacity: 0;
-            transform: translateY(10px);
-            animation: fadeInUpStat 0.6s ease 0.8s forwards;
-        }
-        #reviewSummary p {
-            margin: 1rem 0;
-            font-weight: 500;
+            text-align: left;
         }
         #reviewList {
             margin-top: 2rem;
@@ -334,15 +314,17 @@
             font-weight: 600;
             margin-bottom: 1rem;
             color: #2c2c2c;
+            word-wrap: break-word;
         }
         .review-options {
-            margin-left: 1rem;
+            margin-left: 0;
         }
         .review-option {
             margin-bottom: 0.5rem;
-            padding: 0.5rem;
+            padding: 0.8rem;
             border-radius: 6px;
             background: white;
+            word-wrap: break-word;
         }
         .review-correct {
             color: #10b981;
@@ -367,11 +349,10 @@
         }
         .format-info p {
             color: #6c757d;
-            font-size: 0.9rem;
-            line-height: 1.8;
+            font-size: 0.85rem;
+            line-height: 1.6;
             margin: 0;
         }
-        /* Toast/Popup styles */
         .toast-container {
             position: fixed;
             top: 20px;
@@ -428,35 +409,61 @@
                 opacity: 0;
             }
         }
-        @media (max-width: 768px) {
+        /* Animated Progress Bars for Results */
+        .result-progress-bar {
+            background: #e8e8e8;
+            border-radius: 10px;
+            height: 12px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+            position: relative;
+        }
+        .result-progress-fill {
+            height: 100%;
+            transition: width 1.5s ease-out;
+            border-radius: 10px;
+        }
+        .result-progress-fill.correct {
+            background: linear-gradient(90deg, #10b981, #059669);
+        }
+        .result-progress-fill.incorrect {
+            background: linear-gradient(90deg, #ef4444, #dc2626);
+        }
+        .result-progress-fill.total {
+            background: linear-gradient(90deg, #2c2c2c, #1a1a1a);
+        }
+        @media (max-width: 992px) {
             .quiz-container {
-                margin: 0.5rem;
                 padding: 1.5rem;
-                border-radius: 12px;
             }
             .question-text {
-                font-size: 1.2rem;
+                font-size: 1.1rem;
             }
             .answer-option {
-                padding: 1.4rem 1.2rem;
-                font-size: 1rem;
+                padding: 1rem 1.2rem;
             }
-            .quiz-stats {
-                gap: 1rem;
+        }
+        @media (max-width: 768px) {
+            body {
+                padding: 0.5rem;
             }
-            .stat-item {
+            .quiz-container {
+                margin: 0.5rem auto;
                 padding: 1.2rem;
-                min-width: 140px;
+                border-radius: 12px;
             }
-            .stat-number {
+            .start-screen h1 {
                 font-size: 2rem;
             }
-            .progress-container {
-                flex-direction: column;
-                align-items: stretch;
+            .question-text {
+                font-size: 1rem;
             }
-            .progress-info {
-                justify-content: center;
+            .answer-option {
+                padding: 1rem;
+                font-size: 0.95rem;
+            }
+            .quiz-stats {
+                grid-template-columns: 1fr;
             }
             .toast-container {
                 right: 10px;
@@ -465,14 +472,50 @@
             .custom-toast {
                 min-width: auto;
             }
+            .progress-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .progress-info {
+                justify-content: center;
+            }
+            .file-upload-area {
+                padding: 2rem 1rem;
+            }
+            .btn-custom {
+                padding: 10px 24px;
+                font-size: 0.9rem;
+            }
+            .btn-secondary-custom {
+                margin-right: 0.5rem;
+            }
+            .result-badge {
+                font-size: 1.1rem;
+                padding: 0.8rem 1.5rem;
+            }
         }
         @media (max-width: 480px) {
+            .quiz-container {
+                padding: 1rem;
+            }
+            .start-screen h1 {
+                font-size: 1.75rem;
+            }
+            .start-screen p {
+                font-size: 1rem;
+            }
             .question-text {
-                font-size: 1.1rem;
+                font-size: 0.95rem;
             }
             .answer-option {
-                padding: 1.3rem 1rem;
-                font-size: 0.95rem;
+                padding: 0.9rem;
+                font-size: 0.9rem;
+            }
+            .stat-number {
+                font-size: 1.75rem;
+            }
+            .upload-icon {
+                font-size: 2.5rem;
             }
         }
     </style>
@@ -481,7 +524,6 @@
     <div class="toast-container" id="toastContainer"></div>
     
     <div class="quiz-container">
-        <!-- Boshlash ekrani -->
         <div id="startScreen" class="start-screen">
             <h1><i class="fas fa-brain"></i> Bilim Quiz</h1>
             <p>Test savollarini yuklang va bilimlaringizni sinab ko'ring</p>
@@ -532,14 +574,7 @@
             </div>
         </div>
         
-        <!-- Quiz ekrani -->
         <div id="quizScreen" style="display: none;">
-            <div class="quiz-header">
-                <h2 class="quiz-title">Bilim Quiz</h2>
-                <div class="timer" id="timer">
-                    <i class="fas fa-clock"></i> <span id="timeLeft">0</span>
-                </div>
-            </div>
             <div class="progress-container">
                 <div class="progress">
                     <div class="progress-bar" id="progressBar" style="width: 0%"></div>
@@ -554,38 +589,46 @@
             <div id="questionContainer"></div>
         </div>
         
-        <!-- Natija ekrani -->
         <div id="resultScreen" class="result-screen" style="display: none;">
-            <h2 class="quiz-title d-none d-md-block">Test Yakunlandi</h2>
+            <h2 class="quiz-title">Test Yakunlandi</h2>
             <div id="resultBadge" class="result-badge"></div>
            
             <div class="quiz-stats">
                 <div class="stat-item">
-                    <div class="stat-number correct" id="correctAnswers">0</div>
+                    <div class="stat-number" style="color: #10b981;" id="correctAnswers">0</div>
                     <div class="stat-label">To'g'ri javoblar</div>
+                    <div class="result-progress-bar">
+                        <div class="result-progress-fill correct" id="correctProgress" style="width: 0%"></div>
+                    </div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-number wrong" id="wrongAnswers">0</div>
+                    <div class="stat-number" style="color: #ef4444;" id="wrongAnswers">0</div>
                     <div class="stat-label">Noto'g'ri javoblar</div>
+                    <div class="result-progress-bar">
+                        <div class="result-progress-fill incorrect" id="incorrectProgress" style="width: 0%"></div>
+                    </div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-number" id="finalScore">0%</div>
                     <div class="stat-label">Ball</div>
+                    <div class="result-progress-bar">
+                        <div class="result-progress-fill total" id="totalProgress" style="width: 0%"></div>
+                    </div>
                 </div>
             </div>
             <div id="reviewSummary">
-                <h4 style="color: #2c2c2c; font-weight: 600; margin-bottom: 1rem;">Javoblar soni:</h4>
-                <p>To'g'ri: <strong class="correct" id="summaryCorrect">0</strong> | Noto'g'ri: <strong class="wrong" id="summaryWrong">0</strong></p>
+                <h5 style="color: #2c2c2c; font-weight: 600; margin-bottom: 1rem;">Natija</h5>
+                <p style="font-size: 0.95rem;">To'g'ri: <strong style="color: #10b981;" id="summaryCorrect">0</strong> | Noto'g'ri: <strong style="color: #ef4444;" id="summaryWrong">0</strong></p>
                 <button id="showMoreBtn" class="btn btn-custom btn-secondary-custom mt-3">
-                    Ko'proq ko'rsatish <i class="fas fa-chevron-down"></i>
+                    Batafsil ko'rish <i class="fas fa-chevron-down"></i>
                 </button>
             </div>
             <div id="reviewList"></div>
             <div class="mt-4">
-                <button id="restartBtn" class="btn btn-custom btn-primary-custom me-3">
+                <button id="restartBtn" class="btn btn-custom btn-primary-custom me-2 mb-2">
                     <i class="fas fa-redo"></i> Qayta Boshlash
                 </button>
-                <button id="newTestBtn" class="btn btn-custom btn-secondary-custom">
+                <button id="newTestBtn" class="btn btn-custom btn-secondary-custom mb-2">
                     <i class="fas fa-file-upload"></i> Yangi Test
                 </button>
             </div>
@@ -619,7 +662,6 @@
                 this.progressBar = document.getElementById('progressBar');
                 this.currentQuestionEl = document.getElementById('currentQuestion');
                 this.totalQuestionsEl = document.getElementById('totalQuestions');
-                this.timerEl = document.getElementById('timeLeft');
                 this.timerCloneEl = document.getElementById('timeLeftClone');
                 this.fileInput = document.getElementById('fileInput');
                 this.fileUploadArea = document.getElementById('fileUploadArea');
@@ -785,7 +827,6 @@
                 document.getElementById('loadedQuestionsCount').textContent = this.questions.length;
                 document.getElementById('calculatedTime').textContent = minutes;
                 this.totalQuestionsEl.textContent = this.questions.length;
-                this.timerEl.textContent = this.formatTime(this.totalTime);
                 this.timerCloneEl.textContent = this.formatTime(this.totalTime);
             }
             
@@ -812,11 +853,9 @@
                 this.timer = setInterval(() => {
                     this.timeLeft--;
                     const formatted = this.formatTime(this.timeLeft);
-                    this.timerEl.textContent = formatted;
                     this.timerCloneEl.textContent = formatted;
                     
                     if (this.timeLeft <= 60) {
-                        document.getElementById('timer').classList.add('warning');
                         document.getElementById('timerClone').classList.add('warning');
                     }
                     if (this.timeLeft <= 0) {
@@ -832,6 +871,9 @@
                 this.questionContainer.innerHTML = `
                     <div class="question-container active">
                         <div class="question-card">
+                            <div class="question-number">
+                                Savol ${this.currentQuestion + 1}
+                            </div>
                             <div class="question-text">
                                 ${question.question}
                             </div>
@@ -922,6 +964,16 @@
                 document.getElementById('summaryCorrect').textContent = correctAnswers;
                 document.getElementById('summaryWrong').textContent = wrongAnswers;
                 
+                // Animated progress bars
+                setTimeout(() => {
+                    const correctPercent = (correctAnswers / this.questions.length) * 100;
+                    const incorrectPercent = (wrongAnswers / this.questions.length) * 100;
+                    
+                    document.getElementById('correctProgress').style.width = `${correctPercent}%`;
+                    document.getElementById('incorrectProgress').style.width = `${incorrectPercent}%`;
+                    document.getElementById('totalProgress').style.width = `${percentage}%`;
+                }, 100);
+                
                 const resultBadge = document.getElementById('resultBadge');
                 if (percentage >= 90) {
                     resultBadge.textContent = 'A\'lo! 🏆';
@@ -938,7 +990,7 @@
                 }
                 
                 const reviewList = document.getElementById('reviewList');
-                reviewList.innerHTML = '<h4 style="color: #2c2c2c; font-weight: 600; margin-bottom: 1.5rem;">Batafsil natijalar:</h4>';
+                reviewList.innerHTML = '<h5 style="color: #2c2c2c; font-weight: 600; margin-bottom: 1.5rem;">Batafsil natijalar</h5>';
                 
                 for (let disp = 0; disp < this.questions.length; disp++) {
                     const qIdx = this.questionOrder[disp];
@@ -999,10 +1051,10 @@
                 const reviewList = document.getElementById('reviewList');
                 if (reviewList.style.display === 'block') {
                     reviewList.style.display = 'none';
-                    this.showMoreBtn.innerHTML = 'Ko\'proq ko\'rsatish <i class="fas fa-chevron-down"></i>';
+                    this.showMoreBtn.innerHTML = 'Batafsil ko\'rish <i class="fas fa-chevron-down"></i>';
                 } else {
                     reviewList.style.display = 'block';
-                    this.showMoreBtn.innerHTML = 'Kamroq ko\'rsatish <i class="fas fa-chevron-up"></i>';
+                    this.showMoreBtn.innerHTML = 'Yashirish <i class="fas fa-chevron-up"></i>';
                 }
             }
             
@@ -1029,8 +1081,8 @@
                 
                 if (this.timer) clearInterval(this.timer);
                 
-                const timers = [document.getElementById('timer'), document.getElementById('timerClone')];
-                timers.forEach(t => t.classList.remove('warning'));
+                const timer = document.getElementById('timerClone');
+                timer.classList.remove('warning');
                 
                 this.resultScreen.style.display = 'none';
                 this.quizScreen.style.display = 'block';
@@ -1048,14 +1100,14 @@
                 this.questionOrder = [];
                 if (this.timer) clearInterval(this.timer);
                 
-                const timers = [document.getElementById('timer'), document.getElementById('timerClone')];
-                timers.forEach(t => t.classList.remove('warning'));
+                const timer = document.getElementById('timerClone');
+                timer.classList.remove('warning');
                 
                 this.resultScreen.style.display = 'none';
                 this.startScreen.style.display = 'block';
                 this.loadedQuestionsInfo.style.display = 'none';
                 document.getElementById('reviewList').style.display = 'none';
-                this.showMoreBtn.innerHTML = 'Ko\'proq ko\'rsatish <i class="fas fa-chevron-down"></i>';
+                this.showMoreBtn.innerHTML = 'Batafsil ko\'rish <i class="fas fa-chevron-down"></i>';
                 this.fileInput.value = '';
             }
         }
