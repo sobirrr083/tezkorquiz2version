@@ -20,15 +20,14 @@
             align-items: center;
             justify-content: center;
             overflow-x: hidden;
-            padding: 1rem;
         }
         .quiz-container {
             background: white;
             border-radius: 16px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            padding: 2rem;
-            margin: 1rem auto;
-            max-width: 1000px;
+            padding: 2.5rem;
+            margin: 2rem;
+            max-width: 900px;
             width: 100%;
             transition: all 0.3s ease;
         }
@@ -106,48 +105,38 @@
             padding: 2rem;
             margin-bottom: 2rem;
             border: 1px solid #e8e8e8;
-        }
-        .question-number {
-            color: #6c757d;
-            font-weight: 600;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            min-height: calc(100vh - 300px); /* Savolni maksimal joy egallashi uchun */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         .question-text {
             font-size: 1.25rem;
             font-weight: 500;
             color: #2c2c2c;
             margin-bottom: 2rem;
-            line-height: 1.8;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
+            line-height: 1.6;
         }
         .answer-option {
             background: white;
             border: 2px solid #e8e8e8;
             border-radius: 10px;
-            padding: 1.2rem 1.5rem;
+            padding: 1rem 1.5rem;
             margin-bottom: 1rem;
             cursor: pointer;
             transition: all 0.2s ease;
             color: #2c2c2c;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            min-height: 50px;
-            display: flex;
-            align-items: center;
-            line-height: 1.6;
         }
         .answer-option:hover {
-            border-color: #a0a0a0;
+            border-color: #2c2c2c;
+            background: #f0f0f0;
             transform: translateX(4px);
         }
         .answer-option.selected {
-            background: #2c2c2c;
-            color: white;
+            background: #e0e0e0; /* Hover stili bilan bir xil, to'liq qora emas */
+            color: #2c2c2c;
             border-color: #2c2c2c;
+            font-weight: 600;
         }
         .answer-option.correct {
             background: #10b981;
@@ -169,27 +158,20 @@
         }
         .btn-primary-custom {
             background: #2c2c2c;
-            color: white !important;
+            color: white;
         }
         .btn-primary-custom:hover {
             background: #1a1a1a;
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            color: white !important;
-        }
-        .btn-primary-custom:active {
-            background: #0a0a0a;
-            color: white !important;
-            transform: translateY(0);
         }
         .btn-secondary-custom {
             background: #e8e8e8;
-            color: #2c2c2c !important;
+            color: #2c2c2c;
             margin-right: 1rem;
         }
         .btn-secondary-custom:hover {
             background: #d0d0d0;
-            color: #2c2c2c !important;
         }
         .start-screen, .result-screen {
             text-align: center;
@@ -207,10 +189,10 @@
             margin-bottom: 2rem;
         }
         .quiz-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
+            display: flex;
+            justify-content: space-around;
             margin: 2rem 0;
+            gap: 1rem;
         }
         .stat-item {
             text-align: center;
@@ -218,6 +200,7 @@
             background: #fafafa;
             border-radius: 12px;
             border: 1px solid #e8e8e8;
+            flex: 1;
         }
         .stat-number {
             font-size: 2rem;
@@ -294,9 +277,14 @@
                 opacity: 0.8;
             }
         }
+        .alert-custom {
+            border-radius: 8px;
+            border: none;
+            margin: 1rem 0;
+        }
         #reviewSummary {
             margin-top: 2rem;
-            text-align: left;
+            text-align: center;
         }
         #reviewList {
             margin-top: 2rem;
@@ -314,17 +302,14 @@
             font-weight: 600;
             margin-bottom: 1rem;
             color: #2c2c2c;
-            word-wrap: break-word;
         }
         .review-options {
-            margin-left: 0;
+            margin-left: 1rem;
         }
         .review-option {
             margin-bottom: 0.5rem;
-            padding: 0.8rem;
+            padding: 0.5rem;
             border-radius: 6px;
-            background: white;
-            word-wrap: break-word;
         }
         .review-correct {
             color: #10b981;
@@ -349,10 +334,11 @@
         }
         .format-info p {
             color: #6c757d;
-            font-size: 0.85rem;
-            line-height: 1.6;
+            font-size: 0.9rem;
+            line-height: 1.8;
             margin: 0;
         }
+        /* Toast/Popup styles */
         .toast-container {
             position: fixed;
             top: 20px;
@@ -409,61 +395,36 @@
                 opacity: 0;
             }
         }
-        /* Animated Progress Bars for Results */
-        .result-progress-bar {
-            background: #e8e8e8;
-            border-radius: 10px;
-            height: 12px;
-            overflow: hidden;
+        .result-center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .user-answer-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
             margin-top: 0.5rem;
-            position: relative;
+            color: #6c757d;
+            font-size: 0.9rem;
         }
-        .result-progress-fill {
-            height: 100%;
-            transition: width 1.5s ease-out;
-            border-radius: 10px;
+        .user-answer-info strong {
+            font-weight: 600;
         }
-        .result-progress-fill.correct {
-            background: linear-gradient(90deg, #10b981, #059669);
-        }
-        .result-progress-fill.incorrect {
-            background: linear-gradient(90deg, #ef4444, #dc2626);
-        }
-        .result-progress-fill.total {
-            background: linear-gradient(90deg, #2c2c2c, #1a1a1a);
-        }
-        @media (max-width: 992px) {
+        @media (max-width: 768px) {
             .quiz-container {
+                margin: 1rem;
                 padding: 1.5rem;
+            }
+            .start-screen h1 {
+                font-size: 1.75rem;
             }
             .question-text {
                 font-size: 1.1rem;
             }
-            .answer-option {
-                padding: 1rem 1.2rem;
-            }
-        }
-        @media (max-width: 768px) {
-            body {
-                padding: 0.5rem;
-            }
-            .quiz-container {
-                margin: 0.5rem auto;
-                padding: 1.2rem;
-                border-radius: 12px;
-            }
-            .start-screen h1 {
-                font-size: 2rem;
-            }
-            .question-text {
-                font-size: 1rem;
-            }
-            .answer-option {
-                padding: 1rem;
-                font-size: 0.95rem;
-            }
             .quiz-stats {
-                grid-template-columns: 1fr;
+                flex-direction: column;
             }
             .toast-container {
                 right: 10px;
@@ -479,43 +440,9 @@
             .progress-info {
                 justify-content: center;
             }
-            .file-upload-area {
-                padding: 2rem 1rem;
-            }
-            .btn-custom {
-                padding: 10px 24px;
-                font-size: 0.9rem;
-            }
-            .btn-secondary-custom {
-                margin-right: 0.5rem;
-            }
-            .result-badge {
-                font-size: 1.1rem;
-                padding: 0.8rem 1.5rem;
-            }
-        }
-        @media (max-width: 480px) {
-            .quiz-container {
-                padding: 1rem;
-            }
-            .start-screen h1 {
-                font-size: 1.75rem;
-            }
-            .start-screen p {
-                font-size: 1rem;
-            }
-            .question-text {
-                font-size: 0.95rem;
-            }
-            .answer-option {
-                padding: 0.9rem;
-                font-size: 0.9rem;
-            }
-            .stat-number {
-                font-size: 1.75rem;
-            }
-            .upload-icon {
-                font-size: 2.5rem;
+            .question-card {
+                min-height: calc(100vh - 250px);
+                padding: 1.5rem;
             }
         }
     </style>
@@ -524,6 +451,7 @@
     <div class="toast-container" id="toastContainer"></div>
     
     <div class="quiz-container">
+        <!-- Boshlash ekrani -->
         <div id="startScreen" class="start-screen">
             <h1><i class="fas fa-brain"></i> Bilim Quiz</h1>
             <p>Test savollarini yuklang va bilimlaringizni sinab ko'ring</p>
@@ -574,6 +502,7 @@
             </div>
         </div>
         
+        <!-- Quiz ekrani -->
         <div id="quizScreen" style="display: none;">
             <div class="progress-container">
                 <div class="progress">
@@ -589,48 +518,43 @@
             <div id="questionContainer"></div>
         </div>
         
+        <!-- Natija ekrani -->
         <div id="resultScreen" class="result-screen" style="display: none;">
-            <h2 class="quiz-title">Test Yakunlandi</h2>
-            <div id="resultBadge" class="result-badge"></div>
-           
-            <div class="quiz-stats">
-                <div class="stat-item">
-                    <div class="stat-number" style="color: #10b981;" id="correctAnswers">0</div>
-                    <div class="stat-label">To'g'ri javoblar</div>
-                    <div class="result-progress-bar">
-                        <div class="result-progress-fill correct" id="correctProgress" style="width: 0%"></div>
+            <div class="result-center">
+                <h2 class="quiz-title">Test Yakunlandi</h2>
+                <div id="resultBadge" class="result-badge"></div>
+                <div id="timeUpMessage" style="display: none; color: #ef4444; font-weight: 600; margin: 1rem 0;"></div>
+               
+                <div class="quiz-stats">
+                    <div class="stat-item">
+                        <div class="stat-number" style="color: #10b981;" id="correctAnswers">0</div>
+                        <div class="stat-label">To'g'ri javoblar</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" style="color: #ef4444;" id="wrongAnswers">0</div>
+                        <div class="stat-label">Noto'g'ri javoblar</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="finalScore">0%</div>
+                        <div class="stat-label">Ball</div>
                     </div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number" style="color: #ef4444;" id="wrongAnswers">0</div>
-                    <div class="stat-label">Noto'g'ri javoblar</div>
-                    <div class="result-progress-bar">
-                        <div class="result-progress-fill incorrect" id="incorrectProgress" style="width: 0%"></div>
-                    </div>
+                <div id="reviewSummary">
+                    <h4 style="color: #2c2c2c; font-weight: 600; margin-bottom: 1rem;">Javoblar soni:</h4>
+                    <p>To'g'ri: <strong style="color: #10b981;" id="summaryCorrect">0</strong> | Noto'g'ri: <strong style="color: #ef4444;" id="summaryWrong">0</strong></p>
+                    <button id="showMoreBtn" class="btn btn-custom btn-secondary-custom mt-3">
+                        Ko'proq ko'rsatish <i class="fas fa-chevron-down"></i>
+                    </button>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number" id="finalScore">0%</div>
-                    <div class="stat-label">Ball</div>
-                    <div class="result-progress-bar">
-                        <div class="result-progress-fill total" id="totalProgress" style="width: 0%"></div>
-                    </div>
+                <div id="reviewList"></div>
+                <div class="mt-4">
+                    <button id="restartBtn" class="btn btn-custom btn-primary-custom me-3">
+                        <i class="fas fa-redo"></i> Qayta Boshlash
+                    </button>
+                    <button id="newTestBtn" class="btn btn-custom btn-secondary-custom">
+                        <i class="fas fa-file-upload"></i> Yangi Test
+                    </button>
                 </div>
-            </div>
-            <div id="reviewSummary">
-                <h5 style="color: #2c2c2c; font-weight: 600; margin-bottom: 1rem;">Natija</h5>
-                <p style="font-size: 0.95rem;">To'g'ri: <strong style="color: #10b981;" id="summaryCorrect">0</strong> | Noto'g'ri: <strong style="color: #ef4444;" id="summaryWrong">0</strong></p>
-                <button id="showMoreBtn" class="btn btn-custom btn-secondary-custom mt-3">
-                    Batafsil ko'rish <i class="fas fa-chevron-down"></i>
-                </button>
-            </div>
-            <div id="reviewList"></div>
-            <div class="mt-4">
-                <button id="restartBtn" class="btn btn-custom btn-primary-custom me-2 mb-2">
-                    <i class="fas fa-redo"></i> Qayta Boshlash
-                </button>
-                <button id="newTestBtn" class="btn btn-custom btn-secondary-custom mb-2">
-                    <i class="fas fa-file-upload"></i> Yangi Test
-                </button>
             </div>
         </div>
     </div>
@@ -649,6 +573,7 @@
                 this.userAnswers = [];
                 this.shuffledIndices = [];
                 this.questionOrder = [];
+                this.timeUpShown = false;
                 
                 this.initElements();
                 this.bindEvents();
@@ -668,6 +593,7 @@
                 this.loadedQuestionsInfo = document.getElementById('loadedQuestionsInfo');
                 this.startBtn = document.getElementById('startBtn');
                 this.showMoreBtn = document.getElementById('showMoreBtn');
+                this.timeUpMessage = document.getElementById('timeUpMessage');
             }
             
             bindEvents() {
@@ -845,6 +771,8 @@
             startQuiz() {
                 this.startScreen.style.display = 'none';
                 this.quizScreen.style.display = 'block';
+                this.timeUpShown = false;
+                this.timeUpMessage.style.display = 'none';
                 this.startTimer();
                 this.showQuestion();
             }
@@ -871,9 +799,6 @@
                 this.questionContainer.innerHTML = `
                     <div class="question-container active">
                         <div class="question-card">
-                            <div class="question-number">
-                                Savol ${this.currentQuestion + 1}
-                            </div>
                             <div class="question-text">
                                 ${question.question}
                             </div>
@@ -935,6 +860,11 @@
             
             endQuiz() {
                 clearInterval(this.timer);
+                if (this.timeLeft <= 0 && !this.timeUpShown) {
+                    this.timeUpShown = true;
+                    this.timeUpMessage.style.display = 'block';
+                    this.timeUpMessage.textContent = `Vaqt tugadi! Berilgan vaqt: ${this.formatTime(this.totalTime)}`;
+                }
                 this.calculateScore();
                 this.showResults();
             }
@@ -964,16 +894,6 @@
                 document.getElementById('summaryCorrect').textContent = correctAnswers;
                 document.getElementById('summaryWrong').textContent = wrongAnswers;
                 
-                // Animated progress bars
-                setTimeout(() => {
-                    const correctPercent = (correctAnswers / this.questions.length) * 100;
-                    const incorrectPercent = (wrongAnswers / this.questions.length) * 100;
-                    
-                    document.getElementById('correctProgress').style.width = `${correctPercent}%`;
-                    document.getElementById('incorrectProgress').style.width = `${incorrectPercent}%`;
-                    document.getElementById('totalProgress').style.width = `${percentage}%`;
-                }, 100);
-                
                 const resultBadge = document.getElementById('resultBadge');
                 if (percentage >= 90) {
                     resultBadge.textContent = 'A\'lo! 🏆';
@@ -990,7 +910,7 @@
                 }
                 
                 const reviewList = document.getElementById('reviewList');
-                reviewList.innerHTML = '<h5 style="color: #2c2c2c; font-weight: 600; margin-bottom: 1.5rem;">Batafsil natijalar</h5>';
+                reviewList.innerHTML = '<h4 style="color: #2c2c2c; font-weight: 600; margin-bottom: 1.5rem; text-align: center;">Batafsil natijalar:</h4>';
                 
                 for (let disp = 0; disp < this.questions.length; disp++) {
                     const qIdx = this.questionOrder[disp];
@@ -1032,15 +952,15 @@
                     reviewList.innerHTML += `
                         <div class="review-question">
                             <div class="review-question-text">
-                                Savol ${disp + 1}: ${origQ.question} 
+                                ${origQ.question} 
                                 <span style="float: right;">${status}</span>
                             </div>
                             <div class="review-options">
                                 ${optionsHTML}
-                                <small style="color: #6c757d; margin-top: 0.5rem; display: block;">
-                                    Sizning javobingiz: <strong>${userOrigLetter}</strong> | 
-                                    To'g'ri javob: <strong style="color: #10b981;">${correctOrigLetter}</strong>
-                                </small>
+                                <div class="user-answer-info">
+                                    <div>Sizning javobingiz: <strong>${userOrigLetter}</strong></div>
+                                    <div>To'g'ri javob: <strong style="color: #10b981;">${correctOrigLetter}</strong></div>
+                                </div>
                             </div>
                         </div>
                     `;
@@ -1051,14 +971,15 @@
                 const reviewList = document.getElementById('reviewList');
                 if (reviewList.style.display === 'block') {
                     reviewList.style.display = 'none';
-                    this.showMoreBtn.innerHTML = 'Batafsil ko\'rish <i class="fas fa-chevron-down"></i>';
+                    this.showMoreBtn.innerHTML = 'Ko\'proq ko\'rsatish <i class="fas fa-chevron-down"></i>';
                 } else {
                     reviewList.style.display = 'block';
-                    this.showMoreBtn.innerHTML = 'Yashirish <i class="fas fa-chevron-up"></i>';
+                    this.showMoreBtn.innerHTML = 'Kamroq ko\'rsatish <i class="fas fa-chevron-up"></i>';
                 }
             }
             
             restartQuiz() {
+                this.showToast('Muvaffaqiyatli', 'Test qayta boshlandi!');
                 this.currentQuestion = 0;
                 this.score = 0;
                 this.userAnswers = [];
@@ -1081,8 +1002,7 @@
                 
                 if (this.timer) clearInterval(this.timer);
                 
-                const timer = document.getElementById('timerClone');
-                timer.classList.remove('warning');
+                document.getElementById('timerClone').classList.remove('warning');
                 
                 this.resultScreen.style.display = 'none';
                 this.quizScreen.style.display = 'block';
@@ -1100,14 +1020,13 @@
                 this.questionOrder = [];
                 if (this.timer) clearInterval(this.timer);
                 
-                const timer = document.getElementById('timerClone');
-                timer.classList.remove('warning');
+                document.getElementById('timerClone').classList.remove('warning');
                 
                 this.resultScreen.style.display = 'none';
                 this.startScreen.style.display = 'block';
                 this.loadedQuestionsInfo.style.display = 'none';
                 document.getElementById('reviewList').style.display = 'none';
-                this.showMoreBtn.innerHTML = 'Batafsil ko\'rish <i class="fas fa-chevron-down"></i>';
+                this.showMoreBtn.innerHTML = 'Ko\'proq ko\'rsatish <i class="fas fa-chevron-down"></i>';
                 this.fileInput.value = '';
             }
         }
