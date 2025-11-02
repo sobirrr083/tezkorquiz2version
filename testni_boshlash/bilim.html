@@ -7,409 +7,568 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        :root {
-            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            --danger-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #f5f5f5;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow-x: hidden;
+            padding: 1rem;
         }
-
         .quiz-container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             padding: 2rem;
-            margin: 2rem;
-            max-width: 900px;
+            margin: 1rem auto;
+            max-width: 1000px;
             width: 100%;
             transition: all 0.3s ease;
         }
-
-        .quiz-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .quiz-title {
-            background: var(--primary-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-
-        .quiz-subtitle {
-            color: #6c757d;
-            font-size: 1.1rem;
-        }
-
         .file-upload-area {
-            border: 3px dashed #667eea;
-            border-radius: 15px;
-            padding: 2rem;
+            border: 2px dashed #d0d0d0;
+            border-radius: 12px;
+            padding: 3rem 2rem;
             text-align: center;
             margin: 2rem 0;
-            background: rgba(102, 126, 234, 0.1);
+            background: #fafafa;
             transition: all 0.3s ease;
             cursor: pointer;
         }
-
         .file-upload-area:hover {
-            background: rgba(102, 126, 234, 0.2);
-            border-color: #764ba2;
+            background: #f5f5f5;
+            border-color: #a0a0a0;
         }
-
         .file-upload-area.dragover {
-            background: rgba(102, 126, 234, 0.3);
-            border-color: #764ba2;
-            transform: scale(1.02);
+            background: #efefef;
+            border-color: #909090;
+            transform: scale(1.01);
         }
-
         .progress-container {
             margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
         }
-
         .progress {
-            height: 10px;
+            flex: 1;
+            height: 8px;
             border-radius: 10px;
-            background: #e9ecef;
+            background: #e8e8e8;
             overflow: hidden;
+            min-width: 200px;
         }
-
         .progress-bar {
-            background: var(--success-gradient);
+            background: #2c2c2c;
             transition: width 0.6s ease;
             border-radius: 10px;
         }
-
+        .progress-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: #6c757d;
+            font-size: 0.95rem;
+            white-space: nowrap;
+        }
+        .timer {
+            background: #2c2c2c;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .timer.warning {
+            background: #ef4444;
+            animation: pulse 1s infinite;
+        }
         .question-container {
             display: none;
-            animation: fadeInUp 0.6s ease;
+            animation: scaleIn 0.3s ease;
         }
-
         .question-container.active {
             display: block;
         }
-
         .question-card {
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            background: #fafafa;
+            border-radius: 12px;
             padding: 2rem;
             margin-bottom: 2rem;
-            border-left: 5px solid transparent;
-            background-image: var(--primary-gradient);
-            background-clip: padding-box;
+            border: 1px solid #e8e8e8;
+            min-height: calc(100vh - 280px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
-
-        .question-number {
-            color: #667eea;
-            font-weight: bold;
-            font-size: 1.1rem;
-            margin-bottom: 1rem;
-        }
-
         .question-text {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: #2c3e50;
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: #2c2c2c;
             margin-bottom: 2rem;
-            line-height: 1.6;
+            line-height: 1.8;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
-
         .answer-option {
             background: white;
-            border: 2px solid #e9ecef;
-            border-radius: 12px;
-            padding: 1rem 1.5rem;
+            border: 2px solid #e8e8e8;
+            border-radius: 10px;
+            padding: 1.2rem 1.5rem;
             margin-bottom: 1rem;
             cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .answer-option:hover {
-            border-color: #667eea;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.1);
-        }
-
-        .answer-option.selected {
-            background: var(--primary-gradient);
-            color: white;
-            border-color: transparent;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
-        }
-
-        .answer-option.correct {
-            background: var(--success-gradient);
-            color: white;
-            border-color: transparent;
-        }
-
-        .answer-option.incorrect {
-            background: var(--danger-gradient);
-            color: white;
-            border-color: transparent;
-        }
-
-        .control-buttons {
+            transition: all 0.2s ease;
+            color: #2c2c2c;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            min-height: 50px;
             display: flex;
-            justify-content: space-between;
-            margin-top: 2rem;
+            align-items: center;
+            line-height: 1.6;
         }
-
-        .btn-custom {
-            padding: 12px 30px;
-            border-radius: 25px;
+        .answer-option:hover {
+            border-color: #2c2c2c;
+            background: #e0e0e0;
+            transform: translateX(4px);
+        }
+        .answer-option.selected {
+            background: #e0e0e0;
+            color: #2c2c2c;
+            border-color: #2c2c2c;
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
+        }
+        .answer-option.correct {
+            background: #10b981;
+            color: white;
+            border-color: #10b981;
+        }
+        .answer-option.incorrect {
+            background: #ef4444;
+            color: white;
+            border-color: #ef4444;
+        }
+        .btn-custom {
+            padding: 12px 32px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.2s ease;
             border: none;
-            position: relative;
-            overflow: hidden;
+            font-size: 0.95rem;
         }
-
         .btn-primary-custom {
-            background: var(--primary-gradient);
-            color: white;
+            background: #2c2c2c;
+            color: white !important;
         }
-
         .btn-primary-custom:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+            background: #1a1a1a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            color: white !important;
         }
-
+        .btn-primary-custom:active {
+            background: #0a0a0a;
+            color: white !important;
+            transform: translateY(0);
+        }
         .btn-secondary-custom {
-            background: #6c757d;
-            color: white;
+            background: #e8e8e8;
+            color: #2c2c2c !important;
+            margin-right: 1rem;
         }
-
+        .btn-secondary-custom:hover {
+            background: #d0d0d0;
+            color: #2c2c2c !important;
+        }
         .start-screen, .result-screen {
             text-align: center;
-            padding: 2rem;
+            padding: 2rem 0;
         }
-
         .start-screen h1 {
-            background: var(--primary-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-size: 3rem;
-            font-weight: bold;
+            color: #2c2c2c;
+            font-size: 2.5rem;
+            font-weight: 600;
             margin-bottom: 1rem;
         }
-
         .start-screen p {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: #6c757d;
             margin-bottom: 2rem;
         }
-
         .quiz-stats {
-            display: flex;
-            justify-content: space-around;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
             margin: 2rem 0;
         }
-
         .stat-item {
             text-align: center;
-            padding: 1rem;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            flex: 1;
-            margin: 0 0.5rem;
+            padding: 1.5rem;
+            background: #fafafa;
+            border-radius: 12px;
+            border: 1px solid #e8e8e8;
         }
-
         .stat-number {
             font-size: 2rem;
-            font-weight: bold;
-            background: var(--primary-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-weight: 600;
+            color: #2c2c2c;
         }
-
         .stat-label {
             color: #6c757d;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 1px;
+            margin-top: 0.5rem;
         }
-
         .result-badge {
             display: inline-block;
             padding: 1rem 2rem;
             border-radius: 50px;
-            font-size: 1.2rem;
-            font-weight: bold;
+            font-size: 1.3rem;
+            font-weight: 600;
             margin: 1rem 0;
         }
-
         .result-excellent {
-            background: var(--success-gradient);
+            background: #10b981;
             color: white;
         }
-
         .result-good {
-            background: var(--primary-gradient);
+            background: #2c2c2c;
             color: white;
         }
-
         .result-average {
-            background: var(--secondary-gradient);
+            background: #f59e0b;
             color: white;
         }
-
         .result-poor {
-            background: var(--danger-gradient);
+            background: #ef4444;
             color: white;
         }
-
-        .timer {
-            background: var(--secondary-gradient);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-weight: bold;
-            margin-bottom: 1rem;
-            display: inline-block;
-        }
-
         .loaded-questions-info {
-            background: rgba(102, 126, 234, 0.1);
-            border: 1px solid #667eea;
-            border-radius: 10px;
-            padding: 1rem;
-            margin: 1rem 0;
+            background: #fafafa;
+            border: 1px solid #e8e8e8;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
             text-align: center;
         }
-
+        .loaded-questions-info h5 {
+            color: #2c2c2c;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
         .file-input {
             display: none;
         }
-
         .upload-icon {
             font-size: 3rem;
-            color: #667eea;
+            color: #6c757d;
             margin-bottom: 1rem;
         }
-
-        @keyframes fadeInUp {
+        @keyframes scaleIn {
             from {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: scale(0.95);
             }
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: scale(1);
             }
         }
-
         @keyframes pulse {
-            0% {
-                transform: scale(1);
+            0%, 100% {
+                opacity: 1;
             }
             50% {
-                transform: scale(1.05);
-            }
-            100% {
-                transform: scale(1);
+                opacity: 0.8;
             }
         }
-
-        .pulse {
-            animation: pulse 2s infinite;
+        #reviewSummary {
+            margin-top: 2rem;
+            text-align: center;
         }
-
-        .alert-custom {
+        #reviewList {
+            margin-top: 2rem;
+            text-align: left;
+            display: none;
+        }
+        .review-question {
+            background: #fafafa;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid #e8e8e8;
+        }
+        .review-question-text {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #2c2c2c;
+            word-wrap: break-word;
+        }
+        .review-options {
+            margin-left: 0;
+        }
+        .review-option {
+            margin-bottom: 0.5rem;
+            padding: 0.8rem;
+            border-radius: 6px;
+            word-wrap: break-word;
+        }
+        .review-correct {
+            color: #10b981;
+            font-weight: 600;
+        }
+        .review-incorrect {
+            color: #ef4444;
+            font-weight: 600;
+        }
+        .user-answer-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        .user-answer-info strong {
+            font-weight: 600;
+        }
+        .format-info {
+            background: #fafafa;
+            border: 1px solid #e8e8e8;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            text-align: left;
+        }
+        .format-info h6 {
+            color: #2c2c2c;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .format-info p {
+            color: #6c757d;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+        .custom-toast {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            min-width: 300px;
+            animation: slideIn 0.3s ease;
+            border-left: 4px solid #10b981;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .custom-toast.error {
+            border-left-color: #ef4444;
+        }
+        .toast-icon {
+            font-size: 1.5rem;
+        }
+        .toast-content {
+            flex: 1;
+        }
+        .toast-title {
+            font-weight: 600;
+            color: #2c2c2c;
+            margin-bottom: 0.25rem;
+        }
+        .toast-message {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+        .result-center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .result-progress-bar {
+            background: #e8e8e8;
             border-radius: 10px;
-            border: none;
+            height: 12px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+            position: relative;
+        }
+        .result-progress-fill {
+            height: 100%;
+            transition: width 1.5s ease-out;
+            border-radius: 10px;
+        }
+        .result-progress-fill.correct {
+            background: linear-gradient(90deg, #10b981, #059669);
+        }
+        .result-progress-fill.incorrect {
+            background: linear-gradient(90deg, #ef4444, #dc2626);
+        }
+        .result-progress-fill.total {
+            background: linear-gradient(90deg, #2c2c2c, #1a1a1a);
+        }
+        #timeUpMessage {
+            color: #ef4444;
+            font-weight: 600;
             margin: 1rem 0;
+            font-size: 1.1rem;
         }
-
-        .alert-success-custom {
-            background: var(--success-gradient);
-            color: white;
-        }
-
-        .alert-danger-custom {
-            background: var(--danger-gradient);
-            color: white;
-        }
-
-        @media (max-width: 768px) {
+        @media (max-width: 992px) {
             .quiz-container {
-                margin: 1rem;
                 padding: 1.5rem;
             }
-
-            .quiz-title {
-                font-size: 2rem;
-            }
-
             .question-text {
                 font-size: 1.1rem;
             }
-
-            .control-buttons {
-                flex-direction: column;
-                gap: 1rem;
+            .answer-option {
+                padding: 1rem 1.2rem;
             }
-
+        }
+        @media (max-width: 768px) {
+            body {
+                padding: 0.5rem;
+            }
+            .quiz-container {
+                margin: 0.5rem auto;
+                padding: 1.2rem;
+                border-radius: 12px;
+            }
+            .start-screen h1 {
+                font-size: 2rem;
+            }
+            .question-text {
+                font-size: 1rem;
+            }
+            .answer-option {
+                padding: 1rem;
+                font-size: 0.95rem;
+            }
             .quiz-stats {
+                grid-template-columns: 1fr;
+            }
+            .toast-container {
+                right: 10px;
+                left: 10px;
+            }
+            .custom-toast {
+                min-width: auto;
+            }
+            .progress-container {
                 flex-direction: column;
-                gap: 1rem;
+                align-items: stretch;
+            }
+            .progress-info {
+                justify-content: center;
+            }
+            .file-upload-area {
+                padding: 2rem 1rem;
+            }
+            .btn-custom {
+                padding: 10px 24px;
+                font-size: 0.9rem;
+            }
+            .btn-secondary-custom {
+                margin-right: 0;
+                margin-bottom: 0.5rem;
+            }
+            .result-badge {
+                font-size: 1.1rem;
+                padding: 0.8rem 1.5rem;
+            }
+            .question-card {
+                min-height: calc(100vh - 240px);
+                padding: 1.5rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .quiz-container {
+                padding: 1rem;
+            }
+            .start-screen h1 {
+                font-size: 1.75rem;
+            }
+            .start-screen p {
+                font-size: 1rem;
+            }
+            .question-text {
+                font-size: 0.95rem;
+            }
+            .answer-option {
+                padding: 0.9rem;
+                font-size: 0.9rem;
+            }
+            .stat-number {
+                font-size: 1.75rem;
+            }
+            .upload-icon {
+                font-size: 2.5rem;
+            }
+            .question-card {
+                min-height: calc(100vh - 220px);
             }
         }
     </style>
 </head>
 <body>
+    <div class="toast-container" id="toastContainer"></div>
+    
     <div class="quiz-container">
-        <!-- Boshlash ekrani -->
         <div id="startScreen" class="start-screen">
-            <h1><i class="fas fa-brain"></i>Bilim Quiz</h1>
-            <p>Test savollarini yuklang va bilimlaringizni sinab ko'ring!</p>
-
-            <!-- Test faylini yuklash -->
+            <h1><i class="fas fa-brain"></i> Bilim Quiz</h1>
+            <p>Test savollarini yuklang va bilimlaringizni sinab ko'ring</p>
+            
             <div class="file-upload-area" id="fileUploadArea">
                 <div class="upload-icon">
                     <i class="fas fa-cloud-upload-alt"></i>
                 </div>
-                <h4>Test faylini yuklang</h4>
-                <p>Fayl formatiga mos ravishda test savollarini yuklang</p>
+                <h4 style="color: #2c2c2c; font-weight: 600;">Test faylini yuklang</h4>
+                <p style="color: #6c757d;">Fayl formatiga mos ravishda test savollarini yuklang</p>
                 <input type="file" id="fileInput" class="file-input" accept=".txt">
                 <button class="btn btn-custom btn-primary-custom mt-2">
                     <i class="fas fa-folder-open"></i> Fayl Tanlash
                 </button>
             </div>
-
-            <!-- Yuklangan savollar haqida ma'lumot -->
+            
             <div id="loadedQuestionsInfo" class="loaded-questions-info" style="display: none;">
-                <h5><i class="fas fa-check-circle"></i> Test Yuklandi!</h5>
+                <h5><i class="fas fa-check-circle"></i> Test Yuklandi</h5>
                 <div class="quiz-stats">
                     <div class="stat-item">
                         <div class="stat-number" id="loadedQuestionsCount">0</div>
@@ -424,15 +583,14 @@
                         <div class="stat-label">Variant</div>
                     </div>
                 </div>
-                <button id="startBtn" class="btn btn-custom btn-primary-custom pulse">
+                <button id="startBtn" class="btn btn-custom btn-primary-custom">
                     <i class="fas fa-play"></i> Testni Boshlash
                 </button>
             </div>
-
-            <!-- Format ma'lumoti -->
-            <div class="alert alert-info mt-3">
+            
+            <div class="format-info">
                 <h6><i class="fas fa-info-circle"></i> Fayl Formati:</h6>
-                <p class="mb-0">
+                <p>
                     Savol matni?<br>
                     A. Variant 1<br>
                     B. Variant 2<br>
@@ -442,88 +600,91 @@
                 </p>
             </div>
         </div>
-
-        <!-- Quiz ekrani -->
+        
         <div id="quizScreen" style="display: none;">
-            <div class="quiz-header">
-                <h2 class="quiz-title">Bilim Quiz</h2>
-                <div class="timer" id="timer">
-                    <i class="fas fa-clock"></i> <span id="timeLeft">0</span>s
-                </div>
-            </div>
-
             <div class="progress-container">
                 <div class="progress">
                     <div class="progress-bar" id="progressBar" style="width: 0%"></div>
                 </div>
-                <small class="text-muted mt-2 d-block">
-                    <span id="currentQuestion">1</span> / <span id="totalQuestions">0</span> savol
-                </small>
+                <div class="progress-info">
+                    <span><span id="currentQuestion">1</span> / <span id="totalQuestions">0</span> savol</span>
+                    <div class="timer" id="timerClone">
+                        <i class="fas fa-clock"></i> <span id="timeLeftClone">0</span>
+                    </div>
+                </div>
             </div>
-
-            <div id="questionContainer">
-                <!-- Savollar dinamik ravishda bu yerga qo'shiladi -->
-            </div>
-
-            <div class="control-buttons">
-                <button id="prevBtn" class="btn btn-custom btn-secondary-custom" style="display: none;">
-                    <i class="fas fa-arrow-left"></i> Oldingi
-                </button>
-                <button id="nextBtn" class="btn btn-custom btn-primary-custom">
-                    Keyingi <i class="fas fa-arrow-right"></i>
-                </button>
-            </div>
+            <div id="questionContainer"></div>
         </div>
-
-        <!-- Natija ekrani -->
+        
         <div id="resultScreen" class="result-screen" style="display: none;">
-            <h2 class="quiz-title">Test Yakunlandi!</h2>
-            <div id="resultBadge" class="result-badge"></div>
-            
-            <div class="quiz-stats">
-                <div class="stat-item">
-                    <div class="stat-number" id="correctAnswers">0</div>
-                    <div class="stat-label">To'g'ri javoblar</div>
+            <div class="result-center">
+                <h2 class="quiz-title">Test Yakunlandi</h2>
+                <div id="resultBadge" class="result-badge"></div>
+                <div id="timeUpMessage" style="display: none;"></div>
+               
+                <div class="quiz-stats">
+                    <div class="stat-item">
+                        <div class="stat-number" style="color: #10b981;" id="correctAnswers">0</div>
+                        <div class="stat-label">To'g'ri javoblar</div>
+                        <div class="result-progress-bar">
+                            <div class="result-progress-fill correct" id="correctProgress" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" style="color: #ef4444;" id="wrongAnswers">0</div>
+                        <div class="stat-label">Noto'g'ri javoblar</div>
+                        <div class="result-progress-bar">
+                            <div class="result-progress-fill incorrect" id="incorrectProgress" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="finalScore">0%</div>
+                        <div class="stat-label">Ball</div>
+                        <div class="result-progress-bar">
+                            <div class="result-progress-fill total" id="totalProgress" style="width: 0%"></div>
+                        </div>
+                    </div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number" id="wrongAnswers">0</div>
-                    <div class="stat-label">Noto'g'ri javoblar</div>
+                <div id="reviewSummary">
+                    <h5 style="color: #2c2c2c; font-weight: 600; margin-bottom: 1rem;">Natija</h5>
+                    <p style="font-size: 0.95rem;">To'g'ri: <strong style="color: #10b981;" id="summaryCorrect">0</strong> | Noto'g'ri: <strong style="color: #ef4444;" id="summaryWrong">0</strong></p>
+                    <button id="showMoreBtn" class="btn btn-custom btn-secondary-custom mt-3">
+                        Batafsil ko'rish <i class="fas fa-chevron-down"></i>
+                    </button>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number" id="finalScore">0%</div>
-                    <div class="stat-label">Ball</div>
+                <div id="reviewList"></div>
+                <div class="mt-4">
+                    <button id="restartBtn" class="btn btn-custom btn-primary-custom me-2 mb-2">
+                        <i class="fas fa-redo"></i> Qayta Boshlash
+                    </button>
+                    <button id="newTestBtn" class="btn btn-custom btn-secondary-custom mb-2">
+                        <i class="fas fa-file-upload"></i> Yangi Test
+                    </button>
                 </div>
-            </div>
-
-            <div class="mt-4">
-                <button id="restartBtn" class="btn btn-custom btn-primary-custom me-3">
-                    <i class="fas fa-redo"></i> Qayta Boshlash
-                </button>
-                <button id="reviewBtn" class="btn btn-custom btn-secondary-custom">
-                    <i class="fas fa-eye"></i> Javoblarni Ko'rish
-                </button>
             </div>
         </div>
     </div>
-
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script>
         class QuizApp {
             constructor() {
                 this.questions = [];
+                this.originalQuestions = [];
                 this.currentQuestion = 0;
                 this.score = 0;
                 this.timeLeft = 0;
                 this.totalTime = 0;
                 this.timer = null;
                 this.userAnswers = [];
-                this.originalIndices = []; // For tracking original option indices
-                this.questionOrder = []; // For randomized question order
+                this.shuffledIndices = [];
+                this.questionOrder = [];
+                this.timeUpShown = false;
                 
                 this.initElements();
                 this.bindEvents();
             }
-
+            
             initElements() {
                 this.startScreen = document.getElementById('startScreen');
                 this.quizScreen = document.getElementById('quizScreen');
@@ -532,39 +693,61 @@
                 this.progressBar = document.getElementById('progressBar');
                 this.currentQuestionEl = document.getElementById('currentQuestion');
                 this.totalQuestionsEl = document.getElementById('totalQuestions');
-                this.timerEl = document.getElementById('timeLeft');
-                this.nextBtn = document.getElementById('nextBtn');
-                this.prevBtn = document.getElementById('prevBtn');
+                this.timerCloneEl = document.getElementById('timeLeftClone');
                 this.fileInput = document.getElementById('fileInput');
                 this.fileUploadArea = document.getElementById('fileUploadArea');
                 this.loadedQuestionsInfo = document.getElementById('loadedQuestionsInfo');
+                this.startBtn = document.getElementById('startBtn');
+                this.showMoreBtn = document.getElementById('showMoreBtn');
+                this.timeUpMessage = document.getElementById('timeUpMessage');
             }
-
+            
             bindEvents() {
                 this.fileUploadArea.addEventListener('click', () => this.fileInput.click());
                 this.fileInput.addEventListener('change', (e) => this.handleFileUpload(e));
-                
                 this.fileUploadArea.addEventListener('dragover', (e) => this.handleDragOver(e));
                 this.fileUploadArea.addEventListener('dragleave', (e) => this.handleDragLeave(e));
                 this.fileUploadArea.addEventListener('drop', (e) => this.handleFileDrop(e));
-
-                document.getElementById('startBtn').addEventListener('click', () => this.startQuiz());
+                this.startBtn.addEventListener('click', () => this.startQuiz());
                 document.getElementById('restartBtn').addEventListener('click', () => this.restartQuiz());
-                document.getElementById('reviewBtn').addEventListener('click', () => this.reviewAnswers());
-                this.nextBtn.addEventListener('click', () => this.nextQuestion());
-                this.prevBtn.addEventListener('click', () => this.prevQuestion());
+                document.getElementById('newTestBtn').addEventListener('click', () => this.newTest());
+                this.showMoreBtn.addEventListener('click', () => this.toggleFullReview());
             }
-
+            
+            showToast(title, message, type = 'success') {
+                const toastContainer = document.getElementById('toastContainer');
+                const toast = document.createElement('div');
+                toast.className = `custom-toast ${type === 'error' ? 'error' : ''}`;
+                
+                const icon = type === 'success' ? '✓' : '✕';
+                const iconColor = type === 'success' ? '#10b981' : '#ef4444';
+                
+                toast.innerHTML = `
+                    <div class="toast-icon" style="color: ${iconColor}">${icon}</div>
+                    <div class="toast-content">
+                        <div class="toast-title">${title}</div>
+                        <div class="toast-message">${message}</div>
+                    </div>
+                `;
+                
+                toastContainer.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.style.animation = 'slideOut 0.3s ease';
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            }
+            
             handleDragOver(e) {
                 e.preventDefault();
                 this.fileUploadArea.classList.add('dragover');
             }
-
+            
             handleDragLeave(e) {
                 e.preventDefault();
                 this.fileUploadArea.classList.remove('dragover');
             }
-
+            
             handleFileDrop(e) {
                 e.preventDefault();
                 this.fileUploadArea.classList.remove('dragover');
@@ -573,14 +756,14 @@
                     this.processFile(files[0]);
                 }
             }
-
+            
             handleFileUpload(e) {
                 const file = e.target.files[0];
                 if (file) {
                     this.processFile(file);
                 }
             }
-
+            
             processFile(file) {
                 const reader = new FileReader();
                 reader.onload = (e) => {
@@ -588,12 +771,12 @@
                         const content = e.target.result;
                         this.parseQuestions(content);
                     } catch (error) {
-                        this.showAlert('Fayl o\'qishda xatolik yuz berdi!', 'danger');
+                        this.showToast('Xatolik', 'Fayl o\'qishda xatolik yuz berdi', 'error');
                     }
                 };
                 reader.readAsText(file);
             }
-
+            
             shuffleArray(array) {
                 for (let i = array.length - 1; i > 0; i--) {
                     const j = Math.floor(Math.random() * (i + 1));
@@ -601,36 +784,39 @@
                 }
                 return array;
             }
-
+            
             parseQuestions(content) {
-                const lines = content.trim().split('\n').filter(line => line.trim() !== '');
+                const lines = content.trim().split('\n').map(l => l.trim()).filter(l => l !== '');
                 const questions = [];
+                const originalQuestions = [];
                 let currentQuestion = null;
                 let options = [];
-                let correctAnswer = null;
-
+                
                 for (let i = 0; i < lines.length; i++) {
-                    const line = lines[i].trim();
+                    const line = lines[i];
                     
                     if (line.startsWith('ANSWER:')) {
-                        const answerLetter = line.split(':')[1].trim();
+                        const answerLetter = line.split(':')[1].trim().toUpperCase();
                         const answerIndex = answerLetter.charCodeAt(0) - 65;
                         
-                        if (currentQuestion && options.length === 4) {
+                        if (currentQuestion && options.length === 4 && answerIndex >= 0 && answerIndex < 4) {
+                            originalQuestions.push({
+                                question: currentQuestion,
+                                options: [...options],
+                                correct: answerIndex
+                            });
                             questions.push({
                                 question: currentQuestion,
                                 options: [...options],
                                 correct: answerIndex
                             });
                         }
-                        
                         currentQuestion = null;
                         options = [];
-                        correctAnswer = null;
-                    } else if (line.match(/^[A-D]\./)) {
+                    } else if (line.match(/^[A-D]\./i)) {
                         const optionText = line.substring(2).trim();
                         options.push(optionText);
-                    } else if (!line.match(/^[A-D]\./) && !line.startsWith('ANSWER:')) {
+                    } else {
                         if (currentQuestion) {
                             currentQuestion += ' ' + line;
                         } else {
@@ -638,22 +824,22 @@
                         }
                     }
                 }
-
+                
                 if (questions.length > 0) {
-                    // Randomize question order
+                    this.originalQuestions = originalQuestions;
                     this.questionOrder = Array.from({length: questions.length}, (_, i) => i);
                     this.questionOrder = this.shuffleArray(this.questionOrder);
                     
-                    // Randomize options for each question
-                    this.questions = questions.map((q, index) => {
-                        const originalIndices = [0, 1, 2, 3];
-                        const shuffledIndices = this.shuffleArray([...originalIndices]);
-                        const shuffledOptions = shuffledIndices.map(i => q.options[i]);
-                        const newCorrect = shuffledIndices.indexOf(q.correct);
-                        this.originalIndices[index] = shuffledIndices;
+                    this.shuffledIndices = [];
+                    this.questions = questions.map((q, idx) => {
+                        const indices = [0,1,2,3];
+                        const shuffled = this.shuffleArray([...indices]);
+                        this.shuffledIndices[idx] = shuffled;
+                        const shuffledOpts = shuffled.map(i => q.options[i]);
+                        const newCorrect = shuffled.indexOf(q.correct);
                         return {
-                            ...q,
-                            options: shuffledOptions,
+                            question: q.question,
+                            options: shuffledOpts,
                             correct: newCorrect
                         };
                     });
@@ -661,10 +847,10 @@
                     this.calculateTime();
                     this.showLoadedQuestions();
                 } else {
-                    this.showAlert('Hech qanday savol topilmadi! Fayl formatini tekshiring.', 'danger');
+                    throw new Error('Hech qanday savol topilmadi');
                 }
             }
-
+            
             calculateTime() {
                 const minutes = Math.ceil(this.questions.length / 10);
                 this.totalTime = minutes * 60;
@@ -673,69 +859,58 @@
                 document.getElementById('loadedQuestionsCount').textContent = this.questions.length;
                 document.getElementById('calculatedTime').textContent = minutes;
                 this.totalQuestionsEl.textContent = this.questions.length;
-                this.timerEl.textContent = this.totalTime;
+                this.timerCloneEl.textContent = this.formatTime(this.totalTime);
             }
-
+            
+            formatTime(seconds) {
+                const mins = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                return `${mins}:${secs.toString().padStart(2, '0')}`;
+            }
+            
             showLoadedQuestions() {
                 this.loadedQuestionsInfo.style.display = 'block';
-                this.showAlert(`${this.questions.length} ta savol muvaffaqiyatli yuklandi!`, 'success');
+                this.showToast('Muvaffaqiyatli', `${this.questions.length} ta savol yuklandi`);
+                this.startBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
-
-            showAlert(message, type) {
-                const alertDiv = document.createElement('div');
-                alertDiv.className = `alert alert-${type} === 'success' ? 'success' : 'danger'}-custom alert-custom`;
-                alertDiv.innerHTML = `<i class="fas fa-${type === 'check'}></i> ${message}`;
-                
-                this.startScreen.appendChild(alertDiv);
-                
-                setTimeout(() => {
-                    alertDiv.remove();
-                }, 5000);
-            }
-
+            
             startQuiz() {
                 this.startScreen.style.display = 'none';
                 this.quizScreen.style.display = 'block';
+                this.timeUpShown = false;
+                this.timeUpMessage.style.display = 'none';
                 this.startTimer();
                 this.showQuestion();
             }
-
+            
             startTimer() {
                 this.timer = setInterval(() => {
                     this.timeLeft--;
-                    
-                    const minutes = Math.floor(this.timeLeft / 60);
-                    const seconds = this.timeLeft % 60;
-                    this.timerEl.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                    const formatted = this.formatTime(this.timeLeft);
+                    this.timerCloneEl.textContent = formatted;
                     
                     if (this.timeLeft <= 60) {
-                        this.timerEl.parentElement.style.background = 'var(--danger-gradient)';
-                        this.timerEl.parentElement.classList.add('pulse');
+                        document.getElementById('timerClone').classList.add('warning');
                     }
-                    
                     if (this.timeLeft <= 0) {
                         this.endQuiz();
                     }
                 }, 1000);
             }
-
+            
             showQuestion() {
-                const questionIndex = this.questionOrder[this.currentQuestion];
-                const question = this.questions[questionIndex];
+                const qIdx = this.questionOrder[this.currentQuestion];
+                const question = this.questions[qIdx];
                 
                 this.questionContainer.innerHTML = `
                     <div class="question-container active">
                         <div class="question-card">
-                            <div class="question-number">
-                                Savol ${this.currentQuestion + 1}
-                            </div>
                             <div class="question-text">
                                 ${question.question}
                             </div>
                             <div class="answers">
                                 ${question.options.map((option, index) => `
                                     <div class="answer-option" data-index="${index}">
-                                        <i class="fas fa-circle-dot me-2"></i>
                                         ${option}
                                     </div>
                                 `).join('')}
@@ -743,52 +918,43 @@
                         </div>
                     </div>
                 `;
-
+                
                 const options = document.querySelectorAll('.answer-option');
                 options.forEach(option => {
-                    option.addEventListener('click', (e) => this.selectAnswer(e));
+                    option.addEventListener('click', (e) => this.selectAnswer(e, qIdx));
                 });
-
-                this.updateProgress();
-                this.updateNavigation();
                 
-                if (this.userAnswers[questionIndex] !== undefined) {
-                    const selectedOption = document.querySelector(`[data-index="${this.userAnswers[questionIndex]}"]`);
-                    if (selectedOption) {
-                        selectedOption.classList.add('selected');
-                    }
+                this.updateProgress();
+                
+                if (this.userAnswers[qIdx] !== undefined) {
+                    const sel = document.querySelector(`[data-index="${this.userAnswers[qIdx]}"]`);
+                    if (sel) sel.classList.add('selected');
                 }
             }
-
-            selectAnswer(e) {
-                const selectedIndex = parseInt(e.target.dataset.index);
+            
+            selectAnswer(e, qIdx) {
+                if (this.userAnswers[qIdx] !== undefined) return;
+                
+                const selectedIndex = parseInt(e.currentTarget.dataset.index);
                 
                 document.querySelectorAll('.answer-option').forEach(opt => {
                     opt.classList.remove('selected');
                 });
                 
-                e.target.classList.add('selected');
+                e.currentTarget.classList.add('selected');
+                this.userAnswers[qIdx] = selectedIndex;
                 
-                const questionIndex = this.questionOrder[this.currentQuestion];
-                this.userAnswers[questionIndex] = selectedIndex;
+                setTimeout(() => {
+                    this.nextQuestion();
+                }, 400);
             }
-
+            
             updateProgress() {
                 const progress = ((this.currentQuestion + 1) / this.questions.length) * 100;
                 this.progressBar.style.width = `${progress}%`;
                 this.currentQuestionEl.textContent = this.currentQuestion + 1;
             }
-
-            updateNavigation() {
-                this.prevBtn.style.display = this.currentQuestion > 0 ? 'inline-block' : 'none';
-                
-                if (this.currentQuestion === this.questions.length - 1) {
-                    this.nextBtn.innerHTML = '<i class="fas fa-check"></i> Yakunlash';
-                } else {
-                    this.nextBtn.innerHTML = 'Keyingi <i class="fas fa-arrow-right"></i>';
-                }
-            }
-
+            
             nextQuestion() {
                 if (this.currentQuestion < this.questions.length - 1) {
                     this.currentQuestion++;
@@ -797,40 +963,51 @@
                     this.endQuiz();
                 }
             }
-
-            prevQuestion() {
-                if (this.currentQuestion > 0) {
-                    this.currentQuestion--;
-                    this.showQuestion();
-                }
-            }
-
+            
             endQuiz() {
                 clearInterval(this.timer);
+                if (this.timeLeft <= 0 && !this.timeUpShown) {
+                    this.timeUpShown = true;
+                    this.timeUpMessage.style.display = 'block';
+                    this.timeUpMessage.textContent = `Vaqt tugadi! Berilgan vaqt: ${this.formatTime(this.totalTime)}`;
+                }
                 this.calculateScore();
                 this.showResults();
             }
-
+            
             calculateScore() {
                 this.score = 0;
                 for (let i = 0; i < this.questions.length; i++) {
-                    if (this.userAnswers[i] === this.questions[i].correct) {
+                    const qIdx = this.questionOrder[i];
+                    if (this.userAnswers[qIdx] === this.questions[qIdx].correct) {
                         this.score++;
                     }
                 }
             }
-
+            
             showResults() {
                 this.quizScreen.style.display = 'none';
                 this.resultScreen.style.display = 'block';
                 
-                const percentage = Math.round((this.score / this.questions.length));
+                const percentage = Math.round((this.score / this.questions.length) * 100);
                 const correctAnswers = this.score;
                 const wrongAnswers = this.questions.length - this.score;
                 
                 document.getElementById('correctAnswers').textContent = correctAnswers;
-                document.getElementById('incorrectAnswers').textContent = wrongAnswers;
+                document.getElementById('wrongAnswers').textContent = wrongAnswers;
                 document.getElementById('finalScore').textContent = `${percentage}%`;
+                
+                document.getElementById('summaryCorrect').textContent = correctAnswers;
+                document.getElementById('summaryWrong').textContent = wrongAnswers;
+                
+                setTimeout(() => {
+                    const correctPercent = (correctAnswers / this.questions.length) * 100;
+                    const incorrectPercent = (wrongAnswers / this.questions.length) * 100;
+                    
+                    document.getElementById('correctProgress').style.width = `${correctPercent}%`;
+                    document.getElementById('incorrectProgress').style.width = `${incorrectPercent}%`;
+                    document.getElementById('totalProgress').style.width = `${percentage}%`;
+                }, 100);
                 
                 const resultBadge = document.getElementById('resultBadge');
                 if (percentage >= 90) {
@@ -846,125 +1023,129 @@
                     resultBadge.textContent = 'Yaxshiroq harakat qiling 😞';
                     resultBadge.className = 'result-badge result-poor';
                 }
-            }
-
-            reviewAnswers() {
-                this.resultScreen.style.display = 'none';
-                this.quizScreen.style.display = 'block';
-                this.currentQuestion = 0;
-                this.showReviewQuestion();
-            }
-
-            showReviewQuestion() {
-                const questionIndex = this.questionOrder[this.currentQuestion];
-                const question = this.questions[questionIndex];
-                const userAnswer = this.userAnswers[questionIndex];
-                const correctAnswer = question.correct;
                 
-                this.questionContainer.innerHTML = `
-                    <div class="question-container active">
-                        <div class="question-card">
-                            <div class="question-number">
-                                Savol ${this.currentQuestion + 1} - Ko'rib chiqish
+                const reviewList = document.getElementById('reviewList');
+                reviewList.innerHTML = '<h5 style="color: #2c2c2c; font-weight: 600; margin-bottom: 1.5rem; text-align: center;">Batafsil natijalar</h5>';
+                
+                for (let disp = 0; disp < this.questions.length; disp++) {
+                    const qIdx = this.questionOrder[disp];
+                    const origQ = this.originalQuestions[qIdx];
+                    const shuffledQ = this.questions[qIdx];
+                    const userIdx = this.userAnswers[qIdx];
+                    const correctIdx = shuffledQ.correct;
+                    
+                    const userOrigIdx = userIdx !== undefined ? this.shuffledIndices[qIdx][userIdx] : -1;
+                    const userOrigLetter = userOrigIdx >= 0 ? String.fromCharCode(65 + userOrigIdx) : 'Tanlanmagan';
+                    const correctOrigLetter = String.fromCharCode(65 + origQ.correct);
+                    
+                    let optionsHTML = '';
+                    origQ.options.forEach((opt, oIdx) => {
+                        let cls = '';
+                        let icon = '';
+                        
+                        if (oIdx === origQ.correct) {
+                            cls = 'review-correct';
+                            icon = ' ✓';
+                        }
+                        
+                        if (userOrigIdx === oIdx && userIdx !== undefined) {
+                            if (oIdx === origQ.correct) {
+                                cls = 'review-correct';
+                            } else {
+                                cls = 'review-incorrect';
+                                icon = ' ✗';
+                            }
+                        }
+                        
+                        optionsHTML += `<div class="review-option ${cls}">${String.fromCharCode(65 + oIdx)}. ${opt}${icon}</div>`;
+                    });
+                    
+                    const status = (userIdx === correctIdx) 
+                        ? '<span style="color:#10b981; font-weight: 600;">To\'g\'ri</span>' 
+                        : '<span style="color:#ef4444; font-weight: 600;">Noto\'g\'ri</span>';
+                    
+                    reviewList.innerHTML += `
+                        <div class="review-question">
+                            <div class="review-question-text">
+                                ${origQ.question} 
+                                <span style="float: right;">${status}</span>
                             </div>
-                            <div class="question-text">
-                                ${question.question}
-                            </div>
-                            <div class="answers">
-                                ${question.options.map((option, index) => {
-                                    let className = 'answer-option';
-                                    if (index === correctAnswer) {
-                                        className += ' correct';
-                                    } else if (index === userAnswer && userAnswer !== correctAnswer) {
-                                        className += ' incorrect';
-                                    }
-                                    return `
-                                        <div class="${className}" data-index="${index}">
-                                            <i class="fas fa-circle-dot me-2"></i>
-                                            ${String.fromCharCode(65 + this.originalIndices[questionIndex][index])}. ${option}
-                                            ${index === correctAnswer ? '<i class="fas fa-check ms-2"></i>' : ''}
-                                            ${index === userAnswer && userAnswer !== correctAnswer ? '<i class="fas fa-times ms-2"></i>' : ''}
-                                        </div>
-                                    `;
-                                }).join('')}
+                            <div class="review-options">
+                                ${optionsHTML}
+                                <div class="user-answer-info">
+                                    <div>Sizning javobingiz: <strong>${userOrigLetter}</strong></div>
+                                    <div>To'g'ri javob: <strong style="color: #10b981;">${correctOrigLetter}</strong></div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                `;
-
-                this.updateProgress();
-                
-                this.nextBtn.style.display = 'inline-block';
-                this.prevBtn.style.display = this.currentQuestion > 0 ? 'inline-block' : 'none';
-                
-                if (this.currentQuestion === this.questions.length - 1) {
-                    this.nextBtn.innerHTML = '<i class="fas fa-home"></i> Bosh Sahifa';
-                    this.nextBtn.onclick = () => this.goToHome();
+                    `;
+                }
+            }
+            
+            toggleFullReview() {
+                const reviewList = document.getElementById('reviewList');
+                if (reviewList.style.display === 'block') {
+                    reviewList.style.display = 'none';
+                    this.showMoreBtn.innerHTML = 'Batafsil ko\'rish <i class="fas fa-chevron-down"></i>';
                 } else {
-                    this.nextBtn.innerHTML = 'Keyingi <i class="fas fa-arrow-right"></i>';
-                    this.nextBtn.onclick = () => this.nextReviewQuestion();
-                }
-                
-                this.prevBtn.onclick = () => this.prevReviewQuestion();
-            }
-
-            nextReviewQuestion() {
-                if (this.currentQuestion < this.questions.length - 1) {
-                    this.currentQuestion++;
-                    this.showReviewQuestion();
+                    reviewList.style.display = 'block';
+                    this.showMoreBtn.innerHTML = 'Yashirish <i class="fas fa-chevron-up"></i>';
                 }
             }
-
-            prevReviewQuestion() {
-                if (this.currentQuestion > 0) {
-                    this.currentQuestion--;
-                    this.showReviewQuestion();
-                }
-            }
-
-            goToHome() {
-                this.quizScreen.style.display = 'none';
-                this.resultScreen.style.display = 'none';
-                this.startScreen.style.display = 'block';
-            }
-
+            
             restartQuiz() {
+                this.showToast('Muvaffaqiyatli', 'Test qayta boshlandi!');
                 this.currentQuestion = 0;
                 this.score = 0;
                 this.userAnswers = [];
                 this.timeLeft = this.totalTime;
-                this.originalIndices = [];
-                
-                // Re-randomize questions and options
                 this.questionOrder = this.shuffleArray([...this.questionOrder]);
-                this.questions = this.questions.map((q, index) => {
-                    const originalIndices = [0, 1, 2, 3];
-                    const shuffledIndices = this.shuffleArray([...originalIndices]);
-                    const shuffledOptions = shuffledIndices.map(i => q.options[i]);
-                    const newCorrect = shuffledIndices.indexOf(q.correct);
-                    this.originalIndices[index] = shuffledIndices;
+                this.shuffledIndices = [];
+                
+                this.questions = this.originalQuestions.map((q, idx) => {
+                    const indices = [0,1,2,3];
+                    const shuffled = this.shuffleArray([...indices]);
+                    this.shuffledIndices[idx] = shuffled;
+                    const shuffledOpts = shuffled.map(i => q.options[i]);
+                    const newCorrect = shuffled.indexOf(q.correct);
                     return {
-                        ...q,
-                        options: shuffledOptions,
+                        question: q.question,
+                        options: shuffledOpts,
                         correct: newCorrect
                     };
                 });
                 
-                if (this.timer) {
-                    clearInterval(this.timer);
-                }
+                if (this.timer) clearInterval(this.timer);
+                
+                document.getElementById('timerClone').classList.remove('warning');
                 
                 this.resultScreen.style.display = 'none';
                 this.quizScreen.style.display = 'block';
-                
-                this.timerEl.parentElement.style.background = 'var(--secondary-gradient)';
-                this.timerEl.parentElement.classList.remove('pulse');
-                
                 this.startTimer();
                 this.showQuestion();
             }
+            
+            newTest() {
+                this.currentQuestion = 0;
+                this.score = 0;
+                this.userAnswers = [];
+                this.questions = [];
+                this.originalQuestions = [];
+                this.shuffledIndices = [];
+                this.questionOrder = [];
+                if (this.timer) clearInterval(this.timer);
+                
+                document.getElementById('timerClone').classList.remove('warning');
+                
+                this.resultScreen.style.display = 'none';
+                this.startScreen.style.display = 'block';
+                this.loadedQuestionsInfo.style.display = 'none';
+                document.getElementById('reviewList').style.display = 'none';
+                this.showMoreBtn.innerHTML = 'Batafsil ko\'rish <i class="fas fa-chevron-down"></i>';
+                this.fileInput.value = '';
+            }
         }
-
+        
         document.addEventListener('DOMContentLoaded', () => {
             new QuizApp();
         });
