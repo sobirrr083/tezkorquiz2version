@@ -35,6 +35,22 @@
             background: #ECF2FF;
             min-height: 100vh;
             padding-top: 80px;
+            -webkit-tap-highlight-color: transparent; /* Mobil qurilmalarda tap highlightni olib tashlash */
+        }
+
+        /* Barcha elementlarga cursor va user-select qo'shish */
+        a, button, label, .nav-link, .dropdown-item, .burger {
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        /* Input va textarea uchun alohida ruxsat (agar kerak bo'lsa) */
+        input[type="text"], textarea, [contenteditable] {
+            user-select: auto;
+            -webkit-user-select: auto;
         }
 
         .navbar {
@@ -785,7 +801,7 @@
                 border-radius: 10px;
             }
 
-            .navbar-collapse::-webkit-scrollbar-thumb {
+            .navbar-collapse::--webkit-scrollbar-thumb {
                 background: rgba(102, 126, 234, 0.3);
                 border-radius: 10px;
             }
@@ -821,7 +837,7 @@
             <a class="navbar-brand" href="index.html">
                 Tezkor Quiz
             </a>
-            <label class="burger" for="burger">
+            <label class="burger" for="burger" tabindex="-1">
                 <input type="checkbox" id="burger">
                 <span></span>
                 <span></span>
@@ -974,6 +990,24 @@
             const dropdown = document.querySelector('.dropdown');
             const dropdownToggle = document.getElementById('quizDropdown');
             const dropdownMenu = document.querySelector('.dropdown-menu');
+
+            // Touch va focus muammolarini hal qilish uchun qo'shimcha prevent
+            function preventFocus(e) {
+                e.preventDefault();
+            }
+
+            // Burger label va boshqa bosiladigan elementlarga preventDefault qo'shish (faqat mobil)
+            const burgerLabel = document.querySelector('.burger');
+            if (burgerLabel) {
+                burgerLabel.addEventListener('touchstart', preventFocus, { passive: false });
+                burgerLabel.addEventListener('mousedown', preventFocus);
+            }
+
+            // Barcha nav-link va dropdown-itemlarga
+            document.querySelectorAll('.nav-link, .dropdown-item, .social-link, .help-button').forEach(el => {
+                el.addEventListener('touchstart', preventFocus, { passive: false });
+                el.addEventListener('mousedown', preventFocus);
+            });
 
             let scrollTimeout;
             let lastScrollTop = 0;
