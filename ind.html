@@ -48,11 +48,17 @@
 
         .navbar.scrolled {
             padding: 10px 0;
-            background: rgba(255, 255, 255, 0.75);
+            background: rgba(255, 255, 255, 0.65);
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
             border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .navbar.menu-open {
+            background: rgba(255, 255, 255, 1) !important;
+            backdrop-filter: blur(0px) !important;
+            -webkit-backdrop-filter: blur(0px) !important;
         }
 
         .navbar-brand {
@@ -981,10 +987,13 @@
                 scrollTimeout = window.requestAnimationFrame(function() {
                     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
                     
-                    if (scrollTop > 30) {
-                        navbar.classList.add('scrolled');
-                    } else {
-                        navbar.classList.remove('scrolled');
+                    // Agar menyu ochiq bo'lsa, scroll effektni qo'llamaymiz
+                    if (!burgerInput.checked) {
+                        if (scrollTop > 30) {
+                            navbar.classList.add('scrolled');
+                        } else {
+                            navbar.classList.remove('scrolled');
+                        }
                     }
 
                     lastScrollTop = scrollTop;
@@ -995,13 +1004,23 @@
             burgerInput.addEventListener('change', function() {
                 if (this.checked) {
                     navbarCollapse.classList.add('show');
+                    navbar.classList.add('menu-open');
                     document.body.style.overflow = 'hidden';
                 } else {
                     navbarCollapse.classList.remove('show');
+                    navbar.classList.remove('menu-open');
                     dropdown.classList.remove('show');
                     dropdownToggle.setAttribute('aria-expanded', 'false');
                     dropdownMenu.classList.remove('show');
                     document.body.style.overflow = 'auto';
+                    
+                    // Menyu yopilganda scroll holatini tekshiramiz
+                    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                    if (scrollTop > 30) {
+                        navbar.classList.add('scrolled');
+                    } else {
+                        navbar.classList.remove('scrolled');
+                    }
                 }
             });
 
@@ -1011,7 +1030,40 @@
                     if (navbarCollapse.classList.contains('show')) {
                         burgerInput.checked = false;
                         navbarCollapse.classList.remove('show');
+                        navbar.classList.remove('menu-open');
                         document.body.style.overflow = 'auto';
+                        
+                        // Menyu yopilganda scroll holatini tekshiramiz
+                        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                        if (scrollTop > 30) {
+                            navbar.classList.add('scrolled');
+                        } else {
+                            navbar.classList.remove('scrolled');
+                        }
+                    }
+                });
+            });
+
+            // Dropdown items ham menyuni yopadi
+            const dropdownItems = document.querySelectorAll('.dropdown-item');
+            dropdownItems.forEach(function(item) {
+                item.addEventListener('click', function() {
+                    if (navbarCollapse.classList.contains('show')) {
+                        burgerInput.checked = false;
+                        navbarCollapse.classList.remove('show');
+                        navbar.classList.remove('menu-open');
+                        dropdown.classList.remove('show');
+                        dropdownToggle.setAttribute('aria-expanded', 'false');
+                        dropdownMenu.classList.remove('show');
+                        document.body.style.overflow = 'auto';
+                        
+                        // Menyu yopilganda scroll holatini tekshiramiz
+                        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                        if (scrollTop > 30) {
+                            navbar.classList.add('scrolled');
+                        } else {
+                            navbar.classList.remove('scrolled');
+                        }
                     }
                 });
             });
@@ -1051,7 +1103,16 @@
                     if (window.innerWidth >= 992 && navbarCollapse.classList.contains('show')) {
                         burgerInput.checked = false;
                         navbarCollapse.classList.remove('show');
+                        navbar.classList.remove('menu-open');
                         document.body.style.overflow = 'auto';
+                        
+                        // Menyu yopilganda scroll holatini tekshiramiz
+                        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                        if (scrollTop > 30) {
+                            navbar.classList.add('scrolled');
+                        } else {
+                            navbar.classList.remove('scrolled');
+                        }
                     }
                 }, 150);
             }, { passive: true });
