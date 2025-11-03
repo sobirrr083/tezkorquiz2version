@@ -6,261 +6,321 @@
     <title>Tezkor Quiz Telegram Kanali</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+        
         body {
-            font-family: 'Roboto', sans-serif;
-            background: #fafbfc;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #506deb 0%, #3d57d4 100%);
             min-height: 100vh;
-            padding: 60px 20px;
+            padding: 40px 20px;
             display: flex;
             align-items: center;
             justify-content: center;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
+        
         .container {
-            max-width: 600px;
+            max-width: 640px;
+            width: 100%;
             margin: 0 auto;
         }
+        
         .header {
             text-align: center;
-            margin-bottom: 60px;
-            animation: fadeInDown 0.8s ease;
+            margin-bottom: 48px;
+            animation: fadeInDown 0.6s ease;
         }
+        
         .header h1 {
-            font-size: 3rem;
+            font-size: clamp(2rem, 5vw, 2.75rem);
             font-weight: 700;
-            color: #2d3748;
-            margin-bottom: 16px;
-            letter-spacing: -0.5px;
+            color: #ffffff;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
         }
+        
         .header p {
-            font-size: 1.2rem;
-            color: #718096;
-            font-weight: 300;
-            max-width: 500px;
+            font-size: clamp(1rem, 3vw, 1.15rem);
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 400;
+            line-height: 1.6;
+            max-width: 520px;
             margin: 0 auto;
         }
+        
         .card {
-            background: white;
-            border-radius: 20px;
+            background: #ffffff;
+            border-radius: 24px;
             overflow: hidden;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
-            transition: all 0.3s ease;
-            border: 1px solid #e2e8f0;
-            animation: fadeInUp 0.8s ease 0.2s both;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            animation: fadeInUp 0.6s ease 0.2s both;
         }
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
-        }
-        .card-image {
-            width: 100%;
-            height: 220px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        
+        .card-header {
+            background: linear-gradient(135deg, #506deb 0%, #3d57d4 100%);
+            padding: 48px 32px;
+            text-align: center;
             position: relative;
-            background: linear-gradient(135deg, #e8f4f8 0%, #d4e9f7 100%);
+            overflow: hidden;
         }
+        
+        .card-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+        
         .card-icon {
-            width: 110px;
-            height: 110px;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-            background: white;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 1;
         }
-        .card-icon svg {
-            width: 60px;
-            height: 60px;
-            fill: #0088cc;
+        
+        .card-icon i {
+            font-size: 48px;
+            color: #506deb;
         }
-        .card-content {
-            padding: 40px 32px;
-            text-align: center;
-        }
+        
         .card-badge {
             display: inline-block;
-            padding: 8px 18px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
+            padding: 8px 20px;
+            border-radius: 100px;
+            font-size: 0.875rem;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 20px;
-            background: #e8f4f8;
-            color: #0088cc;
+            letter-spacing: 0.05em;
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 1;
         }
-        .card h2 {
-            font-size: 2.2rem;
+        
+        .card-content {
+            padding: 40px 32px;
+        }
+        
+        .card-title {
+            font-size: clamp(1.5rem, 4vw, 2rem);
             font-weight: 700;
-            color: #2d3748;
-            margin-bottom: 16px;
-            letter-spacing: -0.3px;
-        }
-        .card-description {
-            color: #718096;
-            font-size: 1.1rem;
-            line-height: 1.7;
+            color: #1a202c;
             margin-bottom: 32px;
+            text-align: center;
+            letter-spacing: -0.02em;
+            line-height: 1.3;
+        }
+        
+        .features {
+            margin-bottom: 32px;
+            background: #f8f9ff;
+            padding: 32px 28px;
+            border-radius: 20px;
+            border: 1px solid #e8ebf7;
+        }
+        
+        .features-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #506deb;
+            margin-bottom: 24px;
+            text-align: center;
+            letter-spacing: -0.01em;
+        }
+        
+        .features ul {
+            list-style: none;
+        }
+        
+        .features li {
+            font-size: 1rem;
+            color: #4a5568;
+            margin-bottom: 18px;
+            padding-left: 44px;
+            position: relative;
+            line-height: 1.65;
             font-weight: 400;
         }
-        .card-info {
+        
+        .features li:last-child {
+            margin-bottom: 0;
+        }
+        
+        .features li i {
+            position: absolute;
+            left: 0;
+            top: 1px;
+            width: 32px;
+            height: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 16px 20px;
-            background: #f7fafc;
-            border-radius: 12px;
+            font-size: 16px;
+            color: #506deb;
+            background: rgba(80, 109, 235, 0.1);
+            border-radius: 8px;
+        }
+        
+        .channel-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 24px;
+            background: #f8f9ff;
+            border-radius: 16px;
             gap: 12px;
-            margin-bottom: 24px;
-            border: 1px solid #e2e8f0;
+            margin-bottom: 28px;
+            border: 2px solid #e8ebf7;
+            transition: all 0.3s ease;
         }
-        .info-text {
-            font-size: 1.1rem;
-            font-weight: 500;
-            color: #4a5568;
-            word-break: break-all;
+        
+        .channel-info:hover {
+            border-color: #506deb;
+            background: #f0f3ff;
         }
+        
+        .channel-info i {
+            font-size: 24px;
+            color: #506deb;
+        }
+        
+        .channel-username {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #506deb;
+            letter-spacing: -0.01em;
+        }
+        
         .card-actions {
             display: flex;
-            gap: 16px;
+            gap: 12px;
             justify-content: center;
+            flex-wrap: wrap;
         }
+        
         .btn {
-            padding: 14px 28px;
-            border-radius: 12px;
+            padding: 16px 32px;
+            border-radius: 14px;
             font-size: 1rem;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border: none;
-            font-family: 'Roboto', sans-serif;
-            display: flex;
+            font-family: 'Inter', sans-serif;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
             text-decoration: none;
+            letter-spacing: -0.01em;
+            min-width: 180px;
         }
+        
         .btn-primary {
-            background: #0088cc;
-            color: white;
-            flex: 1;
-            max-width: 220px;
+            background: linear-gradient(135deg, #506deb 0%, #3d57d4 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 16px rgba(80, 109, 235, 0.3);
         }
+        
         .btn-primary:hover {
-            background: #006699;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(80, 109, 235, 0.4);
         }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+        
         .btn-secondary {
-            background: white;
+            background: #ffffff;
             color: #4a5568;
-            border: 1.5px solid #e2e8f0;
-            flex: 1;
-            max-width: 180px;
+            border: 2px solid #e2e8f0;
         }
+        
         .btn-secondary:hover {
-            background: #f7fafc;
-            border-color: #cbd5e0;
+            background: #f8f9ff;
+            border-color: #506deb;
+            color: #506deb;
+            transform: translateY(-2px);
         }
-        .btn svg {
-            width: 20px;
-            height: 20px;
-            fill: currentColor;
+        
+        .btn-secondary:active {
+            transform: translateY(0);
         }
-        .features {
-            margin: 32px 0;
-            text-align: left;
-            background: #f0f7fa;
-            padding: 24px;
-            border-radius: 16px;
-            border: 1px dashed #a0d9ed;
+        
+        .btn i {
+            font-size: 18px;
         }
-        .features h3 {
-            font-size: 1.3rem;
-            color: #0088cc;
-            margin-bottom: 16px;
-            text-align: center;
-        }
-        .features ul {
-            list-style: none;
-        }
-        .features li {
-            font-size: 1rem;
-            color: #4a5568;
-            margin-bottom: 12px;
-            padding-left: 28px;
-            position: relative;
-        }
-        .features li::before {
-            content: "✅";
-            position: absolute;
-            left: 0;
-            top: 0;
-        }
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2.5rem;
-            }
-            .header p {
-                font-size: 1.1rem;
-            }
-            .card-actions {
-                flex-direction: column;
-                align-items: center;
-            }
-            .btn {
-                width: 100%;
-                max-width: 300px;
-            }
-            .features {
-                padding: 20px;
-            }
-        }
+        
         .toast {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: #2d3748;
-            color: white;
+            bottom: 32px;
+            right: 32px;
+            background: #1a202c;
+            color: #ffffff;
             padding: 16px 24px;
             border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
             display: none;
             align-items: center;
             gap: 12px;
             z-index: 1000;
-            animation: slideIn 0.3s ease;
+            animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 500;
         }
+        
         .toast.show {
             display: flex;
         }
+        
+        .toast i {
+            font-size: 20px;
+            color: #10b981;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
         @keyframes slideIn {
             from {
                 transform: translateX(400px);
@@ -271,86 +331,195 @@
                 opacity: 1;
             }
         }
+        
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 0.3;
+            }
+            50% {
+                opacity: 0.6;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 24px 16px;
+            }
+            
+            .header {
+                margin-bottom: 32px;
+            }
+            
+            .card-header {
+                padding: 40px 24px;
+            }
+            
+            .card-content {
+                padding: 32px 24px;
+            }
+            
+            .features {
+                padding: 24px 20px;
+            }
+            
+            .features li {
+                font-size: 0.9375rem;
+                padding-left: 40px;
+            }
+            
+            .card-actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                min-width: auto;
+            }
+            
+            .toast {
+                bottom: 20px;
+                right: 20px;
+                left: 20px;
+                font-size: 0.9375rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .card-icon {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .card-icon i {
+                font-size: 40px;
+            }
+            
+            .features li {
+                padding-left: 36px;
+                font-size: 0.875rem;
+            }
+            
+            .features li i {
+                width: 28px;
+                height: 28px;
+                font-size: 14px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
             <h1>Tezkor Quiz Kanali</h1>
-            <p>Eng so'nggi yangiliklar, eksklyuziv quizlar va jamoa bilan jonli muloqot – hammasi bitta joyda!</p>
+            <p>Eng so'nggi yangiliklar, talabalar uchun foydali ma'lumotlar va jamoa bilan jonli muloqot – hammasi bitta joyda!</p>
         </div>
-        <div class="card telegram">
-            <div class="card-image">
+        
+        <div class="card">
+            <div class="card-header">
                 <div class="card-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
-                    </svg>
+                    <i class="fab fa-telegram"></i>
                 </div>
+                <span class="card-badge">Rasmiy Kanal</span>
             </div>
+            
             <div class="card-content">
-                <span class="card-badge">Telegram Kanali</span>
-                <h2>Rasmiy Kanalga Obuna Bo'ling</h2>
-                <p class="card-description">Tezkor Quizning rasmiy Telegram kanali – bu sizning bilimingizni sinash uchun eng yaxshi joy! Har kuni yangi quizlar, qiziqarli faktlar, eng so'nggi yangiliklar va maxsus sovg'alar. Kanalda faqat eng sifatli kontent: jonli viktorinalar, reytinglar va jamoaviy muhokamalar. Obuna bo'lib, birinchi bo'lib yangi challengelarni qabul qiling va do'stlaringiz bilan baham ko'ring. Bu yerda har bir post – yangi g'alaba imkoniyati! 🚀</p>
+                <h2 class="card-title">Telegram kanalga obuna bo'ling</h2>
                 
                 <div class="features">
-                    <h3>Nimani Kutmoqdasiz?</h3>
+                    <h3 class="features-title">Nimani olasiz?</h3>
                     <ul>
-                        <li>Eng so'nggi quiz yangiliklari va yangilanishlar birinchi bo'lib sizga!</li>
-                        <li>Eksklyuziv konkurslar va sovg'alar (telefonlar, gadgetlar va boshqalar).</li>
-                        <li>Jamoa bilan real vaqtda muloqot va maslahatlar.</li>
-                        <li>Har kuni yangi savollar – bilimingizni oshiring va reytingda yuqoriga chiqing!</li>
-                        <li>Tezkor bildirishnomalar – hech qanday yangilikni o'tkazib yubormang.</li>
+                        <li>
+                            <i class="fas fa-bell"></i>
+                            Saytdagi barcha yangiliklar va yangilanishlar birinchi bo'lib sizga
+                        </li>
+                        <li>
+                            <i class="fas fa-graduation-cap"></i>
+                            Talabalar uchun foydali ma'lumotlar va o'quv materiallari
+                        </li>
+                        <li>
+                            <i class="fas fa-lightbulb"></i>
+                            Qiziqarli maqolalar, maslahatlar va hayotiy tajribalar
+                        </li>
+                        <li>
+                            <i class="fas fa-rocket"></i>
+                            Tezkor bildirishnomalar – muhim yangiliklarni o'tkazib yubormang
+                        </li>
                     </ul>
                 </div>
                 
-                <div class="card-info">
-                    <span class="info-text" id="telegram-link">https://t.me/tezkorquiz_group</span>
+                <div class="channel-info">
+                    <i class="fab fa-telegram"></i>
+                    <span class="channel-username" id="telegram-link">@tezkorquiz_rasmiy</span>
                 </div>
+                
                 <div class="card-actions">
-                    <a href="https://t.me/tezkorquiz_group" target="_blank" class="btn btn-primary">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/>
-                        </svg>
+                    <a href="https://t.me/tezkorquiz_rasmiy" target="_blank" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i>
                         Obuna Bo'lish
                     </a>
-                    <button onclick="copyToClipboard('telegram-link', 'Kanal havolasi')" class="btn btn-secondary">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                        </svg>
-                        Nusxa Olish
-                    </button>
+            
                 </div>
             </div>
         </div>
     </div>
+    
     <div class="toast" id="toast">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="20 6 9 17 4 12"></polyline>
-        </svg>
-        <span id="toast-message">Nusxa olindi!</span>
+        <i class="fas fa-check-circle"></i>
+        <span id="toast-message">Kanal havolasi nusxa olindi!</span>
     </div>
+    
     <script>
-        function copyToClipboard(elementId, type) {
-            const text = document.getElementById(elementId).textContent;
-            navigator.clipboard.writeText(text).then(() => {
-                showToast(`${type} nusxa olindi!`);
-            }).catch(err => {
-                showToast('Xatolik yuz berdi!', 'error');
-            });
+        function copyToClipboard() {
+            const text = document.getElementById('telegram-link').textContent;
+            
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast('Kanal havolasi nusxa olindi!');
+                }).catch(() => {
+                    fallbackCopy(text);
+                });
+            } else {
+                fallbackCopy(text);
+            }
         }
+        
+        function fallbackCopy(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-999999px';
+            document.body.appendChild(textArea);
+            textArea.select();
+            
+            try {
+                document.execCommand('copy');
+                showToast('Kanal havolasi nusxa olindi!');
+            } catch (err) {
+                showToast('Xatolik yuz berdi!', 'error');
+            }
+            
+            document.body.removeChild(textArea);
+        }
+        
         function showToast(message, type = 'success') {
             const toast = document.getElementById('toast');
             const toastMessage = document.getElementById('toast-message');
+            const icon = toast.querySelector('i');
+            
             toastMessage.textContent = message;
-           
+            
             if (type === 'error') {
-                toast.style.background = '#dc2626';
+                toast.style.background = '#ef4444';
+                icon.className = 'fas fa-exclamation-circle';
+                icon.style.color = '#ffffff';
             } else {
-                toast.style.background = '#2d3748';
+                toast.style.background = '#1a202c';
+                icon.className = 'fas fa-check-circle';
+                icon.style.color = '#10b981';
             }
-           
+            
             toast.classList.add('show');
+            
             setTimeout(() => {
                 toast.classList.remove('show');
             }, 3500);
