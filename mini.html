@@ -467,6 +467,38 @@
         <i class="fas fa-check-circle"></i>
         <span id="toast-message">Kanal havolasi nusxa olindi!</span>
     </div>
+
+
+<!-- himoyalangan sahifa: protected.html -->
+<script type="module">
+  // Firebase SDK import qilingan deb faraz qilamiz
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "SIZNING_API_KEY",
+    authDomain: "SIZNING_PROJECT.firebaseapp.com",
+    // ... boshqa sozlamalar
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  // Current page URL (return uchun)
+  const returnUrl = encodeURIComponent(window.location.pathname + window.location.search);
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      // foydalanuvchi kirmagan — login sahifasiga yo'naltirish
+      window.location.replace(`/login.html?returnUrl=${returnUrl}`);
+    } else {
+      // foydalanuvchi kirdi — sahifa davom ettirilsin
+      console.log("User logged in:", user.uid);
+    }
+  });
+</script>
+
+
     
     <script>
         function copyToClipboard() {
