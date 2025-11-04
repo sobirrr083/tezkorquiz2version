@@ -253,7 +253,34 @@
             <path d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"></path>
         </svg>
     </button>
-    
+    <!-- himoyalangan sahifa: protected.html -->
+<script type="module">
+  // Firebase SDK import qilingan deb faraz qilamiz
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
+  const firebaseConfig = {
+   apiKey: "AIzaSyBxIpLY5WasiSIlDL4japBLnnXRwOLUKEQ",
+      authDomain: "tezkor-quiz-bbe3c.firebaseapp.com",
+    // ... boshqa sozlamalar
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  // Current page URL (return uchun)
+  const returnUrl = encodeURIComponent(window.location.pathname + window.location.search);
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      // foydalanuvchi kirmagan — login sahifasiga yo'naltirish
+      window.location.replace(`/kirish.html?returnUrl=${returnUrl}`);
+    } else {
+      // foydalanuvchi kirdi — sahifa davom ettirilsin
+      console.log("User logged in:", user.uid);
+    }
+  });
+</script>
 <script>
     let tests = [];
     let currentPage = 1;           // Joriy sahifa (boshlang‘ich qiymati 1)
