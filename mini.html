@@ -476,8 +476,8 @@
   import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
   const firebaseConfig = {
-    apiKey: "SIZNING_API_KEY",
-    authDomain: "SIZNING_PROJECT.firebaseapp.com",
+   apiKey: "AIzaSyBxIpLY5WasiSIlDL4japBLnnXRwOLUKEQ",
+      authDomain: "tezkor-quiz-bbe3c.firebaseapp.com",
     // ... boshqa sozlamalar
   };
 
@@ -490,7 +490,7 @@
   onAuthStateChanged(auth, (user) => {
     if (!user) {
       // foydalanuvchi kirmagan — login sahifasiga yo'naltirish
-      window.location.replace(`/login.html?returnUrl=${returnUrl}`);
+      window.location.replace(`/kirish.html?returnUrl=${returnUrl}`);
     } else {
       // foydalanuvchi kirdi — sahifa davom ettirilsin
       console.log("User logged in:", user.uid);
