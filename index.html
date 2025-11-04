@@ -1658,7 +1658,34 @@
             </div>
         </div>
     </footer>
+<!-- himoyalangan sahifa: protected.html -->
+<script type="module">
+  // Firebase SDK import qilingan deb faraz qilamiz
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
+  const firebaseConfig = {
+   apiKey: "AIzaSyBxIpLY5WasiSIlDL4japBLnnXRwOLUKEQ",
+      authDomain: "tezkor-quiz-bbe3c.firebaseapp.com",
+    // ... boshqa sozlamalar
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  // Current page URL (return uchun)
+  const returnUrl = encodeURIComponent(window.location.pathname + window.location.search);
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      // foydalanuvchi kirmagan — login sahifasiga yo'naltirish
+      window.location.replace(`/kirish.html?returnUrl=${returnUrl}`);
+    } else {
+      // foydalanuvchi kirdi — sahifa davom ettirilsin
+      console.log("User logged in:", user.uid);
+    }
+  });
+</script>
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
@@ -1879,3 +1906,4 @@
     </script>
 </body>
 </html>
+
