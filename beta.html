@@ -1,1234 +1,385 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uz">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tezkor Quiz</title>
-    <!-- Favicon -->
-    <link rel="icon" href="aga/iconcha.png">
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- AOS Animation CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
-    <!-- Font Awesome CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <meta name="description" content="Tezkor Quiz - testlarni yaratish, boshqarish va yechish uchun qulay platforma">
-    <style>
-        /* Navbar styling */
-        :root {
-            --primary-color: #4361ee;
-            --secondary-color: #3a0ca3;
-            --accent-color: #f72585;
-            --light-color: #f8f9fa;
-            --dark-color: #212529;
-            --success-color: #4cc9f0;
-            --warning-color: #f8961e;
-            --gradient-1: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            --white: #fff;
-            --black: #282936;
-            --burger-active-color: #ff0000;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Nunito', 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #ECF2FF;
-            min-height: 100vh;
-            padding-top: 80px;
-        }
-
-        .navbar {
-            padding: 12px 0;
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .navbar.scrolled {
-            padding: 8px 0;
-            box-shadow: 0 6px 40px rgba(0, 0, 0, 0.15);
-        }
-
-        .navbar-brand {
-            font-family: 'Roboto';
-            font-weight: 800;
-            font-size: 28px;
-            color: var(--primary-color) !important;
-            letter-spacing: -0.5px;
-            transition: transform 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .navbar-brand:hover {
-            transform: scale(1.05);
-        }
-
-        .navbar-nav {
-            gap: 5px;
-            margin-left: auto;
-        }
-
-        .nav-link {
-            font-family: 'Roboto', sans-serif;
-            font-weight: 600;
-            font-size: 15px;
-            padding: 10px 20px !important;
-            color: var(--dark-color) !important;
-            border-radius: 12px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-        }
-
-        .nav-link::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: var(--gradient-1);
-            opacity: 0.1;
-            transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: -1;
-        }
-
-        .nav-link:hover::before {
-            left: 0;
-        }
-
-        .nav-link:hover {
-            color: var(--primary-color) !important;
-        }
-
-        .nav-link:hover .nav-icon {
-            fill: var(--primary-color);
-            transform: scale(1.1);
-        }
-
-        .nav-link.active {
-            background: var(--gradient-1);
-            color: white !important;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .nav-link.active .nav-icon {
-            fill: white;
-        }
-
-        .nav-link.active::before {
-            display: none;
-        }
-
-        .nav-icon {
-            width: 20px;
-            height: 20px;
-            fill: var(--dark-color);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            margin-right: 8px;
-            display: inline-block;
-            vertical-align: middle;
-        }
-
-        .dropdown-icon {
-            width: 22px;
-            height: 22px;
-            fill: var(--dark-color);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            margin-right: 10px;
-            display: inline-block;
-            vertical-align: middle;
-            z-index: 1;
-            flex-shrink: 0;
-        }
-
-        .dropdown-toggle::after {
-            transition: transform 0.3s ease;
-            margin-left: 8px;
-        }
-
-        .dropdown-toggle[aria-expanded="true"]::after {
-            transform: rotate(180deg);
-        }
-
-        .dropdown-menu {
-            border: none;
-            border-radius: 16px;
-            padding: 12px;
-            margin-top: 12px;
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-            min-width: 260px;
-            transform-origin: top;
-            opacity: 0;
-            visibility: hidden;
-            transform: scaleY(0);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: block;
-            position: absolute;
-            right: 0;
-        }
-
-        .dropdown.show .dropdown-menu {
-            opacity: 1;
-            visibility: visible;
-            transform: scaleY(1);
-        }
-
-        .dropdown-item {
-            padding: 12px 18px;
-            border-radius: 12px;
-            font-family: 'Roboto', sans-serif;
-            font-weight: 600;
-            font-size: 14px;
-            color: var(--dark-color);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 4px;
-            position: relative;
-            z-index: 1;
-            overflow: hidden;
-            width: 100%;
-        }
-
-        .dropdown-item:hover {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
-            color: var(--primary-color);
-        }
-
-        .dropdown-item:hover .dropdown-icon {
-            fill: var(--primary-color);
-            transform: scale(1.15);
-        }
-
-        .burger {
-            position: relative;
-            width: 26px;
-            height: 20px;
-            background: transparent;
-            cursor: pointer;
-            display: none;
-            margin-left: auto;
-            transition: all 0.3s ease;
-        }
-
-        .burger input {
-            display: none;
-        }
-
-        .burger span {
-            display: block;
-            position: absolute;
-            height: 2.5px;
-            width: 100%;
-            background: var(--black);
-            border-radius: 8px;
-            opacity: 1;
-            left: 0;
-            transform: rotate(0deg);
-            transition: all 0.3s ease-in-out;
-        }
-
-        .burger input:checked ~ span {
-            background: var(--burger-active-color);
-        }
-
-        .burger span:nth-of-type(1) {
-            top: 0px;
-            transform-origin: left center;
-        }
-
-        .burger span:nth-of-type(2) {
-            top: 50%;
-            transform: translateY(-50%);
-            transform-origin: left center;
-        }
-
-        .burger span:nth-of-type(3) {
-            top: 100%;
-            transform-origin: left center;
-            transform: translateY(-100%);
-        }
-
-        .burger input:checked ~ span:nth-of-type(1) {
-            transform: rotate(45deg);
-            top: -1px;
-            left: 3px;
-        }
-
-        .burger input:checked ~ span:nth-of-type(2) {
-            width: 0%;
-            opacity: 0;
-        }
-
-        .burger input:checked ~ span:nth-of-type(3) {
-            transform: rotate(-45deg);
-            top: 18px;
-            left: 3px;
-        }
-
-        /* Mobile menu bottom section styles */
-        .mobile-menu-bottom {
-            display: none;
-            padding: 20px;
-            border-top: 2px solid rgba(102, 126, 234, 0.1);
-            margin-top: auto;
-            padding-bottom: 80px;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
-            gap: 25px;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-        }
-
-        .social-link {
-            width: 45px;
-            height: 45px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-        }
-
-        .social-link:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-            background: var(--gradient-1);
-        }
-
-        .social-link i {
-            font-size: 20px;
-            color: var(--primary-color);
-            transition: all 0.3s ease;
-        }
-
-        .social-link:hover i {
-            color: white;
-        }
-
-        .help-button {
-            width: auto;
-            padding: 14px 20px;
-            background: var(--gradient-1);
-            border: none;
-            border-radius: 12px;
-            color: white;
-            font-weight: 600;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .help-button:hover {
-            transform: scale(1.02);
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
-        }
-
-        .help-button i {
-            font-size: 18px;
-        }
-
-        @media (min-width: 992px) {
-            .mobile-menu-bottom {
-                display: none !important;
-            }
-        }
-
-        @media (max-width: 991px) {
-            .navbar {
-                padding: 10px 0;
-            }
-
-            .navbar-brand {
-                font-size: 34px;
-                font-weight: 700;
-            }
-
-            .burger {
-                display: block;
-                width: 24px;
-                height: 18px;
-            }
-
-            .burger span {
-                height: 2.2px;
-            }
-
-            .burger input:checked ~ span:nth-of-type(1) {
-                top: -1px;
-                left: 2px;
-            }
-
-            .burger input:checked ~ span:nth-of-type(3) {
-                top: 16px;
-                left: 2px;
-            }
-
-            .navbar-toggler {
-                display: none;
-            }
-
-            .navbar-collapse {
-                position: fixed;
-                top: 60px;
-                left: 0;
-                width: 100vw;
-                height: calc(100vh - 60px);
-                background: white;
-                padding: 25px 20px 5px 20px;
-                border-radius: 0;
-                margin-top: 0;
-                box-shadow: none;
-                transform: translateX(-100%);
-                opacity: 0;
-                visibility: hidden;
-                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-                display: flex;
-                flex-direction: column;
-                justify-content: flex-start;
-                align-items: flex-start;
-                z-index: 1000;
-                overflow-y: auto;
-                overflow-x: hidden;
-            }
-
-            .navbar-collapse.show {
-                transform: translateX(0);
-                opacity: 1;
-                visibility: visible;
-            }
-
-            .navbar-nav {
-                gap: 8px;
-                width: 100%;
-                text-align: left;
-                margin-left: 0;
-            }
-
-            .nav-link {
-                padding: 18px 20px !important;
-                margin: 0;
-                display: flex;
-                align-items: center;
-                justify-content: flex-start;
-                gap: 15px;
-                font-size: 17px;
-                width: 100%;
-                border-radius: 14px;
-                background: rgba(102, 126, 234, 0.03);
-            }
-
-            .nav-link:hover {
-                background: rgba(102, 126, 234, 0.08);
-            }
-
-            .nav-link.active {
-                background: var(--gradient-1);
-                color: white !important;
-            }
-
-            .nav-icon {
-                width: 24px;
-                height: 24px;
-                flex-shrink: 0;
-            }
-
-            .dropdown-icon {
-                width: 24px;
-                height: 24px;
-                flex-shrink: 0;
-            }
-
-            .dropdown-menu {
-                border: none;
-                box-shadow: none;
-                background: transparent;
-                margin-top: 8px;
-                margin-left: 0;
-                margin-bottom: 15px;
-                transform: scaleY(0);
-                opacity: 0;
-                visibility: hidden;
-                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-                display: block;
-                position: static;
-                width: 100%;
-                padding: 8px 0;
-            }
-
-            .dropdown.show .dropdown-menu {
-                transform: scaleY(1);
-                opacity: 1;
-                visibility: visible;
-            }
-
-            .dropdown-item {
-                padding: 18px 20px;
-                display: flex;
-                align-items: center;
-                justify-content: flex-start;
-                gap: 15px;
-                font-size: 17px;
-                background: transparent;
-                margin-bottom: 8px;
-                border-radius: 14px;
-                width: 100%;
-            }
-
-            .dropdown-item:hover {
-                background: rgba(102, 126, 234, 0.08);
-            }
-
-            .dropdown-item:last-child {
-                margin-bottom: 0;
-            }
-
-            .dropdown-item span {
-                flex-grow: 0;
-            }
-
-            .mobile-menu-bottom {
-                display: flex;
-                margin-top: auto;
-                padding-top: 10px;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .navbar-brand {
-                font-size: 30px;
-                font-weight: 700;
-            }
-
-            .burger {
-                width: 22px;
-                height: 16px;
-            }
-
-            .burger span {
-                height: 2px;
-            }
-
-            .burger input:checked ~ span:nth-of-type(1) {
-                top: -1px;
-                left: 2px;
-            }
-
-            .burger input:checked ~ span:nth-of-type(3) {
-                top: 14px;
-                left: 2px;
-            }
-
-            body {
-                padding-top: 65px;
-            }
-
-            .navbar-collapse {
-                top: 55px;
-                height: calc(100vh - 55px);
-                padding: 20px 15px 5px 15px;
-            }
-
-            .nav-link {
-                padding: 16px 18px !important;
-                font-size: 16px;
-            }
-
-            .nav-icon {
-                width: 22px;
-                height: 22px;
-            }
-
-            .dropdown-icon {
-                width: 22px;
-                height: 22px;
-            }
-
-            .dropdown-item {
-                padding: 16px 18px;
-                font-size: 16px;
-            }
-
-            .social-link {
-                width: 42px;
-                height: 42px;
-            }
-
-            .social-link i {
-                font-size: 18px;
-            }
-
-            .help-button {
-                padding: 12px 18px;
-                font-size: 15px;
-            }
-
-            .mobile-menu-bottom {
-                padding-bottom: 70px;
-                padding-top: 8px;
-            }
-        }
-
-        @media (max-width: 375px) {
-            .navbar-brand {
-                font-size: 28px;
-                font-weight: 700;
-            }
-
-            .burger {
-                width: 20px;
-                height: 14px;
-            }
-
-            .burger span {
-                height: 1.8px;
-            }
-
-            .burger input:checked ~ span:nth-of-type(1) {
-                top: -1px;
-                left: 1px;
-            }
-
-            .burger input:checked ~ span:nth-of-type(3) {
-                top: 12px;
-                left: 1px;
-            }
-
-            .nav-link {
-                padding: 14px 16px !important;
-                font-size: 15px;
-                gap: 12px;
-            }
-
-            .dropdown-item {
-                padding: 14px 16px;
-                font-size: 15px;
-                gap: 12px;
-            }
-
-            .social-links {
-                gap: 20px;
-            }
-
-            .social-link {
-                width: 40px;
-                height: 40px;
-            }
-
-            .help-button {
-                padding: 10px 16px;
-                font-size: 14px;
-            }
-
-            .mobile-menu-bottom {
-                padding-bottom: 60px;
-                padding-top: 6px;
-            }
-        }
-
-        /* Custom scrollbar for mobile menu */
-        @media (max-width: 991px) {
-            .navbar-collapse::-webkit-scrollbar {
-                width: 5px;
-            }
-
-            .navbar-collapse::-webkit-scrollbar-track {
-                background: rgba(102, 126, 234, 0.05);
-                border-radius: 10px;
-            }
-
-            .navbar-collapse::-webkit-scrollbar-thumb {
-                background: rgba(102, 126, 234, 0.3);
-                border-radius: 10px;
-            }
-
-            .navbar-collapse::-webkit-scrollbar-thumb:hover {
-                background: rgba(102, 126, 234, 0.5);
-            }
-        }
-
-        /* Original styles for the rest of the page */
-        .navbar {
-            padding: 15px 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-            background-color: #fff;
-        }
-        body {
-            background-color: #ECF2FF;
-        }
-        .navbar-brand {
-            font-weight: 700;
-            font-size: 26px;
-            color: #3a56e4 !important;
-            letter-spacing: 0.5px;
-        }
-        .nav-link {
-            font-weight: 500;
-            font-size: 16px;
-            margin: 0 15px;
-            color: #333 !important;
-            transition: color 0.3s ease;
-        }
-        .nav-link:hover {
-            color: #3a56e4 !important;
-        }
-        .nav-link.active {
-            color: #3a56e4 !important;
-            font-weight: 600;
-        }
-        .beta-badge {
-            font-size: 12px;
-            background-color: #ff6b6b;
-            color: white;
-            padding: 2px 8px;
-            border-radius: 12px;
-            margin-left: 8px;
-            vertical-align: middle;
-        }
-        .navbar-toggler {
-            border: none;
-            padding: 0;
-            outline: none;
-        }
-        .navbar-toggler:focus {
-            box-shadow: none;
-        }
-        /* Book card styling */
-        .book-card {
-            position: relative;
-            border-radius: 10px;
-            width: 100%;
-            height: 380px;
-            background-color: whitesmoke;
-            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.08);
-            transform: preserve-3d;
-            perspective: 2000px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #000;
-            margin-bottom: 20px;
-        }
-        .book-content {
-            padding: 20px;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
-        .book-cover {
-            top: 0;
-            position: absolute;
-            background-color: #fff;
-            width: 100%;
-            height: 100%;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.5s;
-            transform-origin: 0;
-            box-shadow: 1px 1px 12px rgba(0, 0, 0, 0.2);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            z-index: 2;
-        }
-        .book-card:hover .book-cover {
-            transition: all 0.5s;
-            transform: rotatey(-80deg);
-        }
-        .book-cover img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-        .book-cover-content {
-            padding: 20px;
-            text-align: center;
-        }
-        .book-card-title {
-            font-weight: 600;
-            color: #333;
-            margin-top: 10px;
-            font-size: 1.5rem;
-        }
-        .book-card-text {
-            color: #666;
-        }
-        .card-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            z-index: 3;
-        }
-        /* Button styling */
-        .container-eg-btn-3 {
-            font-family: sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            align-content: center;
-            flex-wrap: wrap;
-            margin: 20px auto 10px;
-            padding: .5em;
-            line-height: normal;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-            transition-delay: 0s;
-        }
-        .book-card:hover .container-eg-btn-3 {
-            opacity: 1;
-            transform: translateY(0);
-            transition-delay: 0.3s;
-        }
-        .container-eg-btn-3 .button {
-            color: #fff;
-            margin: 10px 0;
-            padding: 12px 15px;
-            text-align: center;
-            text-transform: uppercase;
-            position: relative;
-            transition: .3s;
-            z-index: 1;
-            background: #4361ee;
-            cursor: pointer;
-            border-radius: 6px;
-            text-decoration: none;
-            display: inline-block;
-            width: 150px;
-        }
-        .container-eg-btn-3 .button-8:before {
-            content: '';
-            background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
-            position: absolute;
-            top: -2px;
-            left:-2px;
-            background-size: 400%;
-            z-index: -1;
-            filter: blur(5px);
-            width: calc(100% + 4px);
-            height: calc(100% + 4px);
-            animation: glowing 20s linear infinite;
-            opacity: 0;
-            transition: opacity .3s ease-in-out;
-            border-radius: 6px;
-        }
-        .container-eg-btn-3 .button-8:hover:before, .container-eg-btn-3 .button-8:hover:after {
-            opacity: 1;
-        }
-        .container-eg-btn-3 .button-8:after {
-            z-index: -1;
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: #111;
-            left: 0;
-            top: 0;
-            border-radius: 6px;
-            opacity: 0;
-        }
-        .container-eg-btn-3 .button-8:active:after {
-            background: transparent;
-        }
-        @keyframes glowing {
-            0% { background-position: 0 0; }
-            50% { background-position: 400% 0; }
-            100% { background-position: 0 0; }
-        }
-        /* Spacing for content */
-        .main-content {
-            margin-top: 100px;
-        }
-        /* Animation for book content */
-        .book-card .book-content h5,
-        .book-card .book-content p {
-            opacity: 0;
-            transform: translateY(10px);
-            transition: all 0.5s ease;
-            transition-delay: 0s;
-        }
-        .book-card:hover .book-content h5 {
-            opacity: 1;
-            transform: translateY(0);
-            transition-delay: 0.1s;
-        }
-        .book-card:hover .book-content p {
-            opacity: 1;
-            transform: translateY(0);
-            transition-delay: 0.2s;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tizimga Kirish</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;user-select:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none}
+    body{font-family:'Poppins',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,sans-serif;background:#fff;min-height:100vh;position:relative;overflow-x:hidden}
+    body::before{content:'';position:fixed;inset:0;background:#fff;background-image:radial-gradient(circle at top left,rgba(70,130,180,.3),transparent 70%);filter:blur(80px);z-index:0;pointer-events:none}
+    .main-wrapper{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;position:relative;z-index:1}
+    .container{background:rgba(255,255,255,.98);backdrop-filter:blur(10px);border-radius:20px;box-shadow:0 8px 32px rgba(67,97,238,.08);padding:40px;width:100%;max-width:420px;animation:slideUp .5s ease;border:1px solid rgba(67,97,238,.05)}
+    @keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+    .page{display:none}
+    .page.active{display:block;animation:fadeIn .4s ease}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    .logo{text-align:center;margin-bottom:30px}
+    .logo-icon{width:64px;height:64px;background:linear-gradient(135deg,#4361ee,#3651d4);border-radius:16px;display:inline-flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:12px;box-shadow:0 8px 24px rgba(67,97,238,.2);overflow:hidden}
+    .logo-icon img{width:100%;height:100%;object-fit:cover}
+    h2{color:#1a1a2e;margin-bottom:8px;text-align:center;font-size:28px;font-weight:500}
+    .subtitle,.description{text-align:center;color:#666;margin-bottom:35px;font-size:14px;line-height:1.5;font-weight:400}
+    .description{margin-bottom:30px}
+    .input-group{margin-bottom:20px;position:relative}
+    .input-group label{display:block;margin-bottom:8px;color:#333;font-size:14px;font-weight:500}
+    input{width:100%;padding:12px 16px;border:1px solid #e1e8ed;border-radius:10px;font-size:15px;transition:all .3s;outline:none;background:#fff;font-weight:400}
+    input:focus{border-color:#4361ee;box-shadow:0 0 0 3px rgba(67,97,238,.08)}
+    input.error{border-color:#ff4757}
+    .eye-toggle{position:absolute;right:12px;top:42px;cursor:pointer;color:#666;font-size:20px;transition:.2s}
+    .eye-toggle:hover{color:#4361ee}
+    .btn{width:100%;padding:14px;border:none;border-radius:10px;font-size:15px;font-weight:500;cursor:pointer;transition:all .3s;margin-bottom:12px;position:relative;display:flex;align-items:center;justify-content:center;gap:8px}
+    .btn:disabled{opacity:.6;cursor:not-allowed;pointer-events:none}
+    .btn-primary{background:#4361ee;color:#fff}
+    .btn-primary:hover:not(:disabled){background:#3651d4;transform:translateY(-1px);box-shadow:0 8px 20px rgba(67,97,238,.2)}
+    .btn-secondary{background:#fff;border:1px solid #e1e8ed;color:#333}
+    .btn-secondary:hover:not(:disabled){background:#f8f9fa;border-color:#4361ee}
+    .btn-google{background:#fff;border:1px solid #e1e8ed;color:#444}
+    .btn-google:hover:not(:disabled){background:#f8f9fa;border-color:#4361ee}
+    .btn-google:disabled{opacity:.55;background:#f8f9fa !important;border-color:#e1e8ed !important;color:#999 !important;cursor:not-allowed}
+    .btn-google:disabled .btn-text{color:#999}
+    .btn-help{background:transparent;border:1px solid #4361ee;color:#4361ee;padding:10px 20px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;transition:all .3s;display:inline-flex;align-items:center;gap:6px;width:auto}
+    .btn-help:hover{background:#4361ee;color:#fff;transform:translateY(-1px)}
+    .google-icon{width:20px;height:20px}
+    .divider{display:flex;align-items:center;margin:25px 0;color:#999;font-size:14px;font-weight:400}
+    .divider::before,.divider::after{content:'';flex:1;border-bottom:1px solid #e1e8ed}
+    .divider::before{margin-right:10px}
+    .divider::after{margin-left:10px}
+    .links{text-align:center;margin-top:25px;font-size:14px;color:#666;font-weight:400}
+    .links a{color:#4361ee;text-decoration:none;font-weight:500;cursor:pointer}
+    .links a:hover{text-decoration:underline}
+    .forgot-password{text-align:right;margin-bottom:20px}
+    .forgot-password a{color:#4361ee;text-decoration:none;font-size:14px;font-weight:400;cursor:pointer}
+    .forgot-password a:hover{text-decoration:underline}
+    .icon{text-align:center;margin-bottom:20px;font-size:48px}
+    .alert{padding:12px 16px;border-radius:8px;margin-bottom:20px;font-size:14px;display:none;animation:slideDown .3s ease;font-weight:400}
+    @keyframes slideDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+    .alert.show{display:block}
+    .alert-error{background:#fee;color:#c33;border:1px solid #fcc}
+    .alert-success{background:#e8f5e9;color:#2e7d32;border:1px solid #c8e6c9}
+    .alert-info{background:#e3f2fd;color:#1565c0;border:1px solid #bbdefb}
+    .spinner{display:none;width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;position:absolute;right:16px;top:50%;transform:translateY(-50%)}
+    @keyframes spin{to{transform:translateY(-50%) rotate(360deg)}}
+    .btn.loading .spinner{display:block}
+    .btn.loading .btn-text{opacity:.7}
+    .checkbox-group{margin:20px 0;display:flex;align-items:flex-start;gap:10px}
+    .checkbox-group input[type=checkbox]{width:18px;height:18px;cursor:pointer;margin-top:2px;flex-shrink:0;accent-color:#4361ee}
+    .checkbox-group label{font-size:13px;color:#555;line-height:1.5;cursor:pointer;user-select:none;font-weight:400}
+    .checkbox-group label a{color:#4361ee;text-decoration:none;font-weight:500}
+    .checkbox-group label a:hover{text-decoration:underline}
+    .password-strength{margin-top:8px;height:3px;background:#e1e8ed;border-radius:2px;overflow:hidden;transition:all .3s}
+    .password-strength-bar{height:100%;width:0;transition:all .3s;border-radius:2px}
+    .password-strength-text{font-size:12px;margin-top:6px;font-weight:500;transition:all .3s}
+    .strength-weak .password-strength-bar{width:33%;background:#ff4757}
+    .strength-weak .password-strength-text{color:#ff4757}
+    .strength-good .password-strength-bar{width:66%;background:#ffa502}
+    .strength-good .password-strength-text{color:#ffa502}
+    .strength-strong .password-strength-bar{width:100%;background:#26de81}
+    .strength-strong .password-strength-text{color:#26de81}
+    .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);backdrop-filter:blur(4px);z-index:1000;align-items:center;justify-content:center;padding:20px;animation:fadeIn .3s ease}
+    .modal.show{display:flex}
+    .modal-content{background:#fff;border-radius:16px;padding:28px;max-width:480px;width:100%;max-height:80vh;overflow-y:auto;animation:modalSlideUp .3s ease;box-shadow:0 12px 40px rgba(0,0,0,.15)}
+    @keyframes modalSlideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+    .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;position:sticky;top:0;background:#fff;z-index:10;padding-bottom:10px}
+    .modal-header h3{color:#1a1a2e;font-size:22px;font-weight:500}
+    .modal-close{background:#f8f9fa;border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:18px;line-height:1;transition:all .3s;flex-shrink:0}
+    .modal-close:hover{background:#e9ecef;transform:rotate(90deg)}
+    .modal-body{color:#555;line-height:1.6;font-size:14px;font-weight:400}
+    .modal-body h4{color:#1a1a2e;margin-top:20px;margin-bottom:10px;font-size:16px;font-weight:500}
+    .modal-body p{margin-bottom:15px}
+    .contact-links{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap}
+    .contact-link{flex:1;min-width:130px;display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;background:#fff;border:1px solid #e1e8ed;border-radius:10px;text-decoration:none;color:#333;font-weight:500;font-size:14px;transition:all .3s}
+    .contact-link:hover{border-color:#4361ee;background:#f8f9fa;transform:translateY(-1px)}
+    .contact-link.telegram{border-color:#0088cc;color:#0088cc}
+    .contact-link.telegram:hover{background:#e8f5fa}
+    .contact-link.email{border-color:#4361ee;color:#4361ee}
+    .contact-link.email:hover{background:#e8ecfb}
+    .copy-notification{position:fixed;top:20px;right:20px;background:#ff4757;color:#fff;padding:12px 16px;border-radius:8px;font-weight:500;font-size:14px;box-shadow:0 8px 24px rgba(255,71,87,.2);z-index:10000;animation:slideInRight .3s ease;display:none}
+    .copy-notification.show{display:block}
+    @keyframes slideInRight{from{opacity:0;transform:translateX(100px)}to{opacity:1;transform:translateX(0)}}
+    .countdown{font-size:14px;color:#2e7d32;margin-top:10px;text-align:center}
+    .back-to-login{margin-top:15px}
+  </style>
 </head>
 <body>
-    <!-- New Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNavbar">
-        <div class="container">
-            <a class="navbar-brand" href="index.html">
-                Tezkor Quiz
-            </a>
-            <label class="burger" for="burger">
-                <input type="checkbox" id="burger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </label>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html">
-                            <svg class="nav-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
-                            </svg>
-                            <span>Bosh sahifa</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="segment25.html">
-                            <svg class="nav-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M11 2v20c-5.07-.5-9-4.79-9-10s3.93-9.5 9-10zm2.03 0v8.99H22c-.47-4.74-4.24-8.52-8.97-8.99zm0 11.01V22c4.74-.47 8.5-4.25 8.97-8.99h-8.97z"/>
-                            </svg>
-                            <span>Segment</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="faq.html">
-                            <svg class="nav-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56-.35-.12-.74-.03-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/>
-                            </svg>
-                            <span>Aloqa</span>
-                        </a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="quizDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <svg class="nav-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
-                            </svg>
-                            <span>Testni boshlash</span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="quizDropdown">
-                            <li>
-                                <a class="dropdown-item" href="quiztest/tezkorquiz.html">
-                                    <svg class="dropdown-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M7 2v11h3v9l7-12h-4l4-8z"/>
-                                    </svg>
-                                    <span>Tezkor Quiz</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="quiztest/bilim.html">
-                                    <svg class="dropdown-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/>
-                                        <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>
-                                    </svg>
-                                    <span>Bilim Quiz</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="quiztest/smart.html">
-                                    <svg class="dropdown-icon" viewBox="0 0 24 24">
-                                        <path d="M9,21C9,22.1 9.9,23 11,23H13C14.1,23 15,22.1 15,21V20H9V21M12,2A7,7 0 0,0 5,9C5,11.38 6.19,13.47 8,14.74V17A1,1 0 0,0 9,18H15A1,1 0 0,0 16,17V14.74C17.81,13.47 19,11.38 19,9A7,7 0 0,0 12,2Z"/>
-                                    </svg>
-                                    <span>Smart Quiz</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="quiztest/pro.html">
-                                    <svg class="dropdown-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1s.4-1 1-1h12c.6 0 1 .4 1 1z"/>
-                                    </svg>
-                                    <span>Pro Quiz</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="quiztest/imtihon.html">
-                                    <svg class="dropdown-icon" viewBox="0 0 24 24">
-                                        <path d="M4,3H18A2,2 0 0,1 20,5V12.5L18.5,11H4V19H12.5L14,20.5V21A2,2 0 0,1 12,23H4A2,2 0 0,1 2,21V5A2,2 0 0,1 4,3M4,7H18V9H4V7M4,11H18V13H4V11M4,15H13V17H4V15M23.7,16.3L17,23L13,19L14.4,17.6L17,20.2L22.3,14.9L23.7,16.3Z"/>
-                                    </svg>
-                                    <span>Imtihon Quiz</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-                
-                <div class="mobile-menu-bottom">
-                    <div class="social-links">
-                        <a href="https://t.me/tezkorquiz_rasmiy" class="social-link" aria-label="Telegram">
-                            <i class="fab fa-telegram"></i>
-                        </a>
-                        <a href="https://www.instagram.com/tezkorquiz.uz?igsh=bWc0a3Fodnk0cnBo" class="social-link" aria-label="Instagram">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="https://www.youtube.com/@QuizTezkor" class="social-link" aria-label="YouTube">
-                            <i class="fab fa-youtube"></i>
-                        </a>
-                    </div>
-                    <a href="https://t.me/sobirweb">
-                        <button class="help-button">
-                            <i class="fas fa-headset"></i>
-                            <span>Yordam</span>
-                        </button>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </nav>
+  <script type="text/javascript">
+    var gk_isXlsx=false,gk_xlsxFileLookup={},gk_fileData={};
+    function filledCell(cell){return cell!==''&&cell!=null}
+    function loadFileData(filename){if(gk_isXlsx&&gk_xlsxFileLookup[filename]){try{var workbook=XLSX.read(gk_fileData[filename],{type:'base64'});var firstSheetName=workbook.SheetNames[0];var worksheet=workbook.Sheets[firstSheetName];var jsonData=XLSX.utils.sheet_to_json(worksheet,{header:1,blankrows:false,defval:''});var filteredData=jsonData.filter(row=>row.some(filledCell));var headerRowIndex=filteredData.findIndex((row,index)=>row.filter(filledCell).length>=filteredData[index+1]?.filter(filledCell).length);if(headerRowIndex===-1||headerRowIndex>25)headerRowIndex=0;var csv=XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex));csv=XLSX.utils.sheet_to_csv(csv,{header:1});return csv}catch(e){console.error(e);return""}}return gk_fileData[filename]||""}
+  </script>
 
-    <!-- Main Content -->
-    <div class="container main-content py-5">
-        <h1 class="text-center mb-2" data-aos="fade-up">Testni boshlash</h1>
-        <p class="text-center text-muted mb-5" data-aos="fade-up" data-aos-delay="100">Testni boshlash uchun o'zingizga qulay test turini tanlang. O'qish rejimidan imtihon testigacha — barchasi bir joyda!</p>
-        <div class="row">
-            <!-- O'qish rejimi -->
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="book-card" data-aos="fade-up" data-aos-delay="300">
-                    <div class="book-content">
-                        <h5 class="book-card-title">O'qish Rejimi</h5>
-                        <p class="book-card-text">Test faylni yuklagan holda o'qish imkoni sizda mavjud</p>
-                        <div class="container-eg-btn-3">
-                            <a href="quiztest/oqishrejimi.html" class="button button-8">Boshlash</a>
-                        </div>
-                    </div>
-                    <div class="book-cover">
-                        <img src="aga/rejimi.png" alt="O'qish rejimi">
-                        <div class="book-cover-content">
-                            <h5 class="book-card-title">O'qish Rejimi</h5>
-                            <p class="book-card-text">Ochish uchun ustiga bosing</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Tezkor Quiz -->
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="book-card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="book-content">
-                        <h5 class="book-card-title">Tezkor Quiz</h5>
-                        <p class="book-card-text">Testning bazasini .txt formatda menga yuboring va darhol shu testni boshlang!</p>
-                        <div class="container-eg-btn-3">
-                            <a href="quiztest/tezkorquiz.html" class="button button-8">Boshlash</a>
-                        </div>
-                    </div>
-                    <div class="book-cover">
-                        <img src="aga/asosiy (1).png" alt="Tezkor Quiz">
-                        <div class="book-cover-content">
-                            <h5 class="book-card-title">Tezkor Quiz</h5>
-                            <p class="book-card-text">Ochish uchun ustiga bosing</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Bilim Quiz -->
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="book-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="book-content">
-                        <h5 class="book-card-title">Bilim Quiz</h5>
-                        <p class="book-card-text">Testga tayyorlangan holda bu testni boshlash tavsiya etiladi.</p>
-                        <div class="container-eg-btn-3">
-                            <a href="quiztest/bilim.html" class="button button-8">Boshlash</a>
-                        </div>
-                    </div>
-                    <div class="book-cover">
-                        <img src="aga/bilim.webp" alt="Bilim Quiz">
-                        <div class="book-cover-content">
-                            <h5 class="book-card-title">Bilim Quiz</h5>
-                            <p class="book-card-text">Ochish uchun ustiga bosing</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Smart Quiz -->
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="book-card" data-aos="fade-up" data-aos-delay="300">
-                    <div class="book-content">
-                        <h5 class="book-card-title">Smart Quiz</h5>
-                        <p class="book-card-text">Mobil telefonlarda judayam uzun savol va variantlar uchun moslashtirilgan.</p>
-                        <div class="container-eg-btn-3">
-                            <a href="quiztest/smart.html" class="button button-8">Boshlash</a>
-                        </div>
-                    </div>
-                    <div class="book-cover">
-                        <img src="aga/smart.webp" alt="Smart Quiz">
-                        <div class="book-cover-content">
-                            <h5 class="book-card-title">Smart Quiz</h5>
-                            <p class="book-card-text">Ochish uchun ustiga bosing</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Pro Quiz -->
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="book-card" data-aos="fade-up" data-aos-delay="300">
-                    <span class="badge bg-success card-badge">tavsiya</span>
-                    <div class="book-content">
-                        <h5 class="book-card-title">Pro Quiz</h5>
-                        <p class="book-card-text">Kampyuter va telefon uchun keng, optimallashtirilgan qulayliklar.</p>
-                        <div class="container-eg-btn-3">
-                            <a href="quiztest/pro.html" class="button button-8">Boshlash</a>
-                        </div>
-                    </div>
-                    <div class="book-cover">
-                        <img src="aga/pro.webp" alt="Pro Quiz">
-                        <div class="book-cover-content">
-                            <h5 class="book-card-title">Pro Quiz</h5>
-                            <p class="book-card-text">Ochish uchun ustiga bosing</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Imtihon Quiz -->
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="book-card" data-aos="fade-up" data-aos-delay="400">
-                    <div class="book-content">
-                        <h5 class="book-card-title">Imtihon Quiz</h5>
-                        <p class="book-card-text">Imtihon ko'rinishidagi testlar, tasdiqlaganingizdan keyin natija chiqadi!</p>
-                        <div class="container-eg-btn-3">
-                            <a href="quiztest/imtihon.html" class="button button-8">Boshlash</a>
-                        </div>
-                    </div>
-                    <div class="book-cover">
-                        <img src="aga/asosiy (3).png" alt="Imtihon Quiz">
-                        <div class="book-cover-content">
-                            <h5 class="book-card-title">Imtihon Quiz</h5>
-                            <p class="book-card-text">Ochish uchun ustiga bosing</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Birgalikda Quiz -->
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="book-card" data-aos="fade-up" data-aos-delay="300">
-                    <span class="badge bg-success card-badge">beta</span>
-                    <div class="book-content">
-                        <h5 class="book-card-title">Birgalikda Quiz</h5>
-                        <p class="book-card-text">Ko'p foydalanuvchilar uchun test birgalikda ishlash imkoniyati</p>
-                        <div class="container-eg-btn-3">
-                            <a href="quiztest/birgalikda.html" class="button button-8">Boshlash</a>
-                        </div>
-                    </div>
-                    <div class="book-cover">
-                        <div class="book-cover-content">
-                            <h5 class="book-card-title">Birgalikda Quiz</h5>
-                            <p class="book-card-text">Ochish uchun ustiga bosing</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <div class="copy-notification" id="copyNotification">
+    www.tezkorquiz.uz saytida parolni nusxalash mumkin emas
+  </div>
+
+  <div class="main-wrapper">
+    <div class="container">
+      <!-- Welcome Page -->
+      <div id="welcomePage" class="page active">
+        <div class="logo"><div class="logo-icon"><img src="aga/iconcha.png" alt="Logo" id="mainLogo"></div></div>
+        <h2>Xush kelibsiz!</h2>
+        <p class="subtitle">Davom etish uchun kirish usulini tanlang</p>
+        <div id="welcomeAlert" class="alert"></div>
+
+        <button class="btn btn-secondary" onclick="showPage('emailLoginPage')"><span>Email orqali kirish</span></button>
+        <button class="btn btn-primary" onclick="showPage('signupPage')"><span>Ro'yxatdan o'tish</span></button>
+
+        <div class="divider">yoki</div>
+
+        <button id="welcomeGoogle" class="btn btn-google" disabled>
+          <svg class="google-icon" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+          </svg>
+          <span class="btn-text">Google orqali kirish</span>
+          <div class="spinner"></div>
+        </button>
+
+        <div class="links" style="margin-top:30px;">
+          <button type="button" class="btn-help" onclick="showModal('helpModal')">Yordam kerakmi?</button>
         </div>
+      </div>
+
+      <!-- Email Login Page -->
+      <div id="emailLoginPage" class="page">
+        <h2>Email bilan kirish</h2>
+        <p class="subtitle">Hisobingizga kirish uchun email va parolni kiriting</p>
+        <div id="loginAlert" class="alert"></div>
+        <form id="loginForm">
+          <div class="input-group"><label>Email</label><input type="email" id="loginEmail" placeholder="namuna@gmail.com" required autocomplete="off" oncopy="handleCopy(event)"></div>
+          <div class="input-group">
+            <label>Parol</label>
+            <input type="password" id="loginPassword" placeholder="parolni kiriting" required autocomplete="off" oncopy="handleCopy(event)">
+            <span class="eye-toggle" id="loginEye">Show</span>
+          </div>
+          <div class="forgot-password"><a onclick="showPage('resetPage')">Parolni unutdingizmi?</a></div>
+          <button type="submit" class="btn btn-primary"><span class="btn-text">Kirish</span><div class="spinner"></div></button>
+        </form>
+        <div class="links">Hisobingiz yo'qmi? <a onclick="showPage('signupPage')">Ro'yxatdan o'tish</a></div>
+      </div>
+
+      <!-- Signup Page -->
+      <div id="signupPage" class="page">
+        <h2>Ro'yxatdan o'tish</h2>
+        <p class="subtitle">Yangi hisob ochish uchun ma'lumotlarni to'ldiring</p>
+        <div id="signupAlert" class="alert"></div>
+        <form id="signupForm">
+          <div class="input-group"><label>Ism</label><input type="text" id="signupName" placeholder="Ismingiz" required autocomplete="off" oncopy="handleCopy(event)"></div>
+          <div class="input-group"><label>Email</label><input type="email" id="signupEmail" placeholder="namuna@gmail.com" required autocomplete="off" oncopy="handleCopy(event)"></div>
+          <div class="input-group">
+            <label>Parol yarating</label>
+            <input type="password" id="signupPassword" placeholder="Kamida 8 ta belgi" required minlength="8" autocomplete="off" oncopy="handleCopy(event)">
+            <span class="eye-toggle" id="signupEye">Show</span>
+            <div class="password-strength"><div class="password-strength-bar"></div></div>
+            <div class="password-strength-text"></div>
+          </div>
+          <div class="checkbox-group"><input type="checkbox" id="termsCheckbox" required>
+            <label for="termsCheckbox">Men <a href="https://tezkorquiz.uz/TezkorQuiz_Privacy_Policy.pdf" target="_blank">Foydalanish shartlari</a> va <a href="https://tezkorquiz.uz/TezkorQuiz_Terms_of_Service.pdf" target="_blank">Maxfiylik siyosati</a> bilan tanishdim va roziman</label>
+          </div>
+          <button type="submit" class="btn btn-primary"><span class="btn-text">Ro'yxatdan o'tish</span><div class="spinner"></div></button>
+        </form>
+        <div class="divider">yoki</div>
+
+        <button id="signupGoogle" class="btn btn-google" disabled>
+          <svg class="google-icon" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+          </svg>
+          <span class="btn-text">Google orqali ro'yxatdan o'tish</span>
+          <div class="spinner"></div>
+        </button>
+
+        <div class="links">Hisobingiz bormi? <a onclick="showPage('emailLoginPage')">Kirish</a></div>
+      </div>
+
+      <!-- Password Reset Page -->
+      <div id="resetPage" class="page">
+        <div class="icon">Lock</div>
+        <h2>Parolni tiklash</h2>
+        <p class="description">Email manzilingizni kiriting va biz sizga parolni tiklash uchun havola yuboramiz.</p>
+        <div id="resetAlert" class="alert"></div>
+        <form id="resetForm">
+          <div class="input-group"><label>Email</label><input type="email" id="resetEmail" placeholder="namuna@email.com" required autocomplete="off" oncopy="handleCopy(event)"></div>
+          <button type="submit" class="btn btn-primary"><span class="btn-text">Tiklash havolasini yuborish</span><div class="spinner"></div></button>
+        </form>
+        <div id="resetSuccess" style="display:none;text-align:center;margin-top:20px;">
+          <p style="color:#2e7d32;font-weight:500;">Parolni tiklash havolasi <span id="sentEmail"></span> ga yuborildi.</p>
+          <p class="countdown" id="countdown">Qayta urinish uchun <span id="seconds">60</span> soniya</p>
+          <button class="btn btn-secondary back-to-login" onclick="showPage('emailLoginPage')" style="margin-top:15px;">Kirish sahifasiga qaytish</button>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <!-- Required JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-    <script>
-        AOS.init({
-            duration: 800,
-            once: true
-        });
+  <!-- Help Modal -->
+  <div id="helpModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header"><h3>Yordam</h3><button class="modal-close" onclick="closeModal('helpModal')">x</button></div>
+      <div class="modal-body">
+        <h4>Kirish muammolari</h4>
+        <p><strong>Parolni unutdingizmi?</strong><br>"Email orqali kirish" tugmasini bosing va "Parolni unutdingizmi?" havolasiga o'ting. Email manzilingizga parolni tiklash havolasi yuboriladi.</p>
+        <p><strong>Email yoki parol noto'g'ri?</strong><br>Email manzilingiz va parolingizni to'g'ri kiritganingizga ishonch hosil qiling. Caps Lock yoqilmaganligini tekshiring.</p>
+        <h4>Google orqali kirish</h4>
+        <p><strong>Eslatma:</strong> Google orqali kirish va ro'yxatdan o'tish vaqtincha o'chirilgan. Iltimos, email orqali foydalaning.</p>
+        <h4>Texnik muammolar</h4>
+        <p>Agar internet aloqangizda muammo bo'lsa, ulanishni tekshiring va qaytadan urinib ko'ring.</p>
+        <h4>Biz bilan bog'lanish</h4>
+        <p>Qo'shimcha yordam kerak bo'lsa, quyidagi orqali murojaat qilishingiz mumkin:</p>
+        <div class="contact-links">
+          <a href="https://t.me/sobirweb" target="_blank" class="contact-link telegram"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.40-.36-.01-1.04-.20-1.55-.37-.63-.20-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>Telegram</a>
+          <a href="https://mail.google.com/mail/?view=cm&fs=1&to=tezkorquiz@gmail.com&su=Tezkor%20Quiz%20bo%27yicha%20savol&body=Salom,%0D%0A%0D%0A" target="_blank" class="contact-link email"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Email</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const navbar = document.getElementById('mainNavbar');
-            const navLinks = document.querySelectorAll('.navbar-nav a:not(.dropdown-toggle)');
-            const burgerInput = document.querySelector('#burger');
-            const navbarCollapse = document.querySelector('.navbar-collapse');
-            const dropdown = document.querySelector('.dropdown');
-            const dropdownToggle = document.getElementById('quizDropdown');
-            const dropdownMenu = document.querySelector('.dropdown-menu');
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, updateProfile } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 
-            // Scroll effect for navbar
-            window.addEventListener('scroll', function() {
-                if (window.scrollY > 50) {
-                    navbar.classList.add('scrolled');
-                } else {
-                    navbar.classList.remove('scrolled');
-                }
-            }, { passive: true });
+    const firebaseConfig = {
+      apiKey: "AIzaSyBxIpLY5WasiSIlDL4japBLnnXRwOLUKEQ",
+      authDomain: "tezkor-quiz-bbe3c.firebaseapp.com",
+      projectId: "tezkor-quiz-bbe3c",
+      storageBucket: "tezkor-quiz-bbe3c.firebasestorage.app",
+      messagingSenderId: "143161522496",
+      appId: "1:143161522496:web:252108ace3a4c19f35e2a5",
+    };
 
-            // Burger menu toggle
-            burgerInput.addEventListener('change', function() {
-                if (this.checked) {
-                    navbarCollapse.classList.add('show');
-                    document.body.style.overflow = 'hidden';
-                } else {
-                    navbarCollapse.classList.remove('show');
-                    dropdown.classList.remove('show');
-                    dropdownToggle.setAttribute('aria-expanded', 'false');
-                    dropdownMenu.classList.remove('show');
-                    document.body.style.overflow = 'auto';
-                }
-            });
+    let app, auth;
+    try {
+      app = initializeApp(firebaseConfig);
+      auth = getAuth(app);
+      console.log('Firebase muvaffaqiyatli ulandi');
+    } catch (e) {
+      console.error('Firebase ulanishda xatolik:', e);
+      showAlert('welcomeAlert','Firebase ulanishida xatolik. Console ni tekshiring.','error');
+    }
 
-            // Close mobile menu on link click (except dropdown toggle)
-            navLinks.forEach(function(link) {
-                link.addEventListener('click', function() {
-                    if (navbarCollapse.classList.contains('show')) {
-                        burgerInput.checked = false;
-                        navbarCollapse.classList.remove('show');
-                        document.body.style.overflow = 'auto';
-                    }
-                });
-            });
+    // ==================== KOʻZ ICONKASI ====================
+    function togglePassword(inputId, eyeId) {
+      const input = document.getElementById(inputId);
+      const eye = document.getElementById(eyeId);
+      eye.addEventListener('click', () => {
+        if (input.type === 'password') {
+          input.type = 'text';
+          eye.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="20" height="20">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            </svg>`;
+        } else {
+          input.type = 'password';
+          eye.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="20" height="20">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+            </svg>`;
+        }
+      });
+    }
+    togglePassword('loginPassword', 'loginEye');
+    togglePassword('signupPassword', 'signupEye');
 
-            // Click handling for dropdown
-            let isDropdownClicked = false;
+    // ==================== COUNTDOWN & SUCCESS UI ====================
+    let countdownInterval;
+    function startCountdown() {
+      let sec = 60;
+      const secEl = document.getElementById('seconds');
+      const successDiv = document.getElementById('resetSuccess');
+      const form = document.getElementById('resetForm');
+      form.style.display = 'none';
+      successDiv.style.display = 'block';
+      document.getElementById('sentEmail').textContent = document.getElementById('resetEmail').value;
 
-            dropdownToggle.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                isDropdownClicked = !dropdown.classList.contains('show');
-                dropdown.classList.toggle('show');
-                dropdownToggle.setAttribute('aria-expanded', isDropdownClicked);
-                dropdownMenu.classList.toggle('show');
-            });
+      countdownInterval = setInterval(() => {
+        sec--;
+        secEl.textContent = sec;
+        if (sec <= 0) {
+          clearInterval(countdownInterval);
+          document.querySelector('.countdown').textContent = 'Endi qayta urinib koʻrishingiz mumkin';
+        }
+      }, 1000);
+    }
 
-            // Close dropdown on outside click
-            document.addEventListener('click', function(e) {
-                if (!dropdown.contains(e.target) && dropdown.classList.contains('show')) {
-                    isDropdownClicked = false;
-                    dropdown.classList.remove('show');
-                    dropdownToggle.setAttribute('aria-expanded', 'false');
-                    dropdownMenu.classList.remove('show');
-                }
-            });
+    // ==================== BOSHQA FUNKSIYALAR (o'zgarmadi) ====================
+    function getDynamicGreeting(){
+      const g={timeBased:[{text:'Xayrli tong!',startHour:5,endHour:9},{text:'Nurli tong',startHour:5,endHour:9},{text:'Xayrli kun!',startHour:12,endHour:17},{text:'Xayrli kech!',startHour:18,endHour:24}],
+               random:['Salom do‘stim!','Assalomu aleykum!','Marhamat kiring!','Harakatni boshlang!','Yaxshi kayfiyat!','Tabassum qiling!','Yangi start!','Omadli kun!','Salom mehmon!','Omadli boshlang!']};
+      const h=new Date().getHours();
+      const match=g.timeBased.filter(i=>h>=i.startHour&&h<i.endHour).map(i=>i.text);
+      const all=[...match,...g.random];
+      return all[Math.floor(Math.random()*all.length)];
+    }
+    function updateGreeting(){document.querySelector('#welcomePage h2').textContent=getDynamicGreeting()}
+    document.addEventListener('DOMContentLoaded',updateGreeting);
 
-            // Prevent dropdown menu clicks from closing the dropdown
-            dropdownMenu.addEventListener('click', function(e) {
-                e.stopPropagation();
-            });
-        });
-    </script>
+    // Security
+    document.addEventListener('keydown',e=>{if(e.key==='F12'||(e.ctrlKey&&e.shiftKey&&['I','J','C'].includes(e.key))||(e.ctrlKey&&e.key==='u')){e.preventDefault();return false}});
+    document.addEventListener('contextmenu',e=>e.preventDefault());
+    window.handleCopy=e=>{e.preventDefault();const i=e.target,t=i.value;if(t)navigator.clipboard.writeText(t).catch(()=>{showCopyNotification()});else showCopyNotification()};
+    ['copy','cut','paste','selectstart'].forEach(ev=>document.addEventListener(ev,e=>{if(e.target.tagName!=='INPUT'){e.preventDefault();if(['copy','cut'].includes(ev))showCopyNotification();return false}}));
+    function showCopyNotification(){const n=document.getElementById('copyNotification');n.classList.add('show');setTimeout(()=>n.classList.remove('show'),3000)}
+    const devToolsChecker=setInterval(()=>{const t=160;if(window.outerWidth-window.innerWidth>t||window.outerHeight-window.innerHeight>t){document.body.innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-size:24px;color:#ff4757;text-align:center;padding:20px;">Developer Tools aniqlandi!<br>Iltimos, brauzeringizni qayta yuklang.</div>';clearInterval(devToolsChecker)}},1000);
+
+    // Page / Modal
+    let currentPage='welcomePage',modalOpen=false;
+    function updateHistory(p){currentPage=p;history.pushState({page:p},'','')}
+    window.addEventListener('popstate',()=>{if(modalOpen){closeModal('helpModal');modalOpen=false;history.pushState({page:currentPage},'','')}else if(currentPage!=='welcomePage')showPage('welcomePage')});
+    window.showModal=id=>{document.getElementById(id).classList.add('show');modalOpen=true;history.pushState({modal:id},'','')};
+    window.closeModal=id=>{document.getElementById(id).classList.remove('show');modalOpen=false;history.back()};
+    document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)closeModal(m.id)}));
+    window.showPage=id=>{
+      document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      document.querySelectorAll('.alert').forEach(a=>{a.classList.remove('show');a.innerHTML=''}); 
+      updateHistory(id);
+      if(id==='welcomePage') updateGreeting();
+      // reset countdown
+      clearInterval(countdownInterval);
+      document.getElementById('resetSuccess').style.display='none';
+      document.getElementById('resetForm').style.display='block';
+    };
+
+    // Password strength
+    const pwInput=document.getElementById('signupPassword');
+    function checkPasswordStrength(p){const l=p.length;if(l<6)return{level:'weak',text:'Zaif parol',class:'strength-weak'};if(l<10)return{level:'good',text:'Yaxshi parol',class:'strength-good'};return{level:'strong',text:'Ajoyib parol',class:'strength-strong'}}
+    pwInput?.addEventListener('input',e=>{const p=e.target.value,c=e.target.parentElement.querySelector('.password-strength'),b=c?.querySelector('.password-strength-bar'),t=e.target.parentElement.querySelector('.password-strength-text');if(!c||!b||!t)return;if(p.length===0){c.className='password-strength';t.textContent='';return}const r=checkPasswordStrength(p);c.className=`password-strength ${r.class}`;t.textContent=r.text});
+
+    // Alert / Loading
+    function showAlert(id,msg,type='error'){const a=document.getElementById(id);a.innerHTML=msg;a.className=`alert alert-${type} show`;if(type==='success')setTimeout(()=>a.classList.remove('show'),5000)}
+    function setLoading(btn,load){if(load){btn.disabled=true;btn.classList.add('loading')}else{btn.disabled=false;btn.classList.remove('loading')}}
+    function clearForm(id){const f=document.getElementById(id);if(f){f.reset();const s=f.querySelector('.password-strength'),t=f.querySelector('.password-strength-text');if(s)s.className='password-strength';if(t)t.textContent=''}};
+
+    function getErrorMessage(c){const m={'auth/invalid-email':'Noto\'g\'ri email format','auth/user-disabled':'Bu foydalanuvchi o\'chirilgan','auth/user-not-found':'Bunday foydalanuvchi topilmadi','auth/wrong-password':'Noto\'g\'ri parol kiritildi','auth/email-already-in-use':'Bu email allaqachon ro\'yxatdan o\'tgan','auth/weak-password':'Parol juda oddiy. Kamida 8 ta belgi kiriting','auth/network-request-failed':'Internet aloqasi yo\'q. Iltimos, ulanishni tekshiring','auth/too-many-requests':'Juda ko\'p urinish. Iltimos, biroz kutib qaytadan urinib ko\'ring','auth/invalid-credential':'Noto\'g\'ri email yoki parol','auth/missing-password':'Parol kiritilmagan'};return m[c]||`Xatolik: ${c}`}
+
+    // Forms
+    document.getElementById('loginForm').addEventListener('submit',async e=>{e.preventDefault();const b=e.target.querySelector('.btn-primary'),em=document.getElementById('loginEmail').value,pw=document.getElementById('loginPassword').value;setLoading(b,true);try{await signInWithEmailAndPassword(auth,em,pw);showAlert('loginAlert','Muvaffaqiyatli kirildi! Sahifa yangilanmoqda...','success');clearForm('loginForm');setTimeout(()=>location.href='index.html',1500)}catch(err){showAlert('loginAlert',getErrorMessage(err.code),'error');setLoading(b,false)}});
+
+    document.getElementById('signupForm').addEventListener('submit',async e=>{e.preventDefault();const b=e.target.querySelector('.btn-primary'),name=document.getElementById('signupName').value,em=document.getElementById('signupEmail').value,pw=document.getElementById('signupPassword').value,terms=document.getElementById('termsCheckbox').checked;if(!terms){showAlert('signupAlert','Iltimos, foydalanish shartlari bilan rozilik bildiring','error');return}setLoading(b,true);try{const uc=await createUserWithEmailAndPassword(auth,em,pw);await updateProfile(uc.user,{displayName:name});showAlert('signupAlert','Muvaffaqiyatli ro\'yxatdan o\'tdingiz! Sahifa yangilanmoqda...','success');clearForm('signupForm');setTimeout(()=>location.href='index.html',1500)}catch(err){showAlert('signupAlert',getErrorMessage(err.code),'error');setLoading(b,false)}});
+
+    // RESET FORM – YANGI LOGIKA
+    document.getElementById('resetForm').addEventListener('submit',async e=>{
+      e.preventDefault();
+      const b=e.target.querySelector('.btn-primary'),em=document.getElementById('resetEmail').value;
+      setLoading(b,true);
+      try{
+        await sendPasswordResetEmail(auth,em);
+        showAlert('resetAlert','Havola muvaffaqiyatli yuborildi!','success');
+        startCountdown(); // 60 soniya + tugma
+        setLoading(b,false);
+      }catch(err){
+        showAlert('resetAlert',err.code==='auth/user-not-found'?'Bu email bilan ro\'yxatdan o\'tilmagan':getErrorMessage(err.code),'error');
+        setLoading(b,false);
+      }
+    });
+
+    auth.onAuthStateChanged(u=>{console.log(u?'Foydalanuvchi tizimda: '+u.email:'Foydalanuvchi tizimda emas')});
+    history.replaceState({page:'welcomePage'},'','');
+  </script>
 </body>
 </html>
