@@ -1,386 +1,347 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-    <title>Tezkor Quiz Navbar</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="icon" href="aga/iconcha.png">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tezkor Quiz - testlarni yaratish, boshqarish va yechish uchun qulay platforma">
-    
-    <!-- Lucide Icons (React komponentlari uchun) -->
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tezkor Quiz</title>
 
-    <style>
-        /* Sizning barcha CSS kodlaringiz shu yerda qoladi */
-        :root {
-            --primary-color: #4361ee;
-            --secondary-color: #3a0ca3;
-            --accent-color: #f72585;
-            --light-color: #f8f9fa;
-            --dark-color: #212529;
-            --success-color: #4cc9f0;
-            --warning-color: #f8961e;
-            --gradient-1: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            --white: #fff;
-            --black: #282936;
-            --burger-active-color: #ff0000;
-        }
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Nunito', 'Roboto', sans-serif;
-            background: #ECF2FF;
-            min-height: 100vh;
-            padding-top: 80px;
-        }
+  <style>
+    :root {
+      --primary: #4361ee;
+      --secondary: #3a0ca3;
+      --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+      --dark: #212529;
+      --light: #f8f9fa;
+    }
+    * { box-sizing: border-box; margin:0; padding:0; }
+    body {
+      font-family: 'Nunito', 'Roboto', sans-serif;
+      background: #ECF2FF;
+      padding-top: 80px;
+      min-height: 100vh;
+    }
 
-        /* Barcha CSS kodlaringiz shu yerda... (oldingi kodni bu yerga qo'ying) */
-        /* Kengaytmaslik uchun qisqartirdim, lekin sizniki to'liq qoladi */
+    /* NAVBAR */
+    .navbar {
+      padding: 16px 0;
+      background: rgba(255,255,255,1);
+      box-shadow: 0 2px 10px rgba(0,0,0,.05);
+      transition: all .4s ease;
+    }
+    .navbar.scrolled {
+      padding: 8px 0;
+      background: rgba(255,255,255,.85);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 8px 32px rgba(0,0,0,.12);
+    }
+    .navbar-brand {
+      font-weight: 800;
+      font-size: 28px;
+      color: var(--primary) !important;
+    }
+    .nav-link {
+      font-weight: 600;
+      color: var(--dark) !important;
+      border-radius: 12px;
+      padding: 10px 20px !important;
+      transition: .3s;
+    }
+    .nav-link:hover { color: var(--primary) !important; }
+    .nav-link.active {
+      background: var(--gradient);
+      color: #fff !important;
+    }
 
-        /* Profil tugmasi uchun qo'shimcha */
-        .profile-btn {
-            background: var(--gradient-1);
-            border: none;
-            border-radius: 50%;
-            width: 42px;
-            height: 42px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-            transition: all 0.3s ease;
-            position: relative;
-            z-index: 10;
-        }
-        .profile-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
-        }
-        .profile-btn img, .profile-btn .default-avatar {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid white;
-        }
-        .profile-btn .default-avatar {
-            background: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+    /* BURGER */
+    .burger {
+      width: 26px; height: 20px; cursor: pointer; display: none;
+    }
+    .burger span {
+      display: block; height: 2.5px; width: 100%; background: #000;
+      border-radius: 8px; transition: .3s; position: absolute;
+    }
+    .burger span:nth-child(1) { top: 0; }
+    .burger span:nth-child(2) { top: 50%; transform: translateY(-50%); }
+    .burger span:nth-child(3) { bottom: 0; }
+    #burger:checked ~ span:nth-child(1) { transform: rotate(45deg); top: 8px; }
+    #burger:checked ~ span:nth-child(2) { opacity: 0; }
+    #burger:checked ~ span:nth-child(3) { transform: rotate(-45deg); bottom: 8px; }
 
-        /* Dropdown */
-        .profile-dropdown {
-            position: absolute;
-            top: 60px;
-            right: 0;
-            width: 280px;
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-            overflow: hidden;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s ease;
-        }
-        .profile-dropdown.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
+    /* PROFIL BUTTON */
+    .profile-btn {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--gradient); display: flex;
+      align-items: center; justify-content: center;
+      cursor: pointer; box-shadow: 0 4px 15px rgba(67,97,238,.4);
+      transition: .3s;
+    }
+    .profile-btn:hover { transform: scale(1.1); }
+    .profile-btn img, .profile-btn svg {
+      width: 26px; height: 26px; color: #fff;
+    }
 
-        /* Modal */
-        .modal-backdrop {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-        .modal-backdrop.show {
-            opacity: 1;
-            visibility: visible;
-        }
-        .modal {
-            background: white;
-            border-radius: 16px;
-            padding: 24px;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-            transform: scale(0.9);
-            transition: transform 0.3s ease;
-        }
-        .modal.show {
-            transform: scale(1);
-        }
-        .spinner {
-            width: 20px;
-            height: 20px;
-            border: 2px solid #fff;
-            border-top: 2px solid transparent;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+    /* DROPDOWN */
+    .profile-dropdown {
+      position: absolute; top: 70px; right: 15px;
+      width: 290px; background: #fff; border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0,0,0,.15);
+      opacity: 0; visibility: hidden; transform: translateY(-10px);
+      transition: .3s; z-index: 999;
+    }
+    .profile-dropdown.show {
+      opacity: 1; visibility: visible; transform: translateY(0);
+    }
 
-        @media (max-width: 991px) {
-            .profile-btn {
-                width: 38px;
-                height: 38px;
-            }
-            .profile-btn img, .profile-btn .default-avatar {
-                width: 34px;
-                height: 34px;
-            }
-        }
-    </style>
+    /* MODAL */
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(0,0,0,.5);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 2000; opacity: 0; visibility: hidden; transition: .3s;
+    }
+    .modal-backdrop.show { opacity: 1; visibility: visible; }
+    .modal {
+      background: #fff; border-radius: 16px; padding: 24px;
+      max-width: 400px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,.2);
+      transform: scale(.9); transition: .3s;
+    }
+    .modal.show { transform: scale(1); }
+
+    /* RESPONSIVE */
+    @media (max-width: 991px) {
+      .burger { display: block; }
+      .navbar-collapse {
+        position: fixed; top: 65px; left: 0; width: 100%; height: calc(100vh - 65px);
+        background: #fff; padding: 20px; transform: translateX(-100%);
+        transition: .4s; overflow-y: auto;
+      }
+      .navbar-collapse.show { transform: translateX(0); }
+      .nav-link { width: 100%; margin: 5px 0; }
+    }
+  </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNavbar">
-        <div class="container position-relative">
-            <a class="navbar-brand" href="index.html">Tezkor Quiz</a>
 
-            <!-- MOBILE: Profil tugmasi (burger chapida) -->
-            <div class="d-lg-none d-flex align-items-center me-3" id="mobileProfile"></div>
+<nav class="navbar fixed-top" id="mainNav">
+  <div class="container d-flex align-items-center justify-content-between">
 
-            <label class="burger" for="burger">
-                <input type="checkbox" id="burger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </label>
+    <!-- LOGO -->
+    <a class="navbar-brand" href="#">Tezkor Quiz</a>
 
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" href="index.html"><svg class="nav-icon" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span>Bosh sahifa</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="segment25.html"><svg class="nav-icon" viewBox="0 0 24 24"><path d="M11 2v20c-5.07-.5-9-4.79-9-10s3.93-9.5 9-10zm2.03 0v8.99H22c-.47-4.74-4.24-8.52-8.97-8.99zm0 11.01V22c4.74-.47 8.5-4.25 8.97-8.99h-8.97z"/></svg><span>Segment</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="faq.html"><svg class="nav-icon" viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56-.35-.12-.74-.03-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg><span>Aloqa</span></a></li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="quizDropdown" role="button" data-bs-toggle="dropdown">
-                            <svg class="nav-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V.5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
-                            <span>Testni boshlash</span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="quiztest/tezkorquiz.html"><svg class="dropdown-icon" viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg><span>Tezkor Quiz</span></a></li>
-                            <li><a class="dropdown-item" href="quiztest/bilim.html"><svg class="dropdown-icon" viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/><path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg><span>Bilim Quiz</span></a></li>
-                            <li><a class="dropdown-item" href="quiztest/smart.html"><svg class="dropdown-icon" viewBox="0 0 24 24"><path d="M9,21C9,22.1 9.9,23 11,23H13C14.1,23 15,22.1 15,21V20H9V21M12,2A7,7 0 0,0 5,9C5,11.38 6.19,13.47 8,14.74V17A1,1 0 0,0 9,18H15A1,1 0 0,0 16,17V14.74C17.81,13.47 19,11.38 19,9A7,7 0 0,0 12,2Z"/></svg><span>Smart Quiz</span></a></li>
-                            <li><a class="dropdown-item" href="quiztest/pro.html"><svg class="dropdown-icon" viewBox="0 0 24 24"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1s.4-1 1-1h12c.6 0 1 .4 1 1z"/></svg><span>Pro Quiz</span></a></li>
-                            <li><a class="dropdown-item" href="quiztest/imtihon.html"><svg class="dropdown-icon" viewBox="0 0 24 24"><path d="M4,3H18A2,2 0 0,1 20,5V12.5L18.5,11H4V19H12.5L14,20.5V21A2,2 0 0,1 12,23H4A2,2 0 0,1 2,21V5A2,2 0 0,1 4,3M4,7H18V9H4V7M4,11H18V13H4V11M4,15H13V17H4V15M23.7,16.3L17,23L13,19L14.4,17.6L17,20.2L22.3,14.9L23.7,16.3Z"/></svg><span>Imtihon Quiz</span></a></li>
-                        </ul>
-                    </li>
-                </ul>
+    <!-- MOBIL PROFIL (burger chapida) -->
+    <div id="mobileProfile" class="me-3 d-lg-none"></div>
 
-                <!-- DESKTOP: Profil tugmasi (dropdown o'ngida) -->
-                <div class="d-none d-lg-flex align-items-center ms-4" id="desktopProfile"></div>
+    <!-- BURGER -->
+    <label class="burger" for="burger">
+      <input type="checkbox" id="burger" hidden />
+      <span></span><span></span><span></span>
+    </label>
 
-                <div class="mobile-menu-bottom">
-                    <div class="social-links">
-                        <a href="https://t.me/tezkorquiz_rasmiy" class="social-link"><i class="fab fa-telegram"></i></a>
-                        <a href="https://www.instagram.com/tezkorquiz.uz" class="social-link"><i class="fab fa-instagram"></i></a>
-                        <a href="https://www.youtube.com/@QuizTezkor" class="social-link"><i class="fab fa-youtube"></i></a>
-                    </div>
-                    <a href="https://t.me/sobirweb"><button class="help-button"><i class="fas fa-headset"></i><span>Yordam</span></button></a>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <!-- MENU -->
+    <div class="collapse navbar-collapse" id="navCollapse">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item"><a class="nav-link" href="#">Bosh sahifa</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Segment</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Aloqa</a></li>
 
-    <!-- Profil Dropdown va Modal -->
-    <div id="profileDropdown" class="profile-dropdown"></div>
-    <div id="logoutModal" class="modal-backdrop">
-        <div class="modal">
-            <div class="d-flex justify-content-between align-items-start mb-3">
-                <h3 class="fw-bold">Chiqish</h3>
-                <button id="closeModal" class="btn p-0"><i class="fas fa-times text-muted"></i></button>
-            </div>
-            <p class="text-muted">Haqiqatan ham tizimdan chiqmoqchimisiz?</p>
-            <div class="d-flex gap-2 mt-4">
-                <button id="cancelLogout" class="btn btn-light flex-fill">Bekor qilish</button>
-                <button id="confirmLogout" class="btn btn-danger flex-fill d-flex align-items-center justify-content-center gap-2">
-                    <span>Chiqish</span>
-                </button>
-            </div>
-        </div>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+            Testni boshlash
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="#">Tezkor Quiz</a></li>
+            <li><a class="dropdown-item" href="#">Bilim Quiz</a></li>
+            <li><a class="dropdown-item" href="#">Smart Quiz</a></li>
+            <li><a class="dropdown-item" href="#">Pro Quiz</a></li>
+            <li><a class="dropdown-item" href="#">Imtihon Quiz</a></li>
+          </ul>
+        </li>
+      </ul>
+
+      <!-- DESKTOP PROFIL (dropdown o‘ngida) -->
+      <div id="desktopProfile" class="d-none d-lg-block ms-3"></div>
     </div>
+  </div>
+</nav>
 
-    <!-- Demo Content -->
-    <div class="demo-content">
-        <div class="container">
-            <div class="demo-section">
-                <h2 class="text-center">🎯 Scroll qiling va blur effektni ko'ring</h2>
-                <p class="text-center">Sahifani pastga scroll qilganingizda navbar avtomatik ravishda blur effektga o'tadi</p>
-            </div>
-        </div>
+<!-- PROFIL DROPDOWN -->
+<div id="profileDropdown" class="profile-dropdown"></div>
+
+<!-- LOGOUT MODAL -->
+<div id="logoutModal" class="modal-backdrop">
+  <div class="modal">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h5 class="m-0">Chiqish</h5>
+      <button id="closeModal" class="btn p-0"><i class="fas fa-times"></i></button>
     </div>
+    <p>Haqiqatan ham tizimdan chiqmoqchimisiz?</p>
+    <div class="d-flex gap-2 mt-4">
+      <button id="cancelLogout" class="btn btn-secondary flex-fill">Bekor qilish</button>
+      <button id="confirmLogout" class="btn btn-danger flex-fill">
+        <span>Chiqish</span>
+      </button>
+    </div>
+  </div>
+</div>
 
-    <!-- Firebase -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+<!-- Demo content -->
+<div class="container my-5">
+  <div class="p-5 bg-white rounded shadow">
+    <h2 class="text-center">Scroll qiling → navbar blur bo‘ladi</h2>
+    <p class="text-center lead">Profil → Kirish → Chiqish – hammasi ishlaydi!</p>
+  </div>
+</div>
 
-        const firebaseConfig = {
-          apiKey: "AIzaSyBxIpLY5WasiSIlDL4japBLnnXRwOLUKEQ",
-          authDomain: "tezkor-quiz-bbe3c.firebaseapp.com",
-          projectId: "tezkor-quiz-bbe3c",
-          storageBucket: "tezkor-quiz-bbe3c.firebasestorage.app",
-          messagingSenderId: "143161522496",
-          appId: "1:143161522496:web:252108ace3a4c19f35e2a5",
-        };
-        
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
+<!-- Firebase + Logic -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signInWithEmailAndPassword,
+           createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        const desktopProfile = document.getElementById('desktopProfile');
-        const mobileProfile = document.getElementById('mobileProfile');
-        const dropdown = document.getElementById('profileDropdown');
-        const modal = document.getElementById('logoutModal');
-        const closeModal = document.getElementById('closeModal');
-        const cancelLogout = document.getElementById('cancelLogout');
-        const confirmLogout = document.getElementById('confirmLogout');
+    const firebaseConfig = {
+      apiKey: "AIzaSyBxIpLY5WasiSIlDL4japBLnnXRwOLUKEQ",
+      authDomain: "tezkor-quiz-bbe3c.firebaseapp.com",
+      projectId: "tezkor-quiz-bbe3c",
+      storageBucket: "tezkor-quiz-bbe3c.firebasestorage.app",
+      messagingSenderId: "143161522496",
+      appId: "1:143161522496:web:252108ace3a4c19f35e2a5",
+    };
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
 
-        let currentUser = null;
+  const desktop = document.getElementById('desktopProfile');
+  const mobile  = document.getElementById('mobileProfile');
+  const dropdown = document.getElementById('profileDropdown');
+  const modal = document.getElementById('logoutModal');
+  const closeBtn = document.getElementById('closeModal');
+  const cancelBtn = document.getElementById('cancelLogout');
+  const confirmBtn = document.getElementById('confirmLogout');
 
-        function renderProfile(user) {
-            const btnHTML = user?.photoURL 
-                ? `<img src="${user.photoURL}" alt="Profil">`
-                : `<div class="default-avatar"><i data-lucide="user" class="text-primary" style="width:24px;height:24px;"></i></div>`;
-            
-            const btn = `<button class="profile-btn">${btnHTML}</button>`;
-            desktopProfile.innerHTML = btn;
-            mobileProfile.innerHTML = btn;
+  // Profil tugmasini yaratish
+  function renderBtn(user) {
+    const photo = user?.photoURL || '';
+    const html = photo
+      ? `<img src="${photo}" class="rounded-circle" />`
+      : `<i data-lucide="user"></i>`;
+    const btn = `<button class="profile-btn">${html}</button>`;
+    desktop.innerHTML = btn;
+    mobile.innerHTML = btn;
+    lucide.createIcons();
 
-            lucide.createIcons();
+    document.querySelectorAll('.profile-btn').forEach(b =>
+      b.onclick = () => dropdown.classList.toggle('show')
+    );
+  }
 
-            document.querySelectorAll('.profile-btn').forEach(btn => {
-                btn.onclick = () => dropdown.classList.toggle('show');
-            });
+  // Dropdown ichidagi ma'lumot
+  function renderDropdown(user) {
+    dropdown.innerHTML = `
+      <div class="p-4 border-bottom">
+        <div class="d-flex align-items-center gap-3">
+          ${user.photoURL
+            ? `<img src="${user.photoURL}" class="rounded-circle" width="48" height="48"/>`
+            : `<div class="bg-primary rounded-circle d-flex align-items-center justify-content-center text-white" style="width:48px;height:48px;">
+                 <i data-lucide="user" style="width:28px;height:28px;"></i>
+               </div>`}
+          <div>
+            <div class="fw-bold">${user.displayName || 'Foydalanuvchi'}</div>
+            <small class="text-muted">${user.email}</small>
+          </div>
+        </div>
+      </div>
+      <button id="logoutBtn" class="w-100 text-start px-4 py-3 text-danger hover-bg-danger">
+        <i data-lucide="log-out" class="me-2"></i> Chiqish
+      </button>
+    `;
+    lucide.createIcons();
+    document.getElementById('logoutBtn').onclick = () => {
+      dropdown.classList.remove('show');
+      modal.classList.add('show');
+      modal.querySelector('.modal').classList.add('show');
+    };
+  }
+
+  // Kirish prompti
+  function showLogin() {
+    const btn = `<button class="profile-btn"><i data-lucide="log-in"></i></button>`;
+    desktop.innerHTML = mobile.innerHTML = btn;
+    lucide.createIcons();
+    document.querySelectorAll('.profile-btn').forEach(b => b.onclick = loginPrompt);
+  }
+
+  function loginPrompt() {
+    const email = prompt('Email kiriting:');
+    const pass  = prompt('Parol kiriting:');
+    if (!email || !pass) return;
+
+    signInWithEmailAndPassword(auth, email, pass)
+      .catch(err => {
+        if (err.code === 'auth/user-not-found') {
+          if (confirm('Bunday foydalanuvchi topilmadi. Roʻyxatdan oʻtmoqchimisiz?')) {
+            createUserWithEmailAndPassword(auth, email, pass)
+              .catch(e => alert(e.message));
+          }
+        } else {
+          alert(err.message);
         }
+      });
+  }
 
-        function renderDropdown(user) {
-            dropdown.innerHTML = `
-                <div class="p-4 border-bottom">
-                    <div class="d-flex align-items-center gap-3">
-                        ${user?.photoURL ? `<img src="${user.photoURL}" class="w-12 h-12 rounded-full">` : `<div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center"><i data-lucide="user" class="text-white" style="width:28px;height:28px;"></i></div>`}
-                        <div>
-                            <p class="fw-bold mb-0">${user?.displayName || 'Foydalanuvchi'}</p>
-                            <p class="text-muted small">${user?.email || 'email@example.com'}</p>
-                        </div>
-                    </div>
-                </div>
-                <button id="logoutBtn" class="w-100 d-flex align-items-center gap-3 px-4 py-3 text-danger hover:bg-red-50">
-                    <i data-lucide="log-out" class="w-5 h-5"></i>
-                    <span class="fw-medium">Chiqish</span>
-                </button>
-            `;
-            lucide.createIcons();
-            document.getElementById('logoutBtn')?.addEventListener('click', () => {
-                dropdown.classList.remove('show');
-                modal.classList.add('show');
-                document.querySelector('.modal').classList.add('show');
-            });
-        }
+  // Foydalanuvchi holati
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      renderBtn(user);
+      renderDropdown(user);
+    } else {
+      showLogin();
+      dropdown.innerHTML = '';
+    }
+  });
 
-        function showLoginPrompt() {
-            const loginHTML = `
-                <div class="p-4 text-center">
-                    <i data-lucide="log-in" class="mx-auto mb-3 text-primary" style="width:48px;height:48px;"></i>
-                    <p class="mb-3">Profilga kirish uchun tizimga kiring</p>
-                    <button id="loginPromptBtn" class="btn btn-primary px-4">Kirish</button>
-                </div>
-            `;
-            [desktopProfile, mobileProfile].forEach(el => el.innerHTML = `<button class="profile-btn"><i data-lucide="log-in" class="text-white" style="width:24px;height:24px;"></i></button>`);
-            lucide.createIcons();
+  // Modal yopish
+  [closeBtn, cancelBtn].forEach(b => b.onclick = () => {
+    modal.classList.remove('show');
+    modal.querySelector('.modal').classList.remove('show');
+  });
 
-            document.querySelectorAll('#loginPromptBtn, .profile-btn').forEach(btn => {
-                btn.onclick = () => {
-                    const email = prompt("Email:");
-                    const pass = prompt("Parol:");
-                    if (email && pass) {
-                        signInWithEmailAndPassword(auth, email, pass).catch(err => {
-                            alert("Xato: " + err.message);
-                            if (confirm("Ro'yxatdan o'tmaganmisiz?")) {
-                                createUserWithEmailAndPassword(auth, email, pass).catch(e => alert(e.message));
-                            }
-                        });
-                    }
-                };
-            });
-        }
+  // Chiqish
+  confirmBtn.onclick = () => {
+    confirmBtn.disabled = true;
+    confirmBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Chiqish...';
+    signOut(auth)
+      .then(() => location.reload())
+      .catch(err => {
+        alert('Chiqishda xato: ' + err.message);
+        confirmBtn.disabled = false;
+        confirmBtn.innerHTML = 'Chiqish';
+      });
+  };
 
-        onAuthStateChanged(auth, (user) => {
-            currentUser = user;
-            if (user) {
-                renderProfile(user);
-                renderDropdown(user);
-            } else {
-                showLoginPrompt();
-                dropdown.innerHTML = '';
-            }
-        });
+  // Tashqarida bosilganda dropdown yopish
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.profile-btn') && !e.target.closest('.profile-dropdown')) {
+      dropdown.classList.remove('show');
+    }
+  });
 
-        // Modal
-        closeModal.onclick = cancelLogout.onclick = () => {
-            modal.classList.remove('show');
-            document.querySelector('.modal').classList.remove('show');
-        };
+  // Navbar scroll blur
+  window.addEventListener('scroll', () => {
+    document.getElementById('mainNav').classList.toggle('scrolled', scrollY > 30);
+  });
 
-        confirmLogout.onclick = () => {
-            confirmLogout.disabled = true;
-            confirmLogout.innerHTML = `<div class="spinner"></div>`;
-            signOut(auth).then(() => {
-                modal.classList.remove('show');
-            }).catch(err => {
-                alert("Chiqishda xato: " + err.message);
-            }).finally(() => {
-                confirmLogout.disabled = false;
-                confirmLogout.innerHTML = 'Chiqish';
-            });
-        };
+  // Mobil menu
+  document.getElementById('burger').addEventListener('change', e => {
+    document.getElementById('navCollapse').classList.toggle('show', e.target.checked);
+    document.body.style.overflow = e.target.checked ? 'hidden' : '';
+  });
+</script>
 
-        // Tashqarida bosilganda yopish
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.profile-btn') && !e.target.closest('#profileDropdown')) {
-                dropdown.classList.remove('show');
-            }
-        });
-    </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Sizning JS kodlaringiz (burger, scroll, dropdown)
-        document.addEventListener('DOMContentLoaded', function() {
-            const navbar = document.getElementById('mainNavbar');
-            const burgerInput = document.querySelector('#burger');
-            const navbarCollapse = document.querySelector('.navbar-collapse');
-
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 30) {
-                    navbar.classList.add('scrolled');
-                } else {
-                    navbar.classList.remove('scrolled');
-                }
-            });
-
-            burgerInput.addEventListener('change', function() {
-                navbarCollapse.classList.toggle('show', this.checked);
-                document.body.style.overflow = this.checked ? 'hidden' : 'auto';
-            });
-        });
-    </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
