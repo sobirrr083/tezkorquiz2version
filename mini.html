@@ -48,9 +48,37 @@
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
+
+    /* Sahifa yuklanayotganda ko'rsatiladigan loader */
+    .page-loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .page-loader .spinner-large {
+      border: 4px solid #e5e7eb;
+      border-top-color: #3b82f6;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 0.8s linear infinite;
+    }
   </style>
 </head>
 <body class="bg-gray-50">
+  <!-- Sahifa yuklanayotganda loader -->
+  <div id="pageLoader" class="page-loader">
+    <div class="spinner-large"></div>
+  </div>
+
   <!-- Header -->
   <header class="bg-white shadow-sm border-b border-gray-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -100,6 +128,14 @@
     </div>
   </header>
 
+  <!-- Sahifa kontenti -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="bg-white rounded-lg shadow p-6">
+      <h2 class="text-2xl font-bold text-gray-800 mb-4">Xush kelibsiz!</h2>
+      <p class="text-gray-600">Bu himoyalangan sahifa. Faqat tizimga kirgan foydalanuvchilar ko'ra oladi.</p>
+    </div>
+  </div>
+
   <!-- Chiqish tasdiqlash modali -->
   <div id="logoutModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
     <div class="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 animate-modal">
@@ -131,8 +167,8 @@
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
     import { getAuth, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
 
-    // Firebase sozlamalari (o'z ma'lumotlaringiz bilan almashtiring)
-const firebaseConfig = {
+    // Firebase sozlamalari
+    const firebaseConfig = {
       apiKey: "AIzaSyBxIpLY5WasiSIlDL4japBLnnXRwOLUKEQ",
       authDomain: "tezkor-quiz-bbe3c.firebaseapp.com",
       projectId: "tezkor-quiz-bbe3c",
@@ -146,6 +182,7 @@ const firebaseConfig = {
     const auth = getAuth(app);
 
     // DOM elementlar
+    const pageLoader = document.getElementById('pageLoader');
     const profileBtn = document.getElementById('profileBtn');
     const dropdown = document.getElementById('dropdown');
     const logoutBtn = document.getElementById('logoutBtn');
@@ -166,7 +203,11 @@ const firebaseConfig = {
     // Foydalanuvchi holatini kuzatish
     onAuthStateChanged(auth, (user) => {
       currentUser = user;
+      
       if (user) {
+        // Foydalanuvchi tizimga kirgan
+        console.log('Foydalanuvchi topildi:', user.email);
+        
         // Foydalanuvchi ma'lumotlarini yangilash
         userName.textContent = user.displayName || 'Foydalanuvchi';
         userEmail.textContent = user.email || 'email@example.com';
@@ -176,6 +217,13 @@ const firebaseConfig = {
           profileImage.innerHTML = `<img src="${user.photoURL}" alt="Profil" class="w-10 h-10 rounded-full object-cover border-2 border-gray-300">`;
           dropdownImage.innerHTML = `<img src="${user.photoURL}" alt="Profil" class="w-12 h-12 rounded-full object-cover">`;
         }
+
+        // Loaderni yashirish
+        pageLoader.style.display = 'none';
+      } else {
+        // Foydalanuvchi tizimga kirmagan - kirish sahifasiga yo'naltirish
+        console.log('Foydalanuvchi topilmadi, kirish.html sahifasiga yo\'naltirilmoqda...');
+        window.location.href = 'kirish.html';
       }
     });
 
@@ -229,14 +277,23 @@ const firebaseConfig = {
       logoutSpinner.classList.remove('hidden');
 
       try {
+        // Firebase'dan chiqish
         await signOut(auth);
+        
+        console.log('Foydalanuvchi muvaffaqiyatli tizimdan chiqqan');
+        
+        // Modal va dropdown yopish
         logoutModal.classList.add('hidden');
         dropdown.classList.add('hidden');
-        console.log('Foydalanuvchi tizimdan chiqqan');
+        
+        // Kirish sahifasiga yo'naltirish
+        window.location.href = 'kirish.html';
+        
       } catch (error) {
         console.error('Chiqishda xatolik:', error);
         alert('Chiqishda xatolik yuz berdi. Iltimos qaytadan urinib ko\'ring.');
-      } finally {
+        
+        // Xatolik bo'lsa UI elementlarini tiklash
         isLoading = false;
         confirmLogout.disabled = false;
         cancelBtn.disabled = false;
