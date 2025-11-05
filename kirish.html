@@ -26,6 +26,10 @@
     input{width:100%;padding:12px 16px;border:1px solid #e1e8ed;border-radius:10px;font-size:15px;transition:all .3s;outline:none;background:#fff;font-weight:400}
     input:focus{border-color:#4361ee;box-shadow:0 0 0 3px rgba(67,97,238,.08)}
     input.error{border-color:#ff4757}
+    /* KO'Z ICONKASI */
+    .eye-toggle{position:absolute;right:12px;top:42px;cursor:pointer;color:#888;transition:color .2s;z-index:2}
+    .eye-toggle:hover{color:#4361ee}
+    .eye-toggle svg{width:20px;height:20px}
     .btn{width:100%;padding:14px;border:none;border-radius:10px;font-size:15px;font-weight:500;cursor:pointer;transition:all .3s;margin-bottom:12px;position:relative;display:flex;align-items:center;justify-content:center;gap:8px}
     .btn:disabled{opacity:.6;cursor:not-allowed;pointer-events:none}
     .btn-primary{background:#4361ee;color:#fff}
@@ -34,9 +38,7 @@
     .btn-secondary:hover:not(:disabled){background:#f8f9fa;border-color:#4361ee}
     .btn-google{background:#fff;border:1px solid #e1e8ed;color:#444}
     .btn-google:hover:not(:disabled){background:#f8f9fa;border-color:#4361ee}
-    /* Google tugmalari disabled holati – hover qilganda not-allowed kursori */
     .btn-google:disabled{opacity:.55;background:#f8f9fa !important;border-color:#e1e8ed !important;color:#999 !important;cursor:not-allowed}
-    .btn-google:disabled .btn-text{color:#999}
     .btn-help{background:transparent;border:1px solid #4361ee;color:#4361ee;padding:10px 20px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;transition:all .3s;display:inline-flex;align-items:center;gap:6px;width:auto}
     .btn-help:hover{background:#4361ee;color:#fff;transform:translateY(-1px)}
     .google-icon{width:20px;height:20px}
@@ -96,15 +98,11 @@
     .copy-notification{position:fixed;top:20px;right:20px;background:#ff4757;color:#fff;padding:12px 16px;border-radius:8px;font-weight:500;font-size:14px;box-shadow:0 8px 24px rgba(255,71,87,.2);z-index:10000;animation:slideInRight .3s ease;display:none}
     .copy-notification.show{display:block}
     @keyframes slideInRight{from{opacity:0;transform:translateX(100px)}to{opacity:1;transform:translateX(0)}}
+    .countdown{font-size:14px;color:#2e7d32;margin-top:10px;text-align:center}
+    .back-to-login{margin-top:15px}
   </style>
 </head>
 <body>
-  <script type="text/javascript">
-    var gk_isXlsx=false,gk_xlsxFileLookup={},gk_fileData={};
-    function filledCell(cell){return cell!==''&&cell!=null}
-    function loadFileData(filename){if(gk_isXlsx&&gk_xlsxFileLookup[filename]){try{var workbook=XLSX.read(gk_fileData[filename],{type:'base64'});var firstSheetName=workbook.SheetNames[0];var worksheet=workbook.Sheets[firstSheetName];var jsonData=XLSX.utils.sheet_to_json(worksheet,{header:1,blankrows:false,defval:''});var filteredData=jsonData.filter(row=>row.some(filledCell));var headerRowIndex=filteredData.findIndex((row,index)=>row.filter(filledCell).length>=filteredData[index+1]?.filter(filledCell).length);if(headerRowIndex===-1||headerRowIndex>25)headerRowIndex=0;var csv=XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex));csv=XLSX.utils.sheet_to_csv(csv,{header:1});return csv}catch(e){console.error(e);return""}}return gk_fileData[filename]||""}
-  </script>
-
   <div class="copy-notification" id="copyNotification">
     www.tezkorquiz.uz saytida parolni nusxalash mumkin emas
   </div>
@@ -118,12 +116,11 @@
         <p class="subtitle">Davom etish uchun kirish usulini tanlang</p>
         <div id="welcomeAlert" class="alert"></div>
 
-        <button class="btn btn-secondary" onclick="showPage('emailLoginPage')"><span>Email orqali kirish</span></button>
-        <button class="btn btn-primary" onclick="showPage('signupPage')"><span>Ro'yxatdan o'tish</span></button>
+        <button class="btn btn-secondary" onclick="showPage('emailLoginPage')">Email orqali kirish</button>
+        <button class="btn btn-primary" onclick="showPage('signupPage')">Ro'yxatdan o'tish</button>
 
         <div class="divider">yoki</div>
 
-        <!-- Google kirish – disabled, hoverda not-allowed -->
         <button id="welcomeGoogle" class="btn btn-google" disabled>
           <svg class="google-icon" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -146,8 +143,19 @@
         <p class="subtitle">Hisobingizga kirish uchun email va parolni kiriting</p>
         <div id="loginAlert" class="alert"></div>
         <form id="loginForm">
-          <div class="input-group"><label>Email</label><input type="email" id="loginEmail" placeholder="namuna@gmail.com" required autocomplete="off" oncopy="handleCopy(event)"></div>
-          <div class="input-group"><label>Parol</label><input type="password" id="loginPassword" placeholder="parolni kiriting" required autocomplete="off" oncopy="handleCopy(event)"></div>
+          <div class="input-group">
+            <label>Email</label>
+            <input type="email" id="loginEmail" placeholder="namuna@gmail.com" required autocomplete="off" oncopy="handleCopy(event)">
+          </div>
+          <div class="input-group">
+            <label>Parol</label>
+            <input type="password" id="loginPassword" placeholder="parolni kiriting" required autocomplete="off" oncopy="handleCopy(event)">
+            <span class="eye-toggle" id="loginEye">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
+              </svg>
+            </span>
+          </div>
           <div class="forgot-password"><a onclick="showPage('resetPage')">Parolni unutdingizmi?</a></div>
           <button type="submit" class="btn btn-primary"><span class="btn-text">Kirish</span><div class="spinner"></div></button>
         </form>
@@ -162,7 +170,14 @@
         <form id="signupForm">
           <div class="input-group"><label>Ism</label><input type="text" id="signupName" placeholder="Ismingiz" required autocomplete="off" oncopy="handleCopy(event)"></div>
           <div class="input-group"><label>Email</label><input type="email" id="signupEmail" placeholder="namuna@gmail.com" required autocomplete="off" oncopy="handleCopy(event)"></div>
-          <div class="input-group"><label>Parol yarating</label><input type="password" id="signupPassword" placeholder="Kamida 8 ta belgi" required minlength="8" autocomplete="off" oncopy="handleCopy(event)">
+          <div class="input-group">
+            <label>Parol yarating</label>
+            <input type="password" id="signupPassword" placeholder="Kamida 8 ta belgi" required minlength="8" autocomplete="off" oncopy="handleCopy(event)">
+            <span class="eye-toggle" id="signupEye">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
+              </svg>
+            </span>
             <div class="password-strength"><div class="password-strength-bar"></div></div>
             <div class="password-strength-text"></div>
           </div>
@@ -172,8 +187,6 @@
           <button type="submit" class="btn btn-primary"><span class="btn-text">Ro'yxatdan o'tish</span><div class="spinner"></div></button>
         </form>
         <div class="divider">yoki</div>
-
-        <!-- Google ro'yxatdan o'tish – disabled, hoverda not-allowed -->
         <button id="signupGoogle" class="btn btn-google" disabled>
           <svg class="google-icon" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -184,7 +197,6 @@
           <span class="btn-text">Google orqali ro'yxatdan o'tish</span>
           <div class="spinner"></div>
         </button>
-
         <div class="links">Hisobingiz bormi? <a onclick="showPage('emailLoginPage')">Kirish</a></div>
       </div>
 
@@ -198,6 +210,11 @@
           <div class="input-group"><label>Email</label><input type="email" id="resetEmail" placeholder="namuna@email.com" required autocomplete="off" oncopy="handleCopy(event)"></div>
           <button type="submit" class="btn btn-primary"><span class="btn-text">Tiklash havolasini yuborish</span><div class="spinner"></div></button>
         </form>
+        <div id="resetSuccess" style="display:none;text-align:center;margin-top:20px;">
+          <p style="color:#2e7d32;font-weight:500;">Parolni tiklash havolasi <span id="sentEmail"></span> ga yuborildi.</p>
+          <p class="countdown" id="countdown">Qayta urinish uchun <span id="seconds">60</span> soniya</p>
+          <button class="btn btn-secondary back-to-login" onclick="showPage('emailLoginPage')">Kirish sahifasiga qaytish</button>
+        </div>
       </div>
     </div>
   </div>
@@ -224,7 +241,6 @@
     </div>
   </div>
 
-  <!-- Firebase SDK -->
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
     import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, updateProfile } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
@@ -248,6 +264,55 @@
       showAlert('welcomeAlert','Firebase ulanishida xatolik. Console ni tekshiring.','error');
     }
 
+    /* ==== KO'Z ICONKASI ==== */
+    const eyeSVG = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+    </svg>`;
+
+    const eyeSlashSVG = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
+    </svg>`;
+
+    function togglePassword(inputId, eyeId) {
+      const input = document.getElementById(inputId);
+      const eye = document.getElementById(eyeId);
+      eye.innerHTML = eyeSlashSVG; // boshida yashirin
+      eye.addEventListener('click', () => {
+        if (input.type === 'password') {
+          input.type = 'text';
+          eye.innerHTML = eyeSVG;
+        } else {
+          input.type = 'password';
+          eye.innerHTML = eyeSlashSVG;
+        }
+      });
+    }
+    togglePassword('loginPassword', 'loginEye');
+    togglePassword('signupPassword', 'signupEye');
+
+    /* ==== COUNTDOWN ==== */
+    let countdownInterval;
+    function startCountdown() {
+      let sec = 60;
+      const secEl = document.getElementById('seconds');
+      const successDiv = document.getElementById('resetSuccess');
+      const form = document.getElementById('resetForm');
+      form.style.display = 'none';
+      successDiv.style.display = 'block';
+      document.getElementById('sentEmail').textContent = document.getElementById('resetEmail').value;
+
+      countdownInterval = setInterval(() => {
+        sec--;
+        secEl.textContent = sec;
+        if (sec <= 0) {
+          clearInterval(countdownInterval);
+          document.querySelector('#countdown').innerHTML = 'Endi qayta urinib koʻrishingiz mumkin';
+        }
+      }, 1000);
+    }
+
+    /* ==== QOLGAN FUNKSIYALAR ==== */
     function getDynamicGreeting(){
       const g={timeBased:[{text:'Xayrli tong!',startHour:5,endHour:9},{text:'Nurli tong',startHour:5,endHour:9},{text:'Xayrli kun!',startHour:12,endHour:17},{text:'Xayrli kech!',startHour:18,endHour:24}],
                random:['Salom do‘stim!','Assalomu aleykum!','Marhamat kiring!','Harakatni boshlang!','Yaxshi kayfiyat!','Tabassum qiling!','Yangi start!','Omadli kun!','Salom mehmon!','Omadli boshlang!']};
@@ -259,41 +324,63 @@
     function updateGreeting(){document.querySelector('#welcomePage h2').textContent=getDynamicGreeting()}
     document.addEventListener('DOMContentLoaded',updateGreeting);
 
-    // ---- Security ----
+    // Security
     document.addEventListener('keydown',e=>{if(e.key==='F12'||(e.ctrlKey&&e.shiftKey&&['I','J','C'].includes(e.key))||(e.ctrlKey&&e.key==='u')){e.preventDefault();return false}});
     document.addEventListener('contextmenu',e=>e.preventDefault());
-    window.handleCopy=e=>{e.preventDefault();const i=e.target,t=i.value;if(t)navigator.clipboard.writeText(t).catch(()=>{showCopyNotification()});else showCopyNotification()};
+    window.handleCopy=e=>{e.preventDefault();showCopyNotification()};
     ['copy','cut','paste','selectstart'].forEach(ev=>document.addEventListener(ev,e=>{if(e.target.tagName!=='INPUT'){e.preventDefault();if(['copy','cut'].includes(ev))showCopyNotification();return false}}));
     function showCopyNotification(){const n=document.getElementById('copyNotification');n.classList.add('show');setTimeout(()=>n.classList.remove('show'),3000)}
     const devToolsChecker=setInterval(()=>{const t=160;if(window.outerWidth-window.innerWidth>t||window.outerHeight-window.innerHeight>t){document.body.innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-size:24px;color:#ff4757;text-align:center;padding:20px;">Developer Tools aniqlandi!<br>Iltimos, brauzeringizni qayta yuklang.</div>';clearInterval(devToolsChecker)}},1000);
 
-    // ---- Page / Modal ----
+    // Page / Modal
     let currentPage='welcomePage',modalOpen=false;
     function updateHistory(p){currentPage=p;history.pushState({page:p},'','')}
-    window.addEventListener('popstate',()=>{if(modalOpen){closeModal('helpModal');modalOpen=false;history.pushState({page:currentPage},'','')}else if(currentPage!=='welcomePage')showPage('welcomePage')});
+    window.addEventListener('popstate',()=>{if(modalOpen){closeModal('helpModal');modalOpen=false}else if(currentPage!=='welcomePage')showPage('welcomePage')});
     window.showModal=id=>{document.getElementById(id).classList.add('show');modalOpen=true;history.pushState({modal:id},'','')};
     window.closeModal=id=>{document.getElementById(id).classList.remove('show');modalOpen=false;history.back()};
     document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)closeModal(m.id)}));
-    window.showPage=id=>{document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.alert').forEach(a=>{a.classList.remove('show');a.innerHTML=''});updateHistory(id);if(id==='welcomePage')updateGreeting()};
+    window.showPage=id=>{
+      document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      document.querySelectorAll('.alert').forEach(a=>{a.classList.remove('show');a.innerHTML=''});
+      updateHistory(id);
+      if(id==='welcomePage') updateGreeting();
+      clearInterval(countdownInterval);
+      document.getElementById('resetSuccess').style.display='none';
+      document.getElementById('resetForm').style.display='block';
+    };
 
-    // ---- Password strength ----
+    // Password strength
     const pwInput=document.getElementById('signupPassword');
     function checkPasswordStrength(p){const l=p.length;if(l<6)return{level:'weak',text:'Zaif parol',class:'strength-weak'};if(l<10)return{level:'good',text:'Yaxshi parol',class:'strength-good'};return{level:'strong',text:'Ajoyib parol',class:'strength-strong'}}
     pwInput?.addEventListener('input',e=>{const p=e.target.value,c=e.target.parentElement.querySelector('.password-strength'),b=c?.querySelector('.password-strength-bar'),t=e.target.parentElement.querySelector('.password-strength-text');if(!c||!b||!t)return;if(p.length===0){c.className='password-strength';t.textContent='';return}const r=checkPasswordStrength(p);c.className=`password-strength ${r.class}`;t.textContent=r.text});
 
-    // ---- Alert / Loading / Clear ----
+    // Alert / Loading
     function showAlert(id,msg,type='error'){const a=document.getElementById(id);a.innerHTML=msg;a.className=`alert alert-${type} show`;if(type==='success')setTimeout(()=>a.classList.remove('show'),5000)}
-    function setLoading(btn,load,dur=5000){if(load){btn.disabled=true;btn.classList.add('loading');setTimeout(()=>{btn.disabled=false;btn.classList.remove('loading')},dur)}else{btn.disabled=false;btn.classList.remove('loading')}}
+    function setLoading(btn,load){if(load){btn.disabled=true;btn.classList.add('loading')}else{btn.disabled=false;btn.classList.remove('loading')}}
     function clearForm(id){const f=document.getElementById(id);if(f){f.reset();const s=f.querySelector('.password-strength'),t=f.querySelector('.password-strength-text');if(s)s.className='password-strength';if(t)t.textContent=''}};
 
-    function getErrorMessage(c){const m={'auth/invalid-email':'Noto\'g\'ri email format','auth/user-disabled':'Bu foydalanuvchi o\'chirilgan','auth/user-not-found':'Bunday foydalanuvchi topilmadi','auth/wrong-password':'Noto\'g\'ri parol kiritildi','auth/email-already-in-use':'Bu email allaqachon ro\'yxatdan o\'tgan','auth/weak-password':'Parol juda oddiy. Kamida 8 ta belgi kiriting','auth/network-request-failed':'Internet aloqasi yo\'q. Iltimos, ulanishni tekshiring','auth/too-many-requests':'Juda ko\'p urinish. Iltimos, biroz kutib qaytadan urinib ko\'ring','auth/operation-not-allowed':'Bu amal ruxsat etilmagan','auth/invalid-credential':'Noto\'g\'ri email yoki parol','auth/missing-password':'Parol kiritilmagan','auth/invalid-login-credentials':'Email yoki parol noto\'g\'ri'};return m[c]||`Xatolik: ${c}`}
+    function getErrorMessage(c){const m={'auth/invalid-email':'Noto\'g\'ri email format','auth/user-disabled':'Bu foydalanuvchi o\'chirilgan','auth/user-not-found':'Bunday foydalanuvchi topilmadi','auth/wrong-password':'Noto\'g\'ri parol kiritildi','auth/email-already-in-use':'Bu email allaqachon ro\'yxatdan o\'tgan','auth/weak-password':'Parol juda oddiy. Kamida 8 ta belgi kiriting','auth/network-request-failed':'Internet aloqasi yo\'q. Iltimos, ulanishni tekshiring','auth/too-many-requests':'Juda ko\'p urinish. Iltimos, biroz kutib qaytadan urinib ko\'ring','auth/invalid-credential':'Noto\'g\'ri email yoki parol','auth/missing-password':'Parol kiritilmagan'};return m[c]||`Xatolik: ${c}`}
 
-    // ---- Forms ----
-    document.getElementById('loginForm').addEventListener('submit',async e=>{e.preventDefault();const b=e.target.querySelector('.btn-primary'),em=document.getElementById('loginEmail').value,pw=document.getElementById('loginPassword').value;setLoading(b,true);try{await signInWithEmailAndPassword(auth,em,pw);showAlert('loginAlert','Muvaffaqiyatli kirildi! Sahifa yangilanmoqda...','success');clearForm('loginForm');setTimeout(()=>location.href='index.html',1500)}catch(err){showAlert('loginAlert',getErrorMessage(err.code),'error');setLoading(b,false)}});
+    // Forms
+    document.getElementById('loginForm').addEventListener('submit',async e=>{e.preventDefault();const b=e.target.querySelector('.btn-primary'),em=document.getElementById('loginEmail').value,pw=document.getElementById('loginPassword').value;setLoading(b,true);try{await signInWithEmailAndPassword(auth,em,pw);showAlert('loginAlert','Muvaffaqiyatli kirildi!','success');clearForm('loginForm');setTimeout(()=>location.href='index.html',1500)}catch(err){showAlert('loginAlert',getErrorMessage(err.code),'error');setLoading(b,false)}});
 
-    document.getElementById('signupForm').addEventListener('submit',async e=>{e.preventDefault();const b=e.target.querySelector('.btn-primary'),name=document.getElementById('signupName').value,em=document.getElementById('signupEmail').value,pw=document.getElementById('signupPassword').value,terms=document.getElementById('termsCheckbox').checked;if(!terms){showAlert('signupAlert','Iltimos, foydalanish shartlari bilan rozilik bildiring','error');return}setLoading(b,true);try{const uc=await createUserWithEmailAndPassword(auth,em,pw);await updateProfile(uc.user,{displayName:name});showAlert('signupAlert','Muvaffaqiyatli ro\'yxatdan o\'tdingiz! Sahifa yangilanmoqda...','success');clearForm('signupForm');setTimeout(()=>location.href='index.html',1500)}catch(err){showAlert('signupAlert',getErrorMessage(err.code),'error');setLoading(b,false)}});
+    document.getElementById('signupForm').addEventListener('submit',async e=>{e.preventDefault();const b=e.target.querySelector('.btn-primary'),name=document.getElementById('signupName').value,em=document.getElementById('signupEmail').value,pw=document.getElementById('signupPassword').value,terms=document.getElementById('termsCheckbox').checked;if(!terms){showAlert('signupAlert','Iltimos, foydalanish shartlari bilan rozilik bildiring','error');return}setLoading(b,true);try{const uc=await createUserWithEmailAndPassword(auth,em,pw);await updateProfile(uc.user,{displayName:name});showAlert('signupAlert','Muvaffaqiyatli ro\'yxatdan o\'tdingiz!','success');clearForm('signupForm');setTimeout(()=>location.href='index.html',1500)}catch(err){showAlert('signupAlert',getErrorMessage(err.code),'error');setLoading(b,false)}});
 
-    document.getElementById('resetForm').addEventListener('submit',async e=>{e.preventDefault();const b=e.target.querySelector('.btn-primary'),em=document.getElementById('resetEmail').value;setLoading(b,true);try{await sendPasswordResetEmail(auth,em);showAlert('resetAlert','Parolni tiklash havolasi emailingizga yuborildi. Iltimos, email qutingizni tekshiring.','success');clearForm('resetForm');setTimeout(()=>showPage('emailLoginPage'),3000)}catch(err){showAlert('resetAlert',err.code==='auth/user-not-found'?'Bu email bilan ro\'yxatdan o\'tilmagan':getErrorMessage(err.code),'error');setLoading(b,false)}});
+    document.getElementById('resetForm').addEventListener('submit',async e=>{
+      e.preventDefault();
+      const b=e.target.querySelector('.btn-primary'),em=document.getElementById('resetEmail').value;
+      setLoading(b,true);
+      try{
+        await sendPasswordResetEmail(auth,em);
+        showAlert('resetAlert','Havola muvaffaqiyatli yuborildi!','success');
+        startCountdown();
+        setLoading(b,false);
+      }catch(err){
+        showAlert('resetAlert',err.code==='auth/user-not-found'?'Bu email bilan ro\'yxatdan o\'tilmagan':getErrorMessage(err.code),'error');
+        setLoading(b,false);
+      }
+    });
 
     auth.onAuthStateChanged(u=>{console.log(u?'Foydalanuvchi tizimda: '+u.email:'Foydalanuvchi tizimda emas')});
     history.replaceState({page:'welcomePage'},'','');
