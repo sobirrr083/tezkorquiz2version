@@ -66,16 +66,14 @@
         }
 
         .navbar {
-            padding: 16px 0;
+            padding: 10px 0;
             background: rgba(255, 255, 255, 1);
             backdrop-filter: blur(0px);
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            will-change: transform, background, backdrop-filter, padding;
+            transition: background 0.3s ease, backdrop-filter 0.3s ease, box-shadow 0.3s ease;
         }
 
         .navbar.scrolled {
-            padding: 10px 0;
             background: rgba(255, 255, 255, 0.75);
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
@@ -86,26 +84,17 @@
         .navbar-brand {
             font-family: 'Roboto';
             font-weight: 800;
-            font-size: 28px;
+            font-size: 24px;
             color: var(--primary-color) !important;
             letter-spacing: -0.5px;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.3s ease;
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        .navbar.scrolled .navbar-brand {
-            font-size: 24px;
-            transform: translateY(0);
-        }
-
         .navbar-brand:hover {
             transform: scale(1.05);
-        }
-
-        .navbar.scrolled .navbar-brand:hover {
-            transform: scale(1.05) translateY(0);
         }
 
         .navbar-nav {
@@ -333,18 +322,17 @@
             width: 48px;
             height: 48px;
             border-radius: 50%;
-            background: transparent;
+            background: var(--gradient-1);
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            border: 2px solid var(--primary-color);
         }
 
         .profile-user-avatar svg {
             width: 24px;
             height: 24px;
-            fill: var(--primary-color);
+            fill: white;
         }
         
         .profile-user-avatar img {
@@ -491,27 +479,18 @@
 
         .burger {
             position: relative;
-            width: 26px;
-            height: 20px;
+            width: 24px;
+            height: 18px;
             background: transparent;
             cursor: pointer;
             display: none;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .navbar.scrolled .burger {
-            width: 24px;
-            height: 18px;
-        }
-
-        .burger input {
-            display: none;
+            transition: all 0.3s ease;
         }
 
         .burger span {
             display: block;
             position: absolute;
-            height: 2.5px;
+            height: 2.2px;
             width: 100%;
             background: var(--black);
             border-radius: 8px;
@@ -521,8 +500,8 @@
             transition: all 0.3s ease-in-out;
         }
 
-        .navbar.scrolled .burger span {
-            height: 2.2px;
+        .burger input {
+            display: none;
         }
 
         .burger input:checked ~ span {
@@ -549,7 +528,7 @@
         .burger input:checked ~ span:nth-of-type(1) {
             transform: rotate(45deg);
             top: -1px;
-            left: 3px;
+            left: 2px;
         }
 
         .burger input:checked ~ span:nth-of-type(2) {
@@ -559,16 +538,6 @@
 
         .burger input:checked ~ span:nth-of-type(3) {
             transform: rotate(-45deg);
-            top: 18px;
-            left: 3px;
-        }
-
-        .navbar.scrolled .burger input:checked ~ span:nth-of-type(1) {
-            top: -1px;
-            left: 2px;
-        }
-
-        .navbar.scrolled .burger input:checked ~ span:nth-of-type(3) {
             top: 16px;
             left: 2px;
         }
@@ -657,20 +626,12 @@
 
         @media (max-width: 991px) {
             .navbar {
-                padding: 12px 0;
-            }
-
-            .navbar.scrolled {
                 padding: 8px 0;
             }
 
             .navbar-brand {
-                font-size: 34px;
-                font-weight: 700;
-            }
-
-            .navbar.scrolled .navbar-brand {
                 font-size: 28px;
+                font-weight: 700;
             }
 
             .burger {
@@ -679,17 +640,8 @@
                 height: 18px;
             }
 
-            .navbar.scrolled .burger {
-                width: 22px;
-                height: 16px;
-            }
-
             .burger span {
                 height: 2.2px;
-            }
-
-            .navbar.scrolled .burger span {
-                height: 2px;
             }
 
             .burger input:checked ~ span:nth-of-type(1) {
@@ -702,26 +654,16 @@
                 left: 2px;
             }
 
-            .navbar.scrolled .burger input:checked ~ span:nth-of-type(1) {
-                top: -1px;
-                left: 2px;
-            }
-
-            .navbar.scrolled .burger input:checked ~ span:nth-of-type(3) {
-                top: 14px;
-                left: 2px;
-            }
-
             .navbar-toggler {
                 display: none;
             }
 
             .navbar-collapse {
                 position: fixed;
-                top: 60px;
+                top: 50px;
                 left: 0;
                 width: 100vw;
-                height: calc(100vh - 60px);
+                height: calc(100vh - 50px);
                 background: white;
                 padding: 25px 20px 5px 20px;
                 border-radius: 0;
@@ -738,11 +680,6 @@
                 z-index: 1000;
                 overflow-y: auto;
                 overflow-x: hidden;
-            }
-
-            .navbar.scrolled .navbar-collapse {
-                top: 50px;
-                height: calc(100vh - 50px);
             }
 
             .navbar-collapse.show {
@@ -870,24 +807,16 @@
 
         @media (max-width: 576px) {
             body {
-                padding-top: 70px;
+                padding-top: 60px;
             }
 
             .navbar {
-                padding: 10px 0;
-            }
-
-            .navbar.scrolled {
                 padding: 6px 0;
             }
 
             .navbar-brand {
-                font-size: 30px;
-                font-weight: 700;
-            }
-
-            .navbar.scrolled .navbar-brand {
                 font-size: 26px;
+                font-weight: 700;
             }
 
             .burger {
@@ -895,17 +824,8 @@
                 height: 16px;
             }
 
-            .navbar.scrolled .burger {
-                width: 20px;
-                height: 14px;
-            }
-
             .burger span {
                 height: 2px;
-            }
-
-            .navbar.scrolled .burger span {
-                height: 1.8px;
             }
 
             .burger input:checked ~ span:nth-of-type(1) {
@@ -918,25 +838,10 @@
                 left: 2px;
             }
 
-            .navbar.scrolled .burger input:checked ~ span:nth-of-type(1) {
-                top: -1px;
-                left: 1px;
-            }
-
-            .navbar.scrolled .burger input:checked ~ span:nth-of-type(3) {
-                top: 12px;
-                left: 1px;
-            }
-
             .navbar-collapse {
-                top: 55px;
-                height: calc(100vh - 55px);
-                padding: 20px 15px 5px 15px;
-            }
-
-            .navbar.scrolled .navbar-collapse {
                 top: 45px;
                 height: calc(100vh - 45px);
+                padding: 20px 15px 5px 15px;
             }
 
             .nav-link {
@@ -993,12 +898,8 @@
 
         @media (max-width: 375px) {
             .navbar-brand {
-                font-size: 28px;
-                font-weight: 700;
-            }
-
-            .navbar.scrolled .navbar-brand {
                 font-size: 24px;
+                font-weight: 700;
             }
 
             .burger {
@@ -1006,17 +907,8 @@
                 height: 14px;
             }
 
-            .navbar.scrolled .burger {
-                width: 18px;
-                height: 12px;
-            }
-
             .burger span {
                 height: 1.8px;
-            }
-
-            .navbar.scrolled .burger span {
-                height: 1.6px;
             }
 
             .burger input:checked ~ span:nth-of-type(1) {
@@ -1026,16 +918,6 @@
 
             .burger input:checked ~ span:nth-of-type(3) {
                 top: 12px;
-                left: 1px;
-            }
-
-            .navbar.scrolled .burger input:checked ~ span:nth-of-type(1) {
-                top: -1px;
-                left: 1px;
-            }
-
-            .navbar.scrolled .burger input:checked ~ span:nth-of-type(3) {
-                top: 10px;
                 left: 1px;
             }
 
