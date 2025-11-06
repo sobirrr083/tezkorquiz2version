@@ -37,23 +37,54 @@
             padding-top: 80px;
         }
 
+        /* LOADER */
+        .page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.4s;
+        }
+        
+        .spinner-large {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #e5e7eb;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         .navbar {
-            padding: 12px 0;
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 10px 0;
+            background: rgba(255, 255, 255, 1);
+            backdrop-filter: blur(0px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: background 0.3s ease, backdrop-filter 0.3s ease, box-shadow 0.3s ease;
         }
 
         .navbar.scrolled {
-            padding: 8px 0;
-            box-shadow: 0 6px 40px rgba(0, 0, 0, 0.15);
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
         }
 
         .navbar-brand {
             font-family: 'Roboto';
             font-weight: 800;
-            font-size: 28px;
+            font-size: 24px;
             color: var(--primary-color) !important;
             letter-spacing: -0.5px;
             transition: transform 0.3s ease;
@@ -209,25 +240,256 @@
             transform: scale(1.15);
         }
 
+        /* PROFIL TUGMASI */
+        .profile-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gradient-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: 12px;
+        }
+        
+        .profile-btn:hover {
+            transform: scale(1.08);
+        }
+        
+        .profile-btn svg {
+            width: 22px;
+            height: 22px;
+            fill: white;
+        }
+        
+        .profile-btn img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+
+        .desktop-profile {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .mobile-profile {
+            display: none;
+            align-items: center;
+            position: relative;
+            margin-left: auto;
+            margin-right: 12px;
+        }
+
+        .profile-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            width: 280px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1050;
+        }
+        
+        .profile-dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .profile-user {
+            padding: 16px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            gap: 12px;
+        }
+        
+        .profile-user-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--gradient-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .profile-user-avatar svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+        
+        .profile-user-avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid var(--primary-color);
+            object-fit: cover;
+        }
+        
+        .profile-user h4 {
+            font-size: 15px;
+            font-weight: 600;
+            margin: 0;
+            color: var(--dark-color);
+        }
+        
+        .profile-user p {
+            font-size: 13px;
+            color: #666;
+            margin: 4px 0 0;
+        }
+
+        .profile-logout {
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #d32f2f;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .profile-logout:hover {
+            background: #ffebee;
+        }
+
+        .profile-logout svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* LOGOUT MODAL */
+        .logout-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+        
+        .logout-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            transform: scale(0.9);
+            transition: transform 0.3s;
+        }
+        
+        .logout-modal.show .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-content h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--dark-color);
+        }
+
+        .modal-content p {
+            color: #666;
+            margin-bottom: 24px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .modal-buttons button {
+            flex: 1;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        #cancelLogout {
+            background: #f1f3f5;
+            color: var(--dark-color);
+        }
+
+        #cancelLogout:hover {
+            background: #e9ecef;
+        }
+
+        #confirmLogout {
+            background: #d32f2f;
+            color: white;
+        }
+
+        #confirmLogout:hover {
+            background: #c62828;
+        }
+
+        #confirmLogout:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid white;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
         .burger {
             position: relative;
-            width: 26px;
-            height: 20px;
+            width: 24px;
+            height: 18px;
             background: transparent;
             cursor: pointer;
             display: none;
-            margin-left: auto;
             transition: all 0.3s ease;
-        }
-
-        .burger input {
-            display: none;
         }
 
         .burger span {
             display: block;
             position: absolute;
-            height: 2.5px;
+            height: 2.2px;
             width: 100%;
             background: var(--black);
             border-radius: 8px;
@@ -235,6 +497,10 @@
             left: 0;
             transform: rotate(0deg);
             transition: all 0.3s ease-in-out;
+        }
+
+        .burger input {
+            display: none;
         }
 
         .burger input:checked ~ span {
@@ -261,7 +527,7 @@
         .burger input:checked ~ span:nth-of-type(1) {
             transform: rotate(45deg);
             top: -1px;
-            left: 3px;
+            left: 2px;
         }
 
         .burger input:checked ~ span:nth-of-type(2) {
@@ -271,11 +537,10 @@
 
         .burger input:checked ~ span:nth-of-type(3) {
             transform: rotate(-45deg);
-            top: 18px;
-            left: 3px;
+            top: 16px;
+            left: 2px;
         }
 
-        /* Mobile menu bottom section styles */
         .mobile-menu-bottom {
             display: none;
             padding: 20px;
@@ -283,10 +548,10 @@
             margin-top: auto;
             padding-bottom: 80px;
             display: flex;
-            flex-direction: row; /* Changed to row for mobile view */
+            flex-direction: row;
             align-items: center;
             justify-content: center;
-            gap: 25px; /* Match social-links gap */
+            gap: 25px;
         }
 
         .social-links {
@@ -323,8 +588,8 @@
         }
 
         .help-button {
-            width: auto; /* Adjusted to fit content */
-            padding: 14px 20px; /* Adjusted padding for consistency */
+            width: auto;
+            padding: 14px 20px;
             background: var(--gradient-1);
             border: none;
             border-radius: 12px;
@@ -352,15 +617,19 @@
             .mobile-menu-bottom {
                 display: none !important;
             }
+            
+            .mobile-profile {
+                display: none !important;
+            }
         }
 
         @media (max-width: 991px) {
             .navbar {
-                padding: 10px 0;
+                padding: 8px 0;
             }
 
             .navbar-brand {
-                font-size: 34px;
+                font-size: 28px;
                 font-weight: 700;
             }
 
@@ -390,12 +659,12 @@
 
             .navbar-collapse {
                 position: fixed;
-                top: 60px;
+                top: 50px;
                 left: 0;
                 width: 100vw;
-                height: calc(100vh - 60px);
+                height: calc(100vh - 50px);
                 background: white;
-                padding: 25px 20px 5px 20px;
+                padding: 25px 20px 20px 20px;
                 border-radius: 0;
                 margin-top: 0;
                 box-shadow: none;
@@ -410,6 +679,7 @@
                 z-index: 1000;
                 overflow-y: auto;
                 overflow-x: hidden;
+                padding-bottom: 120px;
             }
 
             .navbar-collapse.show {
@@ -511,12 +781,44 @@
                 display: flex;
                 margin-top: auto;
                 padding-top: 10px;
+                padding-bottom: 20px;
+            }
+
+            .desktop-profile {
+                display: none !important;
+            }
+
+            .mobile-profile {
+                display: flex !important;
+            }
+
+            .profile-dropdown {
+                position: fixed;
+                top: auto;
+                bottom: 100px;
+                left: 50%;
+                right: auto;
+                transform: translateX(-50%) translateY(20px);
+                max-height: calc(100vh - 200px);
+                overflow-y: auto;
+            }
+
+            .profile-dropdown.show {
+                transform: translateX(-50%) translateY(0);
             }
         }
 
         @media (max-width: 576px) {
+            body {
+                padding-top: 60px;
+            }
+
+            .navbar {
+                padding: 6px 0;
+            }
+
             .navbar-brand {
-                font-size: 30px;
+                font-size: 26px;
                 font-weight: 700;
             }
 
@@ -539,14 +841,11 @@
                 left: 2px;
             }
 
-            body {
-                padding-top: 65px;
-            }
-
             .navbar-collapse {
-                top: 55px;
-                height: calc(100vh - 55px);
-                padding: 20px 15px 5px 15px;
+                top: 45px;
+                height: calc(100vh - 45px);
+                padding: 20px 15px 20px 15px;
+                padding-bottom: 120px;
             }
 
             .nav-link {
@@ -579,19 +878,31 @@
             }
 
             .help-button {
-                padding: 12px 18px; /* Adjusted for smaller screens */
+                padding: 12px 18px;
                 font-size: 15px;
             }
 
             .mobile-menu-bottom {
-                padding-bottom: 70px;
+                padding-bottom: 20px;
                 padding-top: 8px;
+            }
+
+            .profile-btn {
+                width: 38px;
+                height: 38px;
+                margin-left: 0;
+                margin-right: 0;
+            }
+
+            .profile-dropdown {
+                width: calc(100% - 32px);
+                max-width: 280px;
             }
         }
 
         @media (max-width: 375px) {
             .navbar-brand {
-                font-size: 28px;
+                font-size: 24px;
                 font-weight: 700;
             }
 
@@ -636,17 +947,23 @@
             }
 
             .help-button {
-                padding: 10px 16px; /* Adjusted for smaller screens */
+                padding: 10px 16px;
                 font-size: 14px;
             }
 
             .mobile-menu-bottom {
-                padding-bottom: 60px;
+                padding-bottom: 20px;
                 padding-top: 6px;
+            }
+
+            .profile-btn {
+                width: 36px;
+                height: 36px;
+                margin-left: 0;
+                margin-right: 0;
             }
         }
 
-        /* Custom scrollbar for mobile menu */
         @media (max-width: 991px) {
             .navbar-collapse::-webkit-scrollbar {
                 width: 5px;
@@ -669,11 +986,27 @@
     </style>
 </head>
 <body>
+    <!-- LOADER -->
+    <div id="pageLoader" class="page-loader">
+        <div class="spinner-large"></div>
+    </div>
+
+    <!-- NAVBAR (HEADER) -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNavbar">
         <div class="container">
             <a class="navbar-brand" href="index.html">
                 Tezkor Quiz
             </a>
+
+            <!-- MOBILE PROFIL (Burger chapida) -->
+            <div class="mobile-profile">
+                <div class="profile-btn" id="mobileProfileBtn">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                    </svg>
+                </div>
+            </div>
+
             <label class="burger" for="burger">
                 <input type="checkbox" id="burger">
                 <span></span>
@@ -734,8 +1067,8 @@
                             <li>
                                 <a class="dropdown-item" href="quiztest/smart.html">
                                     <svg class="dropdown-icon" viewBox="0 0 24 24">
-                                <path d="M9,21C9,22.1 9.9,23 11,23H13C14.1,23 15,22.1 15,21V20H9V21M12,2A7,7 0 0,0 5,9C5,11.38 6.19,13.47 8,14.74V17A1,1 0 0,0 9,18H15A1,1 0 0,0 16,17V14.74C17.81,13.47 19,11.38 19,9A7,7 0 0,0 12,2Z"/>
-                            </svg>
+                                        <path d="M9,21C9,22.1 9.9,23 11,23H13C14.1,23 15,22.1 15,21V20H9V21M12,2A7,7 0 0,0 5,9C5,11.38 6.19,13.47 8,14.74V17A1,1 0 0,0 9,18H15A1,1 0 0,0 16,17V14.74C17.81,13.47 19,11.38 19,9A7,7 0 0,0 12,2Z"/>
+                                    </svg>
                                     <span>Smart Quiz</span>
                                 </a>
                             </li>
@@ -749,15 +1082,24 @@
                             </li>
                             <li>
                                 <a class="dropdown-item" href="quiztest/imtihon.html">
-                                      <svg class="dropdown-icon" viewBox="0 0 24 24">
-                                <path d="M4,3H18A2,2 0 0,1 20,5V12.5L18.5,11H4V19H12.5L14,20.5V21A2,2 0 0,1 12,23H4A2,2 0 0,1 2,21V5A2,2 0 0,1 4,3M4,7H18V9H4V7M4,11H18V13H4V11M4,15H13V17H4V15M23.7,16.3L17,23L13,19L14.4,17.6L17,20.2L22.3,14.9L23.7,16.3Z"/>
-                                </svg>
+                                    <svg class="dropdown-icon" viewBox="0 0 24 24">
+                                        <path d="M4,3H18A2,2 0 0,1 20,5V12.5L18.5,11H4V19H12.5L14,20.5V21A2,2 0 0,1 12,23H4A2,2 0 0,1 2,21V5A2,2 0 0,1 4,3M4,7H18V9H4V7M4,11H18V13H4V11M4,15H13V17H4V15M23.7,16.3L17,23L13,19L14.4,17.6L17,20.2L22.3,14.9L23.7,16.3Z"/>
+                                    </svg>
                                     <span>Imtihon Quiz</span>
                                 </a>
                             </li>
                         </ul>
                     </li>
                 </ul>
+
+                <!-- DESKTOP PROFIL -->
+                <div class="desktop-profile">
+                    <div class="profile-btn" id="desktopProfileBtn">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                        </svg>
+                    </div>
+                </div>
                 
                 <div class="mobile-menu-bottom">
                     <div class="social-links">
@@ -772,93 +1114,249 @@
                         </a>
                     </div>
                     <a href="https://t.me/sobirweb">
-                    <button class="help-button">
-                        <i class="fas fa-headset"></i>
-                        <span>Yordam</span>
-                    </button>
+                        <button class="help-button">
+                            <i class="fas fa-headset"></i>
+                            <span>Yordam</span>
+                        </button>
                     </a>
+                </div>
+            </div>
+
+            <!-- PROFIL DROPDOWN -->
+            <div class="profile-dropdown" id="profileDropdown">
+                <div class="profile-user">
+                    <div class="profile-user-avatar" id="dropdownAvatar">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h4 id="userDisplayName">Foydalanuvchi</h4>
+                        <p id="userEmail">email@example.com</p>
+                    </div>
+                </div>
+                <div class="profile-logout" id="logoutTrigger">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                    </svg>
+                    <span>Chiqish</span>
                 </div>
             </div>
         </div>
     </nav>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const navbar = document.getElementById('mainNavbar');
-            const navLinks = document.querySelectorAll('.navbar-nav a:not(.dropdown-toggle)');
-            const burgerInput = document.querySelector('#burger');
-            const navbarCollapse = document.querySelector('.navbar-collapse');
-            const dropdown = document.querySelector('.dropdown');
-            const dropdownToggle = document.getElementById('quizDropdown');
-            const dropdownMenu = document.querySelector('.dropdown-menu');
+    <!-- LOGOUT MODAL -->
+    <div class="logout-modal" id="logoutModal">
+        <div class="modal-content">
+            <h3>Tizimdan chiqish</h3>
+            <p>Haqiqatan ham chiqmoqchimisiz?</p>
+            <div class="modal-buttons">
+                <button id="cancelLogout">Bekor qilish</button>
+                <button id="confirmLogout">
+                    <span>Chiqish</span>
+                    <div class="spinner hidden"></div>
+                </button>
+            </div>
+        </div>
+    </div>
 
-            // Scroll effect for navbar
-            window.addEventListener('scroll', function() {
-                if (window.scrollY > 50) {
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+        import { getAuth, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBxIpLY5WasiSIlDL4japBLnnXRwOLUKEQ",
+            authDomain: "tezkor-quiz-bbe3c.firebaseapp.com",
+            projectId: "tezkor-quiz-bbe3c",
+            storageBucket: "tezkor-quiz-bbe3c.firebasestorage.app",
+            messagingSenderId: "143161522496",
+            appId: "1:143161522496:web:252108ace3a4c19f35e2a5"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // DOM elements
+        const pageLoader = document.getElementById('pageLoader');
+        const navbar = document.getElementById('mainNavbar');
+        const navLinks = document.querySelectorAll('.navbar-nav a:not(.dropdown-toggle)');
+        const burgerInput = document.querySelector('#burger');
+        const navbarCollapse = document.querySelector('.navbar-collapse');
+        const dropdown = document.querySelector('.dropdown');
+        const dropdownToggle = document.getElementById('quizDropdown');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+        
+        // Profile elements
+        const desktopBtn = document.getElementById('desktopProfileBtn');
+        const mobileBtn = document.getElementById('mobileProfileBtn');
+        const profileDropdown = document.getElementById('profileDropdown');
+        const dropdownAvatar = document.getElementById('dropdownAvatar');
+        const nameEl = document.getElementById('userDisplayName');
+        const emailEl = document.getElementById('userEmail');
+        const logoutTriggerając = document.getElementById('logoutTrigger');
+        const modal = document.getElementById('logoutModal');
+        const cancelBtn = document.getElementById('cancelLogout');
+        const confirmBtn = document.getElementById('confirmLogout');
+        const spinner = confirmBtn.querySelector('.spinner');
+        const text = confirmBtn.querySelector('span');
+
+        let loading = false;
+        let scrollTimeout;
+        let lastScrollTop = 0;
+
+        // Auth state observer
+        onAuthStateChanged(auth, user => {
+            if (user) {
+                nameEl.textContent = user.displayName || "Foydalanuvchi";
+                emailEl.textContent = user.email;
+                
+                if (user.photoURL) {
+                    const img = `<img src="${user.photoURL}" alt="Profil">`;
+                    desktopBtn.innerHTML = img;
+                    mobileBtn.innerHTML = img;
+                    dropdownAvatar.innerHTML = img;
+                }
+                
+                pageLoader.style.opacity = '0';
+                setTimeout(() => pageLoader.style.display = 'none', 400);
+            } else {
+                window.location.href = 'kirish.html';
+            }
+        });
+
+        // Profile dropdown toggle
+        [desktopBtn, mobileBtn].forEach(btn => {
+            btn.addEventListener('click', e => {
+                e.stopPropagation();
+                profileDropdown.classList.toggle('show');
+            });
+        });
+
+        // Close profile dropdown on outside click
+        document.addEventListener('click', e => {
+            if (!profileDropdown.contains(e.target) && 
+                !desktopBtn.contains(e.target) && 
+                !mobileBtn.contains(e.target)) {
+                profileDropdown.classList.remove('show');
+            }
+        });
+
+        // Logout modal
+        logoutTrigger.onclick = () => {
+            profileDropdown.classList.remove('show');
+            modal.classList.add('show');
+        };
+        
+        cancelBtn.onclick = () => modal.classList.remove('show');
+        
+        modal.onclick = e => {
+            if (e.target === modal) modal.classList.remove('show');
+        };
+
+        confirmBtn.onclick = async () => {
+            if (loading) return;
+            loading = true;
+            confirmBtn.disabled = true;
+            text.classList.add('hidden');
+            spinner.classList.remove('hidden');
+            
+            try {
+                await signOut(auth);
+                window.location.href = 'kirish.html';
+            } catch (err) {
+                alert("Xatolik: " + err.message);
+                loading = false;
+                confirmBtn.disabled = false;
+                text.classList.remove('hidden');
+                spinner.classList.add('hidden');
+            }
+        };
+
+        // Optimized scroll effect with throttling
+        window.addEventListener('scroll', function() {
+            if (scrollTimeout) {
+                window.cancelAnimationFrame(scrollTimeout);
+            }
+
+            scrollTimeout = window.requestAnimationFrame(function() {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                if (scrollTop > 30) {
                     navbar.classList.add('scrolled');
                 } else {
                     navbar.classList.remove('scrolled');
                 }
-            }, { passive: true });
 
-            // Burger menu toggle
-            burgerInput.addEventListener('change', function() {
-                if (this.checked) {
-                    navbarCollapse.classList.add('show');
-                    document.body.style.overflow = 'hidden';
-                } else {
+                lastScrollTop = scrollTop;
+            });
+        }, { passive: true });
+
+        // Burger menu toggle
+        burgerInput.addEventListener('change', function() {
+            if (this.checked) {
+                navbarCollapse.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            } else {
+                navbarCollapse.classList.remove('show');
+                dropdown.classList.remove('show');
+                dropdownToggle.setAttribute('aria-expanded', 'false');
+                dropdownMenu.classList.remove('show');
+                profileDropdown.classList.remove('show');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Close mobile menu on link click
+        navLinks.forEach(function(link) {
+            link.addEventListener('click', function() {
+                if (navbarCollapse.classList.contains('show')) {
+                    burgerInput.checked = false;
                     navbarCollapse.classList.remove('show');
-                    dropdown.classList.remove('show');
-                    dropdownToggle.setAttribute('aria-expanded', 'false');
-                    dropdownMenu.classList.remove('show');
                     document.body.style.overflow = 'auto';
                 }
             });
-
-            // Close mobile menu on link click (except dropdown toggle)
-            navLinks.forEach(function(link) {
-                link.addEventListener('click', function() {
-                    if (navbarCollapse.classList.contains('show')) {
-                        burgerInput.checked = false;
-                        navbarCollapse.classList.remove('show');
-                        document.body.style.overflow = 'auto';
-                    }
-                });
-            });
-
-            // Click handling for dropdown
-            let isDropdownClicked = false;
-
-            dropdownToggle.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                isDropdownClicked = !dropdown.classList.contains('show');
-                dropdown.classList.toggle('show');
-                dropdownToggle.setAttribute('aria-expanded', isDropdownClicked);
-                dropdownMenu.classList.toggle('show');
-            });
-
-            // Close dropdown on outside click
-            document.addEventListener('click', function(e) {
-                if (!dropdown.contains(e.target) && dropdown.classList.contains('show')) {
-                    isDropdownClicked = false;
-                    dropdown.classList.remove('show');
-                    dropdownToggle.setAttribute('aria-expanded', 'false');
-                    dropdownMenu.classList.remove('show');
-                }
-            });
-
-            // Prevent dropdown menu clicks from closing the dropdown
-            dropdownMenu.addEventListener('click', function(e) {
-                e.stopPropagation();
-            });
         });
+
+        // Dropdown handling
+        let isDropdownClicked = false;
+
+        dropdownToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            isDropdownClicked = !dropdown.classList.contains('show');
+            dropdown.classList.toggle('show');
+            dropdownToggle.setAttribute('aria-expanded', isDropdownClicked);
+            dropdownMenu.classList.toggle('show');
+        });
+
+        // Close dropdown on outside click
+        document.addEventListener('click', function(e) {
+            if (!dropdown.contains(e.target) && dropdown.classList.contains('show')) {
+                isDropdownClicked = false;
+                dropdown.classList.remove('show');
+                dropdownToggle.setAttribute('aria-expanded', 'false');
+                dropdownMenu.classList.remove('show');
+            }
+        });
+
+        // Prevent dropdown menu clicks from closing dropdown
+        dropdownMenu.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+
+        // Close mobile menu on window resize
+        let resizeTimeout;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(function() {
+                if (window.innerWidth >= 992 && navbarCollapse.classList.contains('show')) {
+                    burgerInput.checked = false;
+                    navbarCollapse.classList.remove('show');
+                    document.body.style.overflow = 'auto';
+                }
+            }, 150);
+        }, { passive: true });
     </script>
 </body>
 </html>
-
-
-
-
-
