@@ -288,7 +288,7 @@
 
         .profile-dropdown {
             position: absolute;
-            top: 100%;
+            top: calc(100% + 8px);
             right: 0;
             width: 280px;
             background: white;
@@ -302,7 +302,6 @@
             transform: translateY(-10px);
             transition: all 0.3s ease;
             z-index: 1050;
-            margin-top: 8px;
         }
         
         .profile-dropdown.show {
@@ -665,7 +664,7 @@
                 width: 100vw;
                 height: calc(100vh - 50px);
                 background: white;
-                padding: 25px 20px 5px 20px;
+                padding: 25px 20px 20px 20px;
                 border-radius: 0;
                 margin-top: 0;
                 box-shadow: none;
@@ -680,6 +679,7 @@
                 z-index: 1000;
                 overflow-y: auto;
                 overflow-x: hidden;
+                padding-bottom: 120px;
             }
 
             .navbar-collapse.show {
@@ -781,6 +781,7 @@
                 display: flex;
                 margin-top: auto;
                 padding-top: 10px;
+                padding-bottom: 20px;
             }
 
             .desktop-profile {
@@ -794,10 +795,12 @@
             .profile-dropdown {
                 position: fixed;
                 top: auto;
-                bottom: 20px;
+                bottom: 100px;
                 left: 50%;
-                transform: translateX(-50%) translateY(20px);
                 right: auto;
+                transform: translateX(-50%) translateY(20px);
+                max-height: calc(100vh - 200px);
+                overflow-y: auto;
             }
 
             .profile-dropdown.show {
@@ -841,7 +844,8 @@
             .navbar-collapse {
                 top: 45px;
                 height: calc(100vh - 45px);
-                padding: 20px 15px 5px 15px;
+                padding: 20px 15px 20px 15px;
+                padding-bottom: 120px;
             }
 
             .nav-link {
@@ -879,7 +883,7 @@
             }
 
             .mobile-menu-bottom {
-                padding-bottom: 70px;
+                padding-bottom: 20px;
                 padding-top: 8px;
             }
 
@@ -948,7 +952,7 @@
             }
 
             .mobile-menu-bottom {
-                padding-bottom: 60px;
+                padding-bottom: 20px;
                 padding-top: 6px;
             }
 
