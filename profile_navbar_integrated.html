@@ -790,20 +790,23 @@
 
             .mobile-profile {
                 display: flex !important;
+                position: relative;
             }
 
-            .profile-dropdown {
+            .mobile-profile .profile-dropdown {
                 position: fixed;
-                top: auto;
-                bottom: 100px;
+                top: 60px;
                 left: 50%;
                 right: auto;
-                transform: translateX(-50%) translateY(20px);
-                max-height: calc(100vh - 200px);
+                bottom: auto;
+                transform: translateX(-50%) translateY(-20px);
+                max-height: calc(100vh - 120px);
                 overflow-y: auto;
+                width: calc(100vw - 32px);
+                max-width: 320px;
             }
 
-            .profile-dropdown.show {
+            .mobile-profile .profile-dropdown.show {
                 transform: translateX(-50%) translateY(0);
             }
         }
@@ -894,9 +897,9 @@
                 margin-right: 0;
             }
 
-            .profile-dropdown {
-                width: calc(100% - 32px);
-                max-width: 280px;
+            .mobile-profile .profile-dropdown {
+                top: 55px;
+                max-height: calc(100vh - 110px);
             }
         }
 
@@ -961,6 +964,11 @@
                 height: 36px;
                 margin-left: 0;
                 margin-right: 0;
+            }
+
+            .mobile-profile .profile-dropdown {
+                top: 50px;
+                max-height: calc(100vh - 100px);
             }
         }
 
@@ -1283,6 +1291,27 @@
             btn.addEventListener('click', e => {
                 e.stopPropagation();
                 profileDropdown.classList.toggle('show');
+                
+                // Mobil rejimda dropdown pozitsiyasini hisoblash
+                if (window.innerWidth <= 991 && btn === mobileBtn) {
+                    const btnRect = btn.getBoundingClientRect();
+                    const viewportHeight = window.innerHeight;
+                    const dropdownHeight = 200; // taxminiy balandlik
+                    
+                    // Agar pastda joy bo'lsa, pastga ochish
+                    if (btnRect.bottom + dropdownHeight + 20 <= viewportHeight) {
+                        profileDropdown.style.top = `${btnRect.bottom + 10}px`;
+                        profileDropdown.style.bottom = 'auto';
+                    } else {
+                        // Aks holda yuqoriga ochish
+                        profileDropdown.style.top = `${Math.max(10, btnRect.top - dropdownHeight - 10)}px`;
+                        profileDropdown.style.bottom = 'auto';
+                    }
+                } else {
+                    // Desktop rejim uchun
+                    profileDropdown.style.top = '';
+                    profileDropdown.style.bottom = '';
+                }
             });
         });
 
