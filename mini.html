@@ -1,306 +1,573 @@
 <!DOCTYPE html>
-<html lang="uz">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Profil Header</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(-10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    
-    @keyframes zoomIn {
-      from {
-        opacity: 0;
-        transform: scale(0.95);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
-    
-    .animate-dropdown {
-      animation: fadeIn 0.2s ease-out;
-    }
-    
-    .animate-modal {
-      animation: zoomIn 0.2s ease-out;
-    }
-    
-    .spinner {
-      border: 2px solid white;
-      border-top-color: transparent;
-      border-radius: 50%;
-      width: 20px;
-      height: 20px;
-      animation: spin 0.6s linear infinite;
-    }
-    
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
+    <title>Tezkor Quiz: Asosan talabalar va o'quvchilar uchun</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- AOS Animation CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <!-- Font Awesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="aga/iconcha.png">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tezkor Quiz - testlarni yaratish, boshqarish va yechish uchun qulay platforma">
 
-    /* Sahifa yuklanayotganda ko'rsatiladigan loader */
-    .page-loader {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-    }
+    <!-- Audio elements -->
+    <audio id="openSound" preload="auto">
+        <source src="https://cdnjs.cloudflare.com/ajax/libs/simple-sounds/1.0.0/sounds/pop-up.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="messageSound" preload="auto">
+        <source src="https://cdnjs.cloudflare.com/ajax/libs/simple-sounds/1.0.0/sounds/notification.mp3" type="audio/mpeg">
+    </audio>
 
-    .page-loader .spinner-large {
-      border: 4px solid #e5e7eb;
-      border-top-color: #3b82f6;
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      animation: spin 0.8s linear infinite;
-    }
-  </style>
-</head>
-<body class="bg-gray-50">
-  <!-- Sahifa yuklanayotganda loader -->
-  <div id="pageLoader" class="page-loader">
-    <div class="spinner-large"></div>
-  </div>
-
-  <!-- Header -->
-  <header class="bg-white shadow-sm border-b border-gray-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between items-center h-16">
-        <!-- Logo yoki sarlavha -->
-        <div class="flex items-center">
-          <h1 class="text-xl font-semibold text-gray-800">Mening Ilovam</h1>
-        </div>
-
-        <!-- Profil qismi -->
-        <div class="relative">
-          <button id="profileBtn" class="flex items-center space-x-2 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-full p-1 transition-all hover:bg-gray-100">
-            <div id="profileImage" class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-              </svg>
-            </div>
-          </button>
-
-          <!-- Dropdown menyu -->
-          <div id="dropdown" class="hidden absolute right-0 mt-2 w-72 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50 animate-dropdown">
-            <!-- Foydalanuvchi ma'lumotlari -->
-            <div class="px-4 py-3 border-b border-gray-100">
-              <div class="flex items-center space-x-3">
-                <div id="dropdownImage" class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                  <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                  </svg>
-                </div>
-                <div class="flex-1 min-w-0">
-                  <p id="userName" class="text-sm font-semibold text-gray-900 truncate">Foydalanuvchi</p>
-                  <p id="userEmail" class="text-xs text-gray-500 truncate">email@example.com</p>
-                </div>
-              </div>
-            </div>
-
-            <!-- Chiqish tugmasi -->
-            <button id="logoutBtn" class="w-full flex items-center space-x-3 px-4 py-3 text-red-600 hover:bg-red-50 transition-colors">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
-              </svg>
-              <span class="font-medium">Chiqish</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <!-- Sahifa kontenti -->
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <div class="bg-white rounded-lg shadow p-6">
-      <h2 class="text-2xl font-bold text-gray-800 mb-4">Xush kelibsiz!</h2>
-      <p class="text-gray-600">Bu himoyalangan sahifa. Faqat tizimga kirgan foydalanuvchilar ko'ra oladi.</p>
-    </div>
-  </div>
-
-  <!-- Chiqish tasdiqlash modali -->
-  <div id="logoutModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-    <div class="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 animate-modal">
-      <div class="flex justify-between items-start mb-4">
-        <h3 class="text-xl font-bold text-gray-900">Tizimdan chiqish</h3>
-        <button id="closeModal" class="text-gray-400 hover:text-gray-600 transition-colors">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-          </svg>
-        </button>
-      </div>
-      
-      <p class="text-gray-600 mb-6">Haqiqatan ham tizimdan chiqmoqchimisiz?</p>
-
-      <div class="flex space-x-3">
-        <button id="cancelBtn" class="flex-1 px-4 py-2.5 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-colors">
-          Bekor qilish
-        </button>
-        <button id="confirmLogout" class="flex-1 px-4 py-2.5 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center">
-          <span id="logoutText">Chiqish</span>
-          <div id="logoutSpinner" class="hidden spinner"></div>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Firebase va JavaScript -->
-  <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
-    import { getAuth, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
-
-    // Firebase sozlamalari
-    const firebaseConfig = {
-      apiKey: "AIzaSyBxIpLY5WasiSIlDL4japBLnnXRwOLUKEQ",
-      authDomain: "tezkor-quiz-bbe3c.firebaseapp.com",
-      projectId: "tezkor-quiz-bbe3c",
-      storageBucket: "tezkor-quiz-bbe3c.firebasestorage.app",
-      messagingSenderId: "143161522496",
-      appId: "1:143161522496:web:252108ace3a4c19f35e2a5",
-    };
-
-    // Firebase initialize
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    // DOM elementlar
-    const pageLoader = document.getElementById('pageLoader');
-    const profileBtn = document.getElementById('profileBtn');
-    const dropdown = document.getElementById('dropdown');
-    const logoutBtn = document.getElementById('logoutBtn');
-    const logoutModal = document.getElementById('logoutModal');
-    const closeModal = document.getElementById('closeModal');
-    const cancelBtn = document.getElementById('cancelBtn');
-    const confirmLogout = document.getElementById('confirmLogout');
-    const profileImage = document.getElementById('profileImage');
-    const dropdownImage = document.getElementById('dropdownImage');
-    const userName = document.getElementById('userName');
-    const userEmail = document.getElementById('userEmail');
-    const logoutText = document.getElementById('logoutText');
-    const logoutSpinner = document.getElementById('logoutSpinner');
-
-    let currentUser = null;
-    let isLoading = false;
-
-    // Foydalanuvchi holatini kuzatish
-    onAuthStateChanged(auth, (user) => {
-      currentUser = user;
-      
-      if (user) {
-        // Foydalanuvchi tizimga kirgan
-        console.log('Foydalanuvchi topildi:', user.email);
-        
-        // Foydalanuvchi ma'lumotlarini yangilash
-        userName.textContent = user.displayName || 'Foydalanuvchi';
-        userEmail.textContent = user.email || 'email@example.com';
-
-        // Profil rasmini yangilash
-        if (user.photoURL) {
-          profileImage.innerHTML = `<img src="${user.photoURL}" alt="Profil" class="w-10 h-10 rounded-full object-cover border-2 border-gray-300">`;
-          dropdownImage.innerHTML = `<img src="${user.photoURL}" alt="Profil" class="w-12 h-12 rounded-full object-cover">`;
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3a0ca3;
+            --accent-color: #f72585;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #4cc9f0;
+            --warning-color: #f8961e;
+            --gradient-1: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            --white: #fff;
+            --black: #282936;
+            --burger-active-color: #ff0000;
         }
 
-        // Loaderni yashirish
-        pageLoader.style.display = 'none';
-      } else {
-        // Foydalanuvchi tizimga kirmagan - kirish sahifasiga yo'naltirish
-        console.log('Foydalanuvchi topilmadi, kirish.html sahifasiga yo\'naltirilmoqda...');
-        window.location.href = 'kirish.html';
-      }
-    });
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    // Dropdown ochish/yopish
-    profileBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      dropdown.classList.toggle('hidden');
-    });
+        body {
+            font-family: 'Nunito', 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #ECF2FF;
+            min-height: 100vh;
+            padding-top: 80px; /* Navbar balandligi */
+        }
 
-    // Tashqarida bosilganda dropdown yopish
-    document.addEventListener('click', (e) => {
-      if (!profileBtn.contains(e.target) && !dropdown.contains(e.target)) {
-        dropdown.classList.add('hidden');
-      }
-    });
+        /* ====================== NAVBAR (hnew) ====================== */
+        .page-loader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: white; display: flex; align-items: center; justify-content: center;
+            z-index: 9999; transition: opacity 0.4s;
+        }
+        .spinner-large {
+            width: 50px; height: 50px; border: 4px solid #e5e7eb;
+            border-top: 4px solid var(--primary-color); border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-    // Chiqish modalni ochish
-    logoutBtn.addEventListener('click', () => {
-      logoutModal.classList.remove('hidden');
-      dropdown.classList.add('hidden');
-    });
+        .navbar {
+            padding: 10px 0; background: rgba(255,255,255,1); backdrop-filter: blur(0px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05); transition: all 0.3s ease;
+        }
+        .navbar.scrolled {
+            background: rgba(255,255,255,0.75); backdrop-filter: blur(20px) saturate(180%);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.12); border-bottom: 1px solid rgba(255,255,255,0.3);
+        }
+        .navbar-brand {
+            font-family: 'Roboto'; font-weight: 800; font-size: 24px;
+            color: var(--primary-color) !important; letter-spacing: -0.5px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .navbar-brand:hover { transform: scale(1.05); }
 
-    // Modal yopish
-    closeModal.addEventListener('click', () => {
-      if (!isLoading) {
-        logoutModal.classList.add('hidden');
-      }
-    });
+        .nav-link {
+            font-family: 'Roboto', sans-serif; font-weight: 500; font-size: 15px;
+            padding: 10px 20px !important; color: var(--dark-color) !important;
+            border-radius: 12px; transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+            position: relative; overflow: hidden; display: flex; align-items: center;
+        }
+        .nav-link::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: var(--gradient-1); opacity: 0.1; transition: left 0.4s ease; z-index: -1;
+        }
+        .nav-link:hover::before { left: 0; }
+        .nav-link:hover { color: var(--primary-color) !important; }
+        .nav-link.active { background: var(--gradient-1); color: white !important; box-shadow: 0 4px 15px rgba(102,126,234,0.4); }
 
-    cancelBtn.addEventListener('click', () => {
-      if (!isLoading) {
-        logoutModal.classList.add('hidden');
-      }
-    });
+        .nav-icon { display: none; }
+        .dropdown-icon { display: none; }
 
-    // Modal tashqarisida bosilganda yopish
-    logoutModal.addEventListener('click', (e) => {
-      if (e.target === logoutModal && !isLoading) {
-        logoutModal.classList.add('hidden');
-      }
-    });
+        .dropdown-menu {
+            border: none; border-radius: 16px; padding: 12px; margin-top: 12px;
+            background: rgba(255,255,255,0.98); backdrop-filter: blur(10px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15); min-width: 260px;
+            transform: scaleY(0); opacity: 0; visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.4,0,0.2,1); display: block;
+        }
+        .dropdown.show .dropdown-menu { transform: scaleY(1); opacity: 1; visibility: visible; }
 
-    // Chiqish funksiyasi
-    confirmLogout.addEventListener('click', async () => {
-      if (isLoading) return;
-      
-      isLoading = true;
-      confirmLogout.disabled = true;
-      cancelBtn.disabled = true;
-      logoutText.classList.add('hidden');
-      logoutSpinner.classList.remove('hidden');
+        .profile-btn {
+            width: 40px; height: 40px; border-radius: 50%; background: var(--gradient-1);
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
+            transition: all 0.3s ease; margin-left: 12px;
+        }
+        .profile-btn:hover { transform: scale(1.08); }
+        .profile-btn svg { width: 22px; height: 22px; fill: white; }
+        .profile-btn img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 2px solid white; }
 
-      try {
-        // Firebase'dan chiqish
-        await signOut(auth);
-        
-        console.log('Foydalanuvchi muvaffaqiyatli tizimdan chiqqan');
-        
-        // Modal va dropdown yopish
-        logoutModal.classList.add('hidden');
-        dropdown.classList.add('hidden');
-        
-        // Kirish sahifasiga yo'naltirish
-        window.location.href = 'kirish.html';
-        
-      } catch (error) {
-        console.error('Chiqishda xatolik:', error);
-        alert('Chiqishda xatolik yuz berdi. Iltimos qaytadan urinib ko\'ring.');
-        
-        // Xatolik bo'lsa UI elementlarini tiklash
-        isLoading = false;
-        confirmLogout.disabled = false;
-        cancelBtn.disabled = false;
-        logoutText.classList.remove('hidden');
-        logoutSpinner.classList.add('hidden');
-      }
-    });
-  </script>
+        .profile-dropdown {
+            position: absolute; top: calc(100% + 8px); right: 0; width: 280px;
+            background: white; border-radius: 16px; box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            backdrop-filter: blur(10px); overflow: hidden; opacity: 0; visibility: hidden;
+            transform: translateY(-10px); transition: all 0.3s ease; z-index: 1050;
+        }
+        .profile-dropdown.show { opacity: 1; visibility: visible; transform: translateY(0); }
+
+        .burger { display: none; }
+
+        /* ====================== HERO & CARDS (ind) ====================== */
+        .hero-section {
+            background: var(--gradient-1); padding: 70px 0; border-radius: 15px;
+            margin-bottom: 50px; position: relative; overflow: hidden;
+        }
+        .hero-section::before {
+            content: ""; position: absolute; width: 300px; height: 300px;
+            background: rgba(255,255,255,0.1); border-radius: 50%;
+            top: -100px; right: -100px;
+        }
+        .hero-title { color: white; font-size: 2.5rem; font-weight: 700; margin-bottom: 20px; }
+        .hero-text { color: rgba(255,255,255,0.9); font-size: 1.1rem; margin-bottom: 20px; }
+        .hero-btn {
+            padding: 10px 20px; font-size: 0.9rem; font-weight: 600;
+            border-radius: 50px; transition: all 0.3s ease; width: 100%;
+            max-width: 200px; height: 50px; display: flex; align-items: center;
+            justify-content: center;
+        }
+        .btn-light { background: white; color: var(--primary-color); border: none; }
+        .btn-light:hover { background: rgba(255,255,255,0.9); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .btn-outline-light { border: 2px solid white; color: white; }
+        .btn-outline-light:hover { background: rgba(255,255,255,0.1); transform: translateY(-3px); }
+
+        .hero-buttons-container {
+            display: flex; flex-direction: row; gap: 10px;
+            align-items: center; justify-content: flex-start; margin-bottom: 20px;
+        }
+
+        .card-container { margin-bottom: 40px; transition: all 0.3s ease; }
+        .hero-card {
+            position: relative; width: 100%; aspect-ratio: 16/9;
+            border-radius: 24px !important; overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2); transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer; margin-bottom: 20px; user-select: none;
+        }
+        .hero-card:hover { transform: translateY(-10px); box-shadow: 0 35px 70px rgba(0,0,0,0.3); }
+        .card-image {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover; background-position: center; transition: transform 0.3s ease;
+        }
+        .card-1 .card-image { background-image: url('aga/card1.webp'); }
+        .card-2 .card-image { background-image: url('aga/card2.webp'); }
+        .card-3 .card-image { background-image: url('aga/card3.webp'); }
+        .card-4 .card-image { background-image: url('aga/card4.webp'); }
+        .hero-card:hover .card-image { transform: scale(1.05); }
+
+        .learn-more-button {
+            position: relative; display: inline-block; cursor: pointer;
+            border: 0; background: transparent; padding: 0;
+            font-size: inherit; font-family: inherit; width: 12rem; height: auto;
+        }
+        .circle {
+            transition: all 0.45s cubic-bezier(0.65,0,.076,1);
+            position: relative; display: block; margin: 0;
+            width: 3rem; height: 3rem; background: var(--black); border-radius: 1.625rem;
+        }
+        .icon { transition: all 0.45s cubic-bezier(0.65,0,.076,1);
+            position: absolute; top: 0; bottom: 0; margin: auto; background: var(--white);
+        }
+        .arrow {
+            transition: all 0.45s cubic-bezier(0.65,0,.076,1);
+            left: 0.625rem; width: 1.125rem; height: 0.125rem; background: none;
+        }
+        .arrow::before {
+            position: absolute; content: ''; top: -0.25rem; right: 0.0625rem;
+            width: 0.625rem; height: 0.625rem; border-top: 0.125rem solid #fff;
+            border-right: 0.125rem solid #fff; transform: rotate(45deg);
+        }
+        .button-text {
+            transition: all 0.45s cubic-bezier(0.65,0,.076,1);
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            padding: 0.75rem 0; margin: 0 0 0 1.85rem; color: var(--black);
+            font-weight: 700; line-height: 1.6; text-align: center; text-transform: uppercase;
+        }
+        .learn-more-button:hover .circle { width: 100%; }
+        .learn-more-button:hover .arrow { background: var(--white); transform: translate(1rem, 0); }
+        .learn-more-button:hover .button-text { color: var(--white); }
+
+        /* Footer */
+        .footer { padding: 50px 0 20px; background-color: var(--dark-color); color: white; margin-top: 50px; }
+        .footer-title { font-size: 20px; font-weight: 700; margin-bottom: 20px; }
+        .footer-link { display: block; color: rgba(255,255,255,0.7); margin-bottom: 10px; transition: all 0.3s ease; text-decoration: none; }
+        .footer-link:hover { color: white; padding-left: 5px; }
+        .social-icon { display: inline-flex; align-items: center; justify-content: center;
+            width: 38px; height: 38px; border-radius: 50%; background-color: rgba(255,255,255,0.1);
+            color: white; margin-right: 10px; transition: all 0.3s ease; }
+        .social-icon:hover { background-color: var(--primary-color); transform: translateY(-3px); }
+        .copyright { font-size: 14px; color: rgba(255,255,255,0.6); text-align: center;
+            margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); }
+
+        /* Responsive */
+        @media (max-width: 767px) {
+            .hero-title { font-size: 2rem; text-align: center; }
+            .hero-text { font-size: 1.1rem; text-align: center; }
+            .hero-buttons-container { flex-direction: column; align-items: center; gap: 15px; }
+        }
+
+        /* Mobile navbar styles (hnew mobile) */
+        @media (max-width: 991px) {
+            body { padding-top: 60px; }
+            .burger { display: block; position: relative; width: 24px; height: 18px;
+                background: transparent; cursor: pointer; }
+            .burger span { display: block; position: absolute; height: 2.2px; width: 100%;
+                background: var(--black); border-radius: 8px; opacity: 1; left: 0;
+                transform: rotate(0deg); transition: all 0.3s ease-in-out; }
+            .burger span:nth-of-type(1) { top: 0px; }
+            .burger span:nth-of-type(2) { top: 50%; transform: translateY(-50%); }
+            .burger span:nth-of-type(3) { top: 100%; transform: translateY(-100%); }
+            .burger input:checked ~ span:nth-of-type(1) { transform: rotate(45deg); top: -1px; left: 2px; }
+            .burger input:checked ~ span:nth-of-type(2) { width: 0%; opacity: 0; }
+            .burger input:checked ~ span:nth-of-type(3) { transform: rotate(-45deg); top: 16px; left: 2px; }
+
+            .navbar-collapse {
+                position: fixed; top: 60px; left: 0; width: 100vw;
+                height: calc(100vh - 60px); background: white; padding: 25px 20px;
+                transform: translateX(-100%); opacity: 0; visibility: hidden;
+                transition: all 0.4s cubic-bezier(0.4,0,0.2,1); display: flex;
+                flex-direction: column; overflow-y: auto; z-index: 1000;
+            }
+            .navbar-collapse.show { transform: translateX(0); opacity: 1; visibility: visible; }
+
+            .nav-icon, .dropdown-icon { display: inline-block; width: 24px; height: 24px;
+                fill: var(--dark-color); transition: all 0.3s ease; margin-right: 10px; }
+            .nav-link.active .nav-icon, .nav-link:hover .nav-icon { fill: white; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LOADER -->
+    <div id="pageLoader" class="page-loader">
+        <div class="spinner-large"></div>
+    </div>
+
+    <!-- NAVBAR (hnew) -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNavbar">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">Tezkor Quiz</a>
+
+            <div class="mobile-profile">
+                <div class="profile-btn" id="mobileProfileBtn">
+                    <svg viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                </div>
+            </div>
+
+            <label class="burger" for="burger">
+                <input type="checkbox" id="burger">
+                <span></span><span></span><span></span>
+            </label>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link active" href="index.html">
+                        <svg class="nav-icon" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                        <span>Bosh sahifa</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="faq.html">
+                        <svg class="nav-icon" viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56-.35-.12-.74-.03-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg>
+                        <span>Aloqa</span></a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="quizDropdown" role="button" data-bs-toggle="dropdown">
+                            <svg class="nav-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                            <span>Testni boshlash</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="quiztest/tezkorquiz.html">
+                                <svg class="dropdown-icon" viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg><span>Tezkor Quiz</span></a></li>
+                            <li><a class="dropdown-item" href="quiztest/bilim.html">
+                                <svg class="dropdown-icon" viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/><path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg><span>Bilim Quiz</span></a></li>
+                            <li><a class="dropdown-item" href="quiztest/smart.html">
+                                <svg class="dropdown-icon" viewBox="0 0 24 24"><path d="M9,21C9,22.1 9.9,23 11,23H13C14.1,23 15,22.1 15,21V20H9V21M12,2A7,7 0 0,0 5,9C5,11.38 6.19,13.47 8,14.74V17A1,1 0 0,0 9,18H15A1,1 0 0,0 16,17V14.74C17.81,13.47 19,11.38 19,9A7,7 0 0,0 12,2Z"/></svg><span>Smart Quiz</span></a></li>
+                            <li><a class="dropdown-item" href="quiztest/pro.html">
+                                <svg class="dropdown-icon" viewBox="0 0 24 24"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1s.4-1 1-1h12c.6 0 1 .4 1 1z"/></svg><span>Pro Quiz</span></a></li>
+                            <li><a class="dropdown-item" href="quiztest/imtihon.html">
+                                <svg class="dropdown-icon" viewBox="0 0 24 24"><path d="M4,3H18A2,2 0 0,1 20,5V12.5L18.5,11H4V19H12.5L14,20.5V21A2,2 0 0,1 12,23H4A2,2 0 0,1 2,21V5A2,2 0 0,1 4,3M4,7H18V9H4V7M4,11H18V13H4V11M4,15H13V17H4V15M23.7,16.3L17,23L13,19L14.4,17.6L17,20.2L22.3,14.9L23.7,16.3Z"/></svg><span>Imtihon Quiz</span></a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <div class="desktop-profile">
+                    <div class="profile-btn" id="desktopProfileBtn">
+                        <svg viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                    </div>
+                </div>
+
+                <div class="mobile-menu-bottom">
+                    <div class="social-links">
+                        <a href="https://t.me/tezkorquiz_rasmiy" class="social-link"><i class="fab fa-telegram"></i></a>
+                        <a href="https://www.instagram.com/tezkorquiz.uz" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/@QuizTezkor" class="social-link"><i class="fab fa-youtube"></i></a>
+                    </div>
+                    <a href="https://t.me/sobirweb"><button class="help-button"><i class="fas fa-headset"></i> Yordam</button></a>
+                </div>
+            </div>
+
+            <div class="profile-dropdown" id="profileDropdown">
+                <div class="profile-user">
+                    <div class="profile-user-avatar" id="dropdownAvatar">
+                        <svg viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                    </div>
+                    <div><h4 id="userDisplayName">Foydalanuvchi</h4><p id="userEmail">email@example.com</p></div>
+                </div>
+                <div class="profile-logout" id="logoutTrigger">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                    <span>Chiqish</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- LOGOUT MODAL -->
+    <div class="logout-modal" id="logoutModal">
+        <div class="modal-content">
+            <h3>Tizimdan chiqish</h3>
+            <p>Haqiqatan ham chiqmoqchimisiz?</p>
+            <div class="modal-buttons">
+                <button id="cancelLogout">Bekor qilish</button>
+                <button id="confirmLogout"><span>Chiqish</span><div class="spinner hidden"></div></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- HERO SECTION (ind) -->
+    <section class="container mt-4" data-aos="fade-up" data-aos-duration="1000">
+        <div class="hero-section">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-7">
+                        <h1 class="hero-title">Tezkor Quiz bilan bilimlaringizni sinovdan o'tkazing</h1>
+                        <p class="hero-text">Talabalarga sessiyaga tayyorlanish uchun moslashtirilgan mukammal sayt. 
+                        O'z bilimlaringizni sinab ko'ring va yangi ma'lumotlarni o'rganing.</p>
+                        <div class="hero-buttons-container">
+                            <a href="testni_boshlash.html" class="btn btn-light hero-btn">Testni boshlash</a>
+                            <a href="testyaratish.html" class="btn btn-outline-light hero-btn">Test yaratish</a>
+                        </div>
+                    </div>
+                    <div class="col-md-5 d-none d-md-block">
+                        <div style="max-width: 350px; margin: 0 auto;">
+                            <img src="aga/kamlogo.webp" alt="Tezkor Quiz Logosi" class="img-fluid rounded">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CARDS SECTION -->
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-12 col-md-6">
+                <div class="card-container">
+                    <div class="hero-card card-3" onclick="handleCardClick(3)"><div class="card-image"></div></div>
+                    <div class="card-button-container">
+                        <div class="learn-more-button" onclick="handleEnter(3)">
+                            <span class="circle"><span class="icon arrow"></span></span>
+                            <span class="button-text">Kirish</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="card-container">
+                    <div class="hero-card card-4" onclick="handleCardClick(4)"><div class="card-image"></div></div>
+                    <div class="card-button-container">
+                        <div class="learn-more-button" onclick="handleEnter(4)">
+                            <span class="circle"><span class="icon arrow"></span></span>
+                            <span class="button-text">Kirish</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="card-container">
+                    <div class="hero-card card-1" onclick="handleCardClick(1)"><div class="card-image"></div></div>
+                    <div class="card-button-container">
+                        <div class="learn-more-button" onclick="handleEnter(1)">
+                            <span class="circle"><span class="icon arrow"></span></span>
+                            <span class="button-text">Kirish</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="card-container">
+                    <div class="hero-card card-2" onclick="handleCardClick(2)"><div class="card-image"></div></div>
+                    <div class="card-button-container">
+                        <div class="learn-more-button" onclick="handleEnter(2)">
+                            <span class="circle"><span class="icon arrow"></span></span>
+                            <span class="button-text">Kirish</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <h5 class="footer-title">Tezkor Quiz</h5>
+                    <p>Talabalarga sessiyaga tayyorlanish uchun moslashtirilgan mukammal sayt.</p>
+                    <div class="mt-4">
+                        <a href="https://t.me/quiztezkor" class="social-icon"><i class="fab fa-telegram"></i></a>
+                        <a href="https://www.instagram.com/tezkorquiz.uz" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/@QuizTezkor" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
+                    <h5 class="footer-title">Havolalar</h5>
+                    <a href="index.html" class="footer-link">Bosh sahifa</a>
+                    <a href="segment25.html" class="footer-link">Segment</a>
+                    <a href="aloqa.html" class="footer-link">Aloqa</a>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
+                    <h5 class="footer-title">Testni boshlash</h5>
+                    <a href="testni_boshlash/tezkorquiz.html" class="footer-link">Tezkor Quiz</a>
+                    <a href="testni_boshlash/bilim.html" class="footer-link">Bilim Quiz</a>
+                    <a href="testni_boshlash/smart.html" class="footer-link">Smart Quiz</a>
+                    <a href="testni_boshlash/pro.html" class="footer-link">Pro Quiz</a>
+                    <a href="testni_boshlash/imtihon.html" class="footer-link">Imtihon Quiz</a>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <h5 class="footer-title">Biz bilan bog'laning</h5>
+                    <p class="mb-2"> tezkorquiz@gmail.com</p>
+                    <p class="mb-2"> +998 90 577 08 32</p>
+                    <p> O'zbekiston</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>© 2025 Tezkor Quiz. Barcha huquqlar himoyalangan. 
+                <a href="https://tezkorquiz.uz/TezkorQuiz_Privacy_Policy.pdf" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="//code.tidio.co/dp3xu5h0swhcq9n7ir1qs8kzethsdome.js" async></script>
+
+    <!-- Firebase + Navbar + Cards Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBxIpLY5WasiSIlDL4japBLnnXRwOLUKEQ",
+            authDomain: "tezkor-quiz-bbe3c.firebaseapp.com",
+            projectId: "tezkor-quiz-bbe3c",
+            storageBucket: "tezkor-quiz-bbe3c.appspot.com",
+            messagingSenderId: "1086940339351",
+            appId: "1:1086940339351:web:8c3f95c2d3d08d8f9d1a8f"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // DOM Elements
+        const pageLoader = document.getElementById('pageLoader');
+        const navbar = document.getElementById('mainNavbar');
+        const burgerInput = document.querySelector('#burger');
+        const navbarCollapse = document.querySelector('.navbar-collapse');
+        const desktopBtn = document.getElementById('desktopProfileBtn');
+        const mobileBtn = document.getElementById('mobileProfileBtn');
+        const profileDropdown = document.getElementById('profileDropdown');
+        const dropdownAvatar = document.getElementById('dropdownAvatar');
+        const nameEl = document.getElementById('userDisplayName');
+        const emailEl = document.getElementById('userEmail');
+        const logoutTrigger = document.getElementById('logoutTrigger');
+        const modal = document.getElementById('logoutModal');
+        const cancelBtn = document.getElementById('cancelLogout');
+        const confirmBtn = document.getElementById('confirmLogout');
+        const spinner = confirmBtn.querySelector('.spinner');
+        const text = confirmBtn.querySelector('span');
+
+        // Auth
+        onAuthStateChanged(auth, user => {
+            if (user) {
+                nameEl.textContent = user.displayName || "Foydalanuvchi";
+                emailEl.textContent = user.email;
+                if (user.photoURL) {
+                    const img = `<img src="${user.photoURL}" alt="Profil">`;
+                    desktopBtn.innerHTML = img; mobileBtn.innerHTML = img; dropdownAvatar.innerHTML = img;
+                }
+                pageLoader.style.opacity = '0';
+                setTimeout(() => pageLoader.style.display = 'none', 400);
+            } else {
+                window.location.href = 'kirish.html';
+            }
+        });
+
+        // Profile dropdown
+        [desktopBtn, mobileBtn].forEach(btn => {
+            btn.addEventListener('click', e => {
+                e.stopPropagation();
+                profileDropdown.classList.toggle('show');
+            });
+        });
+        document.addEventListener('click', e => {
+            if (!profileDropdown.contains(e.target) && !desktopBtn.contains(e.target) && !mobileBtn.contains(e.target)) {
+                profileDropdown.classList.remove('show');
+            }
+        });
+
+        // Logout
+        logoutTrigger.onclick = () => { profileDropdown.classList.remove('show'); modal.classList.add('show'); };
+        cancelBtn.onclick = () => modal.classList.remove('show');
+        modal.onclick = e => { if (e.target === modal) modal.classList.remove('show'); };
+        confirmBtn.onclick = async () => {
+            text.classList.add('hidden'); spinner.classList.remove('hidden'); confirmBtn.disabled = true;
+            await signOut(auth); window.location.href = 'kirish.html';
+        };
+
+        // Navbar scroll
+        let scrollTimeout;
+        window.addEventListener('scroll', () => {
+            if (scrollTimeout) window.cancelAnimationFrame(scrollTimeout);
+            scrollTimeout = window.requestAnimationFrame(() => {
+                window.scrollY > 30 ? navbar.classList.add('scrolled') : navbar.classList.remove('scrolled');
+            });
+        }, { passive: true });
+
+        // Burger
+        burgerInput.addEventListener('change', () => {
+            navbarCollapse.classList.toggle('show', burgerInput.checked);
+            document.body.style.overflow = burgerInput.checked ? 'hidden' : 'auto';
+        });
+
+        // AOS + Cards animation
+        AOS.init({ duration: 800, once: true });
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.hero-card').forEach((card, i) => {
+                setTimeout(() => card.classList.add('animate'), i * 200);
+            });
+        });
+
+        function handleEnter(n) {
+            const pages = {
+                1: 'segment25.html',
+                2: 'segmentumumiy.html',
+                3: 'testyaratish.html',
+                4: 'testni_boshlash.html'
+            };
+            window.location.href = pages[n];
+        }
+        window.handleCardClick = handleEnter;
+    </script>
 </body>
 </html>
