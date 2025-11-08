@@ -104,7 +104,7 @@
 
         .nav-link {
             font-family: 'Roboto', sans-serif;
-            font-weight: 500; /* Bold emas, oddiy */
+            font-weight: 500;
             font-size: 15px;
             padding: 10px 20px !important;
             color: var(--dark-color) !important;
@@ -137,45 +137,23 @@
             color: var(--primary-color) !important;
         }
 
-        .nav-link:hover .nav-icon {
-            fill: var(--primary-color);
-            transform: scale(1.1);
-        }
-
         .nav-link.active {
             background: var(--gradient-1);
             color: white !important;
             box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
         }
 
-        .nav-link.active .nav-icon {
-            fill: white;
-        }
-
         .nav-link.active::before {
             display: none;
         }
 
+        /* Desktop rejimda iconlarni yashirish */
         .nav-icon {
-            width: 20px;
-            height: 20px;
-            fill: var(--dark-color);
-            transition: all 0.3s cubic-bezier( Charl(0.4, 0, 0.2, 1);
-            margin-right: 8px;
-            display: inline-block;
-            vertical-align: middle;
+            display: none;
         }
 
         .dropdown-icon {
-            width: 22px;
-            height: 22px;
-            fill: var(--dark-color);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            margin-right: 10px;
-            display: inline-block;
-            vertical-align: middle;
-            z-index: 1;
-            flex-shrink: 0;
+            display: none;
         }
 
         .dropdown-toggle::after {
@@ -216,7 +194,7 @@
             padding: 12px 18px;
             border-radius: 12px;
             font-family: 'Roboto', sans-serif;
-            font-weight: 500; /* Bold emas */
+            font-weight: 500;
             font-size: 14px;
             color: var(--dark-color);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -233,11 +211,6 @@
         .dropdown-item:hover {
             background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
             color: var(--primary-color);
-        }
-
-        .dropdown-item:hover .dropdown-icon {
-            fill: var(--primary-color);
-            transform: scale(1.15);
         }
 
         /* PROFIL TUGMASI */
@@ -706,7 +679,6 @@
                 width: 100%;
                 border-radius: 14px;
                 background: rgba(102, 126, 234, 0.03);
-                font-weight: 500;
             }
 
             .nav-link:hover {
@@ -718,16 +690,42 @@
                 color: white !important;
             }
 
+            /* Mobile rejimda iconlarni ko'rsatish */
             .nav-icon {
+                display: inline-block;
                 width: 24px;
                 height: 24px;
+                fill: var(--dark-color);
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                margin-right: 8px;
+                vertical-align: middle;
                 flex-shrink: 0;
             }
 
+            .nav-link:hover .nav-icon {
+                fill: var(--primary-color);
+                transform: scale(1.1);
+            }
+
+            .nav-link.active .nav-icon {
+                fill: white;
+            }
+
             .dropdown-icon {
+                display: inline-block;
                 width: 24px;
                 height: 24px;
+                fill: var(--dark-color);
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                margin-right: 10px;
+                vertical-align: middle;
+                z-index: 1;
                 flex-shrink: 0;
+            }
+
+            .dropdown-item:hover .dropdown-icon {
+                fill: var(--primary-color);
+                transform: scale(1.15);
             }
 
             .dropdown-menu {
@@ -764,7 +762,6 @@
                 margin-bottom: 8px;
                 border-radius: 14px;
                 width: 100%;
-                font-weight: 500;
             }
 
             .dropdown-item:hover {
@@ -773,6 +770,10 @@
 
             .dropdown-item:last-child {
                 margin-bottom: 0;
+            }
+
+            .dropdown-item span {
+                flex-grow: 0;
             }
 
             .mobile-menu-bottom {
@@ -901,6 +902,75 @@
             }
         }
 
+        @media (max-width: 375px) {
+            .navbar-brand {
+                font-size: 24px;
+                font-weight: 700;
+            }
+
+            .burger {
+                width: 20px;
+                height: 14px;
+            }
+
+            .burger span {
+                height: 1.8px;
+            }
+
+            .burger input:checked ~ span:nth-of-type(1) {
+                top: -1px;
+                left: 1px;
+            }
+
+            .burger input:checked ~ span:nth-of-type(3) {
+                top: 12px;
+                left: 1px;
+            }
+
+            .nav-link {
+                padding: 14px 16px !important;
+                font-size: 15px;
+                gap: 12px;
+            }
+
+            .dropdown-item {
+                padding: 14px 16px;
+                font-size: 15px;
+                gap: 12px;
+            }
+
+            .social-links {
+                gap: 20px;
+            }
+
+            .social-link {
+                width: 40px;
+                height: 40px;
+            }
+
+            .help-button {
+                padding: 10px 16px;
+                font-size: 14px;
+            }
+
+            .mobile-menu-bottom {
+                padding-bottom: 20px;
+                padding-top: 6px;
+            }
+
+            .profile-btn {
+                width: 36px;
+                height: 36px;
+                margin-left: 0;
+                margin-right: 0;
+            }
+
+            .mobile-profile .profile-dropdown {
+                top: 50px;
+                max-height: calc(100vh - 100px);
+            }
+        }
+
         @media (max-width: 991px) {
             .navbar-collapse::-webkit-scrollbar {
                 width: 5px;
@@ -920,6 +990,25 @@
                 background: rgba(102, 126, 234, 0.5);
             }
         }
+
+        /* Demo content */
+        .demo-content {
+            padding: 60px 0;
+        }
+
+        .demo-section {
+            background: white;
+            padding: 60px 0;
+            margin: 40px 0;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .demo-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
     </style>
 </head>
 <body>
@@ -934,7 +1023,7 @@
                 Tezkor Quiz
             </a>
 
-            <!-- MOBILE PROFIL -->
+            <!-- MOBILE PROFIL (Burger chapida) -->
             <div class="mobile-profile">
                 <div class="profile-btn" id="mobileProfileBtn">
                     <svg viewBox="0 0 24 24">
@@ -949,7 +1038,6 @@
                 <span></span>
                 <span></span>
             </label>
-
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
@@ -958,14 +1046,6 @@
                                 <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
                             </svg>
                             <span>Bosh sahifa</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="segment25.html">
-                            <svg class="nav-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M11 2v20c-5.07-.5-9-4.79-9-10s3.93-9.5 9-10zm2.03 0v8.99H22c-.47-4.74-4.24-8.52-8.97-8.99zm0 11.01V22c4.74-.47 8.5-4.25 8.97-8.99h-8.97z"/>
-                            </svg>
-                            <span>Segment</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -984,11 +1064,47 @@
                             <span>Testni boshlash</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="quizDropdown">
-                            <li><a class="dropdown-item" href="quiztest/tezkorquiz.html"><svg class="dropdown-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg><span>Tezkor Quiz</span></a></li>
-                            <li><a class="dropdown-item" href="quiztest/bilim.html"><svg class="dropdown-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/><path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg><span>Bilim Quiz</span></a></li>
-                            <li><a class="dropdown-item" href="quiztest/smart.html"><svg class="dropdown-icon" viewBox="0 0 24 24"><path d="M9,21C9,22.1 9.9,23 11,23H13C14.1,23 15,22.1 15,21V20H9V21M12,2A7,7 0 0,0 5,9C5,11.38 6.19,13.47 8,14.74V17A1,1 0 0,0 9,18H15A1,1 0 0,0 16,17V14.74C17.81,13.47 19,11.38 19,9A7,7 0 0,0 12,2Z"/></svg><span>Smart Quiz</span></a></li>
-                            <li><a class="dropdown-item" href="quiztest/pro.html"><svg class="dropdown-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1s.4-1 1-1h12c.6 0 1 .4 1 1z"/></svg><span>Pro Quiz</span></a></li>
-                            <li><a class="dropdown-item" href="quiztest/imtihon.html"><svg class="dropdown-icon" viewBox="0 0 24 24"><path d="M4,3H18A2,2 0 0,1 20,5V12.5L18.5,11H4V19H12.5L14,20.5V21A2,2 0 0,1 12,23H4A2,2 0 0,1 2,21V5A2,2 0 0,1 4,3M4,7H18V9H4V7M4,11H18V13H4V11M4,15H13V17H4V15M23.7,16.3L17,23L13,19L14.4,17.6L17,20.2L22.3,14.9L23.7,16.3Z"/></svg><span>Imtihon Quiz</span></a></li>
+                            <li>
+                                <a class="dropdown-item" href="quiztest/tezkorquiz.html">
+                                    <svg class="dropdown-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M7 2v11h3v9l7-12h-4l4-8z"/>
+                                    </svg>
+                                    <span>Tezkor Quiz</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="quiztest/bilim.html">
+                                    <svg class="dropdown-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/>
+                                        <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>
+                                    </svg>
+                                    <span>Bilim Quiz</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="quiztest/smart.html">
+                                    <svg class="dropdown-icon" viewBox="0 0 24 24">
+                                        <path d="M9,21C9,22.1 9.9,23 11,23H13C14.1,23 15,22.1 15,21V20H9V21M12,2A7,7 0 0,0 5,9C5,11.38 6.19,13.47 8,14.74V17A1,1 0 0,0 9,18H15A1,1 0 0,0 16,17V14.74C17.81,13.47 19,11.38 19,9A7,7 0 0,0 12,2Z"/>
+                                    </svg>
+                                    <span>Smart Quiz</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="quiztest/pro.html">
+                                    <svg class="dropdown-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1s.4-1 1-1h12c.6 0 1 .4 1 1z"/>
+                                    </svg>
+                                    <span>Pro Quiz</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="quiztest/imtihon.html">
+                                    <svg class="dropdown-icon" viewBox="0 0 24 24">
+                                        <path d="M4,3H18A2,2 0 0,1 20,5V12.5L18.5,11H4V19H12.5L14,20.5V21A2,2 0 0,1 12,23H4A2,2 0 0,1 2,21V5A2,2 0 0,1 4,3M4,7H18V9H4V7M4,11H18V13H4V11M4,15H13V17H4V15M23.7,16.3L17,23L13,19L14.4,17.6L17,20.2L22.3,14.9L23.7,16.3Z"/>
+                                    </svg>
+                                    <span>Imtihon Quiz</span>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                 </ul>
@@ -1004,9 +1120,15 @@
                 
                 <div class="mobile-menu-bottom">
                     <div class="social-links">
-                        <a href="https://t.me/tezkorquiz_rasmiy" class="social-link" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
-                        <a href="https://www.instagram.com/tezkorquiz.uz?igsh=bWc0a3Fodnk0cnBo" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="https://www.youtube.com/@QuizTezkor" class="social-link" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                        <a href="https://t.me/tezkorquiz_rasmiy" class="social-link" aria-label="Telegram">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                        <a href="https://www.instagram.com/tezkorquiz.uz?igsh=bWc0a3Fodnk0cnBo" class="social-link" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://www.youtube.com/@QuizTezkor" class="social-link" aria-label="YouTube">
+                            <i class="fab fa-youtube"></i>
+                        </a>
                     </div>
                     <a href="https://t.me/sobirweb">
                         <button class="help-button">
@@ -1055,6 +1177,41 @@
         </div>
     </div>
 
+    <!-- Demo Content -->
+    <div class="demo-content">
+        <div class="container">
+            <div class="demo-section">
+                <h2 class="text-center">🎯 Scroll qiling va blur effektni ko'ring</h2>
+                <p class="text-center">Sahifani pastga scroll qilganingizda navbar avtomatik ravishda blur effektga o'tadi va kichiklashadi</p>
+            </div>
+
+            <div class="demo-section">
+                <h2>Tezkor Quiz platformasi</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+            </div>
+
+            <div class="demo-section">
+                <h2>Professional dizayn</h2>
+                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.</p>
+            </div>
+
+            <div class="demo-section">
+                <h2>Silliq animatsiyalar</h2>
+                <p>Sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
+            </div>
+
+            <div class="demo-section">
+                <h2>Responsive dizayn</h2>
+                <p>Totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem.</p>
+            </div>
+
+            <div class="demo-section">
+                <h2>Modern texnologiyalar</h2>
+                <p>Quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est.</p>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
@@ -1072,6 +1229,7 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
+        // DOM elements
         const pageLoader = document.getElementById('pageLoader');
         const navbar = document.getElementById('mainNavbar');
         const navLinks = document.querySelectorAll('.navbar-nav a:not(.dropdown-toggle)');
@@ -1081,6 +1239,7 @@
         const dropdownToggle = document.getElementById('quizDropdown');
         const dropdownMenu = document.querySelector('.dropdown-menu');
         
+        // Profile elements
         const desktopBtn = document.getElementById('desktopProfileBtn');
         const mobileBtn = document.getElementById('mobileProfileBtn');
         const profileDropdown = document.getElementById('profileDropdown');
@@ -1098,6 +1257,7 @@
         let scrollTimeout;
         let lastScrollTop = 0;
 
+        // Auth state observer
         onAuthStateChanged(auth, user => {
             if (user) {
                 nameEl.textContent = user.displayName || "Foydalanuvchi";
@@ -1117,13 +1277,36 @@
             }
         });
 
+        // Profile dropdown toggle
         [desktopBtn, mobileBtn].forEach(btn => {
             btn.addEventListener('click', e => {
                 e.stopPropagation();
                 profileDropdown.classList.toggle('show');
+                
+                // Mobil rejimda dropdown pozitsiyasini hisoblash
+                if (window.innerWidth <= 991 && btn === mobileBtn) {
+                    const btnRect = btn.getBoundingClientRect();
+                    const viewportHeight = window.innerHeight;
+                    const dropdownHeight = 200; // taxminiy balandlik
+                    
+                    // Agar pastda joy bo'lsa, pastga ochish
+                    if (btnRect.bottom + dropdownHeight + 20 <= viewportHeight) {
+                        profileDropdown.style.top = `${btnRect.bottom + 10}px`;
+                        profileDropdown.style.bottom = 'auto';
+                    } else {
+                        // Aks holda yuqoriga ochish
+                        profileDropdown.style.top = `${Math.max(10, btnRect.top - dropdownHeight - 10)}px`;
+                        profileDropdown.style.bottom = 'auto';
+                    }
+                } else {
+                    // Desktop rejim uchun
+                    profileDropdown.style.top = '';
+                    profileDropdown.style.bottom = '';
+                }
             });
         });
 
+        // Close profile dropdown on outside click
         document.addEventListener('click', e => {
             if (!profileDropdown.contains(e.target) && 
                 !desktopBtn.contains(e.target) && 
@@ -1132,6 +1315,7 @@
             }
         });
 
+        // Logout modal
         logoutTrigger.onclick = () => {
             profileDropdown.classList.remove('show');
             modal.classList.add('show');
@@ -1162,6 +1346,7 @@
             }
         };
 
+        // Optimized scroll effect with throttling
         window.addEventListener('scroll', function() {
             if (scrollTimeout) {
                 window.cancelAnimationFrame(scrollTimeout);
@@ -1180,6 +1365,7 @@
             });
         }, { passive: true });
 
+        // Burger menu toggle
         burgerInput.addEventListener('change', function() {
             if (this.checked) {
                 navbarCollapse.classList.add('show');
@@ -1194,6 +1380,7 @@
             }
         });
 
+        // Close mobile menu on link click
         navLinks.forEach(function(link) {
             link.addEventListener('click', function() {
                 if (navbarCollapse.classList.contains('show')) {
@@ -1204,6 +1391,7 @@
             });
         });
 
+        // Dropdown handling
         let isDropdownClicked = false;
 
         dropdownToggle.addEventListener('click', function(e) {
@@ -1215,6 +1403,7 @@
             dropdownMenu.classList.toggle('show');
         });
 
+        // Close dropdown on outside click
         document.addEventListener('click', function(e) {
             if (!dropdown.contains(e.target) && dropdown.classList.contains('show')) {
                 isDropdownClicked = false;
@@ -1224,10 +1413,12 @@
             }
         });
 
+        // Prevent dropdown menu clicks from closing dropdown
         dropdownMenu.addEventListener('click', function(e) {
             e.stopPropagation();
         });
 
+        // Close mobile menu on window resize
         let resizeTimeout;
         window.addEventListener('resize', function() {
             clearTimeout(resizeTimeout);
