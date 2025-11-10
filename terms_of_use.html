@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foydalanish Shartlari</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+            color: #2d3748;
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        /* Professional SVG Icons */
+        .svg-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #506deb 0%, #3b51a3 100%);
+            color: white;
+            padding: 80px 20px 100px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: moveGrid 20s linear infinite;
+        }
+
+        @keyframes moveGrid {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .header h1 {
+            font-size: 3em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+
+        .language-switcher {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+            margin-top: 30px;
+            padding: 10px;
+        }
+
+        .lang-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 24px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            cursor: pointer;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.95em;
+            backdrop-filter: blur(10px);
+        }
+
+        .lang-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .lang-btn.active {
+            background: white;
+            color: #506deb;
+            border-color: white;
+            box-shadow: 0 5px 20px rgba(255, 255, 255, 0.3);
+        }
+
+        .lang-btn.active .lang-icon-svg {
+            filter: none;
+        }
+
+        .lang-icon-svg {
+            width: 24px;
+            height: 24px;
+            filter: brightness(0) invert(1);
+            transition: filter 0.3s ease;
+        }
+
+        .lang-btn.active .lang-icon-svg {
+            filter: none;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: -50px auto 50px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.12);
+        }
+
+        .section {
+            margin-bottom: 40px;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .section:nth-child(1) { animation-delay: 0.1s; }
+        .section:nth-child(2) { animation-delay: 0.2s; }
+        .section:nth-child(3) { animation-delay: 0.3s; }
+        .section:nth-child(4) { animation-delay: 0.4s; }
+        .section:nth-child(5) { animation-delay: 0.5s; }
+        .section:nth-child(6) { animation-delay: 0.6s; }
+        .section:nth-child(7) { animation-delay: 0.7s; }
+        .section:nth-child(8) { animation-delay: 0.8s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            color: #506deb;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #506deb 0%, #3b51a3 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            flex-shrink: 0;
+            box-shadow: 0 4px 15px rgba(80, 109, 235, 0.3);
+        }
+
+        .icon svg {
+            width: 28px;
+            height: 28px;
+            fill: white;
+        }
+
+        .content p {
+            margin-bottom: 15px;
+            color: #4a5568;
+        }
+
+        .content ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .content li {
+            padding: 12px 0;
+            padding-left: 35px;
+            position: relative;
+            color: #4a5568;
+            transition: all 0.3s ease;
+        }
+
+        .content li:hover {
+            padding-left: 40px;
+            color: #506deb;
+        }
+
+        .content li::before {
+            content: '→';
+            position: absolute;
+            left: 10px;
+            color: #506deb;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+
+        .content li:hover::before {
+            transform: translateX(5px);
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #f6f8fb 0%, #e9ecef 100%);
+            border-left: 4px solid #506deb;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, #fff5f5 0%, #fee 100%);
+            border-left: 4px solid #fc8181;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #718096;
+            font-size: 0.95em;
+        }
+
+        .update-date {
+            display: inline-block;
+            background: #506deb;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .card {
+                padding: 30px 20px;
+            }
+
+            .section-title {
+                font-size: 1.4em;
+            }
+
+            .language-switcher {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .lang-btn {
+                width: 100%;
+                max-width: 200px;
+                justify-content: center;
+            }
+        }
+
+        .scroll-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #506deb 0%, #3b51a3 100%);
+            width: 0%;
+            z-index: 1000;
+            transition: width 0.1s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="scroll-indicator" id="scrollIndicator"></div>
+    
+    <div class="header">
+        <h1 data-translate="title">Foydalanish Shartlari</h1>
+        <p data-translate="subtitle">Xizmatlarimizdan foydalanish bo'yicha qoidalar va shartlar</p>
+        
+        <div class="language-switcher">
+            <button class="lang-btn active" data-lang="uz">
+                <svg class="lang-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" fill="#506deb"/>
+                </svg>
+                <span>O'zbekcha</span>
+            </button>
+            <button class="lang-btn" data-lang="en">
+                <svg class="lang-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" fill="#506deb"/>
+                </svg>
+                <span>English</span>
+            </button>
+            <button class="lang-btn" data-lang="ru">
+                <svg class="lang-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" fill="#506deb"/>
+                </svg>
+                <span>Русский</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" fill="white"/>
+                        </svg>
+                    </span>
+                    <span data-translate="acceptance_title">Shartlarni Qabul Qilish</span>
+                </h2>
+                <div class="content">
+                    <p data-translate="acceptance_text">Xizmatlarimizdan foydalanish orqali siz ushbu Foydalanish Shartlariga rozilik bildirasiz. Agar shartlar bilan rozi bo'lmasangiz, xizmatlardan foydalanmang.</p>
+                    <div class="highlight-box">
+                        <strong data-translate="important">Muhim:</strong> <span data-translate="acceptance_note">Ushbu shartlar vaqti-vaqti bilan yangilanishi mumkin. Davom ettirilayotgan foydalanish yangilangan shartlarni qabul qilish hisoblanadi.</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" fill="white"/>
+                        </svg>
+                    </span>
+                    <span data-translate="account_title">Hisob Qaydnomasi</span>
+                </h2>
+                <div class="content">
+                    <p data-translate="account_intro">Xizmatlardan to'liq foydalanish uchun hisob yaratishingiz kerak bo'lishi mumkin:</p>
+                    <ul>
+                        <li data-translate="account_1">Hisob ma'lumotlarini maxfiy saqlash sizning mas'uliyatingizdir</li>
+                        <li data-translate="account_2">Hisobingizda sodir bo'lgan barcha harakatlar uchun siz javobgarsiz</li>
+                        <li data-translate="account_3">To'g'ri va aniq ma'lumotlarni taqdim etishingiz kerak</li>
+                        <li data-translate="account_4">Ruxsatsiz kirish to'g'risida darhol xabar bering</li>
+                        <li data-translate="account_5">Bir kishiga bitta hisob ruxsat etiladi</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" fill="white"/>
+                        </svg>
+                    </span>
+                    <span data-translate="allowed_title">Ruxsat Etilgan Foydalanish</span>
+                </h2>
+                <div class="content">
+                    <p data-translate="allowed_intro">Siz xizmatlardan quyidagi maqsadlarda foydalanishingiz mumkin:</p>
+                    <ul>
+                        <li data-translate="allowed_1">Shaxsiy yoki biznes maqsadlarda qonuniy foydalanish</li>
+                        <li data-translate="allowed_2">Xizmatlarning barcha funksiyalaridan foydalanish</li>
+                        <li data-translate="allowed_3">Boshqa foydalanuvchilar bilan o'zaro aloqa</li>
+                        <li data-translate="allowed_4">Kontentni yuklash va ulashish (qoidalar doirasida)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" fill="white"/>
+                        </svg>
+                    </span>
+                    <span data-translate="prohibited_title">Taqiqlangan Harakatlar</span>
+                </h2>
+                <div class="content">
+                    <p data-translate="prohibited_intro">Quyidagi harakatlar qat'iyan man etiladi:</p>
+                    <ul>
+                        <li data-translate="prohibited_1">Qonunga xilof yoki zararli kontentni joylashtirish</li>
+                        <li data-translate="prohibited_2">Boshqa foydalanuvchilarning huquqlarini buzish</li>
+                        <li data-translate="prohibited_3">Spam, virus yoki zararli dasturlarni tarqatish</li>
+                        <li data-translate="prohibited_4">Xizmatning xavfsizligini buzishga urinish</li>
+                        <li data-translate="prohibited_5">Bot yoki avtomatlashtirish vositalaridan foydalanish</li>
+                        <li data-translate="prohibited_6">Yolg'on ma'lumot yoki soxta hisob yaratish</li>
+                        <li data-translate="prohibited_7">Intellektual mulk huquqlarini buzish</li>
+                    </ul>
+                    <div class="warning-box">
+                        <strong data-translate="warning">Ogohlantirish:</strong> <span data-translate="prohibited_warning">Qoidalarni buzish hisobingizni to'xtatishga yoki qonuniy choralar ko'rishga olib kelishi mumkin.</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" fill="white"/>
+                        </svg>
+                    </span>
+                    <span data-translate="content_title">Kontent va Intellektual Mulk</span>
+                </h2>
+                <div class="content">
+                    <p data-translate="content_intro">Xizmatdagi kontent bo'yicha qoidalar:</p>
+                    <ul>
+                        <li data-translate="content_1">Yuklagan kontentingiz uchun siz javobgarsiz</li>
+                        <li data-translate="content_2">Kontentingizda barcha zarur huquqlarga ega bo'lishingiz kerak</li>
+                        <li data-translate="content_3">Bizga kontentingizni xizmatda ishlatish huquqini berasiz</li>
+                        <li data-translate="content_4">Biz tegishli bo'lmagan kontentni olib tashlashimiz mumkin</li>
+                        <li data-translate="content_5">Xizmat kontenti mualliflik huquqi bilan himoyalangan</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z" fill="white"/>
+                        </svg>
+                    </span>
+                    <span data-translate="payment_title">To'lov va Obuna</span>
+                </h2>
+                <div class="content">
+                    <p data-translate="payment_intro">Pullik xizmatlar uchun qoidalar:</p>
+                    <ul>
+                        <li data-translate="payment_1">Barcha narxlar saytda ko'rsatilgan valyutada</li>
+                        <li data-translate="payment_2">To'lovlar xavfsiz usullar orqali amalga oshiriladi</li>
+                        <li data-translate="payment_3">Obuna avtomatik yangilanadi, bekor qilmasangiz</li>
+                        <li data-translate="payment_4">Qaytarish siyosati alohida hujjatda ko'rsatilgan</li>
+                        <li data-translate="payment_5">Narxlar oldindan ogohlantirishsiz o'zgarishi mumkin</li>
+                    </ul>
+                    <div class="highlight-box">
+                        <span data-translate="payment_note">Obunani istalgan vaqt hisob sozlamalaridan bekor qilishingiz mumkin.</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 5.99L19.53 19H4.47L12 5.99M12 2L1 21h22L12 2zm1 14h-2v2h2v-2zm0-6h-2v4h2v-4z" fill="white"/>
+                        </svg>
+                    </span>
+                    <span data-translate="liability_title">Mas'uliyat Cheklovi</span>
+                </h2>
+                <div class="content">
+                    <p data-translate="liability_intro">Xizmatlardan foydalanish bo'yicha mas'uliyat:</p>
+                    <ul>
+                        <li data-translate="liability_1">Xizmatlar "bor holda" taqdim etiladi</li>
+                        <li data-translate="liability_2">Uzluksiz ishlashga kafolat bermaymiz</li>
+                        <li data-translate="liability_3">Xatoliklar yoki uzilishlar uchun javobgar emasmiz</li>
+                        <li data-translate="liability_4">Foydalanishdan kelib chiqadigan zararlar uchun mas'ul emasmiz</li>
+                        <li data-translate="liability_5">Uchinchi tomon xizmatlari uchun javobgar emasmiz</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" fill="white"/>
+                        </svg>
+                    </span>
+                    <span data-translate="contact_title">Bog'lanish</span>
+                </h2>
+                <div class="content">
+                    <p data-translate="contact_intro">Foydalanish shartlari bo'yicha savollar uchun:</p>
+                    <div class="highlight-box">
+                        <p><strong>Email:</strong> support@example.com</p>
+                        <p><strong data-translate="phone">Telefon:</strong> +998 XX XXX XX XX</p>
+                        <p><strong data-translate="address">Manzil:</strong> <span data-translate="address_text">Toshkent, O'zbekiston</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="update-date">
+                <span data-translate="last_update">Oxirgi yangilanish:</span> 08 <span data-translate="november">Noyabr</span> 2025
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p data-translate="footer_rights">© 2025 Barcha huquqlar himoyalangan</p>
+        <p data-translate="footer_terms">Ushbu foydalanish shartlari o'zgartirilishi mumkin</p>
+    </div>
+
+    <script>
+        const translations = {
+            uz: {
+                title: "Foydalanish Shartlari",
+                subtitle: "Xizmatlarimizdan foydalanish bo'yicha qoidalar va shartlar",
+                acceptance_title: "Shartlarni Qabul Qilish",
+                acceptance_text: "Xizmatlarimizdan foydalanish orqali siz ushbu Foydalanish Shartlariga rozilik bildirasiz. Agar shartlar bilan rozi bo'lmasangiz, xizmatlardan foydalanmang.",
+                important: "Muhim:",
+                acceptance_note: "Ushbu shartlar vaqti-vaqti bilan yangilanishi mumkin. Davom ettirilayotgan foydalanish yangilangan shartlarni qabul qilish hisoblanadi.",
+                account_title: "Hisob Qaydnomasi",
+                account_intro: "Xizmatlardan to'liq foydalanish uchun hisob yaratishingiz kerak bo'lishi mumkin:",
+                account_1: "Hisob ma'lumotlarini maxfiy saqlash sizning mas'uliyatingizdir",
+                account_2: "Hisobingizda sodir bo'lgan barcha harakatlar uchun siz javobgarsiz",
+                account_3: "To'g'ri va aniq ma'lumotlarni taqdim etishingiz kerak",
+                account_4: "Ruxsatsiz kirish to'g'risida darhol xabar bering",
+                account_5: "Bir kishiga bitta hisob ruxsat etiladi",
+                allowed_title: "Ruxsat Etilgan Foydalanish",
+                allowed_intro: "Siz xizmatlardan quyidagi maqsadlarda foydalanishingiz mumkin:",
+                allowed_1: "Shaxsiy yoki biznes maqsadlarda qonuniy foydalanish",
+                allowed_2: "Xizmatlarning barcha funksiyalaridan foydalanish",
+                allowed_3: "Boshqa foydalanuvchilar bilan o'zaro aloqa",
+                allowed_4: "Kontentni yuklash va ulashish (qoidalar doirasida)",
+                prohibited_title: "Taqiqlangan Harakatlar",
+                prohibited_intro: "Quyidagi harakatlar qat'iyan man etiladi:",
+                prohibited_1: "Qonunga xilof yoki zararli kontentni joylashtirish",
+                prohibited_2: "Boshqa foydalanuvchilarning huquqlarini buzish",
+                prohibited_3: "Spam, virus yoki zararli dasturlarni tarqatish",
+                prohibited_4: "Xizmatning xavfsizligini buzishga urinish",
+                prohibited_5: "Bot yoki avtomatlashtirish vositalaridan foydalanish",
+                prohibited_6: "Yolg'on ma'lumot yoki soxta hisob yaratish",
+                prohibited_7: "Intellektual mulk huquqlarini buzish",
+                warning: "Ogohlantirish:",
+                prohibited_warning: "Qoidalarni buzish hisobingizni to'xtatishga yoki qonuniy choralar ko'rishga olib kelishi mumkin.",
+                content_title: "Kontent va Intellektual Mulk",
+                content_intro: "Xizmatdagi kontent bo'yicha qoidalar:",
+                content_1: "Yuklagan kontentingiz uchun siz javobgarsiz",
+                content_2: "Kontentingizda barcha zarur huquqlarga ega bo'lishingiz kerak",
+                content_3: "Bizga kontentingizni xizmatda ishlatish huquqini berasiz",
+                content_4: "Biz tegishli bo'lmagan kontentni olib tashlashimiz mumkin",
+                content_5: "Xizmat kontenti mualliflik huquqi bilan himoyalangan",
+                payment_title: "To'lov va Obuna",
+                payment_intro: "Pullik xizmatlar uchun qoidalar:",
+                payment_1: "Barcha narxlar saytda ko'rsatilgan valyutada",
+                payment_2: "To'lovlar xavfsiz usullar orqali amalga oshiriladi",
+                payment_3: "Obuna avtomatik yangilanadi, bekor qilmasangiz",
+                payment_4: "Qaytarish siyosati alohida hujjatda ko'rsatilgan",
+                payment_5: "Narxlar oldindan ogohlantirishsiz o'zgarishi mumkin",
+                payment_note: "Obunani istalgan vaqt hisob sozlamalaridan bekor qilishingiz mumkin.",
+                liability_title: "Mas'uliyat Cheklovi",
+                liability_intro: "Xizmatlardan foydalanish bo'yicha mas'uliyat:",
+                liability_1: "Xizmatlar \"bor holda\" taqdim etiladi",
+                liability_2: "Uzluksiz ishlashga kafolat bermaymiz",
+                liability_3: "Xatoliklar yoki uzilishlar uchun javobgar emasmiz",
+                liability_4: "Foydalanishdan kelib chiqadigan zararlar uchun mas'ul emasmiz",
+                liability_5: "Uchinchi tomon xizmatlari uchun javobgar emasmiz",
+                contact_title: "Bog'lanish",
+                contact_intro: "Foydalanish shartlari bo'yicha savollar uchun:",
+                phone: "Telefon:",
+                address: "Manzil:",
+                address_text: "Toshkent, O'zbekiston",
+                last_update: "Oxirgi yangilanish:",
+                november: "Noyabr",
+                footer_rights: "© 2025 Barcha huquqlar himoyalangan",
+                footer_terms: "Ushbu foydalanish shartlari o'zgartirilishi mumkin"
+            },
+            en: {
+                title: "Terms of Service",
+                subtitle: "Rules and conditions for using our services",
+                acceptance_title: "Acceptance of Terms",
+                acceptance_text: "By using our services, you agree to these Terms of Service. If you do not agree with these terms, please do not use our services.",
+                important: "Important:",
+                acceptance_note: "These terms may be updated from time to time. Continued use constitutes acceptance of updated terms.",
+                account_title: "User Account",
+                account_intro: "You may need to create an account to fully use our services:",
+                account_1: "You are responsible for keeping your account information confidential",
+                account_2: "You are responsible for all activities under your account",
+                account_3: "You must provide accurate and complete information",
+                account_4: "Report unauthorized access immediately",
+                account_5: "One account per person is allowed",
+                allowed_title: "Permitted Use",
+                allowed_intro: "You may use our services for the following purposes:",
+                allowed_1: "Lawful use for personal or business purposes",
+                allowed_2: "Using all features of the services",
+                allowed_3: "Interacting with other users",
+                allowed_4: "Uploading and sharing content (within the rules)",
+                prohibited_title: "Prohibited Actions",
+                prohibited_intro: "The following actions are strictly prohibited:",
+                prohibited_1: "Posting illegal or harmful content",
+                prohibited_2: "Violating the rights of other users",
+                prohibited_3: "Distributing spam, viruses, or malicious software",
+                prohibited_4: "Attempting to breach service security",
+                prohibited_5: "Using bots or automation tools",
+                prohibited_6: "Creating false information or fake accounts",
+                prohibited_7: "Violating intellectual property rights",
+                warning: "Warning:",
+                prohibited_warning: "Violating rules may result in account suspension or legal action.",
+                content_title: "Content and Intellectual Property",
+                content_intro: "Rules regarding content on the service:",
+                content_1: "You are responsible for your uploaded content",
+                content_2: "You must have all necessary rights to your content",
+                content_3: "You grant us the right to use your content on the service",
+                content_4: "We may remove inappropriate content",
+                content_5: "Service content is protected by copyright",
+                payment_title: "Payment and Subscription",
+                payment_intro: "Rules for paid services:",
+                payment_1: "All prices are in the currency shown on the site",
+                payment_2: "Payments are processed through secure methods",
+                payment_3: "Subscriptions auto-renew unless cancelled",
+                payment_4: "Refund policy is specified in a separate document",
+                payment_5: "Prices may change without prior notice",
+                payment_note: "You can cancel your subscription anytime from account settings.",
+                liability_title: "Limitation of Liability",
+                liability_intro: "Liability regarding service use:",
+                liability_1: "Services are provided \"as is\"",
+                liability_2: "We do not guarantee uninterrupted operation",
+                liability_3: "We are not liable for errors or interruptions",
+                liability_4: "We are not responsible for damages from use",
+                liability_5: "We are not liable for third-party services",
+                contact_title: "Contact",
+                contact_intro: "For questions about terms of service:",
+                phone: "Phone:",
+                address: "Address:",
+                address_text: "Tashkent, Uzbekistan",
+                last_update: "Last updated:",
+                november: "November",
+                footer_rights: "© 2025 All rights reserved",
+                footer_terms: "These terms of service may be modified"
+            },
+            ru: {
+                title: "Условия Использования",
+                subtitle: "Правила и условия использования наших сервисов",
+                acceptance_title: "Принятие Условий",
+                acceptance_text: "Используя наши услуги, вы соглашаетесь с настоящими Условиями использования. Если вы не согласны с условиями, пожалуйста, не используйте наши услуги.",
+                important: "Важно:",
+                acceptance_note: "Эти условия могут обновляться время от времени. Продолжение использования означает принятие обновленных условий.",
+                account_title: "Учетная Запись",
+                account_intro: "Для полного использования услуг может потребоваться создание аккаунта:",
+                account_1: "Вы несете ответственность за конфиденциальность данных аккаунта",
+                account_2: "Вы ответственны за все действия в вашем аккаунте",
+                account_3: "Вы должны предоставлять точную и полную информацию",
+                account_4: "Немедленно сообщайте о несанкционированном доступе",
+                account_5: "Разрешен один аккаунт на человека",
+                allowed_title: "Разрешенное Использование",
+                allowed_intro: "Вы можете использовать наши услуги в следующих целях:",
+                allowed_1: "Законное использование в личных или деловых целях",
+                allowed_2: "Использование всех функций сервисов",
+                allowed_3: "Взаимодействие с другими пользователями",
+                allowed_4: "Загрузка и обмен контентом (в рамках правил)",
+                prohibited_title: "Запрещенные Действия",
+                prohibited_intro: "Следующие действия строго запрещены:",
+                prohibited_1: "Размещение незаконного или вредоносного контента",
+                prohibited_2: "Нарушение прав других пользователей",
+                prohibited_3: "Распространение спама, вирусов или вредоносных программ",
+                prohibited_4: "Попытки нарушить безопасность сервиса",
+                prohibited_5: "Использование ботов или средств автоматизации",
+                prohibited_6: "Создание ложной информации или фальшивых аккаунтов",
+                prohibited_7: "Нарушение прав интеллектуальной собственности",
+                warning: "Предупреждение:",
+                prohibited_warning: "Нарушение правил может привести к блокировке аккаунта или юридическим мерам.",
+                content_title: "Контент и Интеллектуальная Собственность",
+                content_intro: "Правила относительно контента в сервисе:",
+                content_1: "Вы несете ответственность за загруженный контент",
+                content_2: "Вы должны иметь все необходимые права на ваш контент",
+                content_3: "Вы предоставляете нам право использовать ваш контент в сервисе",
+                content_4: "Мы можем удалять неподходящий контент",
+                content_5: "Контент сервиса защищен авторским правом",
+                payment_title: "Оплата и Подписка",
+                payment_intro: "Правила для платных услуг:",
+                payment_1: "Все цены указаны в валюте, показанной на сайте",
+                payment_2: "Платежи обрабатываются через безопасные методы",
+                payment_3: "Подписка автоматически продлевается, если не отменена",
+                payment_4: "Политика возврата указана в отдельном документе",
+                payment_5: "Цены могут измениться без предварительного уведомления",
+                payment_note: "Вы можете отменить подписку в любое время в настройках аккаунта.",
+                liability_title: "Ограничение Ответственности",
+                liability_intro: "Ответственность при использовании сервисов:",
+                liability_1: "Услуги предоставляются \"как есть\"",
+                liability_2: "Мы не гарантируем бесперебойную работу",
+                liability_3: "Мы не несем ответственности за ошибки или сбои",
+                liability_4: "Мы не несем ответственности за ущерб от использования",
+                liability_5: "Мы не несем ответственности за сторонние сервисы",
+                contact_title: "Контакты",
+                contact_intro: "По вопросам условий использования:",
+                phone: "Телефон:",
+                address: "Адрес:",
+                address_text: "Ташкент, Узбекистан",
+                last_update: "Последнее обновление:",
+                november: "Ноября",
+                footer_rights: "© 2025 Все права защищены",
+                footer_terms: "Эти условия использования могут быть изменены"
+            }
+        };
+
+        let currentLang = 'uz';
+
+        function translatePage(lang) {
+            currentLang = lang;
+            const elements = document.querySelectorAll('[data-translate]');
+            
+            elements.forEach(element => {
+                const key = element.getAttribute('data-translate');
+                if (translations[lang] && translations[lang][key]) {
+                    element.textContent = translations[lang][key];
+                }
+            });
+
+            // Update active button
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-lang') === lang) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Save preference
+            localStorage.setItem('preferredLanguage', lang);
+        }
+
+        // Language switcher event listeners
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const lang = btn.getAttribute('data-lang');
+                translatePage(lang);
+            });
+        });
+
+        // Load saved language preference
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('preferredLanguage') || 'uz';
+            translatePage(savedLang);
+        });
+
+        // Scroll indicator
+        window.addEventListener('scroll', () => {
+            const scrollIndicator = document.getElementById('scrollIndicator');
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            scrollIndicator.style.width = scrolled + '%';
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
