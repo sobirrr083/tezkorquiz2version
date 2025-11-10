@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uz">
 <head>
     <title>Tezkor Quiz: Asosan talabalar va o'quvchilar uchun</title>
     <!-- Bootstrap 5 CSS -->
@@ -51,307 +51,7 @@
             font-family: 'Nunito', 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #ECF2FF;
             min-height: 100vh;
-            padding-top: 80px; /* Navbar uchun joy */
-        }
-
-        /* Hero section */
-        .hero-section {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            padding: 70px 0;
-            border-radius: 15px;
-            margin-bottom: 50px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-section::before {
-            content: "";
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            top: -100px;
-            right: -100px;
-        }
-
-        .hero-title {
-            color: white;
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
-
-        .hero-text {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 1.1rem;
-            margin-bottom: 20px;
-        }
-
-        .hero-btn {
-            padding: 10px 20px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            border-radius: 50px;
-            transition: all 0.3s ease;
-            width: 100%;
-            max-width: 200px;
-            text-align: center;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .btn-light {
-            background: white;
-            color: var(--primary-color);
-            border: none;
-        }
-
-        .btn-light:hover {
-            background: rgba(255, 255, 255, 0.9);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn-outline-light {
-            border: 2px solid white;
-            color: white;
-        }
-
-        .btn-outline-light:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-3px);
-        }
-
-        .hero-buttons-container {
-            display: flex;
-            flex-direction: row;
-            gap: 10px;
-            align-items: center;
-            justify-content: flex-start;
-            margin-bottom: 20px;
-        }
-
-        /* Footer */
-        .footer {
-            padding: 50px 0 20px;
-            background-color: var(--dark-color);
-            color: white;
-            margin-top: 50px;
-        }
-
-        .footer-title {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
-
-        .footer-link {
-            display: block;
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 10px;
-            transition: all 0.3s ease;
-            text-decoration: none;
-        }
-
-        .footer-link:hover {
-            color: white;
-            padding-left: 5px;
-        }
-
-        .social-icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.1);
-            color: white;
-            margin-right: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .social-icon:hover {
-            background-color: var(--primary-color);
-            transform: translateY(-3px);
-        }
-
-        .copyright {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.6);
-            text-align: center;
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        /* Cards CSS */
-        .card-container {
-            margin-bottom: 40px;
-            transition: all 0.3s ease;
-        }
-
-        .hero-card {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 16/9;
-            border-radius: 24px !important;
-            overflow: hidden;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
-            margin-bottom: 20px;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-
-        .hero-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 35px 70px rgba(0, 0, 0, 0.3);
-        }
-
-        .card-image {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            transition: transform 0.3s ease;
-        }
-
-        .card-1 .card-image { background-image: url('aga/card1.webp'); }
-        .card-2 .card-image { background-image: url('aga/card2.webp'); }
-        .card-3 .card-image { background-image: url('aga/card3.webp'); }
-        .card-4 .card-image { background-image: url('aga/card4.webp'); }
-
-        .hero-card:hover .card-image {
-            transform: scale(1.05);
-        }
-
-        .card-button-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 15px;
-            z-index: 10;
-        }
-
-        .hero-card::after {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 100px;
-            background: linear-gradient(transparent, rgba(0, 0, 0, 0.2));
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-
-        .hero-card:hover::after {
-            opacity: 0.7;
-        }
-
-        .hero-card {
-            opacity: 0;
-            transform: translateY(50px);
-            transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s ease;
-        }
-
-        .hero-card.animate {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .learn-more-button {
-            position: relative;
-            display: inline-block;
-            cursor: pointer;
-            outline: none;
-            border: 0;
-            vertical-align: middle;
-            text-decoration: none;
-            background: transparent;
-            padding: 0;
-            font-size: inherit;
-            font-family: inherit;
-            width: 12rem;
-            height: auto;
-        }
-
-        .circle {
-            transition: all 0.45s cubic-bezier(0.65,0,.076,1);
-            position: relative;
-            display: block;
-            margin: 0;
-            width: 3rem;
-            height: 3rem;
-            background: var(--black);
-            border-radius: 1.625rem;
-        }
-
-        .icon {
-            transition: all 0.45s cubic-bezier(0.65,0,.076,1);
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            margin: auto;
-            background: var(--white);
-        }
-
-        .arrow {
-            transition: all 0.45s cubic-bezier(0.65,0,.076,1);
-            left: 0.625rem;
-            width: 1.125rem;
-            height: 0.125rem;
-            background: none;
-        }
-
-        .arrow::before {
-            position: absolute;
-            content: '';
-            top: -0.25rem;
-            right: 0.0625rem;
-            width: 0.625rem;
-            height: 0.625rem;
-            border-top: 0.125rem solid #fff;
-            border-right: 0.125rem solid #fff;
-            transform: rotate(45deg);
-        }
-
-        .button-text {
-            transition: all 0.45s cubic-bezier(0.65,0,.076,1);
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            padding: 0.75rem 0;
-            margin: 0 0 0 1.85rem;
-            color: var(--black);
-            font-weight: 700;
-            line-height: 1.6;
-            text-align: center;
-            text-transform: uppercase;
-        }
-
-        .learn-more-button:hover .circle { width: 100%; }
-        .learn-more-button:hover .arrow { background: var(--white); transform: translate(1rem, 0); }
-        .learn-more-button:hover .button-text { color: var(--white); }
-
-        /* Responsive */
-        @media (max-width: 767px) {
-            .hero-title { font-size: 2rem; text-align: center; }
-            .hero-text { font-size: 1.1rem; text-align: center; }
-            .hero-buttons-container { flex-direction: column; align-items: center; gap: 15px; }
+            padding-top: 80px;
         }
 
         /* LOADER */
@@ -903,6 +603,300 @@
             font-size: 18px;
         }
 
+        /* Hero section */
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            padding: 70px 0;
+            border-radius: 15px;
+            margin-bottom: 50px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: "";
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            top: -100px;
+            right: -100px;
+        }
+
+        .hero-title {
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .hero-text {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        .hero-btn {
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            width: 100%;
+            max-width: 200px;
+            text-align: center;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-light {
+            background: white;
+            color: var(--primary-color);
+            border: none;
+        }
+
+        .btn-light:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-outline-light {
+            border: 2px solid white;
+            color: white;
+        }
+
+        .btn-outline-light:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .hero-buttons-container {
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            align-items: center;
+            justify-content: flex-start;
+            margin-bottom: 20px;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 50px 0 20px;
+            background-color: var(--dark-color);
+            color: white;
+            margin-top: 50px;
+        }
+
+        .footer-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .footer-link {
+            display: block;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .footer-link:hover {
+            color: white;
+            padding-left: 5px;
+        }
+
+        .social-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Cards CSS */
+        .card-container {
+            margin-bottom: 40px;
+            transition: all 0.3s ease;
+        }
+
+        .hero-card {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16/9;
+            border-radius: 24px !important;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            margin-bottom: 20px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .hero-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 35px 70px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: transform 0.3s ease;
+        }
+
+        .card-1 .card-image { background-image: url('aga/card1.webp'); }
+        .card-2 .card-image { background-image: url('aga/card2.webp'); }
+        .card-3 .card-image { background-image: url('aga/card3.webp'); }
+        .card-4 .card-image { background-image: url('aga/card4.webp'); }
+
+        .hero-card:hover .card-image {
+            transform: scale(1.05);
+        }
+
+        .card-button-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 15px;
+            z-index: 10;
+        }
+
+        .hero-card::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.2));
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .hero-card:hover::after {
+            opacity: 0.7;
+        }
+
+        .hero-card {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s ease;
+        }
+
+        .hero-card.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .learn-more-button {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            outline: none;
+            border: 0;
+            vertical-align: middle;
+            text-decoration: none;
+            background: transparent;
+            padding: 0;
+            font-size: inherit;
+            font-family: inherit;
+            width: 12rem;
+            height: auto;
+        }
+
+        .circle {
+            transition: all 0.45s cubic-bezier(0.65,0,.076,1);
+            position: relative;
+            display: block;
+            margin: 0;
+            width: 3rem;
+            height: 3rem;
+            background: var(--black);
+            border-radius: 1.625rem;
+        }
+
+        .icon {
+            transition: all 0.45s cubic-bezier(0.65,0,.076,1);
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            background: var(--white);
+        }
+
+        .arrow {
+            transition: all 0.45s cubic-bezier(0.65,0,.076,1);
+            left: 0.625rem;
+            width: 1.125rem;
+            height: 0.125rem;
+            background: none;
+        }
+
+        .arrow::before {
+            position: absolute;
+            content: '';
+            top: -0.25rem;
+            right: 0.0625rem;
+            width: 0.625rem;
+            height: 0.625rem;
+            border-top: 0.125rem solid #fff;
+            border-right: 0.125rem solid #fff;
+            transform: rotate(45deg);
+        }
+
+        .button-text {
+            transition: all 0.45s cubic-bezier(0.65,0,.076,1);
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 0.75rem 0;
+            margin: 0 0 0 1.85rem;
+            color: var(--black);
+            font-weight: 700;
+            line-height: 1.6;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .learn-more-button:hover .circle { width: 100%; }
+        .learn-more-button:hover .arrow { background: var(--white); transform: translate(1rem, 0); }
+        .learn-more-button:hover .button-text { color: var(--white); }
+
+        /* Responsive */
         @media (min-width: 992px) {
             .mobile-menu-bottom {
                 display: none !important;
@@ -1125,6 +1119,10 @@
             .mobile-profile .profile-dropdown.show {
                 transform: translateX(-50%) translateY(0);
             }
+
+            .hero-title { font-size: 2rem; text-align: center; }
+            .hero-text { font-size: 1.1rem; text-align: center; }
+            .hero-buttons-container { flex-direction: column; align-items: center; gap: 15px; }
         }
 
         @media (max-width: 576px) {
@@ -1363,7 +1361,7 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="quizDropdown">
                             <li>
-                                <a class="dropdown-item" href="quiztest/tezkorquiz.html">
+                                <a class="dropdown-item" href="testni_boshlash/tezkorquiz.html">
                                     <svg class="dropdown-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M7 2v11h3v9l7-12h-4l4-8z"/>
                                     </svg>
@@ -1371,7 +1369,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="quiztest/bilim.html">
+                                <a class="dropdown-item" href="testni_boshlash/bilim.html">
                                     <svg class="dropdown-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/>
                                         <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>
@@ -1380,7 +1378,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="quiztest/smart.html">
+                                <a class="dropdown-item" href="testni_boshlash/smart.html">
                                     <svg class="dropdown-icon" viewBox="0 0 24 24">
                                         <path d="M9,21C9,22.1 9.9,23 11,23H13C14.1,23 15,22.1 15,21V20H9V21M12,2A7,7 0 0,0 5,9C5,11.38 6.19,13.47 8,14.74V17A1,1 0 0,0 9,18H15A1,1 0 0,0 16,17V14.74C17.81,13.47 19,11.38 19,9A7,7 0 0,0 12,2Z"/>
                                     </svg>
@@ -1388,7 +1386,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="quiztest/pro.html">
+                                <a class="dropdown-item" href="testni_boshlash/pro.html">
                                     <svg class="dropdown-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1s.4-1 1-1h12c.6 0 1 .4 1 1z"/>
                                     </svg>
@@ -1396,7 +1394,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="quiztest/imtihon.html">
+                                <a class="dropdown-item" href="testni_boshlash/imtihon.html">
                                     <svg class="dropdown-icon" viewBox="0 0 24 24">
                                         <path d="M4,3H18A2,2 0 0,1 20,5V12.5L18.5,11H4V19H12.5L14,20.5V21A2,2 0 0,1 12,23H4A2,2 0 0,1 2,21V5A2,2 0 0,1 4,3M4,7H18V9H4V7M4,11H18V13H4V11M4,15H13V17H4V15M23.7,16.3L17,23L13,19L14.4,17.6L17,20.2L22.3,14.9L23.7,16.3Z"/>
                                     </svg>
@@ -1608,10 +1606,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="//code.tidio.co/dp3xu5h0swhcq9n7ir1qs8kzethsdome.js" async></script>
 
-    <!-- Firebase Auth (birlashtirilgan, versiya 10.8.0 ni ishlatamiz) -->
+    <!-- Firebase Auth -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+        import { getAuth, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
 
         const firebaseConfig = {
             apiKey: "AIzaSyBxIpLY5WasiSIlDL4japBLnnXRwOLUKEQ",
@@ -1624,80 +1622,8 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const returnUrl = encodeURIComponent(window.location.pathname + window.location.search);
 
-        onAuthStateChanged(auth, (user) => {
-            if (!user) {
-                window.location.replace(`/kirish.html?returnUrl=${returnUrl}`);
-            } else {
-                // Navbar Firebase qismi
-                const nameEl = document.getElementById('userDisplayName');
-                const emailEl = document.getElementById('userEmail');
-                const dropdownAvatar = document.getElementById('dropdownAvatar');
-                const desktopBtn = document.getElementById('desktopProfileBtn');
-                const mobileBtn = document.getElementById('mobileProfileBtn');
-
-                nameEl.textContent = user.displayName || "Foydalanuvchi";
-                emailEl.textContent = user.email;
-                
-                if (user.photoURL) {
-                    const img = `<img src="${user.photoURL}" alt="Profil">`;
-                    desktopBtn.innerHTML = img;
-                    mobileBtn.innerHTML = img;
-                    dropdownAvatar.innerHTML = img;
-                }
-            }
-        });
-    </script>
-
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6HJZ457YMB"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-6HJZ457YMB');
-    </script>
-
-    <!-- Animatsiyalar va Cards -->
-    <script>
-        AOS.init({ duration: 800, once: true });
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const cards = document.querySelectorAll('.hero-card');
-            cards.forEach((card, i) => {
-                setTimeout(() => card.classList.add('animate'), i * 200);
-            });
-        });
-
-        if ('IntersectionObserver' in window) {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('animate');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.2 });
-            document.querySelectorAll('.hero-card').forEach(card => observer.observe(card));
-        }
-
-        function handleEnter(n) {
-            const pages = {
-                1: 'segment25.html',
-                2: 'segmentumumiy.html',
-                3: 'testyaratish.html',
-                4: 'testni_boshlash.html'
-            };
-            window.location.href = pages[n];
-        }
-
-        function handleCardClick(n) { handleEnter(n); }
-    </script>
-
-    <!-- Navbar Scripts -->
-    <script type="module">
-        // Navbar qismi
+        // DOM elements
         const pageLoader = document.getElementById('pageLoader');
         const navbar = document.getElementById('mainNavbar');
         const navLinks = document.querySelectorAll('.navbar-nav a:not(.dropdown-toggle)');
@@ -1711,6 +1637,9 @@
         const desktopBtn = document.getElementById('desktopProfileBtn');
         const mobileBtn = document.getElementById('mobileProfileBtn');
         const profileDropdown = document.getElementById('profileDropdown');
+        const dropdownAvatar = document.getElementById('dropdownAvatar');
+        const nameEl = document.getElementById('userDisplayName');
+        const emailEl = document.getElementById('userEmail');
         const logoutTrigger = document.getElementById('logoutTrigger');
         const modal = document.getElementById('logoutModal');
         const cancelBtn = document.getElementById('cancelLogout');
@@ -1721,8 +1650,27 @@
         let loading = false;
         let scrollTimeout;
         let lastScrollTop = 0;
+        const returnUrl = encodeURIComponent(window.location.pathname + window.location.search);
 
-        // Auth state observer (allaqachon yuqorida bor, shuning uchun takrorlamaymiz)
+        // Auth state observer
+        onAuthStateChanged(auth, user => {
+            if (user) {
+                nameEl.textContent = user.displayName || "Foydalanuvchi";
+                emailEl.textContent = user.email;
+                
+                if (user.photoURL) {
+                    const img = `<img src="${user.photoURL}" alt="Profil">`;
+                    desktopBtn.innerHTML = img;
+                    mobileBtn.innerHTML = img;
+                    dropdownAvatar.innerHTML = img;
+                }
+                
+                pageLoader.style.opacity = '0';
+                setTimeout(() => pageLoader.style.display = 'none', 400);
+            } else {
+                window.location.replace(`/kirish.html?returnUrl=${returnUrl}`);
+            }
+        });
 
         // Profile dropdown toggle
         [desktopBtn, mobileBtn].forEach(btn => {
@@ -1877,14 +1825,51 @@
                 }
             }, 150);
         }, { passive: true });
+    </script>
 
-        // Page loader
-        onAuthStateChanged(auth, user => {
-            if (user) {
-                pageLoader.style.opacity = '0';
-                setTimeout(() => pageLoader.style.display = 'none', 400);
-            }
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6HJZ457YMB"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-6HJZ457YMB');
+    </script>
+
+    <!-- Animatsiyalar va Cards -->
+    <script>
+        AOS.init({ duration: 800, once: true });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.hero-card');
+            cards.forEach((card, i) => {
+                setTimeout(() => card.classList.add('animate'), i * 200);
+            });
         });
+
+        if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.2 });
+            document.querySelectorAll('.hero-card').forEach(card => observer.observe(card));
+        }
+
+        function handleEnter(n) {
+            const pages = {
+                1: 'segment25.html',
+                2: 'segmentumumiy.html',
+                3: 'testyaratish.html',
+                4: 'testni_boshlash.html'
+            };
+            window.location.href = pages[n];
+        }
+
+        function handleCardClick(n) { handleEnter(n); }
     </script>
 </body>
 </html>
