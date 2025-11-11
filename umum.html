@@ -691,6 +691,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            gap: 8px; /* Icon va text orasidagi bo'shliq */
         }
 
         .btn-light {
@@ -934,6 +935,12 @@
             transform: translateY(-3px);
         }
 
+        .footer-contact-icon {
+            color: var(--success-color);
+            margin-right: 8px;
+            width: 16px;
+        }
+
         .copyright {
             font-size: 14px;
             color: rgba(255, 255, 255, 0.6);
@@ -1133,9 +1140,11 @@
                         O'z bilimlaringizni sinab ko'ring va yangi ma'lumotlarni o'rganing.</p>
                         <div class="hero-buttons-container">
                             <a href="testni_boshlash.html" class="btn btn-light hero-btn">
+                                <i class="fas fa-play-circle"></i>
                                 Testni boshlash
                             </a>
                             <a href="testyaratish.html" class="btn btn-outline-light hero-btn">
+                                <i class="fas fa-plus-circle"></i>
                                 Test yaratish
                             </a>
                         </div>
@@ -1241,9 +1250,9 @@
                 </div>
                 <div class="col-lg-4 col-md-4">
                     <h5 class="footer-title">Biz bilan bog'laning</h5>
-                    <p class="mb-2"> tezkorquiz@gmail.com</p>
-                    <p class="mb-2"> +998 90 577 08 32</p>
-                    <p> O'zbekiston</p>
+                    <p class="mb-2"><i class="fas fa-envelope footer-contact-icon"></i> tezkorquiz@gmail.com</p>
+                    <p class="mb-2"><i class="fas fa-phone footer-contact-icon"></i> +998 90 577 08 32</p>
+                    <p><i class="fas fa-map-marker-alt footer-contact-icon"></i> O'zbekiston</p>
                 </div>
             </div>
             <div class="copyright">
