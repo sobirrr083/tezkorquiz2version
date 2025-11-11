@@ -750,11 +750,6 @@
             user-select: none;
         }
 
-        .hero-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 35px 70px rgba(0, 0, 0, 0.3);
-        }
-
         .card-image {
             position: absolute;
             top: 0;
@@ -771,10 +766,6 @@
         .card-2 .card-image { background-image: url('aga/card2.webp'); }
         .card-3 .card-image { background-image: url('aga/card3.webp'); }
         .card-4 .card-image { background-image: url('aga/card4.webp'); }
-
-        .hero-card:hover .card-image {
-            transform: scale(1.05);
-        }
 
         .card-button-container {
             display: flex;
@@ -794,10 +785,6 @@
             background: linear-gradient(transparent, rgba(0, 0, 0, 0.2));
             pointer-events: none;
             transition: opacity 0.3s ease;
-        }
-
-        .hero-card:hover::after {
-            opacity: 0.7;
         }
 
         .hero-card {
@@ -883,9 +870,32 @@
             text-transform: uppercase;
         }
 
-        .learn-more-button:hover .circle { width: 100%; }
-        .learn-more-button:hover .arrow { background: var(--white); transform: translate(1rem, 0); }
-        .learn-more-button:hover .button-text { color: var(--white); }
+        /* Bidirectional hover effects for cards */
+        .card-container:hover .hero-card {
+            transform: translateY(-10px);
+            box-shadow: 0 35px 70px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-container:hover .hero-card .card-image {
+            transform: scale(1.05);
+        }
+
+        .card-container:hover .hero-card::after {
+            opacity: 0.7;
+        }
+
+        .card-container:hover .learn-more-button .circle {
+            width: 100%;
+        }
+
+        .card-container:hover .learn-more-button .arrow {
+            background: var(--white);
+            transform: translate(1rem, 0);
+        }
+
+        .card-container:hover .learn-more-button .button-text {
+            color: var(--white);
+        }
 
         /* ============================ */
         /* FOOTER STYLES               */
@@ -936,7 +946,7 @@
         }
 
         .footer-contact-icon {
-            color: var(--success-color);
+            color: var(--white);
             margin-right: 8px;
             width: 16px;
         }
