@@ -510,7 +510,7 @@
             height: 18px;
             background: transparent;
             cursor: pointer;
-            display: none;
+            display: none; /* Desktopda yashirin */
             transition: all 0.3s ease;
         }
 
@@ -570,12 +570,11 @@
         }
 
         .mobile-menu-bottom {
-            display: none;
+            display: none; /* Desktopda yashirin */
             padding: 20px;
             border-top: 2px solid rgba(102, 126, 234, 0.1);
             margin-top: auto;
             padding-bottom: 80px;
-            display: flex;
             flex-direction: row;
             align-items: center;
             justify-content: center;
@@ -971,7 +970,7 @@
             body { padding-top: 60px; }
             .navbar { padding: 8px 0; }
             .navbar-brand { font-size: 28px; font-weight: 700; }
-            .burger { display: block; }
+            .burger { display: block; } /* Hamburger faollashadi */
             .navbar-collapse {
                 position: fixed;
                 top: 50px;
@@ -997,7 +996,7 @@
             }
             .desktop-profile { display: none !important; }
             .mobile-profile { display: flex !important; }
-            .mobile-menu-bottom { display: flex; }
+            .mobile-menu-bottom { display: flex; } /* Pastki menyu ko'rinadi */
             .profile-dropdown {
                 position: fixed;
                 bottom: 100px;
@@ -1063,7 +1062,7 @@
                 <span></span>
             </label>
 
-            <!-- NAVBAR COLLAPSE -->
+            <!-- NAVBAR COLLAPSE (Mobil menyu kontentini ochadi) -->
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item"><a class="nav-link" href="index.html"><svg class="nav-icon" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span>Bosh sahifa</span></a></li>
@@ -1084,14 +1083,14 @@
                     </li>
                 </ul>
 
-                <!-- DESKTOP PROFIL -->
+                <!-- DESKTOP PROFIL (Mobil uchun yashirin) -->
                 <div class="desktop-profile">
                     <div class="profile-btn" id="desktopProfileBtn">
                         <svg viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
                     </div>
                 </div>
 
-                <!-- MOBILE BOTTOM MENU -->
+                <!-- MOBILE BOTTOM MENU (Faqat mobil uchun ko'rinadi) -->
                 <div class="mobile-menu-bottom">
                     <div class="social-links">
                         <a href="https://t.me/tezkorquiz_rasmiy" class="social-link" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
@@ -1379,7 +1378,7 @@
             });
         }, { passive: true });
 
-        // Burger
+        // Burger menu ochish/yopish
         burgerInput.addEventListener('change', () => {
             navbarCollapse.classList.toggle('show', burgerInput.checked);
             document.body.style.overflow = burgerInput.checked ? 'hidden' : 'auto';
@@ -1389,7 +1388,7 @@
             }
         });
 
-        // Close on link click
+        // Link bosilganda menyu yopish (mobil uchun)
         document.querySelectorAll('.navbar-nav a').forEach(link => {
             link.addEventListener('click', () => {
                 if (navbarCollapse.classList.contains('show')) {
@@ -1421,7 +1420,7 @@
 
         dropdownMenu.addEventListener('click', e => e.stopPropagation());
 
-        // Resize
+        // Resize (ekranni o'zgartirganda mobil menyu yopish)
         window.addEventListener('resize', () => {
             clearTimeout(window.resizeTimer);
             window.resizeTimer = setTimeout(() => {
