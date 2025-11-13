@@ -17,7 +17,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Tezkor Quiz - testlarni yaratish, boshqarish va yechish uchun qulay platforma">
-    
     <!-- Audio elements for sound effects -->
     <audio id="openSound" preload="auto">
         <source src="https://cdnjs.cloudflare.com/ajax/libs/simple-sounds/1.0.0/sounds/pop-up.mp3" type="audio/mpeg">
@@ -25,7 +24,6 @@
     <audio id="messageSound" preload="auto">
         <source src="https://cdnjs.cloudflare.com/ajax/libs/simple-sounds/1.0.0/sounds/notification.mp3" type="audio/mpeg">
     </audio>
-    
     <style>
         :root {
             --primary-color: #4361ee;
@@ -51,11 +49,12 @@
             font-family: 'Nunito', 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #ECF2FF;
             min-height: 100vh;
-            padding-top: 80px; /* Navbar uchun moslashtirildi */
+            padding-top: 80px; /* Navbar uchun moslashtirildi, ikkinchi HTML dan olingan */
         }
 
+        /* Navbar stillari (ikkinchi HTML dan) */
         /* LOADER */
-        #part1 .page-loader {
+        .section-two .page-loader {
             position: fixed;
             top: 0;
             left: 0;
@@ -69,7 +68,7 @@
             transition: opacity 0.4s;
         }
         
-        #part1 .spinner-large {
+        .section-two .spinner-large {
             width: 50px;
             height: 50px;
             border: 4px solid #e5e7eb;
@@ -82,8 +81,7 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Navbar Styles */
-        #part1 .navbar {
+        .section-two .navbar {
             padding: 10px 0;
             background: rgba(255, 255, 255, 1);
             backdrop-filter: blur(0px);
@@ -91,7 +89,7 @@
             transition: background 0.3s ease, backdrop-filter 0.3s ease, box-shadow 0.3s ease;
         }
 
-        #part1 .navbar.scrolled {
+        .section-two .navbar.scrolled {
             background: rgba(255, 255, 255, 0.75);
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
@@ -99,7 +97,7 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.3);
         }
 
-        #part1 .navbar-brand {
+        .section-two .navbar-brand {
             font-family: 'Roboto';
             font-weight: 800;
             font-size: 24px;
@@ -111,16 +109,16 @@
             gap: 10px;
         }
 
-        #part1 .navbar-brand:hover {
+        .section-two .navbar-brand:hover {
             transform: scale(1.05);
         }
 
-        #part1 .navbar-nav {
+        .section-two .navbar-nav {
             gap: 5px;
             margin-left: auto;
         }
 
-        #part1 .nav-link {
+        .section-two .nav-link {
             font-family: 'Roboto', sans-serif;
             font-weight: 500;
             font-size: 15px;
@@ -134,7 +132,7 @@
             align-items: center;
         }
 
-        #part1 .nav-link::before {
+        .section-two .nav-link::before {
             content: '';
             position: absolute;
             top: 0;
@@ -147,43 +145,43 @@
             z-index: -1;
         }
 
-        #part1 .nav-link:hover::before {
+        .section-two .nav-link:hover::before {
             left: 0;
         }
 
-        #part1 .nav-link:hover {
+        .section-two .nav-link:hover {
             color: var(--primary-color) !important;
         }
 
-        #part1 .nav-link.active {
+        .section-two .nav-link.active {
             background: var(--gradient-1);
             color: white !important;
             box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
         }
 
-        #part1 .nav-link.active::before {
+        .section-two .nav-link.active::before {
             display: none;
         }
 
         /* Desktop rejimda iconlarni yashirish */
-        #part1 .nav-icon {
+        .section-two .nav-icon {
             display: none;
         }
 
-        #part1 .dropdown-icon {
+        .section-two .dropdown-icon {
             display: none;
         }
 
-        #part1 .dropdown-toggle::after {
+        .section-two .dropdown-toggle::after {
             transition: transform 0.3s ease;
             margin-left: 8px;
         }
 
-        #part1 .dropdown-toggle[aria-expanded="true"]::after {
+        .section-two .dropdown-toggle[aria-expanded="true"]::after {
             transform: rotate(180deg);
         }
 
-        #part1 .dropdown-menu {
+        .section-two .dropdown-menu {
             border: none;
             border-radius: 16px;
             padding: 12px;
@@ -202,13 +200,13 @@
             right: 0;
         }
 
-        #part1 .dropdown.show .dropdown-menu {
+        .section-two .dropdown.show .dropdown-menu {
             opacity: 1;
             visibility: visible;
             transform: scaleY(1);
         }
 
-        #part1 .dropdown-item {
+        .section-two .dropdown-item {
             padding: 12px 18px;
             border-radius: 12px;
             font-family: 'Roboto', sans-serif;
@@ -226,13 +224,13 @@
             width: 100%;
         }
 
-        #part1 .dropdown-item:hover {
+        .section-two .dropdown-item:hover {
             background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
             color: var(--primary-color);
         }
 
         /* PROFIL TUGMASI */
-        #part1 .profile-btn {
+        .section-two .profile-btn {
             width: 40px;
             height: 40px;
             border-radius: 50%;
@@ -245,17 +243,17 @@
             margin-left: 12px;
         }
         
-        #part1 .profile-btn:hover {
+        .section-two .profile-btn:hover {
             transform: scale(1.08);
         }
         
-        #part1 .profile-btn svg {
+        .section-two .profile-btn svg {
             width: 22px;
             height: 22px;
             fill: white;
         }
         
-        #part1 .profile-btn img {
+        .section-two .profile-btn img {
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -263,13 +261,13 @@
             border: 2px solid white;
         }
 
-        #part1 .desktop-profile {
+        .section-two .desktop-profile {
             display: flex;
             align-items: center;
             position: relative;
         }
 
-        #part1 .mobile-profile {
+        .section-two .mobile-profile {
             display: none;
             align-items: center;
             position: relative;
@@ -277,7 +275,7 @@
             margin-right: 12px;
         }
 
-        #part1 .profile-dropdown {
+        .section-two .profile-dropdown {
             position: absolute;
             top: calc(100% + 8px);
             right: 0;
@@ -295,20 +293,20 @@
             z-index: 1050;
         }
         
-        #part1 .profile-dropdown.show {
+        .section-two .profile-dropdown.show {
             opacity: 1;
             visibility: visible;
             transform: translateY(0);
         }
 
-        #part1 .profile-user {
+        .section-two .profile-user {
             padding: 16px;
             border-bottom: 1px solid #eee;
             display: flex;
             gap: 12px;
         }
         
-        #part1 .profile-user-avatar {
+        .section-two .profile-user-avatar {
             width: 48px;
             height: 48px;
             border-radius: 50%;
@@ -319,13 +317,13 @@
             flex-shrink: 0;
         }
 
-        #part1 .profile-user-avatar svg {
+        .section-two .profile-user-avatar svg {
             width: 24px;
             height: 24px;
             fill: white;
         }
         
-        #part1 .profile-user-avatar img {
+        .section-two .profile-user-avatar img {
             width: 100%;
             height: 100%;
             border-radius: 50%;
@@ -333,20 +331,20 @@
             object-fit: cover;
         }
         
-        #part1 .profile-user h4 {
+        .section-two .profile-user h4 {
             font-size: 15px;
             font-weight: 600;
             margin: 0;
             color: var(--dark-color);
         }
         
-        #part1 .profile-user p {
+        .section-two .profile-user p {
             font-size: 13px;
             color: #666;
             margin: 4px 0 0;
         }
 
-        #part1 .profile-logout {
+        .section-two .profile-logout {
             padding: 14px 16px;
             display: flex;
             align-items: center;
@@ -357,17 +355,17 @@
             transition: all 0.3s ease;
         }
         
-        #part1 .profile-logout:hover {
+        .section-two .profile-logout:hover {
             background: #ffebee;
         }
 
-        #part1 .profile-logout svg {
+        .section-two .profile-logout svg {
             width: 20px;
             height: 20px;
         }
 
         /* LOGOUT MODAL */
-        #part1 .logout-modal {
+        .section-two .logout-modal {
             position: fixed;
             inset: 0;
             background: rgba(0, 0, 0, 0.5);
@@ -380,12 +378,12 @@
             transition: all 0.3s;
         }
         
-        #part1 .logout-modal.show {
+        .section-two .logout-modal.show {
             opacity: 1;
             visibility: visible;
         }
         
-        #part1 .modal-content {
+        .section-two .modal-content {
             background: white;
             border-radius: 16px;
             padding: 24px;
@@ -396,28 +394,28 @@
             transition: transform 0.3s;
         }
         
-        #part1 .logout-modal.show .modal-content {
+        .section-two .logout-modal.show .modal-content {
             transform: scale(1);
         }
 
-        #part1 .modal-content h3 {
+        .section-two .modal-content h3 {
             font-size: 20px;
             font-weight: 700;
             margin-bottom: 12px;
             color: var(--dark-color);
         }
 
-        #part1 .modal-content p {
+        .section-two .modal-content p {
             color: #666;
             margin-bottom: 24px;
         }
 
-        #part1 .modal-buttons {
+        .section-two .modal-buttons {
             display: flex;
             gap: 12px;
         }
 
-        #part1 .modal-buttons button {
+        .section-two .modal-buttons button {
             flex: 1;
             padding: 12px 20px;
             border-radius: 12px;
@@ -431,30 +429,30 @@
             gap: 8px;
         }
 
-        #part1 #cancelLogout {
+        .section-two #cancelLogout {
             background: #f1f3f5;
             color: var(--dark-color);
         }
 
-        #part1 #cancelLogout:hover {
+        .section-two #cancelLogout:hover {
             background: #e9ecef;
         }
 
-        #part1 #confirmLogout {
+        .section-two #confirmLogout {
             background: #d32f2f;
             color: white;
         }
 
-        #part1 #confirmLogout:hover {
+        .section-two #confirmLogout:hover {
             background: #c62828;
         }
 
-        #part1 #confirmLogout:disabled {
+        .section-two #confirmLogout:disabled {
             opacity: 0.7;
             cursor: not-allowed;
         }
 
-        #part1 .spinner {
+        .section-two .spinner {
             width: 16px;
             height: 16px;
             border: 2px solid white;
@@ -463,11 +461,11 @@
             animation: spin 0.8s linear infinite;
         }
 
-        #part1 .hidden {
+        .section-two .hidden {
             display: none !important;
         }
 
-        #part1 .burger {
+        .section-two .burger {
             position: relative;
             width: 24px;
             height: 18px;
@@ -477,7 +475,7 @@
             transition: all 0.3s ease;
         }
 
-        #part1 .burger span {
+        .section-two .burger span {
             display: block;
             position: absolute;
             height: 2.2px;
@@ -490,49 +488,49 @@
             transition: all 0.3s ease-in-out;
         }
 
-        #part1 .burger input {
+        .section-two .burger input {
             display: none;
         }
 
-        #part1 .burger input:checked ~ span {
+        .section-two .burger input:checked ~ span {
             background: var(--burger-active-color);
         }
 
-        #part1 .burger span:nth-of-type(1) {
+        .section-two .burger span:nth-of-type(1) {
             top: 0px;
             transform-origin: left center;
         }
 
-        #part1 .burger span:nth-of-type(2) {
+        .section-two .burger span:nth-of-type(2) {
             top: 50%;
             transform: translateY(-50%);
             transform-origin: left center;
         }
 
-        #part1 .burger span:nth-of-type(3) {
+        .section-two .burger span:nth-of-type(3) {
             top: 100%;
             transform-origin: left center;
             transform: translateY(-100%);
         }
 
-        #part1 .burger input:checked ~ span:nth-of-type(1) {
+        .section-two .burger input:checked ~ span:nth-of-type(1) {
             transform: rotate(45deg);
             top: -1px;
             left: 2px;
         }
 
-        #part1 .burger input:checked ~ span:nth-of-type(2) {
+        .section-two .burger input:checked ~ span:nth-of-type(2) {
             width: 0%;
             opacity: 0;
         }
 
-        #part1 .burger input:checked ~ span:nth-of-type(3) {
+        .section-two .burger input:checked ~ span:nth-of-type(3) {
             transform: rotate(-45deg);
             top: 16px;
             left: 2px;
         }
 
-        #part1 .mobile-menu-bottom {
+        .section-two .mobile-menu-bottom {
             display: none;
             padding: 20px;
             border-top: 2px solid rgba(102, 126, 234, 0.1);
@@ -545,13 +543,13 @@
             gap: 25px;
         }
 
-        #part1 .social-links {
+        .section-two .social-links {
             display: flex;
             justify-content: center;
             gap: 25px;
         }
 
-        #part1 .social-link {
+        .section-two .social-link {
             width: 45px;
             height: 45px;
             border-radius: 12px;
@@ -562,23 +560,23 @@
             background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
         }
 
-        #part1 .social-link:hover {
+        .section-two .social-link:hover {
             transform: translateY(-3px);
             box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
             background: var(--gradient-1);
         }
 
-        #part1 .social-link i {
+        .section-two .social-link i {
             font-size: 20px;
             color: var(--primary-color);
             transition: all 0.3s ease;
         }
 
-        #part1 .social-link:hover i {
+        .section-two .social-link:hover i {
             color: white;
         }
 
-        #part1 .help-button {
+        .section-two .help-button {
             width: auto;
             padding: 14px 20px;
             background: var(--gradient-1);
@@ -595,61 +593,60 @@
             gap: 10px;
         }
 
-        #part1 .help-button:hover {
+        .section-two .help-button:hover {
             transform: scale(1.02);
             box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
         }
 
-        #part1 .help-button i {
+        .section-two .help-button i {
             font-size: 18px;
         }
 
-        /* Responsive for Navbar */
         @media (min-width: 992px) {
-            #part1 .mobile-menu-bottom {
+            .section-two .mobile-menu-bottom {
                 display: none !important;
             }
             
-            #part1 .mobile-profile {
+            .section-two .mobile-profile {
                 display: none !important;
             }
         }
 
         @media (max-width: 991px) {
-            #part1 .navbar {
+            .section-two .navbar {
                 padding: 8px 0;
             }
 
-            #part1 .navbar-brand {
+            .section-two .navbar-brand {
                 font-size: 28px;
                 font-weight: 700;
             }
 
-            #part1 .burger {
+            .section-two .burger {
                 display: block;
                 width: 24px;
                 height: 18px;
             }
 
-            #part1 .burger span {
+            .section-two .burger span {
                 height: 2.2px;
             }
 
-            #part1 .burger input:checked ~ span:nth-of-type(1) {
+            .section-two .burger input:checked ~ span:nth-of-type(1) {
                 top: -1px;
                 left: 2px;
             }
 
-            #part1 .burger input:checked ~ span:nth-of-type(3) {
+            .section-two .burger input:checked ~ span:nth-of-type(3) {
                 top: 16px;
                 left: 2px;
             }
 
-            #part1 .navbar-toggler {
+            .section-two .navbar-toggler {
                 display: none;
             }
 
-            #part1 .navbar-collapse {
+            .section-two .navbar-collapse {
                 position: fixed;
                 top: 50px;
                 left: 0;
@@ -674,20 +671,20 @@
                 padding-bottom: 120px;
             }
 
-            #part1 .navbar-collapse.show {
+            .section-two .navbar-collapse.show {
                 transform: translateX(0);
                 opacity: 1;
                 visibility: visible;
             }
 
-            #part1 .navbar-nav {
+            .section-two .navbar-nav {
                 gap: 8px;
                 width: 100%;
                 text-align: left;
                 margin-left: 0;
             }
 
-            #part1 .nav-link {
+            .section-two .nav-link {
                 padding: 18px 20px !important;
                 margin: 0;
                 display: flex;
@@ -700,17 +697,17 @@
                 background: rgba(102, 126, 234, 0.03);
             }
 
-            #part1 .nav-link:hover {
+            .section-two .nav-link:hover {
                 background: rgba(102, 126, 234, 0.08);
             }
 
-            #part1 .nav-link.active {
+            .section-two .nav-link.active {
                 background: var(--gradient-1);
                 color: white !important;
             }
 
             /* Mobile rejimda iconlarni ko'rsatish */
-            #part1 .nav-icon {
+            .section-two .nav-icon {
                 display: inline-block;
                 width: 24px;
                 height: 24px;
@@ -721,16 +718,16 @@
                 flex-shrink: 0;
             }
 
-            #part1 .nav-link:hover .nav-icon {
+            .section-two .nav-link:hover .nav-icon {
                 fill: var(--primary-color);
                 transform: scale(1.1);
             }
 
-            #part1 .nav-link.active .nav-icon {
+            .section-two .nav-link.active .nav-icon {
                 fill: white;
             }
 
-            #part1 .dropdown-icon {
+            .section-two .dropdown-icon {
                 display: inline-block;
                 width: 24px;
                 height: 24px;
@@ -742,12 +739,12 @@
                 flex-shrink: 0;
             }
 
-            #part1 .dropdown-item:hover .dropdown-icon {
+            .section-two .dropdown-item:hover .dropdown-icon {
                 fill: var(--primary-color);
                 transform: scale(1.15);
             }
 
-            #part1 .dropdown-menu {
+            .section-two .dropdown-menu {
                 border: none;
                 box-shadow: none;
                 background: transparent;
@@ -764,13 +761,13 @@
                 padding: 8px 0;
             }
 
-            #part1 .dropdown.show .dropdown-menu {
+            .section-two .dropdown.show .dropdown-menu {
                 transform: scaleY(1);
                 opacity: 1;
                 visibility: visible;
             }
 
-            #part1 .dropdown-item {
+            .section-two .dropdown-item {
                 padding: 18px 20px;
                 display: flex;
                 align-items: center;
@@ -783,35 +780,35 @@
                 width: 100%;
             }
 
-            #part1 .dropdown-item:hover {
+            .section-two .dropdown-item:hover {
                 background: rgba(102, 126, 234, 0.08);
             }
 
-            #part1 .dropdown-item:last-child {
+            .section-two .dropdown-item:last-child {
                 margin-bottom: 0;
             }
 
-            #part1 .dropdown-item span {
+            .section-two .dropdown-item span {
                 flex-grow: 0;
             }
 
-            #part1 .mobile-menu-bottom {
+            .section-two .mobile-menu-bottom {
                 display: flex;
                 margin-top: auto;
                 padding-top: 10px;
                 padding-bottom: 20px;
             }
 
-            #part1 .desktop-profile {
+            .section-two .desktop-profile {
                 display: none !important;
             }
 
-            #part1 .mobile-profile {
+            .section-two .mobile-profile {
                 display: flex !important;
                 position: relative;
             }
 
-            #part1 .mobile-profile .profile-dropdown {
+            .section-two .mobile-profile .profile-dropdown {
                 position: fixed;
                 top: 60px;
                 left: 50%;
@@ -824,194 +821,195 @@
                 max-width: 320px;
             }
 
-            #part1 .mobile-profile .profile-dropdown.show {
+            .section-two .mobile-profile .profile-dropdown.show {
                 transform: translateX(-50%) translateY(0);
             }
         }
 
         @media (max-width: 576px) {
             body {
-                padding-top: 60px;
+                padding-top: 60px; /* Mobile uchun moslashtirildi */
             }
 
-            #part1 .navbar {
+            .section-two .navbar {
                 padding: 6px 0;
             }
 
-            #part1 .navbar-brand {
+            .section-two .navbar-brand {
                 font-size: 26px;
                 font-weight: 700;
             }
 
-            #part1 .burger {
+            .section-two .burger {
                 width: 22px;
                 height: 16px;
             }
 
-            #part1 .burger span {
+            .section-two .burger span {
                 height: 2px;
             }
 
-            #part1 .burger input:checked ~ span:nth-of-type(1) {
+            .section-two .burger input:checked ~ span:nth-of-type(1) {
                 top: -1px;
                 left: 2px;
             }
 
-            #part1 .burger input:checked ~ span:nth-of-type(3) {
+            .section-two .burger input:checked ~ span:nth-of-type(3) {
                 top: 14px;
                 left: 2px;
             }
 
-            #part1 .navbar-collapse {
+            .section-two .navbar-collapse {
                 top: 45px;
                 height: calc(100vh - 45px);
                 padding: 20px 15px 20px 15px;
                 padding-bottom: 120px;
             }
 
-            #part1 .nav-link {
+            .section-two .nav-link {
                 padding: 16px 18px !important;
                 font-size: 16px;
             }
 
-            #part1 .nav-icon {
+            .section-two .nav-icon {
                 width: 22px;
                 height: 22px;
             }
 
-            #part1 .dropdown-icon {
+            .section-two .dropdown-icon {
                 width: 22px;
                 height: 22px;
             }
 
-            #part1 .dropdown-item {
+            .section-two .dropdown-item {
                 padding: 16px 18px;
                 font-size: 16px;
             }
 
-            #part1 .social-link {
+            .section-two .social-link {
                 width: 42px;
                 height: 42px;
             }
 
-            #part1 .social-link i {
+            .section-two .social-link i {
                 font-size: 18px;
             }
 
-            #part1 .help-button {
+            .section-two .help-button {
                 padding: 12px 18px;
                 font-size: 15px;
             }
 
-            #part1 .mobile-menu-bottom {
+            .section-two .mobile-menu-bottom {
                 padding-bottom: 20px;
                 padding-top: 8px;
             }
 
-            #part1 .profile-btn {
+            .section-two .profile-btn {
                 width: 38px;
                 height: 38px;
                 margin-left: 0;
                 margin-right: 0;
             }
 
-            #part1 .mobile-profile .profile-dropdown {
+            .section-two .mobile-profile .profile-dropdown {
                 top: 55px;
                 max-height: calc(100vh - 110px);
             }
         }
 
         @media (max-width: 375px) {
-            #part1 .navbar-brand {
+            .section-two .navbar-brand {
                 font-size: 24px;
                 font-weight: 700;
             }
 
-            #part1 .burger {
+            .section-two .burger {
                 width: 20px;
                 height: 14px;
             }
 
-            #part1 .burger span {
+            .section-two .burger span {
                 height: 1.8px;
             }
 
-            #part1 .burger input:checked ~ span:nth-of-type(1) {
+            .section-two .burger input:checked ~ span:nth-of-type(1) {
                 top: -1px;
                 left: 1px;
             }
 
-            #part1 .burger input:checked ~ span:nth-of-type(3) {
+            .section-two .burger input:checked ~ span:nth-of-type(3) {
                 top: 12px;
                 left: 1px;
             }
 
-            #part1 .nav-link {
+            .section-two .nav-link {
                 padding: 14px 16px !important;
                 font-size: 15px;
                 gap: 12px;
             }
 
-            #part1 .dropdown-item {
+            .section-two .dropdown-item {
                 padding: 14px 16px;
                 font-size: 15px;
                 gap: 12px;
             }
 
-            #part1 .social-links {
+            .section-two .social-links {
                 gap: 20px;
             }
 
-            #part1 .social-link {
+            .section-two .social-link {
                 width: 40px;
                 height: 40px;
             }
 
-            #part1 .help-button {
+            .section-two .help-button {
                 padding: 10px 16px;
                 font-size: 14px;
             }
 
-            #part1 .mobile-menu-bottom {
+            .section-two .mobile-menu-bottom {
                 padding-bottom: 20px;
                 padding-top: 6px;
             }
 
-            #part1 .profile-btn {
+            .section-two .profile-btn {
                 width: 36px;
                 height: 36px;
                 margin-left: 0;
                 margin-right: 0;
             }
 
-            #part1 .mobile-profile .profile-dropdown {
+            .section-two .mobile-profile .profile-dropdown {
                 top: 50px;
                 max-height: calc(100vh - 100px);
             }
         }
 
         @media (max-width: 991px) {
-            #part1 .navbar-collapse::-webkit-scrollbar {
+            .section-two .navbar-collapse::-webkit-scrollbar {
                 width: 5px;
             }
 
-            #part1 .navbar-collapse::-webkit-scrollbar-track {
+            .section-two .navbar-collapse::-webkit-scrollbar-track {
                 background: rgba(102, 126, 234, 0.05);
                 border-radius: 10px;
             }
 
-            #part1 .navbar-collapse::-webkit-scrollbar-thumb {
+            .section-two .navbar-collapse::-webkit-scrollbar-thumb {
                 background: rgba(102, 126, 234, 0.3);
                 border-radius: 10px;
             }
 
-            #part1 .navbar-collapse::-webkit-scrollbar-thumb:hover {
+            .section-two .navbar-collapse::-webkit-scrollbar-thumb:hover {
                 background: rgba(102, 126, 234, 0.5);
             }
         }
 
+        /* Birinchi HTML stillari (asosiy kontent uchun) */
         /* Hero section */
-        #part2 .hero-section {
+        .section-one .hero-section {
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             padding: 70px 0;
             border-radius: 15px;
@@ -1020,7 +1018,7 @@
             overflow: hidden;
         }
 
-        #part2 .hero-section::before {
+        .section-one .hero-section::before {
             content: "";
             position: absolute;
             width: 300px;
@@ -1031,20 +1029,20 @@
             right: -100px;
         }
 
-        #part2 .hero-title {
+        .section-one .hero-title {
             color: white;
             font-size: 2.5rem;
             font-weight: 700;
             margin-bottom: 20px;
         }
 
-        #part2 .hero-text {
+        .section-one .hero-text {
             color: rgba(255, 255, 255, 0.9);
             font-size: 1.1rem;
             margin-bottom: 20px;
         }
 
-        #part2 .hero-btn {
+        .section-one .hero-btn {
             padding: 10px 20px;
             font-size: 0.9rem;
             font-weight: 600;
@@ -1059,29 +1057,29 @@
             justify-content: center;
         }
 
-        #part2 .btn-light {
+        .section-one .btn-light {
             background: white;
             color: var(--primary-color);
             border: none;
         }
 
-        #part2 .btn-light:hover {
+        .section-one .btn-light:hover {
             background: rgba(255, 255, 255, 0.9);
             transform: translateY(-3px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
 
-        #part2 .btn-outline-light {
+        .section-one .btn-outline-light {
             border: 2px solid white;
             color: white;
         }
 
-        #part2 .btn-outline-light:hover {
+        .section-one .btn-outline-light:hover {
             background: rgba(255, 255, 255, 0.1);
             transform: translateY(-3px);
         }
 
-        #part2 .hero-buttons-container {
+        .section-one .hero-buttons-container {
             display: flex;
             flex-direction: row;
             gap: 10px;
@@ -1091,20 +1089,20 @@
         }
 
         /* Footer */
-        #part2 .footer {
+        .section-one .footer {
             padding: 50px 0 20px;
             background-color: var(--dark-color);
             color: white;
             margin-top: 50px;
         }
 
-        #part2 .footer-title {
+        .section-one .footer-title {
             font-size: 20px;
             font-weight: 700;
             margin-bottom: 20px;
         }
 
-        #part2 .footer-link {
+        .section-one .footer-link {
             display: block;
             color: rgba(255, 255, 255, 0.7);
             margin-bottom: 10px;
@@ -1112,12 +1110,12 @@
             text-decoration: none;
         }
 
-        #part2 .footer-link:hover {
+        .section-one .footer-link:hover {
             color: white;
             padding-left: 5px;
         }
 
-        #part2 .social-icon {
+        .section-one .social-icon {
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -1130,12 +1128,12 @@
             transition: all 0.3s ease;
         }
 
-        #part2 .social-icon:hover {
+        .section-one .social-icon:hover {
             background-color: var(--primary-color);
             transform: translateY(-3px);
         }
 
-        #part2 .copyright {
+        .section-one .copyright {
             font-size: 14px;
             color: rgba(255, 255, 255, 0.6);
             text-align: center;
@@ -1145,12 +1143,12 @@
         }
 
         /* Cards CSS */
-        #part2 .card-container {
+        .section-one .card-container {
             margin-bottom: 40px;
             transition: all 0.3s ease;
         }
 
-        #part2 .hero-card {
+        .section-one .hero-card {
             position: relative;
             width: 100%;
             aspect-ratio: 16/9;
@@ -1166,12 +1164,30 @@
             user-select: none;
         }
 
-        #part2 .hero-card:hover {
+        .section-one .hero-card:hover {
             transform: translateY(-10px);
             box-shadow: 0 35px 70px rgba(0, 0, 0, 0.3);
         }
 
-        #part2 .card-image {
+        .section-one .card-container:hover .hero-card {
+            transform: translateY(-10px);
+            box-shadow: 0 35px 70px rgba(0, 0, 0, 0.3);
+        }
+
+        .section-one .card-container:hover .learn-more-button .circle {
+            width: 100%;
+        }
+
+        .section-one .card-container:hover .learn-more-button .arrow {
+            background: var(--white);
+            transform: translate(1rem, 0);
+        }
+
+        .section-one .card-container:hover .learn-more-button .button-text {
+            color: var(--white);
+        }
+
+        .section-one .card-image {
             position: absolute;
             top: 0;
             left: 0;
@@ -1183,16 +1199,31 @@
             transition: transform 0.3s ease;
         }
 
-        #part2 .card-1 .card-image { background-image: url('aga/card1.webp'); }
-        #part2 .card-2 .card-image { background-image: url('aga/card2.webp'); }
-        #part2 .card-3 .card-image { background-image: url('aga/card3.webp'); }
-        #part2 .card-4 .card-image { background-image: url('aga/card4.webp'); }
+        .section-one .card-1 .card-image {
+            background-image: url('aga/card1.webp');
+        }
 
-        #part2 .hero-card:hover .card-image {
+        .section-one .card-2 .card-image {
+            background-image: url('aga/card2.webp');
+        }
+
+        .section-one .card-3 .card-image {
+            background-image: url('aga/card3.webp');
+        }
+
+        .section-one .card-4 .card-image {
+            background-image: url('aga/card4.webp');
+        }
+
+        .section-one .hero-card:hover .card-image {
             transform: scale(1.05);
         }
 
-        #part2 .card-button-container {
+        .section-one .card-container:hover .card-image {
+            transform: scale(1.05);
+        }
+
+        .section-one .card-button-container {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -1200,7 +1231,7 @@
             z-index: 10;
         }
 
-        #part2 .hero-card::after {
+        .section-one .hero-card::after {
             content: "";
             position: absolute;
             bottom: 0;
@@ -1212,22 +1243,26 @@
             transition: opacity 0.3s ease;
         }
 
-        #part2 .hero-card:hover::after {
+        .section-one .hero-card:hover::after {
             opacity: 0.7;
         }
 
-        #part2 .hero-card {
+        .section-one .card-container:hover .hero-card::after {
+            opacity: 0.7;
+        }
+
+        .section-one .hero-card {
             opacity: 0;
             transform: translateY(50px);
             transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s ease;
         }
 
-        #part2 .hero-card.animate {
+        .section-one .hero-card.animate {
             opacity: 1;
             transform: translateY(0);
         }
 
-        #part2 .learn-more-button {
+        .section-one .learn-more-button {
             position: relative;
             display: inline-block;
             cursor: pointer;
@@ -1241,9 +1276,13 @@
             font-family: inherit;
             width: 12rem;
             height: auto;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
-        #part2 .circle {
+        .section-one .circle {
             transition: all 0.45s cubic-bezier(0.65,0,.076,1);
             position: relative;
             display: block;
@@ -1254,7 +1293,7 @@
             border-radius: 1.625rem;
         }
 
-        #part2 .icon {
+        .section-one .icon {
             transition: all 0.45s cubic-bezier(0.65,0,.076,1);
             position: absolute;
             top: 0;
@@ -1263,7 +1302,7 @@
             background: var(--white);
         }
 
-        #part2 .arrow {
+        .section-one .arrow {
             transition: all 0.45s cubic-bezier(0.65,0,.076,1);
             left: 0.625rem;
             width: 1.125rem;
@@ -1271,7 +1310,7 @@
             background: none;
         }
 
-        #part2 .arrow::before {
+        .section-one .arrow::before {
             position: absolute;
             content: '';
             top: -0.25rem;
@@ -1283,7 +1322,7 @@
             transform: rotate(45deg);
         }
 
-        #part2 .button-text {
+        .section-one .button-text {
             transition: all 0.45s cubic-bezier(0.65,0,.076,1);
             position: absolute;
             top: 0;
@@ -1299,21 +1338,95 @@
             text-transform: uppercase;
         }
 
-        #part2 .learn-more-button:hover .circle { width: 100%; }
-        #part2 .learn-more-button:hover .arrow { background: var(--white); transform: translate(1rem, 0); }
-        #part2 .learn-more-button:hover .button-text { color: var(--white); }
+        .section-one .learn-more-button:hover .circle {
+            width: 100%;
+        }
 
-        /* Responsive */
+        .section-one .learn-more-button:hover .arrow {
+            background: var(--white);
+            transform: translate(1rem, 0);
+        }
+
+        .section-one .learn-more-button:hover .button-text {
+            color: var(--white);
+        }
+
+        @supports (display: grid) {
+            .section-one .card-button-container {
+                display: grid;
+                place-items: center;
+            }
+        }
+
+        /* Qolgan responsive stillar (hero, cards va h.k.) */
         @media (max-width: 767px) {
-            #part2 .hero-title { font-size: 2rem; text-align: center; }
-            #part2 .hero-text { font-size: 1.1rem; text-align: center; }
-            #part2 .hero-buttons-container { flex-direction: column; align-items: center; gap: 15px; }
+            .section-one .hero-section {
+                padding: 70px 0;
+                border-radius: 15px;
+                margin-bottom: 50px;
+                display: flex;
+                align-items: center;
+                min-height: auto;
+            }
+
+            .section-one .hero-title {
+                font-size: 2rem;
+                text-align: center;
+                margin-bottom: 30px;
+                margin-top: 0;
+            }
+
+            .section-one .hero-text {
+                font-size: 1.1rem;
+                text-align: center;
+                margin-bottom: 25px;
+            }
+
+            .section-one .hero-buttons-container {
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 15px;
+            }
+
+            .section-one .hero-btn {
+                font-size: 0.9rem;
+                padding: 10px 20px;
+                width: 100%;
+                max-width: 200px;
+                height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .section-one .d-flex {
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .section-one .hero-card {
+                border-radius: 16px !important;
+            }
+
+            .section-one .card-button-container {
+                margin-top: 10px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .section-one .card-container {
+                margin-bottom: 50px;
+            }
         }
     </style>
 </head>
 <body>
-
-    <div id="part1">
+    <!-- Ikkinchi HTML (Navbar) -->
+    <div class="section-two">
         <!-- LOADER -->
         <div id="pageLoader" class="page-loader">
             <div class="spinner-large"></div>
@@ -1480,9 +1593,10 @@
         </div>
     </div>
 
-    <div id="part2">
+    <!-- Birinchi HTML (Asosiy kontent) -->
+    <div class="section-one">
         <!-- Hero Section -->
-        <section class="container mt-4" data-aos="fade-up" data-aos-duration="1000">
+        <section class="container mt-5" data-aos="fade-up" data-aos-duration="1000">
             <div class="hero-section">
                 <div class="container">
                     <div class="row align-items-center">
@@ -1492,10 +1606,10 @@
                             O'z bilimlaringizni sinab ko'ring va yangi ma'lumotlarni o'rganing.</p>
                             <div class="hero-buttons-container">
                                 <a href="testni_boshlash.html" class="btn btn-light hero-btn">
-                                    Testni boshlash
+                                    <i class="fas fa-play me-2"></i>Testni boshlash
                                 </a>
                                 <a href="testyaratish.html" class="btn btn-outline-light hero-btn">
-                                    Test yaratish
+                                    <i class="fas fa-file-alt me-2"></i>Test yaratish
                                 </a>
                             </div>
                         </div>
@@ -1512,6 +1626,7 @@
         <!-- Cards Section -->
         <div class="container">
             <div class="row g-4">
+                <!-- test yaratish Card -->
                 <div class="col-12 col-md-6">
                     <div class="card-container">
                         <div class="hero-card card-3" onclick="handleCardClick(3)">
@@ -1519,12 +1634,15 @@
                         </div>
                         <div class="card-button-container">
                             <div class="learn-more-button" onclick="handleEnter(3)">
-                                <span class="circle"><span class="icon arrow"></span></span>
+                                <span class="circle" aria-hidden="true">
+                                    <span class="icon arrow"></span>
+                                </span>
                                 <span class="button-text">Kirish</span>
                             </div>
                         </div>
                     </div>
                 </div>
+                <!-- quiz test -->
                 <div class="col-12 col-md-6">
                     <div class="card-container">
                         <div class="hero-card card-4" onclick="handleCardClick(4)">
@@ -1532,12 +1650,15 @@
                         </div>
                         <div class="card-button-container">
                             <div class="learn-more-button" onclick="handleEnter(4)">
-                                <span class="circle"><span class="icon arrow"></span></span>
+                                <span class="circle" aria-hidden="true">
+                                    <span class="icon arrow"></span>
+                                </span>
                                 <span class="button-text">Kirish</span>
                             </div>
                         </div>
                     </div>
                 </div>
+                <!-- Segment 25 Card -->
                 <div class="col-12 col-md-6">
                     <div class="card-container">
                         <div class="hero-card card-1" onclick="handleCardClick(1)">
@@ -1545,12 +1666,15 @@
                         </div>
                         <div class="card-button-container">
                             <div class="learn-more-button" onclick="handleEnter(1)">
-                                <span class="circle"><span class="icon arrow"></span></span>
+                                <span class="circle" aria-hidden="true">
+                                    <span class="icon arrow"></span>
+                                </span>
                                 <span class="button-text">Kirish</span>
                             </div>
                         </div>
                     </div>
                 </div>
+                <!-- Segment umumiy Card -->
                 <div class="col-12 col-md-6">
                     <div class="card-container">
                         <div class="hero-card card-2" onclick="handleCardClick(2)">
@@ -1558,7 +1682,9 @@
                         </div>
                         <div class="card-button-container">
                             <div class="learn-more-button" onclick="handleEnter(2)">
-                                <span class="circle"><span class="icon arrow"></span></span>
+                                <span class="circle" aria-hidden="true">
+                                    <span class="icon arrow"></span>
+                                </span>
                                 <span class="button-text">Kirish</span>
                             </div>
                         </div>
@@ -1575,6 +1701,7 @@
                         <h5 class="footer-title">Tezkor Quiz</h5>
                         <p>Talabalarga sessiyaga tayyorlanish uchun moslashtirilgan mukammal sayt.</p>
                         <div class="mt-4">
+                            <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
                             <a href="https://t.me/quiztezkor" class="social-icon"><i class="fab fa-telegram"></i></a>
                             <a href="https://www.instagram.com/tezkorquiz.uz" class="social-icon"><i class="fab fa-instagram"></i></a>
                             <a href="https://www.youtube.com/@QuizTezkor" class="social-icon"><i class="fab fa-youtube"></i></a>
@@ -1584,7 +1711,7 @@
                         <h5 class="footer-title">Havolalar</h5>
                         <a href="index.html" class="footer-link">Bosh sahifa</a>
                         <a href="segment25.html" class="footer-link">Segment</a>
-                        <a href="aloqa.html" class="footer-link">Aloqa</a>
+                        <a href="faq.html" class="footer-link">Yordam</a>
                     </div>
                     <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
                         <h5 class="footer-title">Testni boshlash</h5>
@@ -1596,29 +1723,142 @@
                     </div>
                     <div class="col-lg-4 col-md-4">
                         <h5 class="footer-title">Biz bilan bog'laning</h5>
-                        <p class="mb-2"> tezkorquiz@gmail.com</p>
-                        <p class="mb-2"> +998 90 577 08 32</p>
-                        <p> O'zbekiston</p>
+                        <p class="mb-2"><i class="fas fa-envelope me-2"></i> tezkorquiz@gmail.com</p>
+                        <p class="mb-2"><i class="fas fa-phone me-2"></i> +998 90 577 08 32</p>
+                        <p><i class="fas fa-map-marker-alt me-2"></i> O'zbekiston</p>
                     </div>
                 </div>
                 <div class="copyright">
                     <p>© 2025 Tezkor Quiz. Barcha huquqlar himoyalangan. 
-                    <a href="https://tezkorquiz.uz/TezkorQuiz_Privacy_Policy.pdf" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+                    <a href="https://tezkorquiz.uz/privacy_policy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
                     </p>
                 </div>
             </div>
         </footer>
     </div>
 
+    <!-- himoyalangan sahifa: protected.html -->
+    <script type="module">
+      // Firebase SDK import qilingan deb faraz qilamiz
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+      import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
+      const firebaseConfig = {
+       apiKey: "AIzaSyBxIpLY5WasiSIlDL4japBLnnXRwOLUKEQ",
+          authDomain: "tezkor-quiz-bbe3c.firebaseapp.com",
+        // ... boshqa sozlamalar
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+
+      // Current page URL (return uchun)
+      const returnUrl = encodeURIComponent(window.location.pathname + window.location.search);
+
+      onAuthStateChanged(auth, (user) => {
+        if (!user) {
+          // foydalanuvchi kirmagan — login sahifasiga yo'naltirish
+          window.location.replace(`/kirish.html?returnUrl=${returnUrl}`);
+        } else {
+          // foydalanuvchi kirdi — sahifa davom ettirilsin
+          console.log("User logged in:", user.uid);
+        }
+      });
+
+    </script>
+    <!-- google analiz kodi -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6HJZ457YMB"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-6HJZ457YMB');
+    </script>
+    <!-- Google tag tugadi -->
+        
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="//code.tidio.co/dp3xu5h0swhcq9n7ir1qs8kzethsdome.js" async></script>
 
-    <!-- Firebase Auth (himoyalangan sahifa) -->
+    <script>
+        // Initialize AOS
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 800,
+                once: true
+            });
+        });
+
+        // Cards JavaScript (asl koddan)
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const focusedButton = document.activeElement;
+                if (focusedButton.classList.contains('learn-more-button')) {
+                    focusedButton.click();
+                }
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.section-one .hero-card');
+            const animateCard = (card, delay) => {
+                setTimeout(() => {
+                    card.classList.add('animate');
+                }, delay);
+            };
+            cards.forEach((card, index) => {
+                animateCard(card, index * 200);
+            });
+        });
+
+        if ('IntersectionObserver' in window) {
+            const observerOptions = {
+                threshold: 0.2,
+                rootMargin: '0px 0px -100px 0px'
+            };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            document.querySelectorAll('.section-one .hero-card').forEach(card => {
+                observer.observe(card);
+            }); 
+        } else {
+            document.querySelectorAll('.section-one .hero-card').forEach(card => {
+                card.classList.add('animate');
+            });
+        }
+
+        document.addEventListener('scroll', () => {}, { passive: true });
+        document.addEventListener('touchstart', () => {}, { passive: true });
+
+        function handleEnter(cardNumber) {
+            const pages = {
+                1: 'segment25.html',
+                2: 'segmentumumiy.html',
+                3: 'testyaratish.html',
+                4: 'testni_boshlash.html'
+            };
+            if (pages[cardNumber]) {
+                window.location.href = pages[cardNumber];
+            }
+        }
+
+        function handleCardClick(cardNumber) {
+            handleEnter(cardNumber);
+        }
+    </script>
+
+    <!-- Navbar uchun script (ikkinchi HTML dan) -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+        import { getAuth, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
 
         const firebaseConfig = {
             apiKey: "AIzaSyBxIpLY5WasiSIlDL4japBLnnXRwOLUKEQ",
@@ -1631,180 +1871,123 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const returnUrl = encodeURIComponent(window.location.pathname + window.location.search);
 
-        // Auth state observer (birlashgan: check va profile update)
-        onAuthStateChanged(auth, (user) => {
-            if (!user) {
-                window.location.replace(`/kirish.html?returnUrl=${returnUrl}`);
-            } else {
-                // Profile update
-                const nameEl = document.getElementById('userDisplayName');
-                const emailEl = document.getElementById('userEmail');
-                const desktopBtn = document.getElementById('desktopProfileBtn');
-                const mobileBtn = document.getElementById('mobileProfileBtn');
-                const dropdownAvatar = document.getElementById('dropdownAvatar');
-                
-                if (nameEl) nameEl.textContent = user.displayName || "Foydalanuvchi";
-                if (emailEl) emailEl.textContent = user.email;
-                
-                if (user.photoURL) {
-                    const img = `<img src="${user.photoURL}" alt="Profil">`;
-                    if (desktopBtn) desktopBtn.innerHTML = img;
-                    if (mobileBtn) mobileBtn.innerHTML = img;
-                    if (dropdownAvatar) dropdownAvatar.innerHTML = img;
-                }
-                
-                // Loader ni yashirish
-                const pageLoader = document.getElementById('pageLoader');
-                if (pageLoader) {
-                    pageLoader.style.opacity = '0';
-                    setTimeout(() => pageLoader.style.display = 'none', 400);
-                }
-            }
-        });
-    </script>
-
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6HJZ457YMB"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-6HJZ457YMB');
-    </script>
-
-    <!-- Animatsiyalar va Cards + Navbar JS (birlashgan) -->
-    <script>
-        AOS.init({ duration: 800, once: true });
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const cards = document.querySelectorAll('.hero-card');
-            cards.forEach((card, i) => {
-                setTimeout(() => card.classList.add('animate'), i * 200);
-            });
-        });
-
-        if ('IntersectionObserver' in window) {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('animate');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.2 });
-            document.querySelectorAll('.hero-card').forEach(card => observer.observe(card));
-        }
-
-        function handleEnter(n) {
-            const pages = {
-                1: 'segment25.html',
-                2: 'segmentumumiy.html',
-                3: 'testyaratish.html',
-                4: 'testni_boshlash.html'
-            };
-            window.location.href = pages[n];
-        }
-
-        function handleCardClick(n) { handleEnter(n); }
-
-        // Navbar JS (birlashgan)
+        // DOM elements (section-two ichidagi elementlarga moslashtirildi)
+        const pageLoader = document.getElementById('pageLoader');
         const navbar = document.getElementById('mainNavbar');
-        const navLinks = document.querySelectorAll('.navbar-nav a:not(.dropdown-toggle)');
+        const navLinks = document.querySelectorAll('.section-two .navbar-nav a:not(.dropdown-toggle)');
         const burgerInput = document.querySelector('#burger');
-        const navbarCollapse = document.querySelector('.navbar-collapse');
-        const dropdown = document.querySelector('.dropdown');
+        const navbarCollapse = document.querySelector('.section-two .navbar-collapse');
+        const dropdown = document.querySelector('.section-two .dropdown');
         const dropdownToggle = document.getElementById('quizDropdown');
-        const dropdownMenu = document.querySelector('.dropdown-menu');
+        const dropdownMenu = document.querySelector('.section-two .dropdown-menu');
         
         // Profile elements
         const desktopBtn = document.getElementById('desktopProfileBtn');
         const mobileBtn = document.getElementById('mobileProfileBtn');
         const profileDropdown = document.getElementById('profileDropdown');
+        const dropdownAvatar = document.getElementById('dropdownAvatar');
+        const nameEl = document.getElementById('userDisplayName');
+        const emailEl = document.getElementById('userEmail');
         const logoutTrigger = document.getElementById('logoutTrigger');
         const modal = document.getElementById('logoutModal');
         const cancelBtn = document.getElementById('cancelLogout');
         const confirmBtn = document.getElementById('confirmLogout');
-        const spinner = confirmBtn ? confirmBtn.querySelector('.spinner') : null;
-        const text = confirmBtn ? confirmBtn.querySelector('span') : null;
+        const spinner = confirmBtn.querySelector('.spinner');
+        const text = confirmBtn.querySelector('span');
 
         let loading = false;
         let scrollTimeout;
         let lastScrollTop = 0;
 
-        // Profile dropdown toggle
-        if (desktopBtn && mobileBtn && profileDropdown) {
-            [desktopBtn, mobileBtn].forEach(btn => {
-                btn.addEventListener('click', e => {
-                    e.stopPropagation();
-                    profileDropdown.classList.toggle('show');
-                    
-                    // Mobil rejimda dropdown pozitsiyasini hisoblash
-                    if (window.innerWidth <= 991 && btn === mobileBtn) {
-                        const btnRect = btn.getBoundingClientRect();
-                        const viewportHeight = window.innerHeight;
-                        const dropdownHeight = 200; // taxminiy balandlik
-                        
-                        // Agar pastda joy bo'lsa, pastga ochish
-                        if (btnRect.bottom + dropdownHeight + 20 <= viewportHeight) {
-                            profileDropdown.style.top = `${btnRect.bottom + 10}px`;
-                            profileDropdown.style.bottom = 'auto';
-                        } else {
-                            // Aks holda yuqoriga ochish
-                            profileDropdown.style.top = `${Math.max(10, btnRect.top - dropdownHeight - 10)}px`;
-                            profileDropdown.style.bottom = 'auto';
-                        }
-                    } else {
-                        // Desktop rejim uchun
-                        profileDropdown.style.top = '';
-                        profileDropdown.style.bottom = '';
-                    }
-                });
-            });
+        // Auth state observer
+        onAuthStateChanged(auth, user => {
+            if (user) {
+                nameEl.textContent = user.displayName || "Foydalanuvchi";
+                emailEl.textContent = user.email;
+                
+                if (user.photoURL) {
+                    const img = `<img src="${user.photoURL}" alt="Profil">`;
+                    desktopBtn.innerHTML = img;
+                    mobileBtn.innerHTML = img;
+                    dropdownAvatar.innerHTML = img;
+                }
+                
+                pageLoader.style.opacity = '0';
+                setTimeout(() => pageLoader.style.display = 'none', 400);
+            } else {
+                window.location.href = 'kirish.html';
+            }
+        });
 
-            // Close profile dropdown on outside click
-            document.addEventListener('click', e => {
-                if (!profileDropdown.contains(e.target) && 
-                    !desktopBtn.contains(e.target) && 
-                    !mobileBtn.contains(e.target)) {
-                    profileDropdown.classList.remove('show');
+        // Profile dropdown toggle
+        [desktopBtn, mobileBtn].forEach(btn => {
+            btn.addEventListener('click', e => {
+                e.stopPropagation();
+                profileDropdown.classList.toggle('show');
+                
+                // Mobil rejimda dropdown pozitsiyasini hisoblash
+                if (window.innerWidth <= 991 && btn === mobileBtn) {
+                    const btnRect = btn.getBoundingClientRect();
+                    const viewportHeight = window.innerHeight;
+                    const dropdownHeight = 200; // taxminiy balandlik
+                    
+                    // Agar pastda joy bo'lsa, pastga ochish
+                    if (btnRect.bottom + dropdownHeight + 20 <= viewportHeight) {
+                        profileDropdown.style.top = `${btnRect.bottom + 10}px`;
+                        profileDropdown.style.bottom = 'auto';
+                    } else {
+                        // Aks holda yuqoriga ochish
+                        profileDropdown.style.top = `${Math.max(10, btnRect.top - dropdownHeight - 10)}px`;
+                        profileDropdown.style.bottom = 'auto';
+                    }
+                } else {
+                    // Desktop rejim uchun
+                    profileDropdown.style.top = '';
+                    profileDropdown.style.bottom = '';
                 }
             });
-        }
+        });
+
+        // Close profile dropdown on outside click
+        document.addEventListener('click', e => {
+            if (!profileDropdown.contains(e.target) && 
+                !desktopBtn.contains(e.target) && 
+                !mobileBtn.contains(e.target)) {
+                profileDropdown.classList.remove('show');
+            }
+        });
 
         // Logout modal
-        if (logoutTrigger && modal && cancelBtn && confirmBtn) {
-            logoutTrigger.onclick = () => {
-                profileDropdown.classList.remove('show');
-                modal.classList.add('show');
-            };
-            
-            cancelBtn.onclick = () => modal.classList.remove('show');
-            
-            modal.onclick = e => {
-                if (e.target === modal) modal.classList.remove('show');
-            };
+        logoutTrigger.onclick = () => {
+            profileDropdown.classList.remove('show');
+            modal.classList.add('show');
+        };
+        
+        cancelBtn.onclick = () => modal.classList.remove('show');
+        
+        modal.onclick = e => {
+            if (e.target === modal) modal.classList.remove('show');
+        };
 
-            confirmBtn.onclick = async () => {
-                if (loading) return;
-                loading = true;
-                confirmBtn.disabled = true;
-                if (text) text.classList.add('hidden');
-                if (spinner) spinner.classList.remove('hidden');
-                
-                try {
-                    await signOut(auth);
-                    window.location.href = 'kirish.html';
-                } catch (err) {
-                    alert("Xatolik: " + err.message);
-                    loading = false;
-                    confirmBtn.disabled = false;
-                    if (text) text.classList.remove('hidden');
-                    if (spinner) spinner.classList.add('hidden');
-                }
-            };
-        }
+        confirmBtn.onclick = async () => {
+            if (loading) return;
+            loading = true;
+            confirmBtn.disabled = true;
+            text.classList.add('hidden');
+            spinner.classList.remove('hidden');
+            
+            try {
+                await signOut(auth);
+                window.location.href = 'kirish.html';
+            } catch (err) {
+                alert("Xatolik: " + err.message);
+                loading = false;
+                confirmBtn.disabled = false;
+                text.classList.remove('hidden');
+                spinner.classList.add('hidden');
+            }
+        };
 
         // Optimized scroll effect with throttling
         window.addEventListener('scroll', function() {
@@ -1826,71 +2009,65 @@
         }, { passive: true });
 
         // Burger menu toggle
-        if (burgerInput && navbarCollapse) {
-            burgerInput.addEventListener('change', function() {
-                if (this.checked) {
-                    navbarCollapse.classList.add('show');
-                    document.body.style.overflow = 'hidden';
-                } else {
+        burgerInput.addEventListener('change', function() {
+            if (this.checked) {
+                navbarCollapse.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            } else {
+                navbarCollapse.classList.remove('show');
+                dropdown.classList.remove('show');
+                dropdownToggle.setAttribute('aria-expanded', 'false');
+                dropdownMenu.classList.remove('show');
+                profileDropdown.classList.remove('show');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Close mobile menu on link click
+        navLinks.forEach(function(link) {
+            link.addEventListener('click', function() {
+                if (navbarCollapse.classList.contains('show')) {
+                    burgerInput.checked = false;
                     navbarCollapse.classList.remove('show');
-                    if (dropdown) dropdown.classList.remove('show');
-                    if (dropdownToggle) dropdownToggle.setAttribute('aria-expanded', 'false');
-                    if (dropdownMenu) dropdownMenu.classList.remove('show');
-                    if (profileDropdown) profileDropdown.classList.remove('show');
                     document.body.style.overflow = 'auto';
                 }
             });
-        }
-
-        // Close mobile menu on link click
-        if (navLinks) {
-            navLinks.forEach(function(link) {
-                link.addEventListener('click', function() {
-                    if (navbarCollapse && navbarCollapse.classList.contains('show')) {
-                        if (burgerInput) burgerInput.checked = false;
-                        navbarCollapse.classList.remove('show');
-                        document.body.style.overflow = 'auto';
-                    }
-                });
-            });
-        }
+        });
 
         // Dropdown handling
         let isDropdownClicked = false;
 
-        if (dropdownToggle && dropdown && dropdownMenu) {
-            dropdownToggle.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                isDropdownClicked = !dropdown.classList.contains('show');
-                dropdown.classList.toggle('show');
-                dropdownToggle.setAttribute('aria-expanded', isDropdownClicked);
-                dropdownMenu.classList.toggle('show');
-            });
+        dropdownToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            isDropdownClicked = !dropdown.classList.contains('show');
+            dropdown.classList.toggle('show');
+            dropdownToggle.setAttribute('aria-expanded', isDropdownClicked);
+            dropdownMenu.classList.toggle('show');
+        });
 
-            // Close dropdown on outside click
-            document.addEventListener('click', function(e) {
-                if (!dropdown.contains(e.target) && dropdown.classList.contains('show')) {
-                    isDropdownClicked = false;
-                    dropdown.classList.remove('show');
-                    dropdownToggle.setAttribute('aria-expanded', 'false');
-                    dropdownMenu.classList.remove('show');
-                }
-            });
+        // Close dropdown on outside click
+        document.addEventListener('click', function(e) {
+            if (!dropdown.contains(e.target) && dropdown.classList.contains('show')) {
+                isDropdownClicked = false;
+                dropdown.classList.remove('show');
+                dropdownToggle.setAttribute('aria-expanded', 'false');
+                dropdownMenu.classList.remove('show');
+            }
+        });
 
-            // Prevent dropdown menu clicks from closing dropdown
-            dropdownMenu.addEventListener('click', function(e) {
-                e.stopPropagation();
-            });
-        }
+        // Prevent dropdown menu clicks from closing dropdown
+        dropdownMenu.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
 
         // Close mobile menu on window resize
         let resizeTimeout;
         window.addEventListener('resize', function() {
             clearTimeout(resizeTimeout);
             resizeTimeout = setTimeout(function() {
-                if (window.innerWidth >= 992 && navbarCollapse && navbarCollapse.classList.contains('show')) {
-                    if (burgerInput) burgerInput.checked = false;
+                if (window.innerWidth >= 992 && navbarCollapse.classList.contains('show')) {
+                    burgerInput.checked = false;
                     navbarCollapse.classList.remove('show');
                     document.body.style.overflow = 'auto';
                 }
