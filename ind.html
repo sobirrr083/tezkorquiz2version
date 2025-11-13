@@ -17,7 +17,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Tezkor Quiz - testlarni yaratish, boshqarish va yechish uchun qulay platforma">
-    
     <!-- Audio elements for sound effects -->
     <audio id="openSound" preload="auto">
         <source src="https://cdnjs.cloudflare.com/ajax/libs/simple-sounds/1.0.0/sounds/pop-up.mp3" type="audio/mpeg">
@@ -25,7 +24,6 @@
     <audio id="messageSound" preload="auto">
         <source src="https://cdnjs.cloudflare.com/ajax/libs/simple-sounds/1.0.0/sounds/notification.mp3" type="audio/mpeg">
     </audio>
-    
     <style>
         :root {
             --primary-color: #4361ee;
@@ -51,9 +49,10 @@
             font-family: 'Nunito', 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #ECF2FF;
             min-height: 100vh;
-            padding-top: 20px; /* Navbar yo'q bo'lgani uchun kamroq joy */
+            padding-top: 0px;
         }
 
+        /* Qolgan stillar (hero, cards, footer va boshqalar) */
         /* Hero section */
         .hero-section {
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
@@ -215,6 +214,24 @@
             box-shadow: 0 35px 70px rgba(0, 0, 0, 0.3);
         }
 
+        .card-container:hover .hero-card {
+            transform: translateY(-10px);
+            box-shadow: 0 35px 70px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-container:hover .learn-more-button .circle {
+            width: 100%;
+        }
+
+        .card-container:hover .learn-more-button .arrow {
+            background: var(--white);
+            transform: translate(1rem, 0);
+        }
+
+        .card-container:hover .learn-more-button .button-text {
+            color: var(--white);
+        }
+
         .card-image {
             position: absolute;
             top: 0;
@@ -227,12 +244,27 @@
             transition: transform 0.3s ease;
         }
 
-        .card-1 .card-image { background-image: url('aga/card1.webp'); }
-        .card-2 .card-image { background-image: url('aga/card2.webp'); }
-        .card-3 .card-image { background-image: url('aga/card3.webp'); }
-        .card-4 .card-image { background-image: url('aga/card4.webp'); }
+        .card-1 .card-image {
+            background-image: url('aga/card1.webp');
+        }
+
+        .card-2 .card-image {
+            background-image: url('aga/card2.webp');
+        }
+
+        .card-3 .card-image {
+            background-image: url('aga/card3.webp');
+        }
+
+        .card-4 .card-image {
+            background-image: url('aga/card4.webp');
+        }
 
         .hero-card:hover .card-image {
+            transform: scale(1.05);
+        }
+
+        .card-container:hover .card-image {
             transform: scale(1.05);
         }
 
@@ -257,6 +289,10 @@
         }
 
         .hero-card:hover::after {
+            opacity: 0.7;
+        }
+
+        .card-container:hover .hero-card::after {
             opacity: 0.7;
         }
 
@@ -285,6 +321,10 @@
             font-family: inherit;
             width: 12rem;
             height: auto;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         .circle {
@@ -343,22 +383,95 @@
             text-transform: uppercase;
         }
 
-        .learn-more-button:hover .circle { width: 100%; }
-        .learn-more-button:hover .arrow { background: var(--white); transform: translate(1rem, 0); }
-        .learn-more-button:hover .button-text { color: var(--white); }
+        .learn-more-button:hover .circle {
+            width: 100%;
+        }
 
-        /* Responsive */
+        .learn-more-button:hover .arrow {
+            background: var(--white);
+            transform: translate(1rem, 0);
+        }
+
+        .learn-more-button:hover .button-text {
+            color: var(--white);
+        }
+
+        @supports (display: grid) {
+            .card-button-container {
+                display: grid;
+                place-items: center;
+            }
+        }
+
+        /* Qolgan responsive stillar (hero, cards va h.k.) */
         @media (max-width: 767px) {
-            .hero-title { font-size: 2rem; text-align: center; }
-            .hero-text { font-size: 1.1rem; text-align: center; }
-            .hero-buttons-container { flex-direction: column; align-items: center; gap: 15px; }
+            .hero-section {
+                padding: 70px 0;
+                border-radius: 15px;
+                margin-bottom: 50px;
+                display: flex;
+                align-items: center;
+                min-height: auto;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+                text-align: center;
+                margin-bottom: 30px;
+                margin-top: 0;
+            }
+
+            .hero-text {
+                font-size: 1.1rem;
+                text-align: center;
+                margin-bottom: 25px;
+            }
+
+            .hero-buttons-container {
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 15px;
+            }
+
+            .hero-btn {
+                font-size: 0.9rem;
+                padding: 10px 20px;
+                width: 100%;
+                max-width: 200px;
+                height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .d-flex {
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-card {
+                border-radius: 16px !important;
+            }
+
+            .card-button-container {
+                margin-top: 10px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .card-container {
+                margin-bottom: 50px;
+            }
         }
     </style>
 </head>
 <body>
-
     <!-- Hero Section -->
-    <section class="container mt-4" data-aos="fade-up" data-aos-duration="1000">
+    <section class="container mt-5" data-aos="fade-up" data-aos-duration="1000">
         <div class="hero-section">
             <div class="container">
                 <div class="row align-items-center">
@@ -368,10 +481,10 @@
                         O'z bilimlaringizni sinab ko'ring va yangi ma'lumotlarni o'rganing.</p>
                         <div class="hero-buttons-container">
                             <a href="testni_boshlash.html" class="btn btn-light hero-btn">
-                                Testni boshlash
+                                <i class="fas fa-play me-2"></i>Testni boshlash
                             </a>
                             <a href="testyaratish.html" class="btn btn-outline-light hero-btn">
-                                Test yaratish
+                                <i class="fas fa-file-alt me-2"></i>Test yaratish
                             </a>
                         </div>
                     </div>
@@ -388,6 +501,7 @@
     <!-- Cards Section -->
     <div class="container">
         <div class="row g-4">
+            <!-- test yaratish Card -->
             <div class="col-12 col-md-6">
                 <div class="card-container">
                     <div class="hero-card card-3" onclick="handleCardClick(3)">
@@ -395,12 +509,15 @@
                     </div>
                     <div class="card-button-container">
                         <div class="learn-more-button" onclick="handleEnter(3)">
-                            <span class="circle"><span class="icon arrow"></span></span>
+                            <span class="circle" aria-hidden="true">
+                                <span class="icon arrow"></span>
+                            </span>
                             <span class="button-text">Kirish</span>
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- quiz test -->
             <div class="col-12 col-md-6">
                 <div class="card-container">
                     <div class="hero-card card-4" onclick="handleCardClick(4)">
@@ -408,12 +525,15 @@
                     </div>
                     <div class="card-button-container">
                         <div class="learn-more-button" onclick="handleEnter(4)">
-                            <span class="circle"><span class="icon arrow"></span></span>
+                            <span class="circle" aria-hidden="true">
+                                <span class="icon arrow"></span>
+                            </span>
                             <span class="button-text">Kirish</span>
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- Segment 25 Card -->
             <div class="col-12 col-md-6">
                 <div class="card-container">
                     <div class="hero-card card-1" onclick="handleCardClick(1)">
@@ -421,12 +541,15 @@
                     </div>
                     <div class="card-button-container">
                         <div class="learn-more-button" onclick="handleEnter(1)">
-                            <span class="circle"><span class="icon arrow"></span></span>
+                            <span class="circle" aria-hidden="true">
+                                <span class="icon arrow"></span>
+                            </span>
                             <span class="button-text">Kirish</span>
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- Segment umumiy Card -->
             <div class="col-12 col-md-6">
                 <div class="card-container">
                     <div class="hero-card card-2" onclick="handleCardClick(2)">
@@ -434,12 +557,15 @@
                     </div>
                     <div class="card-button-container">
                         <div class="learn-more-button" onclick="handleEnter(2)">
-                            <span class="circle"><span class="icon arrow"></span></span>
+                            <span class="circle" aria-hidden="true">
+                                <span class="icon arrow"></span>
+                            </span>
                             <span class="button-text">Kirish</span>
                         </div>
                     </div>
                 </div>
             </div>
+           
         </div>
     </div>
 
@@ -451,6 +577,7 @@
                     <h5 class="footer-title">Tezkor Quiz</h5>
                     <p>Talabalarga sessiyaga tayyorlanish uchun moslashtirilgan mukammal sayt.</p>
                     <div class="mt-4">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
                         <a href="https://t.me/quiztezkor" class="social-icon"><i class="fab fa-telegram"></i></a>
                         <a href="https://www.instagram.com/tezkorquiz.uz" class="social-icon"><i class="fab fa-instagram"></i></a>
                         <a href="https://www.youtube.com/@QuizTezkor" class="social-icon"><i class="fab fa-youtube"></i></a>
@@ -460,7 +587,7 @@
                     <h5 class="footer-title">Havolalar</h5>
                     <a href="index.html" class="footer-link">Bosh sahifa</a>
                     <a href="segment25.html" class="footer-link">Segment</a>
-                    <a href="aloqa.html" class="footer-link">Aloqa</a>
+                    <a href="faq.html" class="footer-link">Yordam</a>
                 </div>
                 <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
                     <h5 class="footer-title">Testni boshlash</h5>
@@ -472,70 +599,100 @@
                 </div>
                 <div class="col-lg-4 col-md-4">
                     <h5 class="footer-title">Biz bilan bog'laning</h5>
-                    <p class="mb-2"> tezkorquiz@gmail.com</p>
-                    <p class="mb-2"> +998 90 577 08 32</p>
-                    <p> O'zbekiston</p>
+                    <p class="mb-2"><i class="fas fa-envelope me-2"></i> tezkorquiz@gmail.com</p>
+                    <p class="mb-2"><i class="fas fa-phone me-2"></i> +998 90 577 08 32</p>
+                    <p><i class="fas fa-map-marker-alt me-2"></i> O'zbekiston</p>
                 </div>
             </div>
-            <div class="copyright">
-                <p>© 2025 Tezkor Quiz. Barcha huquqlar himoyalangan. 
-                <a href="https://tezkorquiz.uz/TezkorQuiz_Privacy_Policy.pdf" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
-                </p>
-            </div>
+           <div class="copyright">
+            <p>© 2025 Tezkor Quiz. Barcha huquqlar himoyalangan. 
+           <a href="https://tezkorquiz.uz/privacy_policy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+            </p>
+    </div>
         </div>
     </footer>
+    
+<!-- himoyalangan sahifa: protected.html -->
+<script type="module">
+  // Firebase SDK import qilingan deb faraz qilamiz
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
+  const firebaseConfig = {
+   apiKey: "AIzaSyBxIpLY5WasiSIlDL4japBLnnXRwOLUKEQ",
+      authDomain: "tezkor-quiz-bbe3c.firebaseapp.com",
+    // ... boshqa sozlamalar
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  // Current page URL (return uchun)
+  const returnUrl = encodeURIComponent(window.location.pathname + window.location.search);
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      // foydalanuvchi kirmagan — login sahifasiga yo'naltirish
+      window.location.replace(`/kirish.html?returnUrl=${returnUrl}`);
+    } else {
+      // foydalanuvchi kirdi — sahifa davom ettirilsin
+      console.log("User logged in:", user.uid);
+    }
+  });
+
+</script>
+<!-- google analiz kodi -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6HJZ457YMB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-6HJZ457YMB');
+</script>
+<!-- Google tag tugadi -->
+    
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="//code.tidio.co/dp3xu5h0swhcq9n7ir1qs8kzethsdome.js" async></script>
 
-    <!-- Firebase Auth (himoyalangan sahifa) -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+    <script>
+        // Initialize AOS
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 800,
+                once: true
+            });
+        });
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyBxIpLY5WasiSIlDL4japBLnnXRwOLUKEQ",
-            authDomain: "tezkor-quiz-bbe3c.firebaseapp.com",
-            projectId: "tezkor-quiz-bbe3c",
-            storageBucket: "tezkor-quiz-bbe3c.appspot.com",
-            messagingSenderId: "1086940339351",
-            appId: "1:1086940339351:web:8c3f95c2d3d08d8f9d1a8f"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const returnUrl = encodeURIComponent(window.location.pathname + window.location.search);
-
-        onAuthStateChanged(auth, (user) => {
-            if (!user) {
-                window.location.replace(`/kirish.html?returnUrl=${returnUrl}`);
+        // Cards JavaScript (asl koddan)
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const focusedButton = document.activeElement;
+                if (focusedButton.classList.contains('learn-more-button')) {
+                    focusedButton.click();
+                }
             }
         });
-    </script>
-
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6HJZ457YMB"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-6HJZ457YMB');
-    </script>
-
-    <!-- Animatsiyalar va Cards -->
-    <script>
-        AOS.init({ duration: 800, once: true });
 
         document.addEventListener('DOMContentLoaded', () => {
             const cards = document.querySelectorAll('.hero-card');
-            cards.forEach((card, i) => {
-                setTimeout(() => card.classList.add('animate'), i * 200);
+            const animateCard = (card, delay) => {
+                setTimeout(() => {
+                    card.classList.add('animate');
+                }, delay);
+            };
+            cards.forEach((card, index) => {
+                animateCard(card, index * 200);
             });
         });
 
         if ('IntersectionObserver' in window) {
+            const observerOptions = {
+                threshold: 0.2,
+                rootMargin: '0px 0px -100px 0px'
+            };
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -543,21 +700,34 @@
                         observer.unobserve(entry.target);
                     }
                 });
-            }, { threshold: 0.2 });
-            document.querySelectorAll('.hero-card').forEach(card => observer.observe(card));
+            }, observerOptions);
+            document.querySelectorAll('.hero-card').forEach(card => {
+                observer.observe(card);
+            }); 
+        } else {
+            document.querySelectorAll('.hero-card').forEach(card => {
+                card.classList.add('animate');
+            });
         }
 
-        function handleEnter(n) {
+        document.addEventListener('scroll', () => {}, { passive: true });
+        document.addEventListener('touchstart', () => {}, { passive: true });
+
+        function handleEnter(cardNumber) {
             const pages = {
                 1: 'segment25.html',
                 2: 'segmentumumiy.html',
                 3: 'testyaratish.html',
                 4: 'testni_boshlash.html'
             };
-            window.location.href = pages[n];
+            if (pages[cardNumber]) {
+                window.location.href = pages[cardNumber];
+            }
         }
 
-        function handleCardClick(n) { handleEnter(n); }
+        function handleCardClick(cardNumber) {
+            handleEnter(cardNumber);
+        }
     </script>
 </body>
 </html>
