@@ -21,10 +21,10 @@
 
   onAuthStateChanged(auth, (user) => {
     if (!user) {
-      // foydalanuvchi kirmagan — login sahifasiga yo'naltirish
+      // foydalanuvchi kirmagan – login sahifasiga yo'naltirish
       window.location.replace(`/kirish.html?returnUrl=${returnUrl}`);
     } else {
-      // foydalanuvchi kirdi — sahifa davom ettirilsin
+      // foydalanuvchi kirdi – sahifa davom ettirilsin
       console.log("User logged in:", user.uid);
     }
   });
@@ -133,13 +133,22 @@
       min-height: 200px;
     }
     .question-text { font-weight: bold; margin-bottom: 15px; font-size: 18px; }
-    .options-container .option-item { margin-bottom: 12px; padding: 12px; border-radius: 4px; display: flex; align-items: flex-start; cursor: pointer; transition: all 0.2s ease; font-size: 16px; }
+    .options-container .option-item { 
+      margin-bottom: 12px; 
+      padding: 12px; 
+      border-radius: 4px; 
+      display: flex; 
+      align-items: flex-start; 
+      cursor: pointer; 
+      transition: all 0.2s ease; 
+      font-size: 16px; 
+    }
     .options-container .option-item:hover { background-color: var(--option-hover); }
     .options-container .option-item.correct { background-color: var(--correct-bg); border-left: 4px solid var(--correct-border); }
     .options-container .option-item.incorrect { background-color: var(--incorrect-bg); border-left: 4px solid var(--incorrect-border); }
     .option-checkbox { margin-right: 10px; flex-shrink: 0; }
-    .option-text { flex-grow: 1; }
-    .check-icon { margin-right: 8px; font-weight: bold; margin-left: 8px; }
+    .option-text { flex-grow: 1; word-wrap: break-word; }
+    .check-icon { margin-right: 8px; font-weight: bold; margin-left: 8px; flex-shrink: 0; }
     @keyframes correctPulse {
       0% { transform: scale(1); }
       50% { transform: scale(1.005); }
@@ -173,11 +182,26 @@
     #backToTop:hover { background: var(--button-hover); transform: scale(1.1); }
     #backToTop.recommend { padding: 12px 24px; border-radius: 25px; display: flex; align-items: center; justify-content: center; min-width: 120px; }
     #backToTop.recommend .count { margin-left: 8px; font-size: 16px; }
-    .custom-checkbox { width: 22px; height: 22px; border-radius: 3px; border: 1px solid #9098a9; margin-right: 12px; position: relative; margin-top: 3px; transition: all 0.2s ease; }
+    
+    /* CHECKBOX O'LCHAMI TUZATILDI */
+    .custom-checkbox { 
+      width: 22px; 
+      height: 22px;
+      min-width: 22px;
+      min-height: 22px;
+      border-radius: 3px; 
+      border: 1px solid #9098a9; 
+      margin-right: 12px; 
+      position: relative; 
+      margin-top: 3px; 
+      transition: all 0.2s ease;
+      flex-shrink: 0 !important;
+    }
     .custom-checkbox.checked { background-color: var(--button-bg); border-color: var(--button-bg); }
     .custom-checkbox .checkmark { display: none; color: white; position: absolute; top: 0px; left: 5px; font-size: 14px; }
     .custom-checkbox.checked .checkmark { display: block; }
     .option-item:hover .custom-checkbox { border-color: var(--button-bg); }
+    
     #quizCompletionSection { display: none; margin-top: 40px; text-align: center; }
     .stats-container { margin-top: 30px; padding: 30px; border-radius: 8px; background-color: var(--stats-bg); box-shadow: 0 2px 4px var(--shadow-color); transition: all 0.3s ease; }
     .progress-bar-container { margin-top: 20px; height: 24px; background-color: var(--progress-bg); border-radius: 12px; overflow: hidden; position: relative; }
@@ -265,6 +289,19 @@
       flex-wrap: wrap;
       gap: 10px;
       margin-top: 20px;
+    }
+    
+    /* VAQT KO'RSATKICHI UCHUN STYLE */
+    .time-display {
+      font-size: 18px;
+      color: var(--text-color);
+      margin-bottom: 15px;
+      padding: 12px;
+      background-color: var(--new-test-bg);
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
     }
     
     @media (max-width: 768px) {
@@ -592,6 +629,10 @@
     <div id="lottieContainer"></div>
     <div class="celebration-title">Test yakunlandi!</div>
     <div class="test-name-display" id="testNameDisplay"></div>
+    <div class="time-display" id="timeDisplay">
+      <i class="bi bi-clock"></i>
+      <span id="timeText">0 daqiqa 0 soniya</span>
+    </div>
     <div class="stats-container" id="statsContainer">
       <div class="mb-4">
         <span class="fw-bold">Jami savollar: </span>
@@ -652,12 +693,16 @@
   const loadingOverlay = document.getElementById("loadingOverlay");
   const shareModal = document.getElementById("shareModal");
   const shareModalClose = document.getElementById("shareModalClose");
+  const timeDisplay = document.getElementById("timeDisplay");
+  const timeText = document.getElementById("timeText");
 
   let tests = [];
   let stats = { correct: 0, incorrect: 0, total: 0 };
   let lottieAnimation = null;
   let currentTestName = "";
   let lastUploadedFile = null;
+  let startTime = null;
+  let endTime = null;
 
   const animationFiles = [
     './json/buy.json',
@@ -730,13 +775,23 @@
     return Math.floor(10000 + Math.random() * 90000);
   }
 
+  function formatTime(milliseconds) {
+    const totalSeconds = Math.floor(milliseconds / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes} daqiqa ${seconds} soniya`;
+  }
+
   async function shareToPlatform(platform, includeScreenshot = true) {
     try {
+      const timeSpent = endTime && startTime ? formatTime(endTime - startTime) : "Noma'lum";
+      
       const shareText = `🎯 Pro Quiz - ${currentTestName} natijasi:\n\n` +
         `📊 Jami savollar: ${stats.total}\n` +
         `✅ To'g'ri javoblar: ${stats.correct}\n` +
         `❌ Xato javoblar: ${stats.incorrect}\n` +
-        `📈 Foiz: ${Math.round((stats.correct / stats.total) * 100)}%\n\n` +
+        `📈 Foiz: ${Math.round((stats.correct / stats.total) * 100)}%\n` +
+        `⏱️ Vaqt: ${timeSpent}\n\n` +
         `🌐 Pro Quiz bilan bilimlaringizni sinab ko'ring! Hozir testni boshlang!\n` +
         `${window.location.origin}${window.location.pathname}`;
 
@@ -889,6 +944,8 @@
     defaultMessage.style.display = "none";
     questionsContainer.innerHTML = "";
     stats = { correct: 0, incorrect: 0, total: 0 };
+    startTime = null;
+    endTime = null;
     uploadStatus.textContent = "Fayl qayta yuklanmoqda...";
     fileInput.disabled = true;
 
@@ -918,6 +975,8 @@
     stats = { correct: 0, incorrect: 0, total: 0 };
     currentTestName = "";
     lastUploadedFile = null;
+    startTime = null;
+    endTime = null;
     const selectedAnimation = getRandomAnimation();
     loadLottieAnimation(selectedAnimation);
     updateBackToTopButton();
@@ -961,6 +1020,8 @@
     };
     reader.readAsText(file);
     stats = { correct: 0, incorrect: 0, total: 0 };
+    startTime = null;
+    endTime = null;
     quizCompletionSection.style.display = "none";
     defaultMessage.style.display = "none";
   });
@@ -1000,6 +1061,7 @@
       stats.total = tests.length;
       shuffleArray(tests);
       showTests();
+      startTime = Date.now();
     } else {
       uploadStatus.textContent = "Xatolik: Test ma'lumotlari topilmadi yoki noto'g'ri format! yordam: telegram @sobirweb";
       defaultMessage.style.display = "block";
@@ -1175,6 +1237,7 @@
     });
 
     if (allAnswered) {
+      endTime = Date.now();
       fileInput.disabled = false;
       uploadStatus.textContent = "Barcha testlar belgilandi. Yangi fayl tanlash mumkin!";
       showCompletionStats();
@@ -1218,6 +1281,14 @@
     incorrectAnswersEl.textContent = stats.incorrect;
     totalQuestionsEl.textContent = stats.total;
     testNameDisplay.textContent = `📝 Test: ${currentTestName}`;
+
+    if (endTime && startTime) {
+      const timeSpent = formatTime(endTime - startTime);
+      timeText.textContent = timeSpent;
+      timeDisplay.style.display = "inline-flex";
+    } else {
+      timeDisplay.style.display = "none";
+    }
 
     const percentCorrect = Math.round((stats.correct / stats.total) * 100) || 0;
     percentageCorrectEl.textContent = percentCorrect + "%";
@@ -1269,5 +1340,3 @@
 </script>
 </body>
 </html>
-
-
