@@ -36,9 +36,9 @@ ANSWER: C
 AI orqali test yaratib uni saytda boshlash mumkinmi?
 A. Ha mumkin agar .txt orqali standart formatga mos bo'lsa
 B. Yo'q
-C. Ha mumkin doc orqali
-D. Ha mumkin pdf orqali
-ANSWER: B
+C. Ha mumkin .doc orqali
+D. Ha mumkin .pdf orqali
+ANSWER: A
 
 TezkorQuiz.uz mobil qurilmalarda ishlaydimi?
 A. Ha, to‘liq moslashgan
@@ -137,4 +137,5 @@ B. Savollar bir zumda yuklanadi va siliq o'tish
 C. Savol o‘tishi uchun 30 soniya kutish kerak
 D. Faqat internet o‘chirilganda ishlaydi
 ANSWER: B
+
 
