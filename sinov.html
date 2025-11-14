@@ -600,29 +600,6 @@
     .sample-toggle:hover { 
       background-color: var(--new-test-hover); 
     }
-    .sample-link { 
-      display: block; 
-      padding: 10px; 
-      background-color: var(--history-bg); 
-      border-radius: 5px; 
-      margin-top: 5px; 
-      text-decoration: none; 
-      color: var(--text-color); 
-      font-size: 14px; 
-      transition: all 0.3s ease; 
-    }
-    .sample-link:hover { 
-      background-color: var(--history-hover); 
-      color: var(--button-bg); 
-    }
-    .sample-list { 
-      max-height: 0; 
-      overflow: hidden; 
-      transition: max-height 0.3s ease-out; 
-    }
-    .sample-list.visible { 
-      max-height: 100px; 
-    }
   </style>
 </head>
 <body>
@@ -678,10 +655,9 @@
       <div class="history-list" id="historyList"></div>
     </div>
     <div class="sample-section" id="sampleSection">
-      <button class="sample-toggle collapsed" id="sampleToggle">
+      <button class="sample-toggle" id="sampleToggle">
         <i class="bi bi-download"></i> Namuna test yuklab olish
       </button>
-      <div class="sample-list" id="sampleList"></div>
     </div>
   </div>
 
@@ -1102,38 +1078,15 @@
   }
 
   // Namuna test yuklab olish
-  const sampleText = `O'zbekiston poytaxti qayer?
-A. Toshkent
-B. Samarqand
-C. Namangan
-D. Buxoro
-ANSWER: A
-
-Kompyuterda yozish uchun nima kerak?
-A. Monitor
-B. Sichqoncha
-C. Klaviatura
-D. Printer
-ANSWER: C`;
-
   const sampleToggle = document.getElementById("sampleToggle");
-  const sampleList = document.getElementById("sampleList");
 
   sampleToggle.addEventListener("click", function() {
-    const isCollapsed = !sampleList.classList.contains("visible");
-    if (isCollapsed) {
-      const link = document.createElement("a");
-      link.href = "data:text/plain;charset=utf-8," + encodeURIComponent(sampleText);
-      link.download = "namuna_test.txt";
-      link.className = "sample-link";
-      link.innerHTML = `<i class="bi bi-download"></i> Namuna Test.txt yuklab olish`;
-      sampleList.innerHTML = "";
-      sampleList.appendChild(link);
-      sampleList.classList.add("visible");
-    } else {
-      sampleList.classList.remove("visible");
-      sampleList.innerHTML = "";
-    }
+    const link = document.createElement("a");
+    link.href = "https://tezkorquiz.uz/namuna_test.txt";
+    link.download = "namuna_test.txt";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   });
 
   fileInput.addEventListener("change", (e) => {
