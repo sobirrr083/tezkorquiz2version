@@ -520,6 +520,44 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
         }
+
+        /* Toggle styles for settings */
+        .toggle-container {
+            background: rgba(248, 250, 252, 0.8);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        .toggle-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        .toggle-item:last-child {
+            margin-bottom: 0;
+        }
+        .toggle-label {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #475569;
+        }
+        .form-switch {
+            margin: 0;
+        }
+        .form-switch .form-check-input {
+            width: 2.5em;
+            height: 1.25em;
+            background-color: #e2e8f0;
+            border: none;
+        }
+        .form-switch .form-check-input:checked {
+            background-color: #4f46e5;
+        }
+        .form-switch .form-check-input:focus {
+            box-shadow: 0 0 0 0.25rem rgba(79, 70, 229, 0.25);
+        }
     </style>
 </head>
 <body>
@@ -542,6 +580,23 @@
                 
                 <input type="file" id="fileInput" accept=".txt" style="display: none;">
                 
+                <!-- Settings Toggles -->
+                <div class="toggle-container">
+                    <h5 style="text-align: center; margin-bottom: 15px; color: #4f46e5;">Test sozlamalari</h5>
+                    <div class="toggle-item">
+                        <label class="toggle-label">Keyingi tugmani ko'rsatish</label>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="showNextToggle" checked>
+                        </div>
+                    </div>
+                    <div class="toggle-item">
+                        <label class="toggle-label">Variant tanlashda avtomatik o'tish</label>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="autoAdvanceToggle" checked>
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="mt-4">
                     <div class="sample-section" id="sampleSection">
                         <button class="sample-toggle" id="sampleToggle">
@@ -558,7 +613,6 @@
                     <h1 class="quiz-title">
                         <i class="fas fa-brain"></i> Tezkor Quiz
                     </h1>
-                    <p class="quiz-subtitle">Har bir savolga diqqat bilan javob bering</p>
                 </div>
 
                 <div class="progress-container">
@@ -577,7 +631,7 @@
                     </div>
                 </div>
 
-                <div class="controls">
+                <div class="controls" id="controlsDiv">
                     <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>
                         <span id="nextBtnText">Keyingi savol</span>
                         <i class="fas fa-arrow-right"></i>
@@ -637,6 +691,9 @@
         let score = 0;
         let startTime;
         let selectedAnswer = null;
+        let showNextButton = true;
+        let autoAdvance = true;
+        let lastKeyPressed = null;
 
         // Fisher-Yates shuffle algorithm
         function shuffle(array) {
@@ -646,6 +703,14 @@
             }
             return array;
         }
+
+        // Toggle event listeners
+        document.getElementById('showNextToggle').addEventListener('change', function() {
+            showNextButton = this.checked;
+        });
+        document.getElementById('autoAdvanceToggle').addEventListener('change', function() {
+            autoAdvance = this.checked;
+        });
 
         // File upload handler
         document.getElementById('fileInput').addEventListener('change', function(e) {
@@ -761,10 +826,19 @@
             document.getElementById('quizSection').style.display = 'block';
             document.getElementById('totalQuestions').textContent = questions.length;
             
+            // Apply settings
+            const controlsDiv = document.getElementById('controlsDiv');
+            if (!showNextButton) {
+                controlsDiv.style.display = 'none';
+            } else {
+                controlsDiv.style.display = 'block';
+            }
+            
             currentQuestionIndex = 0;
             userAnswers = [];
             score = 0;
             selectedAnswer = null;
+            lastKeyPressed = null;
             startTime = new Date();
             
             showQuestion();
@@ -799,7 +873,7 @@
                     const optionBtn = document.createElement('button');
                     optionBtn.className = 'option-btn';
                     optionBtn.textContent = shuffledOptions[shuffledIndex];
-                    optionBtn.onclick = () => selectAnswer(index);
+                    optionBtn.onclick = () => selectAnswer(index, true); // true for mouse click
                     optionsContainer.appendChild(optionBtn);
                 });
                 
@@ -807,9 +881,13 @@
                 const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
                 document.getElementById('progressBar').style.width = progress + '%';
                 
-                // Reset button
-                document.getElementById('nextBtn').disabled = true;
+                // Reset button and selection
+                const nextBtn = document.getElementById('nextBtn');
+                if (showNextButton) {
+                    nextBtn.disabled = true;
+                }
                 selectedAnswer = null;
+                lastKeyPressed = null;
                 
                 // Update button text
                 const isLastQuestion = currentQuestionIndex === questions.length - 1;
@@ -832,7 +910,7 @@
         }
 
         // Select an answer
-        function selectAnswer(index) {
+        function selectAnswer(index, isMouseClick = false) {
             selectedAnswer = index;
             
             // Remove previous selections
@@ -841,13 +919,25 @@
             });
             
             // Add selection to clicked option
-            document.querySelectorAll('.option-btn')[index].classList.add('selected');
+            const selectedBtn = document.querySelectorAll('.option-btn')[index];
+            selectedBtn.classList.add('selected');
             
-            // Enable next button
-            document.getElementById('nextBtn').disabled = false;
+            // Enable next button if shown
+            if (showNextButton) {
+                document.getElementById('nextBtn').disabled = false;
+            }
             
             // Add click animation
-            document.querySelectorAll('.option-btn')[index].classList.add('animate-fade-in');
+            selectedBtn.classList.add('animate-fade-in');
+            
+            // Auto advance if enabled and not last question
+            if (autoAdvance && selectedAnswer !== null) {
+                setTimeout(() => {
+                    nextQuestion();
+                }, 300); // Small delay for feedback
+            } else if (isMouseClick && !autoAdvance) {
+                // For mouse click without auto, do nothing extra
+            }
         }
 
         // Move to next question
@@ -869,8 +959,10 @@
                 score++;
             }
             
-            // Disable next button temporarily
-            document.getElementById('nextBtn').disabled = true;
+            // Disable next button temporarily if shown
+            if (showNextButton) {
+                document.getElementById('nextBtn').disabled = true;
+            }
             
             setTimeout(() => {
                 currentQuestionIndex++;
@@ -934,6 +1026,14 @@
             document.getElementById('resultSection').style.display = 'none';
             document.getElementById('quizSection').style.display = 'block';
             
+            // Re-apply settings
+            const controlsDiv = document.getElementById('controlsDiv');
+            if (!showNextButton) {
+                controlsDiv.style.display = 'none';
+            } else {
+                controlsDiv.style.display = 'block';
+            }
+            
             startTime = new Date();
             showQuestion();
         }
@@ -960,9 +1060,18 @@
                 if (e.key >= '1' && e.key <= '4') {
                     const index = parseInt(e.key) - 1;
                     if (index < questions[currentQuestionIndex].options.length) {
-                        selectAnswer(index);
+                        if (lastKeyPressed === index && selectedAnswer === index && !autoAdvance) {
+                            // Double press: advance
+                            e.preventDefault();
+                            nextQuestion();
+                        } else {
+                            // Select
+                            selectAnswer(index, false);
+                            lastKeyPressed = index;
+                        }
                     }
-                } else if (e.key === 'Enter' && !document.getElementById('nextBtn').disabled) {
+                } else if (e.key === 'Enter' && selectedAnswer !== null && !autoAdvance) {
+                    e.preventDefault();
                     nextQuestion();
                 }
             }
@@ -986,7 +1095,7 @@
             const diff = touchStartX - touchEndX;
             
             if (Math.abs(diff) > swipeThreshold) {
-                if (diff > 0 && !document.getElementById('nextBtn').disabled) {
+                if (diff > 0 && selectedAnswer !== null && !autoAdvance) {
                     nextQuestion();
                 }
             }
