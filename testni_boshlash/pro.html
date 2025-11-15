@@ -21,10 +21,10 @@
 
   onAuthStateChanged(auth, (user) => {
     if (!user) {
-      // foydalanuvchi kirmagan — login sahifasiga yo'naltirish
+      // foydalanuvchi kirmagan – login sahifasiga yo'naltirish
       window.location.replace(`/kirish.html?returnUrl=${returnUrl}`);
     } else {
-      // foydalanuvchi kirdi — sahifa davom ettirilsin
+      // foydalanuvchi kirdi – sahifa davom ettirilsin
       console.log("User logged in:", user.uid);
     }
   });
@@ -133,13 +133,22 @@
       min-height: 200px;
     }
     .question-text { font-weight: bold; margin-bottom: 15px; font-size: 18px; }
-    .options-container .option-item { margin-bottom: 12px; padding: 12px; border-radius: 4px; display: flex; align-items: flex-start; cursor: pointer; transition: all 0.2s ease; font-size: 16px; }
+    .options-container .option-item { 
+      margin-bottom: 12px; 
+      padding: 12px; 
+      border-radius: 4px; 
+      display: flex; 
+      align-items: flex-start; 
+      cursor: pointer; 
+      transition: all 0.2s ease; 
+      font-size: 16px; 
+    }
     .options-container .option-item:hover { background-color: var(--option-hover); }
     .options-container .option-item.correct { background-color: var(--correct-bg); border-left: 4px solid var(--correct-border); }
     .options-container .option-item.incorrect { background-color: var(--incorrect-bg); border-left: 4px solid var(--incorrect-border); }
     .option-checkbox { margin-right: 10px; flex-shrink: 0; }
-    .option-text { flex-grow: 1; }
-    .check-icon { margin-right: 8px; font-weight: bold; margin-left: 8px; }
+    .option-text { flex-grow: 1; word-wrap: break-word; }
+    .check-icon { margin-right: 8px; font-weight: bold; margin-left: 8px; flex-shrink: 0; }
     @keyframes correctPulse {
       0% { transform: scale(1); }
       50% { transform: scale(1.005); }
@@ -173,11 +182,26 @@
     #backToTop:hover { background: var(--button-hover); transform: scale(1.1); }
     #backToTop.recommend { padding: 12px 24px; border-radius: 25px; display: flex; align-items: center; justify-content: center; min-width: 120px; }
     #backToTop.recommend .count { margin-left: 8px; font-size: 16px; }
-    .custom-checkbox { width: 22px; height: 22px; border-radius: 3px; border: 1px solid #9098a9; margin-right: 12px; position: relative; margin-top: 3px; transition: all 0.2s ease; }
+    
+    /* CHECKBOX O'LCHAMI TUZATILDI */
+    .custom-checkbox { 
+      width: 22px; 
+      height: 22px;
+      min-width: 22px;
+      min-height: 22px;
+      border-radius: 3px; 
+      border: 1px solid #9098a9; 
+      margin-right: 12px; 
+      position: relative; 
+      margin-top: 3px; 
+      transition: all 0.2s ease;
+      flex-shrink: 0 !important;
+    }
     .custom-checkbox.checked { background-color: var(--button-bg); border-color: var(--button-bg); }
     .custom-checkbox .checkmark { display: none; color: white; position: absolute; top: 0px; left: 5px; font-size: 14px; }
     .custom-checkbox.checked .checkmark { display: block; }
     .option-item:hover .custom-checkbox { border-color: var(--button-bg); }
+    
     #quizCompletionSection { display: none; margin-top: 40px; text-align: center; }
     .stats-container { margin-top: 30px; padding: 30px; border-radius: 8px; background-color: var(--stats-bg); box-shadow: 0 2px 4px var(--shadow-color); transition: all 0.3s ease; }
     .progress-bar-container { margin-top: 20px; height: 24px; background-color: var(--progress-bg); border-radius: 12px; overflow: hidden; position: relative; }
@@ -267,7 +291,54 @@
       margin-top: 20px;
     }
     
+    /* VAQT KO'RSATKICHI UCHUN STYLE */
+    .time-display {
+      font-size: 18px;
+      color: var(--text-color);
+      margin-bottom: 15px;
+      padding: 12px;
+      background-color: var(--new-test-bg);
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    /* Natijalar oynasi uchun yangi header */
+    .result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    .result-header .test-name-display {
+      font-size: 20px;
+      font-weight: bold;
+      color: var(--button-bg);
+      padding: 15px;
+      background-color: var(--stats-bg);
+      border-radius: 8px;
+      border-left: 4px solid var(--button-bg);
+      flex: 1;
+      min-width: 200px;
+      text-align: left;
+    }
+    .result-header .time-display {
+      margin: 0;
+      flex-shrink: 0;
+    }
+    
     @media (max-width: 768px) {
+      .result-header {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .result-header .test-name-display {
+        text-align: center;
+        min-width: auto;
+      }
       .buttons-container {
         flex-direction: column;
       }
@@ -505,6 +576,91 @@
         max-width: 100%;
       }
     }
+
+    /* Namuna yuklab olish uchun */
+    .sample-section { 
+      margin-top: 15px; 
+      width: 100%; 
+    }
+    .sample-toggle { 
+      background-color: var(--new-test-bg); 
+      color: var(--text-color); 
+      border: none; 
+      padding: 8px 12px; 
+      border-radius: 5px; 
+      font-size: 14px; 
+      cursor: pointer; 
+      width: 100%; 
+      text-align: left; 
+      transition: all 0.3s ease; 
+      display: flex; 
+      align-items: center; 
+      gap: 8px;
+    }
+    .sample-toggle:hover { 
+      background-color: var(--new-test-hover); 
+    }
+
+    /* Sample modal styles */
+    .sample-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+    }
+
+    .sample-modal-content {
+      background-color: var(--container-bg);
+      padding: 24px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      text-align: center;
+    }
+
+    .sample-modal-content h3 {
+      margin-bottom: 20px;
+      color: var(--text-color);
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .sample-modal-content p {
+      color: var(--text-color);
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+
+    .sample-modal-close {
+      background-color: var(--button-bg);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .sample-modal-close:hover {
+      background-color: var(--button-hover);
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 576px) {
+      .sample-modal-content {
+        width: 95%;
+        padding: 20px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -533,6 +689,14 @@
   </div>
 </div>
 
+<div class="sample-modal" id="sampleModal">
+  <div class="sample-modal-content">
+    <h3>Namuna test yuklandi!</h3>
+    <p>Namuna test yuklab olindi. Endi uni fayl tanlash joyiga yuklang.</p>
+    <button class="sample-modal-close" id="sampleModalClose">Rahmat</button>
+  </div>
+</div>
+
 <div class="container" id="mainContainer">
   <div class="theme-toggle-container">
     <label class="toggle-switch">
@@ -558,6 +722,11 @@
     <div class="history-section" id="historySection">
       <button class="history-toggle collapsed" id="historyToggle">Fayl tarixi</button>
       <div class="history-list" id="historyList"></div>
+    </div>
+    <div class="sample-section" id="sampleSection">
+      <button class="sample-toggle" id="sampleToggle">
+        <i class="bi bi-download"></i> Namuna test yuklab olish
+      </button>
     </div>
   </div>
 
@@ -591,7 +760,13 @@
   <div id="quizCompletionSection">
     <div id="lottieContainer"></div>
     <div class="celebration-title">Test yakunlandi!</div>
-    <div class="test-name-display" id="testNameDisplay"></div>
+    <div class="result-header">
+      <div class="test-name-display" id="testNameDisplay"></div>
+      <div class="time-display" id="timeDisplay">
+        <i class="bi bi-clock"></i>
+        <span id="timeText">0 daqiqa 0 soniya</span>
+      </div>
+    </div>
     <div class="stats-container" id="statsContainer">
       <div class="mb-4">
         <span class="fw-bold">Jami savollar: </span>
@@ -652,12 +827,18 @@
   const loadingOverlay = document.getElementById("loadingOverlay");
   const shareModal = document.getElementById("shareModal");
   const shareModalClose = document.getElementById("shareModalClose");
+  const timeDisplay = document.getElementById("timeDisplay");
+  const timeText = document.getElementById("timeText");
+  const sampleModal = document.getElementById("sampleModal");
+  const sampleModalClose = document.getElementById("sampleModalClose");
 
   let tests = [];
   let stats = { correct: 0, incorrect: 0, total: 0 };
   let lottieAnimation = null;
   let currentTestName = "";
   let lastUploadedFile = null;
+  let startTime = null;
+  let endTime = null;
 
   const animationFiles = [
     './json/buy.json',
@@ -730,13 +911,27 @@
     return Math.floor(10000 + Math.random() * 90000);
   }
 
+  function formatTime(milliseconds) {
+    const totalSeconds = Math.floor(milliseconds / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    if (minutes > 0) {
+      return `${minutes} daqiqa ${seconds} soniya`;
+    } else {
+      return `${seconds} soniya`;
+    }
+  }
+
   async function shareToPlatform(platform, includeScreenshot = true) {
     try {
+      const timeSpent = endTime && startTime ? formatTime(endTime - startTime) : "Noma'lum";
+      
       const shareText = `🎯 Pro Quiz - ${currentTestName} natijasi:\n\n` +
         `📊 Jami savollar: ${stats.total}\n` +
         `✅ To'g'ri javoblar: ${stats.correct}\n` +
         `❌ Xato javoblar: ${stats.incorrect}\n` +
-        `📈 Foiz: ${Math.round((stats.correct / stats.total) * 100)}%\n\n` +
+        `📈 Foiz: ${Math.round((stats.correct / stats.total) * 100)}%\n` +
+        `⏱️ Vaqt: ${timeSpent}\n\n` +
         `🌐 Pro Quiz bilan bilimlaringizni sinab ko'ring! Hozir testni boshlang!\n` +
         `${window.location.origin}${window.location.pathname}`;
 
@@ -877,6 +1072,10 @@
     });
   });
 
+  sampleModalClose.addEventListener("click", function() {
+    sampleModal.style.display = 'none';
+  });
+
   restartButton.addEventListener("click", function() {
     if (!lastUploadedFile) {
       alert("Hech qanday fayl yuklanmagan! Yangi test uchun fayl tanlang.");
@@ -889,6 +1088,8 @@
     defaultMessage.style.display = "none";
     questionsContainer.innerHTML = "";
     stats = { correct: 0, incorrect: 0, total: 0 };
+    startTime = null;
+    endTime = null;
     uploadStatus.textContent = "Fayl qayta yuklanmoqda...";
     fileInput.disabled = true;
 
@@ -918,6 +1119,8 @@
     stats = { correct: 0, incorrect: 0, total: 0 };
     currentTestName = "";
     lastUploadedFile = null;
+    startTime = null;
+    endTime = null;
     const selectedAnimation = getRandomAnimation();
     loadLottieAnimation(selectedAnimation);
     updateBackToTopButton();
@@ -949,6 +1152,19 @@
     loadFileHistory();
   }
 
+  // Namuna test yuklab olish
+  const sampleToggle = document.getElementById("sampleToggle");
+
+  sampleToggle.addEventListener("click", function() {
+    const link = document.createElement("a");
+    link.href = "https://tezkorquiz.uz/namuna_test.txt";
+    link.download = "namuna_test.txt";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    sampleModal.style.display = 'flex';
+  });
+
   fileInput.addEventListener("change", (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -961,6 +1177,8 @@
     };
     reader.readAsText(file);
     stats = { correct: 0, incorrect: 0, total: 0 };
+    startTime = null;
+    endTime = null;
     quizCompletionSection.style.display = "none";
     defaultMessage.style.display = "none";
   });
@@ -1000,6 +1218,7 @@
       stats.total = tests.length;
       shuffleArray(tests);
       showTests();
+      startTime = Date.now();
     } else {
       uploadStatus.textContent = "Xatolik: Test ma'lumotlari topilmadi yoki noto'g'ri format! yordam: telegram @sobirweb";
       defaultMessage.style.display = "block";
@@ -1175,6 +1394,7 @@
     });
 
     if (allAnswered) {
+      endTime = Date.now();
       fileInput.disabled = false;
       uploadStatus.textContent = "Barcha testlar belgilandi. Yangi fayl tanlash mumkin!";
       showCompletionStats();
@@ -1218,6 +1438,14 @@
     incorrectAnswersEl.textContent = stats.incorrect;
     totalQuestionsEl.textContent = stats.total;
     testNameDisplay.textContent = `📝 Test: ${currentTestName}`;
+
+    if (endTime && startTime) {
+      const timeSpent = formatTime(endTime - startTime);
+      timeText.textContent = timeSpent;
+      timeDisplay.style.display = "inline-flex";
+    } else {
+      timeDisplay.style.display = "none";
+    }
 
     const percentCorrect = Math.round((stats.correct / stats.total) * 100) || 0;
     percentageCorrectEl.textContent = percentCorrect + "%";
@@ -1269,5 +1497,3 @@
 </script>
 </body>
 </html>
-
-
