@@ -37,6 +37,9 @@
             padding: 0;
             box-sizing: border-box;
         }
+        html {
+            scroll-behavior: smooth;
+        }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -465,12 +468,14 @@
             border-radius: 15px;
             margin: 20px 0;
             text-align: left;
+            transition: all 0.3s ease;
         }
         .toggle-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
             margin-bottom: 15px;
+            transition: all 0.3s ease;
         }
         .toggle-item:last-child {
             margin-bottom: 0;
@@ -481,12 +486,11 @@
             color: #475569;
             flex: 1;
             margin-right: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
-        .toggle-description {
-            font-size: 0.85rem;
-            color: #64748b;
-            font-style: italic;
-            margin-top: 2px;
+        .toggle-label:hover {
+            color: #4f46e5;
         }
         .form-switch {
             margin: 0;
@@ -496,6 +500,7 @@
             height: 1.25em;
             background-color: #e2e8f0;
             border: none;
+            transition: all 0.3s ease;
         }
         .form-switch .form-check-input:checked {
             background-color: #4f46e5;
@@ -529,24 +534,13 @@
                 <div class="toggle-container">
                     <h5 style="text-align: center; margin-bottom: 15px; color: #4f46e5;">Test sozlamalari</h5>
                     <div class="toggle-item">
-                        <div>
-                            <label class="toggle-label">Keyingi tugmasini ko'rsatish</label>
-                            <div class="toggle-description">Agar yoqilsa, keyingi tugma ko'rinadi va odatiy ishlaydi. Agar o'chirilsa, bitta bosishda keyingi savolga o'tadi.</div>
-                        </div>
+                        <label class="toggle-label" for="showNextToggle">Keyingi tugmasini ko'rsatish/yashirish</label>
                         <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" id="showNextToggle" checked>
                         </div>
                     </div>
                 </div>
                
-                <div class="mt-4">
-                    <div class="sample-section" id="sampleSection">
-                        <button class="sample-toggle" id="sampleToggle">
-                            <i class="fas fa-download"></i> Namuna test yuklab olish
-                        </button>
-                        <p style="margin-top: 10px; color: #64748b; font-size: 0.9rem;">Kichik namuna test faylini yuklab oling vafaylni yuklab sinab ko'ring.</p>
-                    </div>
-                </div>
             </div>
             <!-- Quiz Section -->
             <div id="quizSection" style="display: none;">
@@ -604,14 +598,6 @@
             </div>
         </div>
     </div>
-    <!-- Sample Modal -->
-    <div class="sample-modal" id="sampleModal">
-      <div class="sample-modal-content">
-        <h3>Namuna test yuklandi!</h3>
-        <p>Endi uni fayl tanlash joyiga yuklang.</p>
-        <button class="sample-modal-close" id="sampleModalClose">Hop, rahmat!</button>
-      </div>
-    </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
     <script>
         let questions = [];
@@ -622,6 +608,7 @@
         let selectedAnswer = null;
         let showNextButton = true; // Default: ko'rsatish
         let lastKeyPressed = null;
+        let isAdvancing = false; // Ortiqcha bosishni oldini olish uchun
         
         // Auto-advance ni showNextButton ga bog'lash: agar tugma yashirin bo'lsa, auto-advance yoqiladi
         function updateAutoAdvance() {
@@ -638,10 +625,22 @@
         }
         
         // Toggle event listener for showNextButton
-        document.getElementById('showNextToggle').addEventListener('change', function() {
-            showNextButton = this.checked;
-            // Auto-advance ni avtomatik boshqarish: agar tugma yashirin bo'lsa, auto-advance yoqiladi (lekin alohida toggle yo'q, shuning uchun bu yerda birlashtirilgan)
-        });
+        const toggleCheckbox = document.getElementById('showNextToggle');
+        const toggleLabel = document.querySelector('.toggle-label');
+        
+        function toggleShowNext() {
+            showNextButton = !showNextButton;
+            toggleCheckbox.checked = showNextButton;
+            // Smooth animatsiya uchun toggle-container ga class qo'shish
+            const toggleContainer = document.querySelector('.toggle-container');
+            toggleContainer.style.transform = showNextButton ? 'scale(1.02)' : 'scale(0.98)';
+            setTimeout(() => {
+                toggleContainer.style.transform = 'scale(1)';
+            }, 200);
+        }
+        
+        toggleCheckbox.addEventListener('change', toggleShowNext);
+        toggleLabel.addEventListener('click', toggleShowNext);
         
         // Drag and drop handlers
         const uploadArea = document.getElementById('uploadArea');
@@ -802,6 +801,7 @@
             score = 0;
             selectedAnswer = null;
             lastKeyPressed = null;
+            isAdvancing = false;
             startTime = new Date();
            
             showQuestion();
@@ -851,6 +851,7 @@
                 }
                 selectedAnswer = null;
                 lastKeyPressed = null;
+                isAdvancing = false;
                
                 // Update button text
                 const isLastQuestion = currentQuestionIndex === questions.length - 1;
@@ -874,6 +875,8 @@
         
         // Select an answer
         function selectAnswer(index, isMouseClick = false) {
+            if (selectedAnswer !== null || isAdvancing) return; // Ortiqcha bosishni oldini olish, faqat yashirilgan holatda ham ishlaydi
+           
             selectedAnswer = index;
            
             // Remove previous selections
@@ -896,6 +899,7 @@
             // Auto-advance logic: agar keyingi tugma yashirin bo'lsa (!showNextButton), bitta bosishda keyingi savolga o'tish
             // Aks holda, agar tugma ko'rinib tursa, kutish
             if (!showNextButton && selectedAnswer !== null) {
+                isAdvancing = true;
                 setTimeout(() => {
                     nextQuestion();
                 }, 300); // Kichik kechikish feedback uchun
@@ -1059,23 +1063,6 @@
                 }
             }
         }
-        
-        // Sample download functionality
-        const sampleModal = document.getElementById("sampleModal");
-        const sampleModalClose = document.getElementById("sampleModalClose");
-        const sampleToggle = document.getElementById("sampleToggle");
-        sampleToggle.addEventListener("click", function() {
-            const link = document.createElement("a");
-            link.href = "https://tezkorquiz.uz/namuna_test.txt";
-            link.download = "namuna_test.txt";
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            sampleModal.style.display = 'flex';
-        });
-        sampleModalClose.addEventListener("click", function() {
-            sampleModal.style.display = 'none';
-        });
     </script>
 </body>
 </html>
