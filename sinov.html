@@ -75,10 +75,16 @@
             font-weight: 700;
             margin-bottom: 10px;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .quiz-subtitle {
             opacity: 0.9;
             font-size: 1.1rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .progress-container {
             padding: 20px 30px;
@@ -334,7 +340,10 @@
                 padding: 10px;
             }
             .quiz-title {
-                font-size: 1.5rem;
+                font-size: 1.3rem;
+            }
+            .quiz-subtitle {
+                font-size: 1rem;
             }
             .question-text {
                 font-size: 1.2rem;
@@ -397,6 +406,12 @@
         @media (max-width: 480px) {
             .quiz-header {
                 padding: 20px;
+            }
+            .quiz-title {
+                font-size: 1.2rem;
+            }
+            .quiz-subtitle {
+                font-size: 0.9rem;
             }
             .question-container {
                 min-height: 350px;
@@ -836,14 +851,6 @@
                     <p class="quiz-subtitle">Test faylini yuklang va bilimingizni sinab ko'ring!</p>
                 </div>
                
-                <div class="upload-area" id="uploadArea">
-                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
-                    <div class="upload-text">Test faylini yuklash uchun bosing yoki drop qiling</div>
-                    <div class="upload-subtext">.txt formatda faylni tanlang</div>
-                </div>
-               
-                <input type="file" id="fileInput" accept=".txt" style="display: none;">
-               
                 <!-- Settings Toggles -->
                 <div class="toggle-container">
                     <h5 style="text-align: center; margin-bottom: 15px; color: #4f46e5;">Test sozlamalari</h5>
@@ -857,6 +864,14 @@
                         </div>
                     </div>
                 </div>
+               
+                <div class="upload-area" id="uploadArea">
+                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                    <div class="upload-text">Test faylini yuklash uchun bosing yoki drop qiling</div>
+                    <div class="upload-subtext">.txt formatda faylni tanlang</div>
+                </div>
+               
+                <input type="file" id="fileInput" accept=".txt" style="display: none;">
                
                 <div class="mt-4">
                     <div class="sample-section" id="sampleSection">
