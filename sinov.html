@@ -172,6 +172,11 @@
             background: linear-gradient(135deg, #ef4444, #dc2626);
             color: white;
         }
+        .option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+            transform: none;
+        }
         .option-letter {
             display: none;
         }
@@ -311,6 +316,20 @@
             0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
             40% { transform: translateY(-10px); }
             60% { transform: translateY(-5px); }
+        }
+        /* Smooth text change animation: slide down from top */
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .slide-down {
+            animation: slideDown 0.4s ease-out;
         }
         @media (max-width: 768px) {
             .quiz-container {
@@ -525,26 +544,27 @@
                
                 <input type="file" id="fileInput" accept=".txt" style="display: none;">
                
-                <!-- Settings Toggles -->
-                <div class="toggle-container">
-                    <h5 style="text-align: center; margin-bottom: 15px; color: #4f46e5;">Test sozlamalari</h5>
-                    <div class="toggle-item">
-                        <div>
-                            <label class="toggle-label">Keyingi tugmasini ko'rsatish</label>
-                            <div class="toggle-description">Agar yoqilsa, keyingi tugma ko'rinadi va odatiy ishlaydi. Agar o'chirilsa, bitta bosishda keyingi savolga o'tadi.</div>
-                        </div>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="showNextToggle" checked>
-                        </div>
-                    </div>
-                </div>
-               
+                <!-- Sample Section - Moved before toggles -->
                 <div class="mt-4">
                     <div class="sample-section" id="sampleSection">
                         <button class="sample-toggle" id="sampleToggle">
                             <i class="fas fa-download"></i> Namuna test yuklab olish
                         </button>
                         <p style="margin-top: 10px; color: #64748b; font-size: 0.9rem;">Kichik namuna test faylini yuklab oling vafaylni yuklab sinab ko'ring.</p>
+                    </div>
+                </div>
+               
+                <!-- Settings Toggles -->
+                <div class="toggle-container">
+                    <h5 style="text-align: center; margin-bottom: 15px; color: #4f46e5;">Test sozlamalari</h5>
+                    <div class="toggle-item">
+                        <div>
+                            <label class="toggle-label" id="toggleLabel">Keyingi tugmasini ko'rsatish</label>
+                            <div class="toggle-description" id="toggleDescription">keyingi tugma ko'rinadi va odatiy ishlaydi.</div>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="showNextToggle" checked>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -622,11 +642,7 @@
         let selectedAnswer = null;
         let showNextButton = true; // Default: ko'rsatish
         let lastKeyPressed = null;
-        
-        // Auto-advance ni showNextButton ga bog'lash: agar tugma yashirin bo'lsa, auto-advance yoqiladi
-        function updateAutoAdvance() {
-            // Bu funksiya faqat showNextButton o'zgarganda chaqiriladi
-        }
+        let isAdvancing = false; // To prevent multiple advances
         
         // Fisher-Yates shuffle algorithm
         function shuffle(array) {
@@ -637,10 +653,31 @@
             return array;
         }
         
-        // Toggle event listener for showNextButton
+        // Toggle event listener for showNextButton with dynamic text and animation
         document.getElementById('showNextToggle').addEventListener('change', function() {
             showNextButton = this.checked;
-            // Auto-advance ni avtomatik boshqarish: agar tugma yashirin bo'lsa, auto-advance yoqiladi (lekin alohida toggle yo'q, shuning uchun bu yerda birlashtirilgan)
+            const label = document.getElementById('toggleLabel');
+            const desc = document.getElementById('toggleDescription');
+            
+            // Remove previous animation classes
+            label.classList.remove('slide-down');
+            desc.classList.remove('slide-down');
+            
+            // Force reflow
+            void label.offsetWidth;
+            void desc.offsetWidth;
+            
+            if (this.checked) {
+                label.textContent = "Keyingi tugmasini ko'rsatish";
+                desc.textContent = "keyingi tugma ko'rinadi va odatiy ishlaydi.";
+            } else {
+                label.textContent = "Keyingi tugmasini yashirish";
+                desc.textContent = "bitta bosishda keyingi savolga o'tadi.";
+            }
+            
+            // Add slide-down animation
+            label.classList.add('slide-down');
+            desc.classList.add('slide-down');
         });
         
         // Drag and drop handlers
@@ -802,6 +839,7 @@
             score = 0;
             selectedAnswer = null;
             lastKeyPressed = null;
+            isAdvancing = false;
             startTime = new Date();
            
             showQuestion();
@@ -851,6 +889,7 @@
                 }
                 selectedAnswer = null;
                 lastKeyPressed = null;
+                isAdvancing = false;
                
                 // Update button text
                 const isLastQuestion = currentQuestionIndex === questions.length - 1;
@@ -872,18 +911,24 @@
             }, 200);
         }
         
-        // Select an answer
+        // Select an answer - Prevent multiple selections
         function selectAnswer(index, isMouseClick = false) {
+            if (selectedAnswer !== null || isAdvancing) return; // Prevent multiple clicks/selections
+            
             selectedAnswer = index;
            
             // Remove previous selections
             document.querySelectorAll('.option-btn').forEach(btn => {
                 btn.classList.remove('selected');
+                btn.disabled = false; // Reset disable
             });
            
-            // Add selection to clicked option
+            // Add selection to clicked option and disable all options to prevent further clicks
             const selectedBtn = document.querySelectorAll('.option-btn')[index];
             selectedBtn.classList.add('selected');
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                btn.disabled = true;
+            });
            
             // Enable next button if shown (faqat agar showNextButton true bo'lsa)
             if (showNextButton) {
@@ -894,8 +939,8 @@
             selectedBtn.classList.add('animate-fade-in');
            
             // Auto-advance logic: agar keyingi tugma yashirin bo'lsa (!showNextButton), bitta bosishda keyingi savolga o'tish
-            // Aks holda, agar tugma ko'rinib tursa, kutish
             if (!showNextButton && selectedAnswer !== null) {
+                isAdvancing = true;
                 setTimeout(() => {
                     nextQuestion();
                 }, 300); // Kichik kechikish feedback uchun
@@ -904,8 +949,9 @@
         
         // Move to next question
         function nextQuestion() {
-            if (selectedAnswer === null) return;
+            if (selectedAnswer === null || isAdvancing) return;
            
+            isAdvancing = true;
             const question = questions[currentQuestionIndex];
             const correctAnswerIndex = question.shuffledAnswer;
            
@@ -984,6 +1030,7 @@
             userAnswers = [];
             score = 0;
             selectedAnswer = null;
+            isAdvancing = false;
            
             document.getElementById('resultSection').style.display = 'none';
             document.getElementById('quizSection').style.display = 'block';
@@ -1014,25 +1061,29 @@
             userAnswers = [];
             score = 0;
             selectedAnswer = null;
+            isAdvancing = false;
         }
         
-        // Keyboard navigation
+        // Keyboard navigation - Adjusted for prevention
         document.addEventListener('keydown', function(e) {
-            if (document.getElementById('quizSection').style.display !== 'none') {
+            if (document.getElementById('quizSection').style.display !== 'none' && !isAdvancing) {
                 if (e.key >= '1' && e.key <= '4') {
                     const index = parseInt(e.key) - 1;
                     if (index < questions[currentQuestionIndex].options.length) {
-                        if (lastKeyPressed === index && selectedAnswer === index && showNextButton) {
-                            // Agar tugma ko'rinib tursa, ikki marta bosishda o'tish
-                            e.preventDefault();
-                            nextQuestion();
+                        if (selectedAnswer !== null) {
+                            // If already selected and !showNextButton, ignore (auto-advance handles it)
+                            // If showNextButton, allow double press to advance
+                            if (showNextButton && lastKeyPressed === index && selectedAnswer === index) {
+                                e.preventDefault();
+                                nextQuestion();
+                            }
                         } else {
                             // Select
                             selectAnswer(index, false);
                             lastKeyPressed = index;
                         }
                     }
-                } else if (e.key === 'Enter' && selectedAnswer !== null && showNextButton) {
+                } else if (e.key === 'Enter' && selectedAnswer !== null && showNextButton && !isAdvancing) {
                     e.preventDefault();
                     nextQuestion();
                 }
@@ -1054,7 +1105,7 @@
             const diff = touchStartX - touchEndX;
            
             if (Math.abs(diff) > swipeThreshold) {
-                if (diff > 0 && selectedAnswer !== null && showNextButton) {
+                if (diff > 0 && selectedAnswer !== null && showNextButton && !isAdvancing) {
                     nextQuestion();
                 }
             }
