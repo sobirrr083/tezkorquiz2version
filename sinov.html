@@ -905,35 +905,31 @@
             }, 200);
         }
         
-        // Select an answer - Prevent multiple selections without disabling
+        // Select an answer
         function selectAnswer(index, isMouseClick = false) {
-            if (selectedAnswer !== null || isAdvancing) return; // Prevent multiple clicks/selections
+            if (isAdvancing) return; // Prevent during advance
             
-            selectedAnswer = index;
-           
-            // Remove previous selections
-            document.querySelectorAll('.option-btn').forEach(btn => {
-                btn.classList.remove('selected');
-            });
-           
-            // Add selection to clicked option
-            const selectedBtn = document.querySelectorAll('.option-btn')[index];
-            selectedBtn.classList.add('selected');
-           
-            // Enable next button if shown (faqat agar showNextButton true bo'lsa)
-            if (showNextButton) {
-                document.getElementById('nextBtn').disabled = false;
-            }
-           
-            // Add click animation
-            selectedBtn.classList.add('animate-fade-in');
-           
-            // Auto-advance logic: agar keyingi tugma yashirin bo'lsa (!showNextButton), bitta bosishda keyingi savolga o'tish
-            if (!showNextButton && selectedAnswer !== null) {
-                isAdvancing = true;
-                setTimeout(() => {
-                    nextQuestion();
-                }, 300); // Kichik kechikish feedback uchun
+            // For mouse click: allow re-selection (change answer)
+            if (isMouseClick) {
+                selectedAnswer = index;
+                // Remove previous selections
+                document.querySelectorAll('.option-btn').forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+                // Add selection to clicked option
+                const selectedBtn = document.querySelectorAll('.option-btn')[index];
+                selectedBtn.classList.add('selected');
+                
+                // Enable next button if shown
+                if (showNextButton) {
+                    document.getElementById('nextBtn').disabled = false;
+                }
+                
+                // Add click animation
+                selectedBtn.classList.add('animate-fade-in');
+            } else {
+                // For keyboard: handle double press or Enter
+                // This is handled in keydown event
             }
         }
         
@@ -1054,29 +1050,37 @@
             isAdvancing = false;
         }
         
-        // Keyboard navigation - Adjusted for prevention
+        // Keyboard navigation - Adjusted for double press and Enter
         document.addEventListener('keydown', function(e) {
             if (document.getElementById('quizSection').style.display !== 'none' && !isAdvancing) {
                 if (e.key >= '1' && e.key <= '4') {
                     const index = parseInt(e.key) - 1;
                     if (index < questions[currentQuestionIndex].options.length) {
-                        if (selectedAnswer !== null) {
-                            // If already selected and !showNextButton, ignore (auto-advance handles it)
-                            // If showNextButton, allow double press to advance
-                            if (showNextButton && lastKeyPressed === index && selectedAnswer === index) {
-                                e.preventDefault();
-                                nextQuestion();
-                            }
-                        } else {
-                            // Select
+                        e.preventDefault();
+                        if (selectedAnswer === null || selectedAnswer !== index) {
+                            // Select or change selection
                             selectAnswer(index, false);
                             lastKeyPressed = index;
+                        } else if (selectedAnswer === index) {
+                            // Double press on same: confirm and advance (if showNextButton)
+                            if (showNextButton) {
+                                nextQuestion();
+                            }
                         }
                     }
                 } else if (e.key === 'Enter' && selectedAnswer !== null && showNextButton && !isAdvancing) {
                     e.preventDefault();
                     nextQuestion();
                 }
+            }
+        });
+        
+        // Mouse click handler for options - allow re-selection
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('option-btn') && !isAdvancing) {
+                const options = document.querySelectorAll('.option-btn');
+                const index = Array.from(options).indexOf(e.target);
+                selectAnswer(index, true);
             }
         });
         
