@@ -21,7 +21,6 @@
       window.location.replace(`/kirish.html?returnUrl=${returnUrl}`);
     } else {
       // foydalanuvchi kirdi — sahifa davom ettirilsin
-      console.log("User logged in:", user.uid);
     }
   });
 </script>
@@ -171,11 +170,6 @@
             border-color: #ef4444;
             background: linear-gradient(135deg, #ef4444, #dc2626);
             color: white;
-        }
-        .option-btn:disabled {
-            cursor: not-allowed;
-            opacity: 0.6;
-            transform: none;
         }
         .option-letter {
             display: none;
@@ -560,7 +554,7 @@
                     <div class="toggle-item">
                         <div>
                             <label class="toggle-label" id="toggleLabel">Keyingi tugmasini ko'rsatish</label>
-                            <div class="toggle-description" id="toggleDescription">keyingi tugma ko'rinadi va odatiy ishlaydi.</div>
+                            <div class="toggle-description" id="toggleDescription">odatiy ishlaydi</div>
                         </div>
                         <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" id="showNextToggle" checked>
@@ -669,7 +663,7 @@
             
             if (this.checked) {
                 label.textContent = "Keyingi tugmasini ko'rsatish";
-                desc.textContent = "keyingi tugma ko'rinadi va odatiy ishlaydi.";
+                desc.textContent = "odatiy ishlaydi";
             } else {
                 label.textContent = "Keyingi tugmasini yashirish";
                 desc.textContent = "bitta bosishda keyingi savolga o'tadi.";
@@ -911,7 +905,7 @@
             }, 200);
         }
         
-        // Select an answer - Prevent multiple selections
+        // Select an answer - Prevent multiple selections without disabling
         function selectAnswer(index, isMouseClick = false) {
             if (selectedAnswer !== null || isAdvancing) return; // Prevent multiple clicks/selections
             
@@ -920,15 +914,11 @@
             // Remove previous selections
             document.querySelectorAll('.option-btn').forEach(btn => {
                 btn.classList.remove('selected');
-                btn.disabled = false; // Reset disable
             });
            
-            // Add selection to clicked option and disable all options to prevent further clicks
+            // Add selection to clicked option
             const selectedBtn = document.querySelectorAll('.option-btn')[index];
             selectedBtn.classList.add('selected');
-            document.querySelectorAll('.option-btn').forEach(btn => {
-                btn.disabled = true;
-            });
            
             // Enable next button if shown (faqat agar showNextButton true bo'lsa)
             if (showNextButton) {
