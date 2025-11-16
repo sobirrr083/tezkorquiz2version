@@ -1347,8 +1347,8 @@
         
         // Select an answer
         function selectAnswer(index) {
-            // Agar javob allaqachon tanlangan bo'lsa, bosishni e'tiborsiz qoldirish (ortiqcha bosishlarni oldini olish)
-            if (selectedAnswer !== null) {
+            // Agar keyingi tugma yashirilgan bo'lsa va javob allaqachon tanlangan bo'lsa, qayta tanlashni oldini olish
+            if (!showNextButton && answerSelected) {
                 return;
             }
             
@@ -1507,27 +1507,22 @@
                 if (e.key >= '1' && e.key <= '4') {
                     const index = parseInt(e.key) - 1;
                     if (index < questions[currentQuestionIndex].options.length) {
-                        // Agar keyingi tugma yashirilgan bo'lsa va javob tanlangan bo'lsa, bosishni e'tiborsiz qoldirish
+                        // Agar keyingi tugma yashirilgan bo'lsa va javob allaqachon tanlangan bo'lsa, qayta tanlashni oldini olish
                         if (!showNextButton && answerSelected) {
                             return;
                         }
                         
-                        // Boshqa variantni tanlashni oldini olish (faqat bir xil raqam yoki Enter ishlaydi)
-                        if (selectedAnswer !== null && index !== selectedAnswer) {
-                            return;
-                        }
-                        
-                        // Ikkinchi marta bir xil raqam bosilganda keyingi savolga o'tish
-                        if (lastKeyPressed === index && selectedAnswer !== null) {
+                        if (lastKeyPressed === index && selectedAnswer === index && showNextButton) {
+                            // Agar tugma ko'rinib tursa, ikki marta bosishda o'tish
                             e.preventDefault();
                             nextQuestion();
                         } else {
-                            // Birinchi bosish: tanlash
+                            // Select
                             selectAnswer(index);
                             lastKeyPressed = index;
                         }
                     }
-                } else if (e.key === 'Enter' && selectedAnswer !== null) {
+                } else if (e.key === 'Enter' && selectedAnswer !== null && showNextButton) {
                     e.preventDefault();
                     nextQuestion();
                 }
