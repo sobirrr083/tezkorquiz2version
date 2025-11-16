@@ -17,10 +17,10 @@
   const returnUrl = encodeURIComponent(window.location.pathname + window.location.search);
   onAuthStateChanged(auth, (user) => {
     if (!user) {
-      // foydalanuvchi kirmagan — login sahifasiga yo'naltirish
+      // foydalanuvchi kirmagan – login sahifasiga yo'naltirish
       window.location.replace(`/kirish.html?returnUrl=${returnUrl}`);
     } else {
-      // foydalanuvchi kirdi — sahifa davom ettirilsin
+      // foydalanuvchi kirdi – sahifa davom ettirilsin
       console.log("User logged in:", user.uid);
     }
   });
@@ -36,9 +36,6 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-        }
-        html {
-            scroll-behavior: smooth;
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -151,6 +148,7 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            user-select: none;
         }
         .option-btn:hover {
             border-color: #4f46e5;
@@ -175,6 +173,10 @@
             background: linear-gradient(135deg, #ef4444, #dc2626);
             color: white;
         }
+        .option-btn.disabled {
+            pointer-events: none;
+            opacity: 0.7;
+        }
         .option-letter {
             display: none;
         }
@@ -185,6 +187,13 @@
             border: none;
             border-bottom-left-radius: 20px;
             border-bottom-right-radius: 20px;
+            transition: opacity 0.3s ease, max-height 0.3s ease;
+        }
+        .controls.hidden {
+            max-height: 0;
+            padding: 0;
+            opacity: 0;
+            overflow: hidden;
         }
         .btn-primary, .btn-outline-primary {
             padding: 15px 40px;
@@ -222,6 +231,7 @@
         .file-upload-container {
             text-align: center;
             padding: 60px 30px;
+            user-select: none;
         }
         .upload-area {
             border: 3px dashed #cbd5e1;
@@ -230,6 +240,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             background: rgba(248, 250, 252, 0.5);
+            user-select: none;
         }
         .upload-area:hover {
             border-color: #4f46e5;
@@ -468,38 +479,58 @@
             border-radius: 15px;
             margin: 20px 0;
             text-align: left;
-            transition: all 0.3s ease;
         }
         .toggle-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 15px;
-            transition: all 0.3s ease;
-        }
-        .toggle-item:last-child {
-            margin-bottom: 0;
-        }
-        .toggle-label {
-            font-size: 1rem;
-            font-weight: 500;
-            color: #475569;
-            flex: 1;
-            margin-right: 10px;
+            padding: 15px;
+            background: white;
+            border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
+            user-select: none;
         }
-        .toggle-label:hover {
-            color: #4f46e5;
+        .toggle-item:hover {
+            background: #f8fafc;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
+        }
+        .toggle-content {
+            flex: 1;
+            margin-right: 15px;
+        }
+        .toggle-label {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #475569;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .toggle-description {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            line-height: 1.4;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .toggle-description.show {
+            max-height: 200px;
+            opacity: 1;
+            margin-top: 8px;
         }
         .form-switch {
             margin: 0;
+            flex-shrink: 0;
         }
         .form-switch .form-check-input {
-            width: 2.5em;
-            height: 1.25em;
-            background-color: #e2e8f0;
+            width: 3em;
+            height: 1.5em;
+            background-color: #cbd5e1;
             border: none;
+            cursor: pointer;
             transition: all 0.3s ease;
         }
         .form-switch .form-check-input:checked {
@@ -533,14 +564,25 @@
                 <!-- Settings Toggles -->
                 <div class="toggle-container">
                     <h5 style="text-align: center; margin-bottom: 15px; color: #4f46e5;">Test sozlamalari</h5>
-                    <div class="toggle-item">
-                        <label class="toggle-label" for="showNextToggle">Keyingi tugmasini ko'rsatish/yashirish</label>
+                    <div class="toggle-item" id="toggleItem">
+                        <div class="toggle-content">
+                            <label class="toggle-label" id="toggleLabel">Keyingi tugmasini ko'rsatish</label>
+                            <div class="toggle-description" id="toggleDescription">Agar yoqilsa, keyingi tugma ko'rinadi va odatiy ishlaydi. Agar o'chirilsa, bitta bosishda keyingi savolga o'tadi.</div>
+                        </div>
                         <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" id="showNextToggle" checked>
                         </div>
                     </div>
                 </div>
                
+                <div class="mt-4">
+                    <div class="sample-section" id="sampleSection">
+                        <button class="sample-toggle" id="sampleToggle">
+                            <i class="fas fa-download"></i> Namuna test yuklab olish
+                        </button>
+                        <p style="margin-top: 10px; color: #64748b; font-size: 0.9rem;">Kichik namuna test faylini yuklab oling va faylni yuklab sinab ko'ring.</p>
+                    </div>
+                </div>
             </div>
             <!-- Quiz Section -->
             <div id="quizSection" style="display: none;">
@@ -598,6 +640,14 @@
             </div>
         </div>
     </div>
+    <!-- Sample Modal -->
+    <div class="sample-modal" id="sampleModal">
+      <div class="sample-modal-content">
+        <h3>Namuna test yuklandi!</h3>
+        <p>Endi uni fayl tanlash joyiga yuklang.</p>
+        <button class="sample-modal-close" id="sampleModalClose">Hop, rahmat!</button>
+      </div>
+    </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
     <script>
         let questions = [];
@@ -606,14 +656,9 @@
         let score = 0;
         let startTime;
         let selectedAnswer = null;
-        let showNextButton = true; // Default: ko'rsatish
+        let showNextButton = true;
         let lastKeyPressed = null;
-        let isAdvancing = false; // Ortiqcha bosishni oldini olish uchun
-        
-        // Auto-advance ni showNextButton ga bog'lash: agar tugma yashirin bo'lsa, auto-advance yoqiladi
-        function updateAutoAdvance() {
-            // Bu funksiya faqat showNextButton o'zgarganda chaqiriladi
-        }
+        let answerSelected = false; // Har bir savolda javob tanlangan yoki yo'qligini kuzatish
         
         // Fisher-Yates shuffle algorithm
         function shuffle(array) {
@@ -624,23 +669,60 @@
             return array;
         }
         
-        // Toggle event listener for showNextButton
-        const toggleCheckbox = document.getElementById('showNextToggle');
-        const toggleLabel = document.querySelector('.toggle-label');
+        // Toggle functionality
+        const toggleItem = document.getElementById('toggleItem');
+        const toggleLabel = document.getElementById('toggleLabel');
+        const toggleDescription = document.getElementById('toggleDescription');
+        const showNextToggle = document.getElementById('showNextToggle');
         
-        function toggleShowNext() {
-            showNextButton = !showNextButton;
-            toggleCheckbox.checked = showNextButton;
-            // Smooth animatsiya uchun toggle-container ga class qo'shish
-            const toggleContainer = document.querySelector('.toggle-container');
-            toggleContainer.style.transform = showNextButton ? 'scale(1.02)' : 'scale(0.98)';
+        // Toggle description ko'rinishini boshqarish
+        toggleItem.addEventListener('click', function(e) {
+            // Agar checkbox ustiga bosilgan bo'lsa, default action ishlaydi
+            if (e.target === showNextToggle) {
+                return;
+            }
+            
+            // Description ko'rsatish/yashirish
+            toggleDescription.classList.toggle('show');
+            
+            // Checkbox holatini o'zgartirish
+            showNextToggle.checked = !showNextToggle.checked;
+            showNextButton = showNextToggle.checked;
+            
+            // Label matnini o'zgartirish
+            if (showNextToggle.checked) {
+                toggleLabel.textContent = "Keyingi tugmasini ko'rsatish";
+            } else {
+                toggleLabel.textContent = "Keyingi tugmasini yashirish";
+            }
+            
+            // Smooth scroll
             setTimeout(() => {
-                toggleContainer.style.transform = 'scale(1)';
-            }, 200);
-        }
+                toggleItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 100);
+        });
         
-        toggleCheckbox.addEventListener('change', toggleShowNext);
-        toggleLabel.addEventListener('click', toggleShowNext);
+        // Checkbox o'zgarishini kuzatish
+        showNextToggle.addEventListener('change', function() {
+            showNextButton = this.checked;
+            
+            // Label matnini o'zgartirish
+            if (this.checked) {
+                toggleLabel.textContent = "Keyingi tugmasini ko'rsatish";
+            } else {
+                toggleLabel.textContent = "Keyingi tugmasini yashirish";
+            }
+            
+            // Description ko'rsatish
+            if (!toggleDescription.classList.contains('show')) {
+                toggleDescription.classList.add('show');
+            }
+            
+            // Smooth scroll
+            setTimeout(() => {
+                toggleItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 100);
+        });
         
         // Drag and drop handlers
         const uploadArea = document.getElementById('uploadArea');
@@ -791,9 +873,9 @@
             // Apply settings: controlsDiv ni ko'rsatish/yashirish
             const controlsDiv = document.getElementById('controlsDiv');
             if (!showNextButton) {
-                controlsDiv.style.display = 'none';
+                controlsDiv.classList.add('hidden');
             } else {
-                controlsDiv.style.display = 'block';
+                controlsDiv.classList.remove('hidden');
             }
            
             currentQuestionIndex = 0;
@@ -801,7 +883,7 @@
             score = 0;
             selectedAnswer = null;
             lastKeyPressed = null;
-            isAdvancing = false;
+            answerSelected = false;
             startTime = new Date();
            
             showQuestion();
@@ -836,7 +918,7 @@
                     const optionBtn = document.createElement('button');
                     optionBtn.className = 'option-btn';
                     optionBtn.textContent = shuffledOptions[shuffledIndex];
-                    optionBtn.onclick = () => selectAnswer(index, true); // true for mouse click
+                    optionBtn.onclick = () => selectAnswer(index);
                     optionsContainer.appendChild(optionBtn);
                 });
                
@@ -851,7 +933,7 @@
                 }
                 selectedAnswer = null;
                 lastKeyPressed = null;
-                isAdvancing = false;
+                answerSelected = false;
                
                 // Update button text
                 const isLastQuestion = currentQuestionIndex === questions.length - 1;
@@ -874,10 +956,14 @@
         }
         
         // Select an answer
-        function selectAnswer(index, isMouseClick = false) {
-            if (selectedAnswer !== null || isAdvancing) return; // Ortiqcha bosishni oldini olish, faqat yashirilgan holatda ham ishlaydi
-           
+        function selectAnswer(index) {
+            // Agar keyingi tugma yashirilgan bo'lsa va javob allaqachon tanlangan bo'lsa, qayta tanlashni oldini olish
+            if (!showNextButton && answerSelected) {
+                return;
+            }
+            
             selectedAnswer = index;
+            answerSelected = true;
            
             // Remove previous selections
             document.querySelectorAll('.option-btn').forEach(btn => {
@@ -888,7 +974,7 @@
             const selectedBtn = document.querySelectorAll('.option-btn')[index];
             selectedBtn.classList.add('selected');
            
-            // Enable next button if shown (faqat agar showNextButton true bo'lsa)
+            // Enable next button if shown
             if (showNextButton) {
                 document.getElementById('nextBtn').disabled = false;
             }
@@ -896,13 +982,16 @@
             // Add click animation
             selectedBtn.classList.add('animate-fade-in');
            
-            // Auto-advance logic: agar keyingi tugma yashirin bo'lsa (!showNextButton), bitta bosishda keyingi savolga o'tish
-            // Aks holda, agar tugma ko'rinib tursa, kutish
+            // Agar keyingi tugma yashirilgan bo'lsa, avtomatik keyingi savolga o'tish
             if (!showNextButton && selectedAnswer !== null) {
-                isAdvancing = true;
+                // Barcha variantlarni disabled qilish
+                document.querySelectorAll('.option-btn').forEach(btn => {
+                    btn.classList.add('disabled');
+                });
+                
                 setTimeout(() => {
                     nextQuestion();
-                }, 300); // Kichik kechikish feedback uchun
+                }, 300);
             }
         }
         
@@ -988,6 +1077,7 @@
             userAnswers = [];
             score = 0;
             selectedAnswer = null;
+            answerSelected = false;
            
             document.getElementById('resultSection').style.display = 'none';
             document.getElementById('quizSection').style.display = 'block';
@@ -995,9 +1085,9 @@
             // Re-apply settings
             const controlsDiv = document.getElementById('controlsDiv');
             if (!showNextButton) {
-                controlsDiv.style.display = 'none';
+                controlsDiv.classList.add('hidden');
             } else {
-                controlsDiv.style.display = 'block';
+                controlsDiv.classList.remove('hidden');
             }
            
             startTime = new Date();
@@ -1018,6 +1108,7 @@
             userAnswers = [];
             score = 0;
             selectedAnswer = null;
+            answerSelected = false;
         }
         
         // Keyboard navigation
@@ -1026,13 +1117,18 @@
                 if (e.key >= '1' && e.key <= '4') {
                     const index = parseInt(e.key) - 1;
                     if (index < questions[currentQuestionIndex].options.length) {
+                        // Agar keyingi tugma yashirilgan bo'lsa va javob allaqachon tanlangan bo'lsa, qayta tanlashni oldini olish
+                        if (!showNextButton && answerSelected) {
+                            return;
+                        }
+                        
                         if (lastKeyPressed === index && selectedAnswer === index && showNextButton) {
                             // Agar tugma ko'rinib tursa, ikki marta bosishda o'tish
                             e.preventDefault();
                             nextQuestion();
                         } else {
                             // Select
-                            selectAnswer(index, false);
+                            selectAnswer(index);
                             lastKeyPressed = index;
                         }
                     }
@@ -1063,6 +1159,23 @@
                 }
             }
         }
+        
+        // Sample download functionality
+        const sampleModal = document.getElementById("sampleModal");
+        const sampleModalClose = document.getElementById("sampleModalClose");
+        const sampleToggle = document.getElementById("sampleToggle");
+        sampleToggle.addEventListener("click", function() {
+            const link = document.createElement("a");
+            link.href = "https://tezkorquiz.uz/namuna_test.txt";
+            link.download = "namuna_test.txt";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            sampleModal.style.display = 'flex';
+        });
+        sampleModalClose.addEventListener("click", function() {
+            sampleModal.style.display = 'none';
+        });
     </script>
 </body>
 </html>
