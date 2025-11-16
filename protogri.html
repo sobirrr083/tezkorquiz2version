@@ -13,7 +13,7 @@
     body{font-family:'Poppins',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,sans-serif;background:#fff;min-height:100vh;position:relative;overflow-x:hidden}
     body::before{content:'';position:fixed;inset:0;background:#fff;background-image:radial-gradient(circle at top left,rgba(70,130,180,.3),transparent 70%);filter:blur(80px);z-index:0;pointer-events:none}
     .main-wrapper{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;position:relative;z-index:1}
-    .container{background:rgba(255,255,255,.98);backdrop-filter:blur(10px);border-radius:20px;box-shadow:0 8px 32px rgba(67,97,238,.08);padding:40px;width:100%;max-width:420px;animation:slideUp .5s ease;border:1px solid rgba(67,97,238,.05)}
+    .container{background:rgba(255,255,255,.98);backdrop-filter:blur(10px);border-radius:20px;box-shadow:0 8px 32px rgba(67,97,238,.08);padding:40px;width:100%;max-width:500px;animation:slideUp .5s ease;border:1px solid rgba(67,97,238,.05)}
     @keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
     .page{display:none}
     .page.active{display:block;animation:fadeIn .4s ease}
@@ -56,7 +56,7 @@
     .forgot-password a{color:#4361ee;text-decoration:none;font-size:14px;font-weight:400;cursor:pointer}
     .forgot-password a:hover{text-decoration:underline}
     .icon{text-align:center;margin-bottom:20px;font-size:48px}
-    .icon img{width:64px;height:64px;object-fit:contain}
+    .icon img{width:500px;height:500px;object-fit:contain;max-width:100%;height:auto}
     .alert{padding:12px 16px;border-radius:8px;margin-bottom:20px;font-size:14px;display:none;animation:slideDown .3s ease;font-weight:400}
     @keyframes slideDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
     .alert.show{display:block}
@@ -81,7 +81,7 @@
     .strength-good .password-strength-text{color:#ffa502}
     .strength-strong .password-strength-bar{width:100%;background:#26de81}
     .strength-strong .password-strength-text{color:#26de81}
-    .password-requirements{margin-top:10px}
+    .password-requirements{display:none;margin-top:10px}
     .password-requirements .req{font-size:12px;color:#888;margin-bottom:4px;line-height:1.3;transition:color .3s}
     .password-requirements .req.met{color:#26de81}
     .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);backdrop-filter:blur(4px);z-index:1000;align-items:center;justify-content:center;padding:20px;animation:fadeIn .3s ease}
@@ -422,8 +422,10 @@
 
     pwInput?.addEventListener('input', e => {
       const p = e.target.value;
+      const reqs = e.target.parentElement.querySelector('.password-requirements');
       if (p.length === 0) {
         // Boshlang'ich holat
+        reqs.style.display = 'none';
         document.querySelectorAll('.req').forEach(req => req.classList.remove('met'));
         const container = e.target.parentElement.querySelector('.password-strength');
         const bar = container.querySelector('.password-strength-bar');
@@ -433,6 +435,7 @@
         textEl.textContent = '';
         return;
       }
+      reqs.style.display = 'block';
       checkPasswordRequirements(p);
     });
 
