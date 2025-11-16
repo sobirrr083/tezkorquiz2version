@@ -525,25 +525,16 @@
                
                 <input type="file" id="fileInput" accept=".txt" style="display: none;">
                
-                <!-- Settings Toggles -->
+                <!-- Settings Toggle (umumiy) -->
                 <div class="toggle-container">
-                    <h5 style="text-align: center; margin-bottom: 15px; color: #4f46e5;">Test sozlamalari</h5>
+                    <h5 style="text-align: center; margin-bottom: 15px; color: #4f46e5;">Test rejimi</h5>
                     <div class="toggle-item">
                         <div>
-                            <label class="toggle-label">Keyingi tugmasini ko'rsatish</label>
-                            <div class="toggle-description">Keyingi savolga o'tish uchun tugma ko'rinadi</div>
+                            <label class="toggle-label">Avtomatik rejim (bitta bosishda keyingi)</label>
+                            <div class="toggle-description">Variant tanlanganda avtomatik keyingi savolga o'tadi. Keyingi tugma yashirin bo'ladi. Klaviatura va touch rejimida ham ishlaydi.</div>
                         </div>
                         <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="showNextToggle" checked>
-                        </div>
-                    </div>
-                    <div class="toggle-item">
-                        <div>
-                            <label class="toggle-label">Bitta bosishda javob</label>
-                            <div class="toggle-description">Bitta bosishda keyingi savolga o'tadi.</div>
-                        </div>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="autoAdvanceToggle">
+                            <input class="form-check-input" type="checkbox" id="autoModeToggle">
                         </div>
                     </div>
                 </div>
@@ -629,9 +620,11 @@
         let score = 0;
         let startTime;
         let selectedAnswer = null;
-        let showNextButton = true;
-        let autoAdvance = true;
+        let autoMode = false; // Umumiy toggle: true - avtomatik rejim (keyingi tugma yashirin, bitta bosishda o'tish), false - klassik (keyingi tugma ko'rinadi)
         let lastKeyPressed = null;
+        let lastClickTime = 0; // Ikki marta bosishni oldini olish uchun
+        let doubleClickThreshold = 300; // ms, ikki bosish orasidagi vaqt
+        let isProcessing = false; // Jarayonni bloklash uchun
         // Fisher-Yates shuffle algorithm
         function shuffle(array) {
             for (let i = array.length - 1; i > 0; i--) {
@@ -640,12 +633,9 @@
             }
             return array;
         }
-        // Toggle event listeners
-        document.getElementById('showNextToggle').addEventListener('change', function() {
-            showNextButton = this.checked;
-        });
-        document.getElementById('autoAdvanceToggle').addEventListener('change', function() {
-            autoAdvance = this.checked;
+        // Umumiy toggle event listener
+        document.getElementById('autoModeToggle').addEventListener('change', function() {
+            autoMode = this.checked;
         });
         // Drag and drop handlers
         const uploadArea = document.getElementById('uploadArea');
@@ -789,12 +779,12 @@
             document.getElementById('quizSection').style.display = 'block';
             document.getElementById('totalQuestions').textContent = questions.length;
            
-            // Apply settings
+            // Apply autoMode setting
             const controlsDiv = document.getElementById('controlsDiv');
-            if (!showNextButton) {
-                controlsDiv.style.display = 'none';
+            if (autoMode) {
+                controlsDiv.style.display = 'none'; // Keyingi tugma yashirin
             } else {
-                controlsDiv.style.display = 'block';
+                controlsDiv.style.display = 'block'; // Ko'rsat
             }
            
             currentQuestionIndex = 0;
@@ -802,12 +792,17 @@
             score = 0;
             selectedAnswer = null;
             lastKeyPressed = null;
+            lastClickTime = 0;
+            isProcessing = false;
             startTime = new Date();
            
             showQuestion();
         }
         // Show current question
         function showQuestion() {
+            if (isProcessing) return; // Bloklash
+            isProcessing = true;
+           
             const question = questions[currentQuestionIndex];
             const questionSlide = document.getElementById('questionSlide');
            
@@ -835,7 +830,7 @@
                     const optionBtn = document.createElement('button');
                     optionBtn.className = 'option-btn';
                     optionBtn.textContent = shuffledOptions[shuffledIndex];
-                    optionBtn.onclick = () => selectAnswer(index, true); // true for mouse click
+                    optionBtn.onclick = (e) => handleOptionClick(e, index); // Yangi handler
                     optionsContainer.appendChild(optionBtn);
                 });
                
@@ -845,7 +840,7 @@
                
                 // Reset button and selection
                 const nextBtn = document.getElementById('nextBtn');
-                if (showNextButton) {
+                if (!autoMode) {
                     nextBtn.disabled = true;
                 }
                 selectedAnswer = null;
@@ -868,10 +863,20 @@
                         }, index * 100);
                     });
                 }, 200);
+               
+                isProcessing = false;
             }, 200);
         }
-        // Select an answer
-        function selectAnswer(index, isMouseClick = false) {
+        // Handle option click (umumiy, avtomatik rejimni hisobga olgan)
+        function handleOptionClick(e, index) {
+            if (isProcessing) return; // Bloklash
+            const currentTime = Date.now();
+            if (currentTime - lastClickTime < doubleClickThreshold) {
+                // Ikki marta tez bosish - e'tiborsizlik, hech nima qilma
+                return;
+            }
+            lastClickTime = currentTime;
+           
             selectedAnswer = index;
            
             // Remove previous selections
@@ -883,26 +888,26 @@
             const selectedBtn = document.querySelectorAll('.option-btn')[index];
             selectedBtn.classList.add('selected');
            
-            // Enable next button if shown
-            if (showNextButton) {
+            // Enable next button if not autoMode
+            if (!autoMode) {
                 document.getElementById('nextBtn').disabled = false;
             }
            
             // Add click animation
             selectedBtn.classList.add('animate-fade-in');
            
-            // Auto advance if enabled and not last question
-            if (autoAdvance && selectedAnswer !== null) {
+            // Auto advance if autoMode and not last question
+            if (autoMode && selectedAnswer !== null) {
                 setTimeout(() => {
                     nextQuestion();
-                }, 300); // Small delay for feedback
-            } else if (isMouseClick && !autoAdvance) {
-                // For mouse click without auto, do nothing extra
+                }, 300); // Feedback uchun kichik kechikish
             }
         }
         // Move to next question
         function nextQuestion() {
-            if (selectedAnswer === null) return;
+            if (selectedAnswer === null || isProcessing) return;
+           
+            isProcessing = true;
            
             const question = questions[currentQuestionIndex];
             const correctAnswerIndex = question.shuffledAnswer;
@@ -919,8 +924,8 @@
                 score++;
             }
            
-            // Disable next button temporarily if shown
-            if (showNextButton) {
+            // Disable next button temporarily if not autoMode
+            if (!autoMode) {
                 document.getElementById('nextBtn').disabled = true;
             }
            
@@ -932,6 +937,7 @@
                 } else {
                     showResults();
                 }
+                isProcessing = false;
             }, 1500);
         }
         // Show quiz results
@@ -979,13 +985,15 @@
             userAnswers = [];
             score = 0;
             selectedAnswer = null;
+            lastClickTime = 0;
+            isProcessing = false;
            
             document.getElementById('resultSection').style.display = 'none';
             document.getElementById('quizSection').style.display = 'block';
            
-            // Re-apply settings
+            // Re-apply autoMode
             const controlsDiv = document.getElementById('controlsDiv');
-            if (!showNextButton) {
+            if (autoMode) {
                 controlsDiv.style.display = 'none';
             } else {
                 controlsDiv.style.display = 'block';
@@ -1009,29 +1017,56 @@
             score = 0;
             selectedAnswer = null;
         }
-        // Keyboard navigation
+        // Keyboard navigation (umumiy rejim uchun moslashtirilgan)
         document.addEventListener('keydown', function(e) {
-            if (document.getElementById('quizSection').style.display !== 'none') {
+            if (document.getElementById('quizSection').style.display !== 'none' && !isProcessing) {
+                const currentTime = Date.now();
+                if (currentTime - lastClickTime < doubleClickThreshold) {
+                    e.preventDefault();
+                    return;
+                }
+                lastClickTime = currentTime;
+               
                 if (e.key >= '1' && e.key <= '4') {
                     const index = parseInt(e.key) - 1;
                     if (index < questions[currentQuestionIndex].options.length) {
-                        if (lastKeyPressed === index && selectedAnswer === index && !autoAdvance) {
-                            // Double press: advance
-                            e.preventDefault();
-                            nextQuestion();
-                        } else {
-                            // Select
-                            selectAnswer(index, false);
-                            lastKeyPressed = index;
-                        }
+                        selectAnswer(index, false); // Klaviatura uchun
                     }
-                } else if (e.key === 'Enter' && selectedAnswer !== null && !autoAdvance) {
+                } else if (e.key === 'Enter' && selectedAnswer !== null && !autoMode) {
                     e.preventDefault();
                     nextQuestion();
                 }
             }
         });
-        // Touch gestures for mobile
+        // Select answer for keyboard (avtomatik rejimni hisobga olgan)
+        function selectAnswer(index, isMouseClick = false) {
+            selectedAnswer = index;
+           
+            // Remove previous selections
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+           
+            // Add selection to selected option
+            const selectedBtn = document.querySelectorAll('.option-btn')[index];
+            selectedBtn.classList.add('selected');
+           
+            // Enable next button if not autoMode
+            if (!autoMode) {
+                document.getElementById('nextBtn').disabled = false;
+            }
+           
+            // Add animation
+            selectedBtn.classList.add('animate-fade-in');
+           
+            // Auto advance if autoMode
+            if (autoMode) {
+                setTimeout(() => {
+                    nextQuestion();
+                }, 300);
+            }
+        }
+        // Touch gestures for mobile (swipe to next, agar tanlangan bo'lsa)
         let touchStartX = 0;
         let touchEndX = 0;
         document.addEventListener('touchstart', function(e) {
@@ -1042,11 +1077,12 @@
             handleSwipe();
         });
         function handleSwipe() {
+            if (isProcessing) return;
             const swipeThreshold = 50;
             const diff = touchStartX - touchEndX;
            
             if (Math.abs(diff) > swipeThreshold) {
-                if (diff > 0 && selectedAnswer !== null && !autoAdvance) {
+                if (diff > 0 && selectedAnswer !== null && !autoMode) {
                     nextQuestion();
                 }
             }
