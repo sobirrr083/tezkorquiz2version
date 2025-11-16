@@ -57,6 +57,9 @@
     .forgot-password a:hover{text-decoration:underline}
     .icon{text-align:center;margin-bottom:20px;font-size:48px}
     .icon img{width:500px;height:500px;object-fit:contain;max-width:100%;height:auto}
+    /* Reset page uchun maxsus icon stillari - ixcham va chiroyli */
+    #resetPage .icon {margin-bottom: 15px;}
+    #resetPage .icon img {width: 80px; height: 80px; max-width: 80px; max-height: 80px; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));}
     .alert{padding:12px 16px;border-radius:8px;margin-bottom:20px;font-size:14px;display:none;animation:slideDown .3s ease;font-weight:400}
     @keyframes slideDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
     .alert.show{display:block}
@@ -278,27 +281,32 @@
       showAlert('welcomeAlert','Firebase ulanishida xatolik. Console ni tekshiring.','error');
     }
 
-    /* ==== KO'Z ICONKASI ==== */
-    const eyeSVG = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    /* ==== KO'Z ICONKASI - TO'G'IRLANGAN: TESKARI EMAS, OCHIQ/YOPIQ ALMASHTIRILGAN ==== */
+    // Ochiq ko'z (ko'rish uchun)
+    const eyeOpenSVG = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
     </svg>`;
 
-    const eyeSlashSVG = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    // Yopiq ko'z (yashirish uchun - slash bilan)
+    const eyeClosedSVG = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
     </svg>`;
 
     function togglePassword(inputId, eyeId) {
       const input = document.getElementById(inputId);
       const eye = document.getElementById(eyeId);
-      eye.innerHTML = eyeSlashSVG; // boshida yashirin
+      // Boshida yopiq ko'z (yashirin holat)
+      eye.innerHTML = eyeClosedSVG;
       eye.addEventListener('click', () => {
         if (input.type === 'password') {
+          // Yashirilgan -> ko'rsatish: ochiq ko'z
           input.type = 'text';
-          eye.innerHTML = eyeSVG;
+          eye.innerHTML = eyeOpenSVG;
         } else {
+          // Ko'rsatilgan -> yashirish: yopiq ko'z
           input.type = 'password';
-          eye.innerHTML = eyeSlashSVG;
+          eye.innerHTML = eyeClosedSVG;
         }
       });
     }
