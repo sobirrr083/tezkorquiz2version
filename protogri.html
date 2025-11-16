@@ -1,1342 +1,497 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-  <!-- himoyalangan sahifa: protected.html -->
-<script type="module">
-  // Firebase SDK import qilingan deb faraz qilamiz
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-
-  const firebaseConfig = {
-   apiKey: "AIzaSyBxIpLY5WasiSIlDL4japBLnnXRwOLUKEQ",
-      authDomain: "tezkor-quiz-bbe3c.firebaseapp.com",
-    // ... boshqa sozlamalar
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-
-  // Current page URL (return uchun)
-  const returnUrl = encodeURIComponent(window.location.pathname + window.location.search);
-
-  onAuthStateChanged(auth, (user) => {
-    if (!user) {
-      // foydalanuvchi kirmagan – login sahifasiga yo'naltirish
-      window.location.replace(`/kirish.html?returnUrl=${returnUrl}`);
-    } else {
-      // foydalanuvchi kirdi – sahifa davom ettirilsin
-      console.log("User logged in:", user.uid);
-    }
-  });
-</script>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pro Quiz - Tezkor Quiz</title>
-  <link rel="icon" href="aga/iconcha.png">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.10.0/lottie.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <title>Tizimga kirish</title>
+  <meta name="description" content="Tezkor Quiz tizimiga kirish. Online testlar, quizlar va imtihon tayyorlov uchun shaxsiy kabinetga kirish sahifasi.">
+
+   <link rel="icon" href="aga/iconcha.png">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --body-bg: #f4f6f9;
-      --container-bg: #fff;
-      --text-color: #333;
-      --shadow-color: rgba(0, 0, 0, 0.1);
-      --option-hover: #f8f9fa;
-      --correct-bg: #d1e7dd;
-      --correct-border: #198754;
-      --incorrect-bg: #f8d7da;
-      --incorrect-border: #dc3545;
-      --progress-bg: #e9ecef;
-      --stats-bg: #f8f9fa;
-      --toggle-bg: #ccc;
-      --button-bg: #506eec;
-      --button-hover: #3a5ad9;
-      --new-test-bg: #eff6ff;
-      --new-test-hover: #dbe9ff;
-      --share-bg: #f0fdf4;
-      --share-hover: #d1fae5;
-      --restart-bg: #fefbe8;
-      --restart-hover: #fef3c7;
-      --history-bg: #f8f9fa;
-      --history-hover: #e9ecef;
-      --scrollbar-track: #e9ecef;
-      --scrollbar-thumb: #506eec;
-    }
-
-    [data-theme="dark"] {
-      --body-bg: #2a2a2a;
-      --container-bg: #333333;
-      --text-color: #b0b0b0;
-      --shadow-color: rgba(255, 255, 255, 0.1);
-      --option-hover: #444444;
-      --correct-bg: #2e6b47;
-      --correct-border: #34c759;
-      --incorrect-bg: #6b2e2e;
-      --incorrect-border: #ff5555;
-      --progress-bg: #444444;
-      --stats-bg: #3a3a3a;
-      --toggle-bg: #666;
-      --button-bg: #5a74e8;
-      --button-hover: #4a64d8;
-      --new-test-bg: #6b7280;
-      --new-test-hover: #4b5563;
-      --share-bg: #4b5563;
-      --share-hover: #374151;
-      --restart-bg: #78716c;
-      --restart-hover: #57534e;
-      --history-bg: #3a3a3a;
-      --history-hover: #4a4a4a;
-      --scrollbar-track: #444444;
-      --scrollbar-thumb: #5a74e8;
-    }
-
-    body {
-      background-color: var(--body-bg);
-      color: var(--text-color);
-      overflow-x: hidden;
-      display: flex;
-      justify-content: center;
-      min-height: 100vh;
-      transition: all 0.3s ease;
-      position: relative;
-    }
-
-    .container {
-      width: 70%;
-      margin: 20px auto;
-      background-color: var(--container-bg);
-      padding: 30px;
-      border-radius: 6px;
-      box-shadow: 0 2px 5px var(--shadow-color);
-      max-width: 1200px;
-      position: relative;
-      min-height: 100%;
-      transition: all 0.3s ease;
-    }
-    @media (min-width: 1200px) { .container { width: 70%; padding: 40px; } }
-    @media (max-width: 992px) { .container { width: 80%; } }
-    @media (max-width: 768px) { .container { width: 90%; padding: 20px; } }
-    .file-label { margin-bottom: 10px; font-size: 18px; }
-    #uploadStatus { font-weight: bold; margin-top: 10px; font-size: 16px; }
-    .question-container {
-      border: 1px solid var(--progress-bg);
-      border-radius: 6px;
-      padding: 20px;
-      margin-bottom: 20px;
-      scroll-margin-top: 20px;
-      background-color: var(--container-bg);
-      transition: all 0.3s ease;
-      position: relative;
-      z-index: 1;
-      min-height: 200px;
-    }
-    .question-text { font-weight: bold; margin-bottom: 15px; font-size: 18px; }
-    .options-container .option-item { 
-      margin-bottom: 12px; 
-      padding: 12px; 
-      border-radius: 4px; 
-      display: flex; 
-      align-items: flex-start; 
-      cursor: pointer; 
-      transition: all 0.2s ease; 
-      font-size: 16px; 
-    }
-    .options-container .option-item:hover { background-color: var(--option-hover); }
-    .options-container .option-item.correct { background-color: var(--correct-bg); border-left: 4px solid var(--correct-border); }
-    .options-container .option-item.incorrect { background-color: var(--incorrect-bg); border-left: 4px solid var(--incorrect-border); }
-    .option-checkbox { margin-right: 10px; flex-shrink: 0; }
-    .option-text { flex-grow: 1; word-wrap: break-word; }
-    .check-icon { margin-right: 8px; font-weight: bold; margin-left: 8px; flex-shrink: 0; }
-    @keyframes correctPulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.005); }
-      100% { transform: scale(1); }
-    }
-    .correct-anim { animation: correctPulse 0.5s ease; }
-    @keyframes shake {
-      0% { transform: translateX(0); }
-      25% { transform: translateX(-3px); }
-      50% { transform: translateX(3px); }
-      75% { transform: translateX(-3px); }
-      100% { transform: translateX(0); }
-    }
-    .incorrect-anim { animation: shake 0.5s ease; }
-    #backToTop {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      display: none;
-      background: var(--button-bg);
-      color: white;
-      border: none;
-      padding: 15px 20px;
-      font-size: 20px;
-      border-radius: 50%;
-      cursor: pointer;
-      transition: all 0.3s;
-      box-shadow: 0px 4px 6px var(--shadow-color);
-      z-index: 2000;
-    }
-    #backToTop:hover { background: var(--button-hover); transform: scale(1.1); }
-    #backToTop.recommend { padding: 12px 24px; border-radius: 25px; display: flex; align-items: center; justify-content: center; min-width: 120px; }
-    #backToTop.recommend .count { margin-left: 8px; font-size: 16px; }
-    
-    /* CHECKBOX O'LCHAMI TUZATILDI */
-    .custom-checkbox { 
-      width: 22px; 
-      height: 22px;
-      min-width: 22px;
-      min-height: 22px;
-      border-radius: 3px; 
-      border: 1px solid #9098a9; 
-      margin-right: 12px; 
-      position: relative; 
-      margin-top: 3px; 
-      transition: all 0.2s ease;
-      flex-shrink: 0 !important;
-    }
-    .custom-checkbox.checked { background-color: var(--button-bg); border-color: var(--button-bg); }
-    .custom-checkbox .checkmark { display: none; color: white; position: absolute; top: 0px; left: 5px; font-size: 14px; }
-    .custom-checkbox.checked .checkmark { display: block; }
-    .option-item:hover .custom-checkbox { border-color: var(--button-bg); }
-    
-    #quizCompletionSection { display: none; margin-top: 40px; text-align: center; }
-    .stats-container { margin-top: 30px; padding: 30px; border-radius: 8px; background-color: var(--stats-bg); box-shadow: 0 2px 4px var(--shadow-color); transition: all 0.3s ease; }
-    .progress-bar-container { margin-top: 20px; height: 24px; background-color: var(--progress-bg); border-radius: 12px; overflow: hidden; position: relative; }
-    .progress-bar { height: 100%; border-radius: 12px; transition: width 1s ease-in-out; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 16px; }
-    .progress-correct { background-color: var(--correct-border); }
-    .progress-incorrect { background-color: var(--incorrect-border); }
-    #lottieContainer { width: 250px; height: 250px; margin: 0 auto 30px auto; }
-    .celebration-title { font-size: 32px; font-weight: bold; margin-bottom: 30px; color: var(--button-bg); }
-    .stat-number { font-size: 24px; font-weight: bold; }
-    .dual-progress { position: relative; height: 24px; background-color: var(--progress-bg); border-radius: 12px; overflow: hidden; margin: 15px 0 30px 0; transition: all 0.3s ease; }
-    .action-button { background-color: var(--button-bg); color: white; border: none; padding: 12px 25px; border-radius: 5px; font-weight: bold; font-size: 18px; cursor: pointer; transition: all 0.3s ease; margin: 10px; }
-    .action-button:hover { background-color: var(--button-hover); transform: translateY(-2px); box-shadow: 0 4px 8px var(--shadow-color); }
-    .action-button:active { transform: translateY(0); }
-    
-    .share-button {
-      background-color: var(--share-bg);
-      color: #15803d;
-      border: none;
-      padding: 12px 25px;
-      border-radius: 5px;
-      font-weight: bold;
-      font-size: 18px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      margin: 10px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .share-button:hover {
-      background-color: var(--share-hover);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px var(--shadow-color);
-    }
-    
-    .restart-button {
-      background-color: var(--restart-bg);
-      color: #b45309;
-      border: none;
-      padding: 12px 25px;
-      border-radius: 5px;
-      font-weight: bold;
-      font-size: 18px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      margin: 10px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .restart-button:hover {
-      background-color: var(--restart-hover);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px var(--shadow-color);
-    }
-    
-    .new-test-button {
-      background-color: var(--new-test-bg);
-      color: #1e40af;
-      border: none;
-      padding: 12px 25px;
-      border-radius: 5px;
-      font-weight: bold;
-      font-size: 18px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      margin: 10px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .new-test-button:hover {
-      background-color: var(--new-test-hover);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px var(--shadow-color);
-    }
-    .new-test-button:active {
-      transform: translateY(0);
-    }
-    
-    .buttons-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 20px;
-    }
-    
-    /* VAQT KO'RSATKICHI UCHUN STYLE */
-    .time-display {
-      font-size: 18px;
-      color: var(--text-color);
-      margin-bottom: 15px;
-      padding: 12px;
-      background-color: var(--new-test-bg);
-      border-radius: 8px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    @media (max-width: 768px) {
-      .buttons-container {
-        flex-direction: column;
-      }
-      .new-test-button,
-      .share-button,
-      .restart-button,
-      .action-button {
-        width: 100%;
-        margin: 5px 0;
-      }
-    }
-    
-    h1 { font-size: 32px; margin-bottom: 30px; }
-    #fileInput { font-size: 16px; padding: 10px; }
-    p { font-size: 16px; }
-    #testCount { font-size: 18px; margin-bottom: 20px; }
-    .toggle-container { display: flex; align-items: center; margin-top: 10px; }
-    .toggle-switch { position: relative; display: inline-block; width: 48px; height: 24px; margin-right: 8px; }
-    .toggle-switch input { opacity: 0; width: 0; height: 0; }
-    .toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--toggle-bg); transition: .4s; border-radius: 24px; }
-    .toggle-slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
-    input:checked + .toggle-slider { background-color: var(--button-bg); }
-    input:checked + .toggle-slider:before { transform: translateX(24px); }
-    .toggle-label { font-size: 14px; color: var(--text-color); }
-    .history-section { margin-top: 15px; width: 100%; }
-    .history-toggle { background-color: var(--button-bg); color: white; border: none; padding: 8px 12px; border-radius: 5px; font-size: 14px; cursor: pointer; width: 100%; text-align: left; transition: all 0.3s ease; }
-    .history-toggle:hover { background-color: var(--button-hover); }
-    .history-toggle.collapsed::after { content: " ▸"; }
-    .history-toggle:not(.collapsed)::after { content: " ▾"; }
-    .history-list { max-height: 0; overflow-y: auto; overflow-x: hidden; transition: max-height 0.3s ease-out; background-color: var(--history-bg); border-radius: 5px; margin-top: 5px; padding: 0; scrollbar-width: thin; scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track); }
-    .history-list::-webkit-scrollbar { width: 8px; }
-    .history-list::-webkit-scrollbar-track { background: var(--scrollbar-track); border-radius: 5px; }
-    .history-list::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 5px; }
-    .history-list::-webkit-scrollbar-thumb:hover { background: var(--button-hover); }
-    .history-list.visible { max-height: 150px; padding: 10px; transition: max-height 0.3s ease-in; }
-    .history-item { padding: 5px 10px; font-size: 13px; color: var(--text-color); border-bottom: 1px solid var(--progress-bg); display: flex; justify-content: space-between; align-items: center; opacity: 0; animation: fadeIn 0.3s ease forwards; transition: all 0.3s ease; }
-    .history-item:last-child { border-bottom: none; }
-    .history-item:hover { background-color: var(--history-hover); transform: translateX(5px); }
-    .history-item.recent { font-size: 14px; font-weight: 600; background-color: var(--new-test-bg); padding: 8px 12px; border-left: 3px solid var(--button-bg); }
-    .history-item.recent:hover { background-color: var(--new-test-hover); }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-5px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .theme-toggle-container { display: flex; align-items: center; justify-content: flex-end; margin-bottom: 20px; gap: 20px; }
-
-    .default-message {
-      padding: 20px;
-      background-color: var(--stats-bg);
-      border-radius: 8px;
-      box-shadow: 0 2px 4px var(--shadow-color);
-      font-size: 16px;
-      line-height: 1.6;
-    }
-    .default-message pre {
-      background-color: var(--progress-bg);
-      padding: 10px;
-      border-radius: 5px;
-      font-size: 14px;
-      white-space: pre-wrap;
-    }
-    
-    .test-name-display {
-      font-size: 20px;
-      font-weight: bold;
-      color: var(--button-bg);
-      margin-bottom: 20px;
-      padding: 15px;
-      background-color: var(--stats-bg);
-      border-radius: 8px;
-      border-left: 4px solid var(--button-bg);
-    }
-    
-    .loading-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-      color: white;
-      font-size: 18px;
-      flex-direction: column;
-      gap: 20px;
-    }
-    
-    .loading-spinner {
-      width: 50px;
-      height: 50px;
-      border: 5px solid #f3f3f3;
-      border-top: 5px solid var(--button-bg);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-    
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    /* Modal styles */
-    .share-modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.4);
-      justify-content: center;
-      align-items: center;
-      z-index: 10000;
-    }
-
-    .share-modal-content {
-      background-color: var(--container-bg);
-      padding: 24px;
-      border-radius: 12px;
-      width: 90%;
-      max-width: 400px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      text-align: center;
-    }
-
-    .share-modal-content h3 {
-      margin-bottom: 20px;
-      color: var(--text-color);
-      font-size: 20px;
-      font-weight: 600;
-    }
-
-    .share-options {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-
-    .share-options-top {
-      display: flex;
-      flex-wrap: nowrap;
-      gap: 12px;
-      width: 100%;
-      justify-content: center;
-    }
-
-    .share-option {
-      flex: 1;
-      background-color: transparent;
-      color: var(--text-color);
-      border: 1px solid var(--progress-bg);
-      padding: 10px 20px;
-      border-radius: 8px;
-      font-size: 15px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      min-width: 120px;
-    }
-
-    .share-option:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .share-option.telegram {
-      background-color: #E6F3FA;
-      border-color: #4DABF7;
-      color: #1D93D2;
-    }
-
-    .share-option.telegram:hover {
-      background-color: #CCE8F6;
-    }
-
-    .share-option.whatsapp {
-      background-color: #E6FFF5;
-      border-color: #4ADE80;
-      color: #25D366;
-    }
-
-    .share-option.whatsapp:hover {
-      background-color: #CCFFE6;
-    }
-
-    .share-option.other {
-      background-color: var(--new-test-bg);
-      border-color: var(--progress-bg);
-      color: var(--text-color);
-      width: 100%;
-      max-width: calc(240px + 12px);
-    }
-
-    .share-option.other:hover {
-      background-color: var(--new-test-hover);
-    }
-
-    .share-modal-close {
-      background-color: transparent;
-      color: var(--incorrect-border);
-      border: 1px solid var(--incorrect-border);
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 500;
-      margin-top: 12px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .share-modal-close:hover {
-      background-color: var(--incorrect-bg);
-      transform: translateY(-2px);
-    }
-
-    @media (max-width: 576px) {
-      .share-options-top {
-        flex-direction: column;
-        gap: 8px;
-      }
-      .share-option {
-        width: 100%;
-        min-width: 0;
-      }
-      .share-option.other {
-        max-width: 100%;
-      }
-    }
+    *{margin:0;padding:0;box-sizing:border-box;user-select:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none}
+    body{font-family:'Poppins',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,sans-serif;background:#fff;min-height:100vh;position:relative;overflow-x:hidden}
+    body::before{content:'';position:fixed;inset:0;background:#fff;background-image:radial-gradient(circle at top left,rgba(70,130,180,.3),transparent 70%);filter:blur(80px);z-index:0;pointer-events:none}
+    .main-wrapper{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;position:relative;z-index:1}
+    .container{background:rgba(255,255,255,.98);backdrop-filter:blur(10px);border-radius:20px;box-shadow:0 8px 32px rgba(67,97,238,.08);padding:40px;width:100%;max-width:420px;animation:slideUp .5s ease;border:1px solid rgba(67,97,238,.05)}
+    @keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+    .page{display:none}
+    .page.active{display:block;animation:fadeIn .4s ease}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    .logo{text-align:center;margin-bottom:30px}
+    .logo-icon{width:64px;height:64px;background:linear-gradient(135deg,#4361ee,#3651d4);border-radius:16px;display:inline-flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:12px;box-shadow:0 8px 24px rgba(67,97,238,.2);overflow:hidden}
+    .logo-icon img{width:100%;height:100%;object-fit:cover}
+    h2{color:#1a1a2e;margin-bottom:8px;text-align:center;font-size:28px;font-weight:500}
+    .subtitle,.description{text-align:center;color:#666;margin-bottom:35px;font-size:14px;line-height:1.5;font-weight:400}
+    .description{margin-bottom:30px}
+    .input-group{margin-bottom:20px;position:relative}
+    .input-group label{display:block;margin-bottom:8px;color:#333;font-size:14px;font-weight:500}
+    input{width:100%;padding:12px 16px;border:1px solid #e1e8ed;border-radius:10px;font-size:15px;transition:all .3s;outline:none;background:#fff;font-weight:400}
+    input:focus{border-color:#4361ee;box-shadow:0 0 0 3px rgba(67,97,238,.08)}
+    input.error{border-color:#ff4757}
+    /* KO'Z ICONKASI */
+    .eye-toggle{position:absolute;right:12px;top:42px;cursor:pointer;color:#888;transition:color .2s;z-index:2}
+    .eye-toggle:hover{color:#4361ee}
+    .eye-toggle svg{width:20px;height:20px}
+    .btn{width:100%;padding:14px;border:none;border-radius:10px;font-size:15px;font-weight:500;cursor:pointer;transition:all .3s;margin-bottom:12px;position:relative;display:flex;align-items:center;justify-content:center;gap:8px}
+    .btn:disabled{opacity:.6;cursor:not-allowed;pointer-events:none}
+    .btn-primary{background:#4361ee;color:#fff}
+    .btn-primary:hover:not(:disabled){background:#3651d4;transform:translateY(-1px);box-shadow:0 8px 20px rgba(67,97,238,.2)}
+    .btn-secondary{background:#fff;border:1px solid #e1e8ed;color:#333}
+    .btn-secondary:hover:not(:disabled){background:#f8f9fa;border-color:#4361ee}
+    .btn-google{background:#fff;border:1px solid #e1e8ed;color:#444}
+    .btn-google:hover:not(:disabled){background:#f8f9fa;border-color:#4361ee}
+    .btn-google:disabled{opacity:.55;background:#f8f9fa !important;border-color:#e1e8ed !important;color:#999 !important;cursor:not-allowed}
+    .btn-help{background:transparent;border:1px solid #4361ee;color:#4361ee;padding:10px 20px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;transition:all .3s;display:inline-flex;align-items:center;gap:6px;width:auto}
+    .btn-help:hover{background:#4361ee;color:#fff;transform:translateY(-1px)}
+    .google-icon{width:20px;height:20px}
+    .divider{display:flex;align-items:center;margin:25px 0;color:#999;font-size:14px;font-weight:400}
+    .divider::before,.divider::after{content:'';flex:1;border-bottom:1px solid #e1e8ed}
+    .divider::before{margin-right:10px}
+    .divider::after{margin-left:10px}
+    .links{text-align:center;margin-top:25px;font-size:14px;color:#666;font-weight:400}
+    .links a{color:#4361ee;text-decoration:none;font-weight:500;cursor:pointer}
+    .links a:hover{text-decoration:underline}
+    .forgot-password{text-align:right;margin-bottom:20px}
+    .forgot-password a{color:#4361ee;text-decoration:none;font-size:14px;font-weight:400;cursor:pointer}
+    .forgot-password a:hover{text-decoration:underline}
+    .icon{text-align:center;margin-bottom:20px;font-size:48px}
+    .icon img{width:64px;height:64px;object-fit:contain}
+    .alert{padding:12px 16px;border-radius:8px;margin-bottom:20px;font-size:14px;display:none;animation:slideDown .3s ease;font-weight:400}
+    @keyframes slideDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+    .alert.show{display:block}
+    .alert-error{background:#fee;color:#c33;border:1px solid #fcc}
+    .alert-success{background:#e8f5e9;color:#2e7d32;border:1px solid #c8e6c9}
+    .alert-info{background:#e3f2fd;color:#1565c0;border:1px solid #bbdefb}
+    .spinner{display:none;width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;position:absolute;right:16px;top:50%;transform:translateY(-50%)}
+    @keyframes spin{to{transform:translateY(-50%) rotate(360deg)}}
+    .btn.loading .spinner{display:block}
+    .btn.loading .btn-text{opacity:.7}
+    .checkbox-group{margin:20px 0;display:flex;align-items:flex-start;gap:10px}
+    .checkbox-group input[type=checkbox]{width:18px;height:18px;cursor:pointer;margin-top:2px;flex-shrink:0;accent-color:#4361ee}
+    .checkbox-group label{font-size:13px;color:#555;line-height:1.5;cursor:pointer;user-select:none;font-weight:400}
+    .checkbox-group label a{color:#4361ee;text-decoration:none;font-weight:500}
+    .checkbox-group label a:hover{text-decoration:underline}
+    .password-strength{margin-top:8px;height:3px;background:#e1e8ed;border-radius:2px;overflow:hidden;transition:all .3s}
+    .password-strength-bar{height:100%;width:0;transition:all .3s;border-radius:2px}
+    .password-strength-text{font-size:12px;margin-top:6px;font-weight:500;transition:all .3s}
+    .strength-weak .password-strength-bar{width:33%;background:#ff4757}
+    .strength-weak .password-strength-text{color:#ff4757}
+    .strength-good .password-strength-bar{width:66%;background:#ffa502}
+    .strength-good .password-strength-text{color:#ffa502}
+    .strength-strong .password-strength-bar{width:100%;background:#26de81}
+    .strength-strong .password-strength-text{color:#26de81}
+    .password-requirements{margin-top:10px}
+    .password-requirements .req{font-size:12px;color:#888;margin-bottom:4px;line-height:1.3;transition:color .3s}
+    .password-requirements .req.met{color:#26de81}
+    .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);backdrop-filter:blur(4px);z-index:1000;align-items:center;justify-content:center;padding:20px;animation:fadeIn .3s ease}
+    .modal.show{display:flex}
+    .modal-content{background:#fff;border-radius:16px;padding:28px;max-width:480px;width:100%;max-height:80vh;overflow-y:auto;animation:modalSlideUp .3s ease;box-shadow:0 12px 40px rgba(0,0,0,.15)}
+    @keyframes modalSlideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+    .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;position:sticky;top:0;background:#fff;z-index:10;padding-bottom:10px}
+    .modal-header h3{color:#1a1a2e;font-size:22px;font-weight:500}
+    .modal-close{background:#f8f9fa;border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:18px;line-height:1;transition:all .3s;flex-shrink:0}
+    .modal-close:hover{background:#e9ecef;transform:rotate(90deg)}
+    .modal-body{color:#555;line-height:1.6;font-size:14px;font-weight:400}
+    .modal-body h4{color:#1a1a2e;margin-top:20px;margin-bottom:10px;font-size:16px;font-weight:500}
+    .modal-body p{margin-bottom:15px}
+    .contact-links{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap}
+    .contact-link{flex:1;min-width:130px;display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;background:#fff;border:1px solid #e1e8ed;border-radius:10px;text-decoration:none;color:#333;font-weight:500;font-size:14px;transition:all .3s}
+    .contact-link:hover{border-color:#4361ee;background:#f8f9fa;transform:translateY(-1px)}
+    .contact-link.telegram{border-color:#0088cc;color:#0088cc}
+    .contact-link.telegram:hover{background:#e8f5fa}
+    .contact-link.email{border-color:#4361ee;color:#4361ee}
+    .contact-link.email:hover{background:#e8ecfb}
+    .copy-notification{position:fixed;top:20px;right:20px;background:#ff4757;color:#fff;padding:12px 16px;border-radius:8px;font-weight:500;font-size:14px;box-shadow:0 8px 24px rgba(255,71,87,.2);z-index:10000;animation:slideInRight .3s ease;display:none}
+    .copy-notification.show{display:block}
+    @keyframes slideInRight{from{opacity:0;transform:translateX(100px)}to{opacity:1;transform:translateX(0)}}
+    .countdown{font-size:14px;color:#2e7d32;margin-top:10px;text-align:center}
+    .back-to-login{margin-top:15px}
   </style>
 </head>
 <body>
-<div class="loading-overlay" id="loadingOverlay">
-  <div class="loading-spinner"></div>
-  <div>Rasm yuklanmoqda (Galereyaga saqlanmoqda)...</div>
-</div>
+  <div class="copy-notification" id="copyNotification">
+    www.tezkorquiz.uz saytida parolni nusxalash mumkin emas
+  </div>
 
-<div class="share-modal" id="shareModal">
-  <div class="share-modal-content">
-    <h3>Natijani ulashish</h3>
-    <div class="share-options">
-      <div class="share-options-top">
-        <button class="share-option telegram" data-platform="telegram">
-          <i class="bi bi-telegram"></i> Telegram
+  <div class="main-wrapper">
+    <div class="container">
+      <!-- Welcome Page -->
+      <div id="welcomePage" class="page active">
+        <div class="logo"><div class="logo-icon"><img src="aga/milliylogo.webp" alt="Logo" id="mainLogo"></div></div>
+        <h2>Xush kelibsiz!</h2>
+        <p class="subtitle">Davom etish uchun kirish usulini tanlang</p>
+        <div id="welcomeAlert" class="alert"></div>
+
+        <button class="btn btn-secondary" onclick="showPage('emailLoginPage')">Email orqali kirish</button>
+        <button class="btn btn-primary" onclick="showPage('signupPage')">Ro'yxatdan o'tish</button>
+
+        <div class="divider">yoki</div>
+
+        <button id="welcomeGoogle" class="btn btn-google" disabled>
+          <svg class="google-icon" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+          </svg>
+          <span class="btn-text">Google orqali kirish</span>
+          <div class="spinner"></div>
         </button>
-        <button class="share-option whatsapp" data-platform="whatsapp">
-          <i class="bi bi-whatsapp"></i> WhatsApp
-        </button>
-      </div>
-      <button class="share-option other" data-platform="other">
-        <i class="bi bi-share"></i> Boshqa
-      </button>
-    </div>
-    <button class="share-modal-close" id="shareModalClose">Yopish</button>
-  </div>
-</div>
 
-<div class="container" id="mainContainer">
-  <div class="theme-toggle-container">
-    <label class="toggle-switch">
-      <input type="checkbox" id="themeToggle" />
-      <span class="toggle-slider"></span>
-    </label>
-    <span class="toggle-label">Tungi rejim</span>
-  </div>
-
-  <h1 class="text-center mb-4">Pro Quiz</h1>
-  <div class="mb-4" id="fileSection">
-    <label for="fileInput" class="form-label file-label">Fayl tanlash (.txt)</label>
-    <input type="file" class="form-control" id="fileInput" accept=".txt" />
-    <div id="uploadStatus"></div>
-    <p>Fayl yuklangach testlarni barchasi belgilanmaguncha fayl tanlash ochilmaydi</p>
-    <div class="toggle-container">
-      <label class="toggle-switch">
-        <input type="checkbox" id="autoScrollToggle" checked>
-        <span class="toggle-slider"></span>
-      </label>
-      <span class="toggle-label">Avtomatik pastga tushish</span>
-    </div>
-    <div class="history-section" id="historySection">
-      <button class="history-toggle collapsed" id="historyToggle">Fayl tarixi</button>
-      <div class="history-list" id="historyList"></div>
-    </div>
-  </div>
-
-  <div id="defaultMessage" class="default-message">
-    <p><strong>Pro Quiz qanday ishlaydi?</strong></p>
-    <p>Testlarni boshlash uchun yuqoridagi "Fayl tanlash" orqali .txt faylini yuklang. Fayl quyidagi formatda bo'lishi kerak:</p>
-    <pre>
-    O'zbekiston poytaxti qayer?
-    A. Toshkent
-    B. Samarqand
-    C. Namangan
-    D. Buxoro
-    ANSWER: A
-      
-    Kompyuterda yozish uchun nima kerak?
-    A. Monitor
-    B. Sichqoncha
-    C. Klaviatura
-    D. Printer
-    ANSWER: C
-    </pre>
-    <p><strong>Izoh:</strong> Har bir savol bir qatordan boshlanadi, undan keyin A, B, C, D variantlari va ANSWER: so'zidan keyin bitta probel bilan to'g'ri javob (A, B, C yoki D) ko'rsatiladi va bir qator ochhiq joy (Enter) qoldiriladi va keyingi savol namunadek davom etadi.</p>
-    <p>Barcha testlar shu ko'rinishda bo'lishi lozim.</p>
-  </div>
-
-  <div id="quizList" style="display: none;">
-    <p id="testCount" class="text-success fw-bold"></p>
-    <div id="questionsContainer"></div>
-  </div>
-  
-  <div id="quizCompletionSection">
-    <div id="lottieContainer"></div>
-    <div class="celebration-title">Test yakunlandi!</div>
-    <div class="test-name-display" id="testNameDisplay"></div>
-    <div class="time-display" id="timeDisplay">
-      <i class="bi bi-clock"></i>
-      <span id="timeText">0 daqiqa 0 soniya</span>
-    </div>
-    <div class="stats-container" id="statsContainer">
-      <div class="mb-4">
-        <span class="fw-bold">Jami savollar: </span>
-        <span class="stat-number" id="totalQuestions">0</span>
-      </div>
-      <div class="row mb-3">
-        <div class="col-6 text-end">
-          <span class="stat-number text-success" id="correctAnswers">0</span> to'g'ri
-        </div>
-        <div class="col-6 text-start">
-          <span class="stat-number text-danger" id="incorrectAnswers">0</span> xato
+        <div class="links" style="margin-top:30px;">
+          <button type="button" class="btn-help" onclick="showModal('helpModal')">Yordam kerakmi?</button>
         </div>
       </div>
-      <div class="dual-progress">
-        <div class="progress-bar progress-correct" id="correctBar" style="width: 0%"></div>
-        <div class="progress-bar progress-incorrect" id="incorrectBar" style="width: 0%; position: absolute; right: 0; top: 0;"></div>
+
+      <!-- Email Login Page -->
+      <div id="emailLoginPage" class="page">
+        <h2>Email bilan kirish</h2>
+        <p class="subtitle">Hisobingizga kirish uchun email va parolni kiriting</p>
+        <div id="loginAlert" class="alert"></div>
+        <form id="loginForm">
+          <div class="input-group">
+            <label>Email</label>
+            <input type="email" id="loginEmail" placeholder="namuna@gmail.com" required autocomplete="off" oncopy="handleCopy(event)">
+          </div>
+          <div class="input-group">
+            <label>Parol</label>
+            <input type="password" id="loginPassword" placeholder="parolni kiriting" required autocomplete="off" oncopy="handleCopy(event)">
+            <span class="eye-toggle" id="loginEye">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
+              </svg>
+            </span>
+          </div>
+          <div class="forgot-password"><a onclick="showPage('resetPage')">Parolni unutdingizmi?</a></div>
+          <button type="submit" class="btn btn-primary"><span class="btn-text">Kirish</span><div class="spinner"></div></button>
+        </form>
+        <div class="links">Hisobingiz yo'qmi? <a onclick="showPage('signupPage')">Ro'yxatdan o'tish</a></div>
       </div>
-      <div class="text-center">
-        <span class="stat-number" id="percentageCorrect">0%</span> to'g'ri javob
+
+      <!-- Signup Page -->
+      <div id="signupPage" class="page">
+        <h2>Ro'yxatdan o'tish</h2>
+        <p class="subtitle">Yangi hisob ochish uchun ma'lumotlarni to'ldiring</p>
+        <div id="signupAlert" class="alert"></div>
+        <form id="signupForm">
+          <div class="input-group"><label>Ism</label><input type="text" id="signupName" placeholder="Ismingiz" required autocomplete="off" oncopy="handleCopy(event)"></div>
+          <div class="input-group"><label>Email</label><input type="email" id="signupEmail" placeholder="namuna@gmail.com" required autocomplete="off" oncopy="handleCopy(event)"></div>
+          <div class="input-group">
+            <label>Parol yarating</label>
+            <input type="password" id="signupPassword" placeholder="Kamida 8 ta belgi" required minlength="8" autocomplete="off" oncopy="handleCopy(event)">
+            <span class="eye-toggle" id="signupEye">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
+              </svg>
+            </span>
+            <div class="password-strength"><div class="password-strength-bar"></div></div>
+            <div class="password-strength-text"></div>
+            <div class="password-requirements">
+              <div class="req" id="req-length">• Kamida 8 ta belgi</div>
+              <div class="req" id="req-number">• Kamida bitta raqam (0-9)</div>
+              <div class="req" id="req-upper">• Kamida bitta katta harf (A-Z)</div>
+              <div class="req" id="req-lower">• Kamida bitta kichik harf (a-z)</div>
+              <div class="req" id="req-special">• Kamida bitta maxsus belgi (!@#$%^&*)</div>
+            </div>
+          </div>
+          <div class="checkbox-group"><input type="checkbox" id="termsCheckbox" required>
+            <label for="termsCheckbox">Men <a href="https://tezkorquiz.uz/terms_of_use" target="_blank">Foydalanish shartlari</a> va <a href="https://tezkorquiz.uz/privacy_policy" target="_blank">Maxfiylik siyosati</a> bilan tanishdim va roziman</label>
+          </div>
+          <button type="submit" class="btn btn-primary"><span class="btn-text">Ro'yxatdan o'tish</span><div class="spinner"></div></button>
+        </form>
+        <div class="divider">yoki</div>
+        <button id="signupGoogle" class="btn btn-google" disabled>
+          <svg class="google-icon" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+          </svg>
+          <span class="btn-text">Google orqali ro'yxatdan o'tish</span>
+          <div class="spinner"></div>
+        </button>
+        <div class="links">Hisobingiz bormi? <a onclick="showPage('emailLoginPage')">Kirish</a></div>
       </div>
-      <div class="buttons-container">
-        <button id="newTestButton" class="new-test-button">
-          <i class="bi bi-plus-circle"></i> Yangi test
-        </button>
-        <button id="shareButton" class="share-button">
-          <i class="bi bi-share"></i> Ulashish
-        </button>
-        <button id="restartButton" class="restart-button">
-          <i class="bi bi-arrow-clockwise"></i> Qayta boshlash
-        </button>
+
+      <!-- Password Reset Page -->
+      <div id="resetPage" class="page">
+        <div class="icon"><img src="aga/lock.png" alt="Lock" id="lockIcon"></div>
+        <h2>Parolni tiklash</h2>
+        <p class="description">Email manzilingizni kiriting va biz sizga parolni tiklash uchun havola yuboramiz.</p>
+        <div id="resetAlert" class="alert"></div>
+        <form id="resetForm">
+          <div class="input-group"><label>Email</label><input type="email" id="resetEmail" placeholder="namuna@email.com" required autocomplete="off" oncopy="handleCopy(event)"></div>
+          <button type="submit" class="btn btn-primary"><span class="btn-text">Tiklash havolasini yuborish</span><div class="spinner"></div></button>
+        </form>
+        <div id="resetSuccess" style="display:none;text-align:center;margin-top:20px;">
+          <p style="color:#2e7d32;font-weight:500;">Parolni tiklash havolasi <span id="sentEmail"></span> ga yuborildi.</p>
+          <p class="countdown" id="countdown">Qayta urinish uchun <span id="seconds">60</span> soniya</p>
+          <button class="btn btn-secondary back-to-login" onclick="showPage('emailLoginPage')">Kirish sahifasiga qaytish</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<button id="backToTop" title="Yuqoriga qaytish">🔼</button>
 
-<script>
-  const backToTopButton = document.getElementById("backToTop");
-  const shareButton = document.getElementById("shareButton");
-  const restartButton = document.getElementById("restartButton");
-  const newTestButton = document.getElementById("newTestButton");
-  const autoScrollToggle = document.getElementById("autoScrollToggle");
-  const fileInput = document.getElementById("fileInput");
-  const uploadStatus = document.getElementById("uploadStatus");
-  const quizList = document.getElementById("quizList");
-  const testCount = document.getElementById("testCount");
-  const questionsContainer = document.getElementById("questionsContainer");
-  const quizCompletionSection = document.getElementById("quizCompletionSection");
-  const correctAnswersEl = document.getElementById("correctAnswers");
-  const incorrectAnswersEl = document.getElementById("incorrectAnswers");
-  const totalQuestionsEl = document.getElementById("totalQuestions");
-  const correctBarEl = document.getElementById("correctBar");
-  const incorrectBarEl = document.getElementById("incorrectBar");
-  const percentageCorrectEl = document.getElementById("percentageCorrect");
-  const themeToggle = document.getElementById("themeToggle");
-  const defaultMessage = document.getElementById("defaultMessage");
-  const testNameDisplay = document.getElementById("testNameDisplay");
-  const loadingOverlay = document.getElementById("loadingOverlay");
-  const shareModal = document.getElementById("shareModal");
-  const shareModalClose = document.getElementById("shareModalClose");
-  const timeDisplay = document.getElementById("timeDisplay");
-  const timeText = document.getElementById("timeText");
+  <!-- Help Modal -->
+  <div id="helpModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header"><h3>Yordam</h3><button class="modal-close" onclick="closeModal('helpModal')">x</button></div>
+      <div class="modal-body">
+        <h4>Kirish muammolari</h4>
+        <p><strong>Parolni unutdingizmi?</strong><br>"Email orqali kirish" tugmasini bosing va "Parolni unutdingizmi?" havolasiga o'ting. Email manzilingizga parolni tiklash havolasi yuboriladi.</p>
+        <p><strong>Email yoki parol noto'g'ri?</strong><br>Email manzilingiz va parolingizni to'g'ri kiritganingizga ishonch hosil qiling. Caps Lock yoqilmaganligini tekshiring.</p>
+        <h4>Google orqali kirish</h4>
+        <p><strong>Eslatma:</strong> Google orqali kirish va ro'yxatdan o'tish vaqtincha o'chirilgan. Iltimos, email orqali foydalaning.</p>
+        <h4>Texnik muammolar</h4>
+        <p>Agar internet aloqangizda muammo bo'lsa, ulanishni tekshiring va qaytadan urinib ko'ring.</p>
+        <h4>Biz bilan bog'lanish</h4>
+        <p>Qo'shimcha yordam kerak bo'lsa, quyidagi orqali murojaat qilishingiz mumkin:</p>
+        <div class="contact-links">
+          <a href="https://t.me/sobirweb" target="_blank" class="contact-link telegram"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.40-.36-.01-1.04-.20-1.55-.37-.63-.20-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>Telegram</a>
+          <a href="https://mail.google.com/mail/?view=cm&fs=1&to=tezkorquiz@gmail.com&su=Tezkor%20Quiz%20bo%27yicha%20savol&body=Salom,%0D%0A%0D%0A" target="_blank" class="contact-link email"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Email</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
-  let tests = [];
-  let stats = { correct: 0, incorrect: 0, total: 0 };
-  let lottieAnimation = null;
-  let currentTestName = "";
-  let lastUploadedFile = null;
-  let startTime = null;
-  let endTime = null;
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, updateProfile } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 
-  const animationFiles = [
-    './json/buy.json',
-    './json/marketing.json',
-    './json/target.json',
-    './json/work.json',
-    './json/ani1.json',
-    './json/ani2.json',
-    './json/ani3.json',
-    './json/ani4.json',
-    './json/ani5.json',
-    './json/ani6.json',
-    './json/ani7.json',
-    './json/ani8.json',
-    './json/ani9.json',
-    './json/ani10.json',
-  ];
-  let usedAnimations = [];
+    const firebaseConfig = {
+      apiKey: "AIzaSyBxIpLY5WasiSIlDL4japBLnnXRwOLUKEQ",
+      authDomain: "tezkor-quiz-bbe3c.firebaseapp.com",
+      projectId: "tezkor-quiz-bbe3c",
+      storageBucket: "tezkor-quiz-bbe3c.firebasestorage.app",
+      messagingSenderId: "143161522496",
+      appId: "1:143161522496:web:252108ace3a4c19f35e2a5",
+    };
 
-  const currentTheme = localStorage.getItem('theme') || 'light';
-  document.documentElement.setAttribute('data-theme', currentTheme);
-  themeToggle.checked = currentTheme === 'dark';
-
-  themeToggle.addEventListener('change', function() {
-    const theme = this.checked ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
-  });
-
-  if (localStorage.getItem("autoScrollEnabled") === null) {
-    localStorage.setItem("autoScrollEnabled", "true");
-  } else {
-    autoScrollToggle.checked = localStorage.getItem("autoScrollEnabled") === "true";
-  }
-
-  autoScrollToggle.addEventListener("change", function() {
-    localStorage.setItem("autoScrollEnabled", this.checked);
-  });
-
-  window.onscroll = updateBackToTopButton;
-
-  function getRandomAnimation() {
-    if (usedAnimations.length >= animationFiles.length) usedAnimations = [];
-    const availableAnimations = animationFiles.filter(anim => !usedAnimations.includes(anim));
-    const randomIndex = Math.floor(Math.random() * availableAnimations.length);
-    const selectedAnimation = availableAnimations[randomIndex];
-    usedAnimations.push(selectedAnimation);
-    return selectedAnimation;
-  }
-
-  function loadLottieAnimation(jsonPath) {
-    if (lottieAnimation) lottieAnimation.destroy();
-    lottieAnimation = lottie.loadAnimation({
-      container: document.getElementById('lottieContainer'),
-      renderer: 'svg',
-      loop: true,
-      autoplay: true,
-      path: jsonPath
-    });
-    lottieAnimation.addEventListener('data_failed', () => {
-      console.error('Failed to load Lottie animation:', jsonPath);
-      const fallbackAnimation = getRandomAnimation();
-      if (fallbackAnimation !== jsonPath) {
-        loadLottieAnimation(fallbackAnimation);
-      }
-    });
-  }
-
-  function generateRandomFiveDigitNumber() {
-    return Math.floor(10000 + Math.random() * 90000);
-  }
-
-  function formatTime(milliseconds) {
-    const totalSeconds = Math.floor(milliseconds / 1000);
-    const minutes = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
-    return `${minutes} daqiqa ${seconds} soniya`;
-  }
-
-  async function shareToPlatform(platform, includeScreenshot = true) {
+    let app, auth;
     try {
-      const timeSpent = endTime && startTime ? formatTime(endTime - startTime) : "Noma'lum";
+      app = initializeApp(firebaseConfig);
+      auth = getAuth(app);
+      console.log('Firebase muvaffaqiyatli ulandi');
+    } catch (e) {
+      console.error('Firebase ulanishda xatolik:', e);
+      showAlert('welcomeAlert','Firebase ulanishida xatolik. Console ni tekshiring.','error');
+    }
+
+    /* ==== KO'Z ICONKASI ==== */
+    const eyeSVG = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+    </svg>`;
+
+    const eyeSlashSVG = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
+    </svg>`;
+
+    function togglePassword(inputId, eyeId) {
+      const input = document.getElementById(inputId);
+      const eye = document.getElementById(eyeId);
+      eye.innerHTML = eyeSlashSVG; // boshida yashirin
+      eye.addEventListener('click', () => {
+        if (input.type === 'password') {
+          input.type = 'text';
+          eye.innerHTML = eyeSVG;
+        } else {
+          input.type = 'password';
+          eye.innerHTML = eyeSlashSVG;
+        }
+      });
+    }
+    togglePassword('loginPassword', 'loginEye');
+    togglePassword('signupPassword', 'signupEye');
+
+    /* ==== COUNTDOWN ==== */
+    let countdownInterval;
+    function startCountdown() {
+      let sec = 60;
+      const secEl = document.getElementById('seconds');
+      const successDiv = document.getElementById('resetSuccess');
+      const form = document.getElementById('resetForm');
+      form.style.display = 'none';
+      successDiv.style.display = 'block';
+      document.getElementById('sentEmail').textContent = document.getElementById('resetEmail').value;
+      document.getElementById('lockIcon').src = 'aga/lock-loading.gif'; // GIF ga o'zgartirish
+
+      countdownInterval = setInterval(() => {
+        sec--;
+        secEl.textContent = sec;
+        if (sec <= 0) {
+          clearInterval(countdownInterval);
+          document.querySelector('#countdown').innerHTML = 'Endi qayta urinib koʻrishingiz mumkin';
+          document.getElementById('lockIcon').src = 'aga/lock.png'; // Qaytadan rasmga
+        }
+      }, 1000);
+    }
+
+    /* ==== QOLGAN FUNKSIYALAR ==== */
+    function getDynamicGreeting(){
+      const g={timeBased:[{text:'Xayrli tong!',startHour:5,endHour:9},{text:'Nurli tong',startHour:5,endHour:9},{text:'Xayrli kun!',startHour:12,endHour:17},{text:'Xayrli kech!',startHour:18,endHour:24}],
+               random:['Salom do‘stim!','Assalomu aleykum!','Marhamat kiring!','Harakatni boshlang!','Yaxshi kayfiyat!','Tabassum qiling!','Yangi start!','Omadli kun!','Salom mehmon!','Omadli boshlang!']};
+      const h=new Date().getHours();
+      const match=g.timeBased.filter(i=>h>=i.startHour&&h<i.endHour).map(i=>i.text);
+      const all=[...match,...g.random];
+      return all[Math.floor(Math.random()*all.length)];
+    }
+    function updateGreeting(){document.querySelector('#welcomePage h2').textContent=getDynamicGreeting()}
+    document.addEventListener('DOMContentLoaded',updateGreeting);
+
+    // Security
+    document.addEventListener('keydown',e=>{if(e.key==='F12'||(e.ctrlKey&&e.shiftKey&&['I','J','C'].includes(e.key))||(e.ctrlKey&&e.key==='u')){e.preventDefault();return false}});
+    document.addEventListener('contextmenu',e=>e.preventDefault());
+    window.handleCopy=e=>{e.preventDefault();showCopyNotification()};
+    ['copy','cut','paste','selectstart'].forEach(ev=>document.addEventListener(ev,e=>{if(e.target.tagName!=='INPUT'){e.preventDefault();if(['copy','cut'].includes(ev))showCopyNotification();return false}}));
+    function showCopyNotification(){const n=document.getElementById('copyNotification');n.classList.add('show');setTimeout(()=>n.classList.remove('show'),3000)}
+
+    // Page / Modal
+    let currentPage='welcomePage',modalOpen=false;
+    function updateHistory(p){currentPage=p;history.pushState({page:p},'','')}
+    window.addEventListener('popstate',()=>{if(modalOpen){closeModal('helpModal');modalOpen=false}else if(currentPage!=='welcomePage')showPage('welcomePage')});
+    window.showModal=id=>{document.getElementById(id).classList.add('show');modalOpen=true;history.pushState({modal:id},'','')};
+    window.closeModal=id=>{document.getElementById(id).classList.remove('show');modalOpen=false;history.back()};
+    document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)closeModal(m.id)}));
+    window.showPage=id=>{
+      document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      document.querySelectorAll('.alert').forEach(a=>{a.classList.remove('show');a.innerHTML=''});
+      updateHistory(id);
+      if(id==='welcomePage') updateGreeting();
+      clearInterval(countdownInterval);
+      document.getElementById('resetSuccess').style.display='none';
+      document.getElementById('resetForm').style.display='block';
+      if (id === 'resetPage') {
+        document.getElementById('lockIcon').src = 'aga/lock.png'; // Rasmga qaytarish
+      }
+    };
+
+    // Password strength - Yangi versiya
+    const pwInput = document.getElementById('signupPassword');
+    const commonPasswords = ['123456', '12345678', 'password', 'qwerty', 'abc123', 'admin', 'letmein', 'welcome', 'monkey', '1234567890', 'password123', '111111', 'dragon', 'baseball', 'football', 'iloveyou', 'sunshine', 'princess', 'flower', 'superman'];
+    
+    function checkPasswordRequirements(p) {
+      const lengthOk = p.length >= 8;
+      const hasNumber = /\d/.test(p);
+      const hasUpper = /[A-Z]/.test(p);
+      const hasLower = /[a-z]/.test(p);
+      const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(p);
       
-      const shareText = `🎯 Pro Quiz - ${currentTestName} natijasi:\n\n` +
-        `📊 Jami savollar: ${stats.total}\n` +
-        `✅ To'g'ri javoblar: ${stats.correct}\n` +
-        `❌ Xato javoblar: ${stats.incorrect}\n` +
-        `📈 Foiz: ${Math.round((stats.correct / stats.total) * 100)}%\n` +
-        `⏱️ Vaqt: ${timeSpent}\n\n` +
-        `🌐 Pro Quiz bilan bilimlaringizni sinab ko'ring! Hozir testni boshlang!\n` +
-        `${window.location.origin}${window.location.pathname}`;
-
-      let blob = null;
-      if (includeScreenshot) {
-        loadingOverlay.style.display = 'flex';
-        const statsContainer = document.getElementById('statsContainer');
-        statsContainer.scrollIntoView({ behavior: 'smooth' });
-        await new Promise(resolve => setTimeout(resolve, 3000));
-        const canvas = await html2canvas(statsContainer, {
-          backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--stats-bg'),
-          scale: 2,
-          useCORS: true,
-          logging: false
-        });
-        blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png', 0.9));
-      }
-
-      const randomSuffix = generateRandomFiveDigitNumber();
-      const uniqueFileName = `${currentTestName.replace(/[^a-zA-Z0-9]/g, '_')}_natijasi_${randomSuffix}.png`;
-
-      if (navigator.share && navigator.canShare) {
-        const shareData = {
-          title: `Pro Quiz - ${currentTestName} Natijasi`,
-          text: shareText,
-          url: window.location.href,
-          files: blob ? [new File([blob], uniqueFileName, { type: 'image/png' })] : undefined
-        };
-
-        if (platform === 'telegram') {
-          const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(shareText)}`;
-          if (blob) {
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = uniqueFileName;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(link.href);
-            window.open(telegramUrl, '_blank');
-          } else {
-            window.open(telegramUrl, '_blank');
-          }
-        } else if (platform === 'whatsapp') {
-          const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;
-          if (blob) {
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = uniqueFileName;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(link.href);
-            window.open(whatsappUrl, '_blank');
-          } else {
-            window.open(whatsappUrl, '_blank');
-          }
-        } else if (platform === 'other') {
-          if (navigator.canShare({ text: shareText })) {
-            await navigator.share({
-              title: `Pro Quiz - ${currentTestName} Natijasi`,
-              text: shareText,
-              url: window.location.href
-            });
-          } else {
-            try {
-              await navigator.clipboard.writeText(shareText);
-              alert('Natija matni nusxa olindi!');
-            } catch (err) {
-              const textArea = document.createElement('textarea');
-              textArea.value = shareText;
-              document.body.appendChild(textArea);
-              textArea.select();
-              document.execCommand('copy');
-              document.body.removeChild(textArea);
-              alert('Natija matni nusxa olindi!');
-            }
-          }
-        }
+      // Har birini tekshirish va class qo'shish
+      document.getElementById('req-length').classList.toggle('met', lengthOk);
+      document.getElementById('req-number').classList.toggle('met', hasNumber);
+      document.getElementById('req-upper').classList.toggle('met', hasUpper);
+      document.getElementById('req-lower').classList.toggle('met', hasLower);
+      document.getElementById('req-special').classList.toggle('met', hasSpecial);
+      
+      const count = [lengthOk, hasNumber, hasUpper, hasLower, hasSpecial].filter(Boolean).length;
+      const isCommon = commonPasswords.includes(p.toLowerCase());
+      
+      let level, text, className;
+      if (isCommon || !lengthOk) {
+        level = 'weak';
+        text = 'Zaif parol (juda oddiy yoki qisqa)';
+        className = 'strength-weak';
+      } else if (count >= 3) {
+        level = 'good';
+        text = 'Yaxshi parol';
+        className = 'strength-good';
       } else {
-        try {
-          await navigator.clipboard.writeText(shareText);
-          if (blob) {
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = uniqueFileName;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(link.href);
-          }
-          alert('Natija matni nusxa olindi!' + (blob ? ' Screenshot yuklab olindi.' : ''));
-        } catch (err) {
-          const textArea = document.createElement('textarea');
-          textArea.value = shareText;
-          document.body.appendChild(textArea);
-          textArea.select();
-          document.execCommand('copy');
-          document.body.removeChild(textArea);
-          if (blob) {
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = uniqueFileName;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(link.href);
-          }
-          alert('Natija matni nusxa olindi!' + (blob ? ' Screenshot yuklab olindi.' : ''));
-        }
+        level = 'weak';
+        text = 'Zaif parol (ko\'proq shartlarni bajaring)';
+        className = 'strength-weak';
       }
-
-      if (includeScreenshot) {
-        loadingOverlay.style.display = 'none';
+      if (count === 5 && !isCommon) {
+        level = 'strong';
+        text = 'Ajoyib parol';
+        className = 'strength-strong';
       }
-      shareModal.style.display = 'none';
-    } catch (error) {
-      console.error('Ulashishda xatolik:', error);
-      loadingOverlay.style.display = 'none';
-      shareModal.style.display = 'none';
-      alert('Xatolik yuz berdi. Qaytadan urining.');
-    }
-  }
-
-  shareButton.addEventListener("click", function() {
-    shareModal.style.display = 'flex';
-  });
-
-  shareModalClose.addEventListener("click", function() {
-    shareModal.style.display = 'none';
-  });
-
-  document.querySelectorAll('.share-option').forEach(button => {
-    button.addEventListener('click', function() {
-      const platform = this.dataset.platform;
-      shareToPlatform(platform, platform !== 'other');
-      shareModal.style.display = 'none';
-    });
-  });
-
-  restartButton.addEventListener("click", function() {
-    if (!lastUploadedFile) {
-      alert("Hech qanday fayl yuklanmagan! Yangi test uchun fayl tanlang.");
-      return;
+      
+      // Progress bar va text yangilash
+      const container = pwInput.parentElement.querySelector('.password-strength');
+      const bar = container.querySelector('.password-strength-bar');
+      const textEl = pwInput.parentElement.querySelector('.password-strength-text');
+      container.className = `password-strength ${className}`;
+      bar.style.width = level === 'strong' ? '100%' : level === 'good' ? '66%' : '33%';
+      textEl.textContent = text;
+      
+      return { level, isStrong: level === 'strong' };
     }
 
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    quizCompletionSection.style.display = "none";
-    quizList.style.display = "none";
-    defaultMessage.style.display = "none";
-    questionsContainer.innerHTML = "";
-    stats = { correct: 0, incorrect: 0, total: 0 };
-    startTime = null;
-    endTime = null;
-    uploadStatus.textContent = "Fayl qayta yuklanmoqda...";
-    fileInput.disabled = true;
-
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      parseTestFile(ev.target.result);
-      const selectedAnimation = getRandomAnimation();
-      loadLottieAnimation(selectedAnimation);
-      updateBackToTopButton();
-    };
-    reader.onerror = () => {
-      uploadStatus.textContent = "Faylni qayta o'qishda xatolik yuz berdi!";
-      defaultMessage.style.display = "block";
-      fileInput.disabled = false;
-    };
-    reader.readAsText(lastUploadedFile);
-  });
-
-  newTestButton.addEventListener("click", function() {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    quizCompletionSection.style.display = "none";
-    fileInput.value = "";
-    uploadStatus.textContent = "Yangi test uchun fayl tanlang";
-    quizList.style.display = "none";
-    defaultMessage.style.display = "block";
-    questionsContainer.innerHTML = "";
-    stats = { correct: 0, incorrect: 0, total: 0 };
-    currentTestName = "";
-    lastUploadedFile = null;
-    startTime = null;
-    endTime = null;
-    const selectedAnimation = getRandomAnimation();
-    loadLottieAnimation(selectedAnimation);
-    updateBackToTopButton();
-    fileInput.disabled = false;
-    setTimeout(() => {
-      fileInput.focus();
-    }, 500);
-  });
-
-  function loadFileHistory() {
-    const history = JSON.parse(localStorage.getItem("fileHistory")) || [];
-    const historyList = document.getElementById("historyList");
-    historyList.innerHTML = "";
-    history.forEach((item, index) => {
-      const historyItem = document.createElement("div");
-      historyItem.className = `history-item ${index === 0 ? 'recent' : ''}`;
-      historyItem.style.animationDelay = `${index * 0.1}s`;
-      historyItem.innerHTML = `<span>${item.name}</span> <span style="font-size: 11px; color: #777;">${new Date(item.timestamp).toLocaleString("uz-UZ")}</span>`;
-      historyList.appendChild(historyItem);
-    });
-  }
-
-  function saveFileToHistory(fileName) {
-    const history = JSON.parse(localStorage.getItem("fileHistory")) || [];
-    currentTestName = fileName.replace('.txt', '');
-    history.unshift({ name: fileName, timestamp: Date.now() });
-    if (history.length > 10) history.pop();
-    localStorage.setItem("fileHistory", JSON.stringify(history));
-    loadFileHistory();
-  }
-
-  fileInput.addEventListener("change", (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    lastUploadedFile = file;
-    uploadStatus.textContent = "Fayl yuklanmoqda...";
-    saveFileToHistory(file.name);
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      parseTestFile(ev.target.result);
-    };
-    reader.readAsText(file);
-    stats = { correct: 0, incorrect: 0, total: 0 };
-    startTime = null;
-    endTime = null;
-    quizCompletionSection.style.display = "none";
-    defaultMessage.style.display = "none";
-  });
-
-  function parseTestFile(content) {
-    tests = [];
-    const lines = content.split("\n").map(line => line.trim()).filter(Boolean);
-    let currentTest = null;
-
-    for (let i = 0; i < lines.length; i++) {
-      const line = lines[i];
-      if (line.startsWith("ANSWER:")) {
-        if (currentTest) {
-          currentTest.answer = line.replace("ANSWER:", "").trim();
-          tests.push(currentTest);
-          currentTest = null;
-        }
-      } else if (/^[A-D][\.\)]\s*/.test(line)) {
-        if (currentTest) {
-          const optionText = line.replace(/^[A-D][\.\)]\s*/, "").trim();
-          currentTest.options.push(optionText);
-          currentTest.rawOptions = currentTest.rawOptions || [];
-          currentTest.rawOptions.push(line.trim());
-        }
-      } else if (line) {
-        currentTest = { question: line, options: [], rawOptions: [], answer: "" };
+    pwInput?.addEventListener('input', e => {
+      const p = e.target.value;
+      if (p.length === 0) {
+        // Boshlang'ich holat
+        document.querySelectorAll('.req').forEach(req => req.classList.remove('met'));
+        const container = e.target.parentElement.querySelector('.password-strength');
+        const bar = container.querySelector('.password-strength-bar');
+        const textEl = e.target.parentElement.querySelector('.password-strength-text');
+        container.className = 'password-strength';
+        bar.style.width = '0%';
+        textEl.textContent = '';
+        return;
       }
-    }
-
-    if (currentTest && currentTest.options.length > 0 && currentTest.answer) {
-      tests.push(currentTest);
-    }
-
-    if (tests.length > 0) {
-      uploadStatus.textContent = "Fayl yuklandi!";
-      fileInput.disabled = true;
-      stats.total = tests.length;
-      shuffleArray(tests);
-      showTests();
-      startTime = Date.now();
-    } else {
-      uploadStatus.textContent = "Xatolik: Test ma'lumotlari topilmadi yoki noto'g'ri format! yordam: telegram @sobirweb";
-      defaultMessage.style.display = "block";
-      fileInput.disabled = false;
-      lastUploadedFile = null;
-    }
-  }
-
-  function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-  }
-
-  function showTests() {
-    quizList.style.display = "block";
-    defaultMessage.style.display = "none";
-    testCount.textContent = `${tests.length} ta test yuklandi!`;
-    questionsContainer.innerHTML = "";
-
-    tests.forEach((test, index) => {
-      const questionDiv = document.createElement("div");
-      questionDiv.className = "question-container";
-      questionDiv.id = `question-${index}`;
-      questionDiv.style.minHeight = "200px";
-      const qText = document.createElement("div");
-      qText.className = "question-text";
-      qText.textContent = `${index + 1}. ${test.question}`;
-      questionDiv.appendChild(qText);
-
-      const optionsDiv = document.createElement("div");
-      optionsDiv.className = "options-container";
-      optionsDiv.style.position = "relative";
-      optionsDiv.style.zIndex = "2";
-
-      const optionIndices = [...Array(test.options.length).keys()];
-      shuffleArray(optionIndices);
-
-      const indexMap = {};
-      optionIndices.forEach((originalIndex, randomIndex) => {
-        indexMap[randomIndex] = originalIndex;
-      });
-      test.indexMap = indexMap;
-
-      optionIndices.forEach((originalIndex, randomIndex) => {
-        const optionItem = document.createElement("div");
-        optionItem.className = "option-item";
-        optionItem.dataset.questionIndex = index;
-        optionItem.dataset.optionIndex = randomIndex;
-        optionItem.dataset.originalIndex = originalIndex;
-
-        const customCheckbox = document.createElement("div");
-        customCheckbox.className = "custom-checkbox";
-        const checkmark = document.createElement("span");
-        checkmark.className = "checkmark";
-        checkmark.innerHTML = "✓";
-        customCheckbox.appendChild(checkmark);
-
-        const optionText = document.createElement("div");
-        optionText.className = "option-text";
-        optionText.textContent = test.options[originalIndex];
-
-        optionItem.appendChild(customCheckbox);
-        optionItem.appendChild(optionText);
-
-        optionItem.addEventListener("click", function() {
-          if (optionItem.classList.contains("correct") || optionItem.classList.contains("incorrect")) return;
-
-          customCheckbox.classList.add("checked");
-
-          const siblingOptions = optionsDiv.querySelectorAll(".option-item");
-          siblingOptions.forEach(sibling => {
-            if (sibling !== optionItem) {
-              sibling.querySelector(".custom-checkbox").classList.remove("checked");
-            }
-          });
-
-          checkAnswer(index, randomIndex, originalIndex);
-
-          if (autoScrollToggle.checked) {
-            setTimeout(() => scrollToNextQuestion(index), 800);
-          }
-        });
-
-        optionsDiv.appendChild(optionItem);
-      });
-
-      questionDiv.appendChild(optionsDiv);
-      questionsContainer.appendChild(questionDiv);
-    });
-    updateBackToTopButton();
-  }
-
-  function scrollToNextQuestion(currentIndex) {
-    const nextIndex = currentIndex + 1;
-    if (nextIndex < tests.length) {
-      const nextQuestion = document.getElementById(`question-${nextIndex}`);
-      if (nextQuestion) nextQuestion.scrollIntoView({ behavior: "smooth", block: "start" });
-    } else {
-      const allAnswered = tests.every((test, index) => {
-        const optionItems = document.querySelectorAll(`.option-item[data-question-index="${index}"]`);
-        return Array.from(optionItems).some(item => item.classList.contains("correct") || item.classList.contains("incorrect"));
-      });
-      if (allAnswered && quizCompletionSection.style.display === "block") {
-        quizCompletionSection.scrollIntoView({ behavior: "smooth" });
-      }
-    }
-  }
-
-  function checkAnswer(questionIndex, selectedRandomIndex, originalIndex) {
-    const test = tests[questionIndex];
-    const correctLetter = test.answer;
-    const optionItems = document.querySelectorAll(`.option-item[data-question-index="${questionIndex}"]`);
-
-    optionItems.forEach(item => {
-      item.classList.remove("correct", "incorrect", "correct-anim", "incorrect-anim");
-      const checkIcon = item.querySelector(".check-icon");
-      if (checkIcon) checkIcon.remove();
+      checkPasswordRequirements(p);
     });
 
-    const selectedItem = document.querySelector(`.option-item[data-question-index="${questionIndex}"][data-option-index="${selectedRandomIndex}"]`);
-    const correctRawOption = test.rawOptions.find(opt => opt.startsWith(correctLetter + ".") || opt.startsWith(correctLetter + ")"));
-    const correctOptionText = correctRawOption ? correctRawOption.replace(/^[A-D][\.\)]\s*/, "").trim() : "";
-    const correctOriginalIndex = test.options.indexOf(correctOptionText);
+    // Alert / Loading
+    function showAlert(id,msg,type='error'){const a=document.getElementById(id);a.innerHTML=msg;a.className=`alert alert-${type} show`;if(type==='success')setTimeout(()=>a.classList.remove('show'),5000)}
+    function setLoading(btn,load){if(load){btn.disabled=true;btn.classList.add('loading')}else{btn.disabled=false;btn.classList.remove('loading')}}
+    function clearForm(id){const f=document.getElementById(id);if(f){f.reset();const s=f.querySelector('.password-strength'),t=f.querySelector('.password-strength-text');if(s)s.className='password-strength';if(t)t.textContent=''; document.querySelectorAll('.req').forEach(req => req.classList.remove('met'));}};
 
-    let correctRandomIndex = null;
-    for (let i = 0; i < optionItems.length; i++) {
-      if (parseInt(optionItems[i].dataset.originalIndex) === correctOriginalIndex) {
-        correctRandomIndex = parseInt(optionItems[i].dataset.optionIndex);
-        break;
+    function getErrorMessage(c){const m={'auth/invalid-email':'Noto\'g\'ri email format','auth/user-disabled':'Bu foydalanuvchi o\'chirilgan','auth/user-not-found':'Bunday foydalanuvchi topilmadi','auth/wrong-password':'Noto\'g\'ri parol kiritildi','auth/email-already-in-use':'Bu email allaqachon ro\'yxatdan o\'tgan','auth/weak-password':'Parol juda oddiy. Kamida 8 ta belgi kiriting','auth/network-request-failed':'Internet aloqasi yo\'q. Iltimos, ulanishni tekshiring','auth/too-many-requests':'Juda ko\'p urinish. Iltimos, biroz kutib qaytadan urinib ko\'ring','auth/invalid-credential':'Noto\'g\'ri email yoki parol','auth/missing-password':'Parol kiritilmagan'};return m[c]||`Xatolik: ${c}`}
+
+    // Forms
+    document.getElementById('loginForm').addEventListener('submit',async e=>{e.preventDefault();const b=e.target.querySelector('.btn-primary'),em=document.getElementById('loginEmail').value,pw=document.getElementById('loginPassword').value;setLoading(b,true);try{await signInWithEmailAndPassword(auth,em,pw);showAlert('loginAlert','Muvaffaqiyatli kirildi!','success');clearForm('loginForm');setTimeout(()=>location.href='index.html',1500)}catch(err){showAlert('loginAlert',getErrorMessage(err.code),'error');setLoading(b,false)}});
+
+    document.getElementById('signupForm').addEventListener('submit',async e=>{
+      e.preventDefault();
+      const b = e.target.querySelector('.btn-primary');
+      const name = document.getElementById('signupName').value;
+      const em = document.getElementById('signupEmail').value;
+      const pw = document.getElementById('signupPassword').value;
+      const terms = document.getElementById('termsCheckbox').checked;
+      if (!terms) {
+        showAlert('signupAlert','Iltimos, foydalanish shartlari bilan rozilik bildiring','error');
+        return;
       }
-    }
-
-    const correctItem = document.querySelector(`.option-item[data-question-index="${questionIndex}"][data-option-index="${correctRandomIndex}"]`);
-
-    if (originalIndex === correctOriginalIndex) {
-      selectedItem.classList.add("correct", "correct-anim");
-      const checkIcon = document.createElement("span");
-      checkIcon.className = "check-icon";
-      checkIcon.textContent = "✅";
-      selectedItem.appendChild(checkIcon);
-      stats.correct++;
-    } else {
-      selectedItem.classList.add("incorrect", "incorrect-anim");
-      const wrongIcon = document.createElement("span");
-      wrongIcon.className = "check-icon";
-      wrongIcon.textContent = "❌";
-      selectedItem.appendChild(wrongIcon);
-
-      if (correctItem) {
-        correctItem.classList.add("correct");
-        const correctIcon = document.createElement("span");
-        correctIcon.className = "check-icon";
-        correctIcon.textContent = "✅";
-        correctItem.appendChild(correctIcon);
+      const pwCheck = checkPasswordRequirements(pw);
+      if (pwCheck.level === 'weak') {
+        showAlert('signupAlert','Parol juda zaif. Iltimos, kuchliroq parol yarating (kamida 3 ta shartni bajaring va oddiy parollardan qoching)','error');
+        return;
       }
-
-      stats.incorrect++;
-    }
-
-    optionItems.forEach(item => { item.style.pointerEvents = "none"; });
-
-    updateBackToTopButton();
-    checkAllAnswered();
-  }
-
-  function checkAllAnswered() {
-    const allAnswered = tests.every((test, index) => {
-      const optionItems = document.querySelectorAll(`.option-item[data-question-index="${index}"]`);
-      return Array.from(optionItems).some(item => item.classList.contains("correct") || item.classList.contains("incorrect"));
+      setLoading(b,true);
+      try{
+        const uc=await createUserWithEmailAndPassword(auth,em,pw);
+        await updateProfile(uc.user,{displayName:name});
+        showAlert('signupAlert','Muvaffaqiyatli ro\'yxatdan o\'tdingiz!','success');
+        clearForm('signupForm');
+        setTimeout(()=>location.href='index.html',1500)
+      }catch(err){
+        showAlert('signupAlert',getErrorMessage(err.code),'error');
+        setLoading(b,false)
+      }
     });
 
-    if (allAnswered) {
-      endTime = Date.now();
-      fileInput.disabled = false;
-      uploadStatus.textContent = "Barcha testlar belgilandi. Yangi fayl tanlash mumkin!";
-      showCompletionStats();
-    }
-  }
+    document.getElementById('resetForm').addEventListener('submit',async e=>{
+      e.preventDefault();
+      const b=e.target.querySelector('.btn-primary'),em=document.getElementById('resetEmail').value;
+      setLoading(b,true);
+      try{
+        await sendPasswordResetEmail(auth,em);
+        showAlert('resetAlert','Havola muvaffaqiyatli yuborildi!','success');
+        startCountdown();
+        setLoading(b,false);
+      }catch(err){
+        showAlert('resetAlert',err.code==='auth/user-not-found'?'Bu email bilan ro\'yxatdan o\'tilmagan':getErrorMessage(err.code),'error');
+        setLoading(b,false);
+      }
+    });
 
-  function updateBackToTopButton() {
-    const unanswered = tests.filter((test, index) => {
-      const optionItems = document.querySelectorAll(`.option-item[data-question-index="${index}"]`);
-      return !Array.from(optionItems).some(item => item.classList.contains("correct") || item.classList.contains("incorrect"));
-    }).length;
-
-    if (unanswered > 0 && unanswered <= 5) {
-      backToTopButton.classList.add("recommend");
-      backToTopButton.innerHTML = `🔼 <span class="count">${unanswered}</span> <span class="text">ta qoldi</span>`;
-      backToTopButton.title = `${unanswered} ta javob berilmagan savol bor`;
-      backToTopButton.onclick = function() {
-        const firstUnansweredIndex = tests.findIndex((test, index) => {
-          const optionItems = document.querySelectorAll(`.option-item[data-question-index="${index}"]`);
-          return !Array.from(optionItems).some(item => item.classList.contains("correct") || item.classList.contains("incorrect"));
-        });
-        if (firstUnansweredIndex !== -1) {
-          document.getElementById(`question-${firstUnansweredIndex}`).scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-      };
-    } else {
-      backToTopButton.classList.remove("recommend");
-      backToTopButton.innerHTML = "🔼";
-      backToTopButton.title = "Yuqoriga qaytish";
-      backToTopButton.onclick = function() { window.scrollTo({ top: 0, behavior: "smooth" }); };
-    }
-    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
-      backToTopButton.style.display = "block";
-    } else {
-      backToTopButton.style.display = "none";
-    }
-  }
-
-  function showCompletionStats() {
-    correctAnswersEl.textContent = stats.correct;
-    incorrectAnswersEl.textContent = stats.incorrect;
-    totalQuestionsEl.textContent = stats.total;
-    testNameDisplay.textContent = `📝 Test: ${currentTestName}`;
-
-    if (endTime && startTime) {
-      const timeSpent = formatTime(endTime - startTime);
-      timeText.textContent = timeSpent;
-      timeDisplay.style.display = "inline-flex";
-    } else {
-      timeDisplay.style.display = "none";
-    }
-
-    const percentCorrect = Math.round((stats.correct / stats.total) * 100) || 0;
-    percentageCorrectEl.textContent = percentCorrect + "%";
-
-    const correctWidth = (stats.correct / stats.total) * 100;
-    const incorrectWidth = (stats.incorrect / stats.total) * 100;
-
-    const selectedAnimation = getRandomAnimation();
-    loadLottieAnimation(selectedAnimation);
-    quizCompletionSection.style.display = "block";
-
-    setTimeout(() => {
-      correctBarEl.style.width = correctWidth + "%";
-      incorrectBarEl.style.width = incorrectWidth + "%";
-    }, 200);
-
-    setTimeout(() => {
-      quizCompletionSection.scrollIntoView({ behavior: 'smooth' });
-    }, 300);
-
-    updateBackToTopButton();
-  }
-
-  const historyToggle = document.getElementById("historyToggle");
-  const historyList = document.getElementById("historyList");
-
-  historyToggle.addEventListener("click", function() {
-    const isCollapsed = !historyList.classList.contains("visible");
-    if (isCollapsed) {
-      historyList.classList.add("visible");
-      historyToggle.classList.remove("collapsed");
-      historyList.style.maxHeight = historyList.scrollHeight + "px";
-      setTimeout(() => { historyList.style.maxHeight = "150px"; }, 300);
-    } else {
-      historyList.style.maxHeight = historyList.scrollHeight + "px";
-      setTimeout(() => {
-        historyList.style.maxHeight = "0";
-        historyList.classList.remove("visible");
-        historyToggle.classList.add("collapsed");
-      }, 10);
-    }
-  });
-
-  document.addEventListener("DOMContentLoaded", function() {
-    const initialAnimation = getRandomAnimation();
-    loadLottieAnimation(initialAnimation);
-    loadFileHistory();
-  });
-</script>
+    auth.onAuthStateChanged(u=>{console.log(u?'Foydalanuvchi tizimda: '+u.email:'Foydalanuvchi tizimda emas')});
+    history.replaceState({page:'welcomePage'},'','');
+  </script>
 </body>
 </html>
