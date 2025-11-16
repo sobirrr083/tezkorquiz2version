@@ -21,6 +21,7 @@
       window.location.replace(`/kirish.html?returnUrl=${returnUrl}`);
     } else {
       // foydalanuvchi kirdi — sahifa davom ettirilsin
+      console.log("User logged in:", user.uid);
     }
   });
 </script>
@@ -311,20 +312,6 @@
             40% { transform: translateY(-10px); }
             60% { transform: translateY(-5px); }
         }
-        /* Smooth text change animation: slide down from top */
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        .slide-down {
-            animation: slideDown 0.4s ease-out;
-        }
         @media (max-width: 768px) {
             .quiz-container {
                 padding: 10px;
@@ -538,27 +525,26 @@
                
                 <input type="file" id="fileInput" accept=".txt" style="display: none;">
                
-                <!-- Sample Section - Moved before toggles -->
+                <!-- Settings Toggles -->
+                <div class="toggle-container">
+                    <h5 style="text-align: center; margin-bottom: 15px; color: #4f46e5;">Test sozlamalari</h5>
+                    <div class="toggle-item">
+                        <div>
+                            <label class="toggle-label">Keyingi tugmasini ko'rsatish</label>
+                            <div class="toggle-description">Agar yoqilsa, keyingi tugma ko'rinadi va odatiy ishlaydi. Agar o'chirilsa, bitta bosishda keyingi savolga o'tadi.</div>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="showNextToggle" checked>
+                        </div>
+                    </div>
+                </div>
+               
                 <div class="mt-4">
                     <div class="sample-section" id="sampleSection">
                         <button class="sample-toggle" id="sampleToggle">
                             <i class="fas fa-download"></i> Namuna test yuklab olish
                         </button>
                         <p style="margin-top: 10px; color: #64748b; font-size: 0.9rem;">Kichik namuna test faylini yuklab oling vafaylni yuklab sinab ko'ring.</p>
-                    </div>
-                </div>
-               
-                <!-- Settings Toggles -->
-                <div class="toggle-container">
-                    <h5 style="text-align: center; margin-bottom: 15px; color: #4f46e5;">Test sozlamalari</h5>
-                    <div class="toggle-item">
-                        <div>
-                            <label class="toggle-label" id="toggleLabel">Keyingi tugmasini ko'rsatish</label>
-                            <div class="toggle-description" id="toggleDescription">odatiy ishlaydi</div>
-                        </div>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="showNextToggle" checked>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -636,7 +622,11 @@
         let selectedAnswer = null;
         let showNextButton = true; // Default: ko'rsatish
         let lastKeyPressed = null;
-        let isAdvancing = false; // To prevent multiple advances
+        
+        // Auto-advance ni showNextButton ga bog'lash: agar tugma yashirin bo'lsa, auto-advance yoqiladi
+        function updateAutoAdvance() {
+            // Bu funksiya faqat showNextButton o'zgarganda chaqiriladi
+        }
         
         // Fisher-Yates shuffle algorithm
         function shuffle(array) {
@@ -647,31 +637,10 @@
             return array;
         }
         
-        // Toggle event listener for showNextButton with dynamic text and animation
+        // Toggle event listener for showNextButton
         document.getElementById('showNextToggle').addEventListener('change', function() {
             showNextButton = this.checked;
-            const label = document.getElementById('toggleLabel');
-            const desc = document.getElementById('toggleDescription');
-            
-            // Remove previous animation classes
-            label.classList.remove('slide-down');
-            desc.classList.remove('slide-down');
-            
-            // Force reflow
-            void label.offsetWidth;
-            void desc.offsetWidth;
-            
-            if (this.checked) {
-                label.textContent = "Keyingi tugmasini ko'rsatish";
-                desc.textContent = "odatiy ishlaydi";
-            } else {
-                label.textContent = "Keyingi tugmasini yashirish";
-                desc.textContent = "bitta bosishda keyingi savolga o'tadi.";
-            }
-            
-            // Add slide-down animation
-            label.classList.add('slide-down');
-            desc.classList.add('slide-down');
+            // Auto-advance ni avtomatik boshqarish: agar tugma yashirin bo'lsa, auto-advance yoqiladi (lekin alohida toggle yo'q, shuning uchun bu yerda birlashtirilgan)
         });
         
         // Drag and drop handlers
@@ -833,7 +802,6 @@
             score = 0;
             selectedAnswer = null;
             lastKeyPressed = null;
-            isAdvancing = false;
             startTime = new Date();
            
             showQuestion();
@@ -883,7 +851,6 @@
                 }
                 selectedAnswer = null;
                 lastKeyPressed = null;
-                isAdvancing = false;
                
                 // Update button text
                 const isLastQuestion = currentQuestionIndex === questions.length - 1;
@@ -907,37 +874,38 @@
         
         // Select an answer
         function selectAnswer(index, isMouseClick = false) {
-            if (isAdvancing) return; // Prevent during advance
-            
-            // For mouse click: allow re-selection (change answer)
-            if (isMouseClick) {
-                selectedAnswer = index;
-                // Remove previous selections
-                document.querySelectorAll('.option-btn').forEach(btn => {
-                    btn.classList.remove('selected');
-                });
-                // Add selection to clicked option
-                const selectedBtn = document.querySelectorAll('.option-btn')[index];
-                selectedBtn.classList.add('selected');
-                
-                // Enable next button if shown
-                if (showNextButton) {
-                    document.getElementById('nextBtn').disabled = false;
-                }
-                
-                // Add click animation
-                selectedBtn.classList.add('animate-fade-in');
-            } else {
-                // For keyboard: handle double press or Enter
-                // This is handled in keydown event
+            selectedAnswer = index;
+           
+            // Remove previous selections
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+           
+            // Add selection to clicked option
+            const selectedBtn = document.querySelectorAll('.option-btn')[index];
+            selectedBtn.classList.add('selected');
+           
+            // Enable next button if shown (faqat agar showNextButton true bo'lsa)
+            if (showNextButton) {
+                document.getElementById('nextBtn').disabled = false;
+            }
+           
+            // Add click animation
+            selectedBtn.classList.add('animate-fade-in');
+           
+            // Auto-advance logic: agar keyingi tugma yashirin bo'lsa (!showNextButton), bitta bosishda keyingi savolga o'tish
+            // Aks holda, agar tugma ko'rinib tursa, kutish
+            if (!showNextButton && selectedAnswer !== null) {
+                setTimeout(() => {
+                    nextQuestion();
+                }, 300); // Kichik kechikish feedback uchun
             }
         }
         
         // Move to next question
         function nextQuestion() {
-            if (selectedAnswer === null || isAdvancing) return;
+            if (selectedAnswer === null) return;
            
-            isAdvancing = true;
             const question = questions[currentQuestionIndex];
             const correctAnswerIndex = question.shuffledAnswer;
            
@@ -1016,7 +984,6 @@
             userAnswers = [];
             score = 0;
             selectedAnswer = null;
-            isAdvancing = false;
            
             document.getElementById('resultSection').style.display = 'none';
             document.getElementById('quizSection').style.display = 'block';
@@ -1047,40 +1014,28 @@
             userAnswers = [];
             score = 0;
             selectedAnswer = null;
-            isAdvancing = false;
         }
         
-        // Keyboard navigation - Adjusted for double press and Enter
+        // Keyboard navigation
         document.addEventListener('keydown', function(e) {
-            if (document.getElementById('quizSection').style.display !== 'none' && !isAdvancing) {
+            if (document.getElementById('quizSection').style.display !== 'none') {
                 if (e.key >= '1' && e.key <= '4') {
                     const index = parseInt(e.key) - 1;
                     if (index < questions[currentQuestionIndex].options.length) {
-                        e.preventDefault();
-                        if (selectedAnswer === null || selectedAnswer !== index) {
-                            // Select or change selection
+                        if (lastKeyPressed === index && selectedAnswer === index && showNextButton) {
+                            // Agar tugma ko'rinib tursa, ikki marta bosishda o'tish
+                            e.preventDefault();
+                            nextQuestion();
+                        } else {
+                            // Select
                             selectAnswer(index, false);
                             lastKeyPressed = index;
-                        } else if (selectedAnswer === index) {
-                            // Double press on same: confirm and advance (if showNextButton)
-                            if (showNextButton) {
-                                nextQuestion();
-                            }
                         }
                     }
-                } else if (e.key === 'Enter' && selectedAnswer !== null && showNextButton && !isAdvancing) {
+                } else if (e.key === 'Enter' && selectedAnswer !== null && showNextButton) {
                     e.preventDefault();
                     nextQuestion();
                 }
-            }
-        });
-        
-        // Mouse click handler for options - allow re-selection
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('option-btn') && !isAdvancing) {
-                const options = document.querySelectorAll('.option-btn');
-                const index = Array.from(options).indexOf(e.target);
-                selectAnswer(index, true);
             }
         });
         
@@ -1099,7 +1054,7 @@
             const diff = touchStartX - touchEndX;
            
             if (Math.abs(diff) > swipeThreshold) {
-                if (diff > 0 && selectedAnswer !== null && showNextButton && !isAdvancing) {
+                if (diff > 0 && selectedAnswer !== null && showNextButton) {
                     nextQuestion();
                 }
             }
