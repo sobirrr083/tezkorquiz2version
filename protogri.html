@@ -331,7 +331,7 @@
     /* ==== QOLGAN FUNKSIYALAR ==== */
     function getDynamicGreeting(){
       const g={timeBased:[{text:'Xayrli tong!',startHour:5,endHour:9},{text:'Nurli tong',startHour:5,endHour:9},{text:'Xayrli kun!',startHour:12,endHour:17},{text:'Xayrli kech!',startHour:18,endHour:24}],
-               random:['Salom do‘stim!','Assalomu aleykum!','Marhamat kiring!','Harakatni boshlang!','Yaxshi kayfiyat!','Tabassum qiling!','Yangi start!','Omadli kun!','Salom mehmon!','Omadli boshlang!']};
+               random:['Salom do‘stim!','Assalomu aleykum!','Marhamat kiring!','Harakatni boshlang!','Yaxshi kayfiyat!','Kirish vaqti','Yangi start!' ,'Kirish oson', ,'Tizim tayyor', ,'Keling, kiraylik','Profilga qadam' ,'Profilga qadam' ,'Tezkor kirish','Salom mehmon!','Omadli boshlang!']};
       const h=new Date().getHours();
       const match=g.timeBased.filter(i=>h>=i.startHour&&h<i.endHour).map(i=>i.text);
       const all=[...match,...g.random];
@@ -370,7 +370,7 @@
 
     // Password strength - Yangi versiya
     const pwInput = document.getElementById('signupPassword');
-    const commonPasswords = ['123456', '12345678', 'password', 'qwerty', 'abc123', 'admin', 'letmein', 'welcome', 'monkey', '1234567890', 'password123', '111111', 'dragon', 'baseball', 'football', 'iloveyou', 'sunshine', 'princess', 'flower', 'superman'];
+    const commonPasswords = ['123456', '12345678', 'password', 'qwerty', 'abc123', 'admin', 'letmein', 'welcome', 'monkey', '1234567890', 'password123', '111111', 'dragon', 'baseball', 'football', 'iloveyou'];
     
     function checkPasswordRequirements(p) {
       const lengthOk = p.length >= 8;
