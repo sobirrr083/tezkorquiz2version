@@ -534,7 +534,7 @@
                             <div class="toggle-description">Variant tanlanganda avtomatik keyingi savolga o'tadi. Keyingi tugma yashirin bo'ladi. Klaviatura va touch rejimida ham ishlaydi.</div>
                         </div>
                         <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="autoModeToggle">
+                            <input class="form-check-input" type="checkbox" id="autoModeToggle" checked>
                         </div>
                     </div>
                 </div>
@@ -544,7 +544,7 @@
                         <button class="sample-toggle" id="sampleToggle">
                             <i class="fas fa-download"></i> Namuna test yuklab olish
                         </button>
-                        <p style="margin-top: 10px; color: #64748b; font-size: 0.9rem;">Kichik namuna test faylini yuklab oling vafaylni yuklab sinab ko'ring.</p>
+                        <p style="margin-top: 10px; color: #64748b; font-size: 0.9rem;">Kichik namuna test faylini yuklab oling va faylni yuklab sinab ko'ring.</p>
                     </div>
                 </div>
             </div>
@@ -620,11 +620,11 @@
         let score = 0;
         let startTime;
         let selectedAnswer = null;
-        let autoMode = false; // Umumiy toggle: true - avtomatik rejim (keyingi tugma yashirin, bitta bosishda o'tish), false - klassik (keyingi tugma ko'rinadi)
+        let autoMode = true; // Default true qilib qo'ydik
         let lastKeyPressed = null;
-        let lastClickTime = 0; // Ikki marta bosishni oldini olish uchun
-        let doubleClickThreshold = 300; // ms, ikki bosish orasidagi vaqt
-        let isProcessing = false; // Jarayonni bloklash uchun
+        let lastClickTime = 0;
+        let doubleClickThreshold = 500; // Biroz oshirdik
+        let isProcessing = false;
         // Fisher-Yates shuffle algorithm
         function shuffle(array) {
             for (let i = array.length - 1; i > 0; i--) {
@@ -634,8 +634,13 @@
             return array;
         }
         // Umumiy toggle event listener
-        document.getElementById('autoModeToggle').addEventListener('change', function() {
-            autoMode = this.checked;
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggle = document.getElementById('autoModeToggle');
+            autoMode = toggle.checked; // Default checked bo'lgani uchun true
+            toggle.addEventListener('change', function() {
+                autoMode = this.checked;
+                console.log('Auto mode:', autoMode); // Debug
+            });
         });
         // Drag and drop handlers
         const uploadArea = document.getElementById('uploadArea');
@@ -667,19 +672,23 @@
         }
         uploadArea.addEventListener('click', () => {
             fileInput.click();
+            console.log('Upload area clicked'); // Debug
         });
         // File upload handler
         fileInput.addEventListener('change', function(e) {
+            console.log('File input changed'); // Debug
             const files = e.target.files;
             handleFiles(files);
         });
         function handleFiles(files) {
+            console.log('Handling files:', files); // Debug
             const file = files[0];
             if (!file) {
                 alert('Fayl tanlanmadi! Iltimos, .txt faylni tanlang. Yordam: telegram: @sobirweb');
                 return;
             }
-            if (file.type !== 'text/plain') {
+            console.log('File selected:', file.name, file.type, file.size); // Debug
+            if (file.type !== 'text/plain' && !file.name.endsWith('.txt')) {
                 alert('Iltimos, faqat .txt formatda fayl yuklang! Yordam: telegram: @sobirweb');
                 return;
             }
@@ -689,20 +698,25 @@
             }
             const reader = new FileReader();
             reader.onload = function(e) {
+                console.log('File read success'); // Debug
                 try {
                     parseQuestions(e.target.result);
                 } catch (error) {
-                    alert(`Faylni o'qishda xatolik: ${error.message}. Yordam: telegram: @sobirweb`);
+                    console.error('Parse error:', error); // Debug
+                    alert(`Faylni o'qishda xatolik: ${error.message}. Fayl formati: Savol\nA. Variant\nB. Variant\n...\nANSWER: A\nYordam: telegram: @sobirweb`);
                 }
             };
             reader.onerror = function() {
+                console.error('File read error'); // Debug
                 alert('Faylni o\'qishda xatolik yuz berdi! Yordam: telegram: @sobirweb');
             };
             reader.readAsText(file);
         }
-        // Parse questions from text file
+        // Parse questions from text file (tuzatilgan)
         function parseQuestions(text) {
+            console.log('Parsing text...'); // Debug
             const lines = text.split('\n').map(line => line.trim()).filter(line => line !== '');
+            console.log('Lines:', lines); // Debug
             questions = [];
             let currentQuestion = null;
             let options = [];
@@ -712,46 +726,52 @@
                 if (line.startsWith('ANSWER:')) {
                     if (currentQuestion && options.length >= 2) {
                         answer = line.split(':')[1]?.trim();
-                        const answerIndex = 'ABCD'.indexOf(answer);
+                        const answerIndex = 'ABCD'.indexOf(answer?.toUpperCase());
                         if (answerIndex === -1) {
-                            throw new Error(`Noto'g'ri javob formati liniyada ${i + 1}: ${line}`);
+                            throw new Error(`Noto'g'ri javob formati liniyada ${i + 1}: ${line}. To'g'ri: ANSWER: A`);
                         }
                         questions.push({
                             question: currentQuestion,
                             options: [...options],
                             answer: answerIndex
                         });
+                        console.log('Pushed question:', currentQuestion); // Debug
                     } else if (!currentQuestion) {
                         throw new Error(`Savol topilmadi liniyada ${i + 1}`);
                     } else if (options.length < 2) {
                         throw new Error(`Kamida 2 ta variant bo'lishi kerak liniyada ${i + 1}`);
                     }
+                    // Reset for next
                     currentQuestion = null;
                     options = [];
                     answer = null;
-                } else if (line.match(/^[A-D]\./)) {
+                } else if (line.match(/^[A-D]\./i)) {
                     options.push(line.substring(2).trim());
-                } else {
-                    // If we have a previous question with options and no answer, it's an error
-                    if (currentQuestion && options.length >= 2 && answer === null) {
-                        throw new Error(`Javob topilmadi savol uchun: ${currentQuestion}`);
+                } else if (line.length > 0) {
+                    // New question
+                    // Check if previous is complete
+                    if (currentQuestion && options.length > 0 && answer === null) {
+                        throw new Error(`Javob topilmadi savol uchun liniyada ${i + 1}: ${currentQuestion}`);
                     }
-                    // Start a new question
-                    if (currentQuestion && options.length >= 2) {
-                        questions.push({
-                            question: currentQuestion,
-                            options: [...options],
-                            answer: 'ABCD'.indexOf(answer)
-                        });
+                    // Push previous if complete
+                    if (currentQuestion && options.length >= 2 && answer !== null) {
+                        const prevAnswerIndex = 'ABCD'.indexOf(answer.toUpperCase());
+                        if (prevAnswerIndex !== -1) {
+                            questions.push({
+                                question: currentQuestion,
+                                options: [...options],
+                                answer: prevAnswerIndex
+                            });
+                        }
                     }
                     currentQuestion = line;
                     options = [];
                     answer = null;
                 }
             }
-            // Handle the last question
+            // Handle last question
             if (currentQuestion && options.length >= 2 && answer !== null) {
-                const answerIndex = 'ABCD'.indexOf(answer);
+                const answerIndex = 'ABCD'.indexOf(answer.toUpperCase());
                 if (answerIndex !== -1) {
                     questions.push({
                         question: currentQuestion,
@@ -761,20 +781,20 @@
                 } else {
                     throw new Error('Oxirgi savol uchun noto\'g\'ri javob formati');
                 }
-            } else if (currentQuestion && options.length < 2) {
-                throw new Error('Oxirgi savol uchun yetarli variantlar yo\'q');
-            } else if (currentQuestion && answer === null) {
-                throw new Error('Oxirgi savol uchun javob topilmadi');
+            } else if (currentQuestion) {
+                throw new Error('Oxirgi savol uchun javob yoki variantlar yetarli emas');
             }
             if (questions.length === 0) {
-                throw new Error('Faylda hech qanday savol topilmadi! Yordam: telegram: @sobirweb');
+                throw new Error('Faylda hech qanday savol topilmadi! Fayl formati misoli:\nSavol?\nA. Variant A\nB. Variant B\nC. Variant C\nD. Variant D\nANSWER: A\nYordam: telegram: @sobirweb');
             }
+            console.log('Parsed questions:', questions.length); // Debug
             // Shuffle questions
             questions = shuffle(questions);
             startQuiz();
         }
         // Start the quiz
         function startQuiz() {
+            console.log('Starting quiz, autoMode:', autoMode); // Debug
             document.getElementById('uploadSection').style.display = 'none';
             document.getElementById('quizSection').style.display = 'block';
             document.getElementById('totalQuestions').textContent = questions.length;
@@ -782,9 +802,9 @@
             // Apply autoMode setting
             const controlsDiv = document.getElementById('controlsDiv');
             if (autoMode) {
-                controlsDiv.style.display = 'none'; // Keyingi tugma yashirin
+                controlsDiv.style.display = 'none';
             } else {
-                controlsDiv.style.display = 'block'; // Ko'rsat
+                controlsDiv.style.display = 'block';
             }
            
             currentQuestionIndex = 0;
@@ -800,7 +820,7 @@
         }
         // Show current question
         function showQuestion() {
-            if (isProcessing) return; // Bloklash
+            if (isProcessing) return;
             isProcessing = true;
            
             const question = questions[currentQuestionIndex];
@@ -830,7 +850,7 @@
                     const optionBtn = document.createElement('button');
                     optionBtn.className = 'option-btn';
                     optionBtn.textContent = shuffledOptions[shuffledIndex];
-                    optionBtn.onclick = (e) => handleOptionClick(e, index); // Yangi handler
+                    optionBtn.onclick = (e) => handleOptionClick(e, index);
                     optionsContainer.appendChild(optionBtn);
                 });
                
@@ -867,12 +887,11 @@
                 isProcessing = false;
             }, 200);
         }
-        // Handle option click (umumiy, avtomatik rejimni hisobga olgan)
+        // Handle option click
         function handleOptionClick(e, index) {
-            if (isProcessing) return; // Bloklash
+            if (isProcessing) return;
             const currentTime = Date.now();
             if (currentTime - lastClickTime < doubleClickThreshold) {
-                // Ikki marta tez bosish - e'tiborsizlik, hech nima qilma
                 return;
             }
             lastClickTime = currentTime;
@@ -896,11 +915,13 @@
             // Add click animation
             selectedBtn.classList.add('animate-fade-in');
            
+            console.log('Option selected:', index, 'Auto mode:', autoMode); // Debug
+           
             // Auto advance if autoMode and not last question
-            if (autoMode && selectedAnswer !== null) {
+            if (autoMode) {
                 setTimeout(() => {
                     nextQuestion();
-                }, 300); // Feedback uchun kichik kechikish
+                }, 500); // Kechikishni oshirdik feedback uchun
             }
         }
         // Move to next question
@@ -928,6 +949,8 @@
             if (!autoMode) {
                 document.getElementById('nextBtn').disabled = true;
             }
+           
+            console.log('Next question, score:', score); // Debug
            
             setTimeout(() => {
                 currentQuestionIndex++;
@@ -1017,7 +1040,7 @@
             score = 0;
             selectedAnswer = null;
         }
-        // Keyboard navigation (umumiy rejim uchun moslashtirilgan)
+        // Keyboard navigation
         document.addEventListener('keydown', function(e) {
             if (document.getElementById('quizSection').style.display !== 'none' && !isProcessing) {
                 const currentTime = Date.now();
@@ -1030,7 +1053,7 @@
                 if (e.key >= '1' && e.key <= '4') {
                     const index = parseInt(e.key) - 1;
                     if (index < questions[currentQuestionIndex].options.length) {
-                        selectAnswer(index, false); // Klaviatura uchun
+                        selectAnswer(index, false);
                     }
                 } else if (e.key === 'Enter' && selectedAnswer !== null && !autoMode) {
                     e.preventDefault();
@@ -1038,7 +1061,7 @@
                 }
             }
         });
-        // Select answer for keyboard (avtomatik rejimni hisobga olgan)
+        // Select answer for keyboard
         function selectAnswer(index, isMouseClick = false) {
             selectedAnswer = index;
            
@@ -1059,14 +1082,16 @@
             // Add animation
             selectedBtn.classList.add('animate-fade-in');
            
+            console.log('Keyboard select:', index); // Debug
+           
             // Auto advance if autoMode
             if (autoMode) {
                 setTimeout(() => {
                     nextQuestion();
-                }, 300);
+                }, 500);
             }
         }
-        // Touch gestures for mobile (swipe to next, agar tanlangan bo'lsa)
+        // Touch gestures for mobile (faqat klassik rejimda)
         let touchStartX = 0;
         let touchEndX = 0;
         document.addEventListener('touchstart', function(e) {
@@ -1087,17 +1112,33 @@
                 }
             }
         }
-        // Sample download functionality
+        // Sample download functionality (namuna URL ishlamasa, local misol)
         const sampleModal = document.getElementById("sampleModal");
         const sampleModalClose = document.getElementById("sampleModalClose");
         const sampleToggle = document.getElementById("sampleToggle");
         sampleToggle.addEventListener("click", function() {
+            // Agar URL ishlamasa, local content yaratib download
+            const sampleContent = `Savol 1? Bu birinchi savol.
+A. Birinchi variant
+B. Ikkinchi variant
+C. Uchinchi variant
+D. To'rtinchi variant
+ANSWER: A
+
+Savol 2? Bu ikkinchi savol.
+A. Variant A
+B. Variant B
+C. Variant C
+D. Variant D
+ANSWER: B`;
+            const blob = new Blob([sampleContent], { type: 'text/plain' });
             const link = document.createElement("a");
-            link.href = "https://tezkorquiz.uz/namuna_test.txt";
+            link.href = URL.createObjectURL(blob);
             link.download = "namuna_test.txt";
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+            URL.revokeObjectURL(link.href);
             sampleModal.style.display = 'flex';
         });
         sampleModalClose.addEventListener("click", function() {
