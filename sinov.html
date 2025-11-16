@@ -177,6 +177,9 @@
             pointer-events: none;
             opacity: 0.7;
         }
+        .option-btn.unselectable {
+            pointer-events: none;
+        }
         .option-letter {
             display: none;
         }
@@ -365,6 +368,31 @@
             .result-item:last-child {
                 grid-column: 1 / -1;
             }
+
+            /* Toggle adjustments for mobile */
+            .toggle-container {
+                padding: 15px;
+                margin: 15px 0;
+            }
+            .toggle-item {
+                padding: 12px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .toggle-content {
+                margin-right: 0;
+                width: 100%;
+            }
+            .toggle-label {
+                font-size: 1rem;
+            }
+            .toggle-description {
+                font-size: 0.85rem;
+            }
+            .form-switch {
+                align-self: flex-end;
+            }
         }
         @media (max-width: 480px) {
             .quiz-header {
@@ -387,6 +415,20 @@
                 font-size: 0.9rem;
                 gap: 6px;
                 min-width: 120px;
+            }
+
+            /* Further toggle adjustments for small mobile */
+            .toggle-container {
+                padding: 12px;
+            }
+            .toggle-item {
+                padding: 10px;
+            }
+            .toggle-label {
+                font-size: 0.95rem;
+            }
+            .toggle-description {
+                font-size: 0.8rem;
             }
         }
         /* Sample modal styles - adapted */
@@ -567,6 +609,7 @@
                     <div class="toggle-item" id="toggleItem">
                         <div class="toggle-content">
                             <label class="toggle-label" id="toggleLabel">Keyingi tugmasini ko'rsatish</label>
+                            <div class="toggle-description" id="toggleDescription">Agar yoqilsa, keyingi tugma ko'rinadi va odatiy ishlaydi. Agar o'chirilsa, bitta bosishda keyingi savolga o'tadi.</div>
                         </div>
                         <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" id="showNextToggle" checked>
@@ -579,7 +622,7 @@
                         <button class="sample-toggle" id="sampleToggle">
                             <i class="fas fa-download"></i> Namuna test yuklab olish
                         </button>
-                        <p style="margin-top: 10px; color: #64748b; font-size: 0.9rem;">Kichik namuna test faylini yuklab oling va fayl yuklash joyiga yuklab sinab ko'ring.</p>
+                        <p style="margin-top: 10px; color: #64748b; font-size: 0.9rem;">Kichik namuna test faylini yuklab oling va faylni yuklab sinab ko'ring.</p>
                     </div>
                 </div>
             </div>
@@ -643,7 +686,7 @@
     <div class="sample-modal" id="sampleModal">
       <div class="sample-modal-content">
         <h3>Namuna test yuklandi!</h3>
-        <p>Endi fayl tanlash joyiga yuklang.</p>
+        <p>Endi uni fayl tanlash joyiga yuklang.</p>
         <button class="sample-modal-close" id="sampleModalClose">Hop, rahmat!</button>
       </div>
     </div>
@@ -983,9 +1026,9 @@
            
             // Agar keyingi tugma yashirilgan bo'lsa, avtomatik keyingi savolga o'tish
             if (!showNextButton && selectedAnswer !== null) {
-                // Barcha variantlarni disabled qilish
+                // Barcha variantlarni faqat bosilmaydigan qilish (vizual o'zgarishsiz)
                 document.querySelectorAll('.option-btn').forEach(btn => {
-                    btn.classList.add('disabled');
+                    btn.classList.add('unselectable');
                 });
                 
                 setTimeout(() => {
