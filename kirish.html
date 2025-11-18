@@ -6,7 +6,7 @@
   <title>Tizimga kirish</title>
   <meta name="description" content="Tezkor Quiz tizimiga kirish. Online testlar, quizlar va imtihon tayyorlov uchun shaxsiy kabinetga kirish sahifasi.">
 
-   <link rel="icon" href="aga/iconcha.png">
+  <link rel="icon" href="aga/iconcha.png">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     *{margin:0;padding:0;box-sizing:border-box;user-select:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none}
@@ -29,7 +29,6 @@
     input{width:100%;padding:12px 16px;border:1px solid #e1e8ed;border-radius:10px;font-size:15px;transition:all .3s;outline:none;background:#fff;font-weight:400}
     input:focus{border-color:#4361ee;box-shadow:0 0 0 3px rgba(67,97,238,.08)}
     input.error{border-color:#ff4757}
-    /* KO'Z ICONKASI */
     .eye-toggle{position:absolute;right:12px;top:42px;cursor:pointer;color:#888;transition:color .2s;z-index:2}
     .eye-toggle:hover{color:#4361ee}
     .eye-toggle svg{width:20px;height:20px}
@@ -56,6 +55,9 @@
     .forgot-password a{color:#4361ee;text-decoration:none;font-size:14px;font-weight:400;cursor:pointer}
     .forgot-password a:hover{text-decoration:underline}
     .icon{text-align:center;margin-bottom:20px;font-size:48px}
+    .icon img{width:500px;height:500px;object-fit:contain;max-width:100%;height:auto}
+    #resetPage .icon {margin-bottom:15px;}
+    #resetPage .icon img {width:80px;height:80px;max-width:80px;max-height:80px;object-fit:contain;}
     .alert{padding:12px 16px;border-radius:8px;margin-bottom:20px;font-size:14px;display:none;animation:slideDown .3s ease;font-weight:400}
     @keyframes slideDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
     .alert.show{display:block}
@@ -80,6 +82,9 @@
     .strength-good .password-strength-text{color:#ffa502}
     .strength-strong .password-strength-bar{width:100%;background:#26de81}
     .strength-strong .password-strength-text{color:#26de81}
+    .password-requirements{display:none;margin-top:10px}
+    .password-requirements .req{font-size:12px;color:#888;margin-bottom:4px;line-height:1.3;transition:color .3s}
+    .password-requirements .req.met{color:#26de81}
     .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);backdrop-filter:blur(4px);z-index:1000;align-items:center;justify-content:center;padding:20px;animation:fadeIn .3s ease}
     .modal.show{display:flex}
     .modal-content{background:#fff;border-radius:16px;padding:28px;max-width:480px;width:100%;max-height:80vh;overflow-y:auto;animation:modalSlideUp .3s ease;box-shadow:0 12px 40px rgba(0,0,0,.15)}
@@ -104,10 +109,11 @@
     .countdown{font-size:14px;color:#2e7d32;margin-top:10px;text-align:center}
     .back-to-login{margin-top:15px}
   </style>
+</style>
 </head>
 <body>
   <div class="copy-notification" id="copyNotification">
-    www.tezkorquiz.uz saytida parolni nusxalash mumkin emas
+    www.tezkorquiz.uz saytida nusxalash mumkin emas!
   </div>
 
   <div class="main-wrapper">
@@ -183,6 +189,13 @@
             </span>
             <div class="password-strength"><div class="password-strength-bar"></div></div>
             <div class="password-strength-text"></div>
+            <div class="password-requirements">
+              <div class="req" id="req-length">• Kamida 8 ta belgi</div>
+              <div class="req" id="req-number">• Kamida bitta raqam (0-9)</div>
+              <div class="req" id="req-upper">• Kamida bitta katta harf (A-Z)</div>
+              <div class="req" id="req-lower">• Kamida bitta kichik harf (a-z)</div>
+              <div class="req" id="req-special">• Kamida bitta maxsus belgi (!@#$%^&*)</div>
+            </div>
           </div>
           <div class="checkbox-group"><input type="checkbox" id="termsCheckbox" required>
             <label for="termsCheckbox">Men <a href="https://tezkorquiz.uz/terms_of_use" target="_blank">Foydalanish shartlari</a> va <a href="https://tezkorquiz.uz/privacy_policy" target="_blank">Maxfiylik siyosati</a> bilan tanishdim va roziman</label>
@@ -205,7 +218,7 @@
 
       <!-- Password Reset Page -->
       <div id="resetPage" class="page">
-        <div class="icon">Lock</div>
+        <div class="icon"><img src="aga/lock.png" alt="Lock" id="lockIcon"></div>
         <h2>Parolni tiklash</h2>
         <p class="description">Email manzilingizni kiriting va biz sizga parolni tiklash uchun havola yuboramiz.</p>
         <div id="resetAlert" class="alert"></div>
@@ -250,7 +263,7 @@
 
     const firebaseConfig = {
       apiKey: "AIzaSyBxIpLY5WasiSIlDL4japBLnnXRwOLUKEQ",
-      authDomain: "tezkor-quiz-bbe3c.firebaseapp.com",
+      authDomain: "tezkorquiz.uz",
       projectId: "tezkor-quiz-bbe3c",
       storageBucket: "tezkor-quiz-bbe3c.firebasestorage.app",
       messagingSenderId: "143161522496",
@@ -267,34 +280,32 @@
       showAlert('welcomeAlert','Firebase ulanishida xatolik. Console ni tekshiring.','error');
     }
 
-    /* ==== KO'Z ICONKASI ==== */
-    const eyeSVG = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    const eyeOpenSVG = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
     </svg>`;
 
-    const eyeSlashSVG = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    const eyeClosedSVG = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
     </svg>`;
 
     function togglePassword(inputId, eyeId) {
       const input = document.getElementById(inputId);
       const eye = document.getElementById(eyeId);
-      eye.innerHTML = eyeSlashSVG; // boshida yashirin
+      eye.innerHTML = eyeClosedSVG;
       eye.addEventListener('click', () => {
         if (input.type === 'password') {
           input.type = 'text';
-          eye.innerHTML = eyeSVG;
+          eye.innerHTML = eyeOpenSVG;
         } else {
           input.type = 'password';
-          eye.innerHTML = eyeSlashSVG;
+          eye.innerHTML = eyeClosedSVG;
         }
       });
     }
     togglePassword('loginPassword', 'loginEye');
     togglePassword('signupPassword', 'signupEye');
 
-    /* ==== COUNTDOWN ==== */
     let countdownInterval;
     function startCountdown() {
       let sec = 60;
@@ -304,6 +315,7 @@
       form.style.display = 'none';
       successDiv.style.display = 'block';
       document.getElementById('sentEmail').textContent = document.getElementById('resetEmail').value;
+      document.getElementById('lockIcon').src = 'aga/lock-loading.gif';
 
       countdownInterval = setInterval(() => {
         sec--;
@@ -311,14 +323,14 @@
         if (sec <= 0) {
           clearInterval(countdownInterval);
           document.querySelector('#countdown').innerHTML = 'Endi qayta urinib koʻrishingiz mumkin';
+          document.getElementById('lockIcon').src = 'aga/lock.png';
         }
       }, 1000);
     }
 
-    /* ==== QOLGAN FUNKSIYALAR ==== */
     function getDynamicGreeting(){
       const g={timeBased:[{text:'Xayrli tong!',startHour:5,endHour:9},{text:'Nurli tong',startHour:5,endHour:9},{text:'Xayrli kun!',startHour:12,endHour:17},{text:'Xayrli kech!',startHour:18,endHour:24}],
-               random:['Salom do‘stim!','Assalomu aleykum!','Marhamat kiring!','Harakatni boshlang!','Yaxshi kayfiyat!','Tabassum qiling!','Yangi start!','Omadli kun!','Salom mehmon!','Omadli boshlang!']};
+               random:['Salom do‘stim!','Assalomu aleykum!','Marhamat kiring!','Harakatni boshlang!','Yaxshi kayfiyat!','Kirish vaqti','Yangi start!','Kirish oson','Tizim tayyor','Keling, kiraylik','Profilga qadam','Tezkor kirish','Salom mehmon!','Omadli boshlang!']};
       const h=new Date().getHours();
       const match=g.timeBased.filter(i=>h>=i.startHour&&h<i.endHour).map(i=>i.text);
       const all=[...match,...g.random];
@@ -327,15 +339,12 @@
     function updateGreeting(){document.querySelector('#welcomePage h2').textContent=getDynamicGreeting()}
     document.addEventListener('DOMContentLoaded',updateGreeting);
 
-    // Security
     document.addEventListener('keydown',e=>{if(e.key==='F12'||(e.ctrlKey&&e.shiftKey&&['I','J','C'].includes(e.key))||(e.ctrlKey&&e.key==='u')){e.preventDefault();return false}});
     document.addEventListener('contextmenu',e=>e.preventDefault());
     window.handleCopy=e=>{e.preventDefault();showCopyNotification()};
     ['copy','cut','paste','selectstart'].forEach(ev=>document.addEventListener(ev,e=>{if(e.target.tagName!=='INPUT'){e.preventDefault();if(['copy','cut'].includes(ev))showCopyNotification();return false}}));
     function showCopyNotification(){const n=document.getElementById('copyNotification');n.classList.add('show');setTimeout(()=>n.classList.remove('show'),3000)}
-    const devToolsChecker=setInterval(()=>{const t=160;if(window.outerWidth-window.innerWidth>t||window.outerHeight-window.innerHeight>t){document.body.innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-size:24px;color:#ff4757;text-align:center;padding:20px;">Developer Tools aniqlandi!<br>Iltimos, brauzeringizni qayta yuklang.</div>';clearInterval(devToolsChecker)}},1000);
 
-    // Page / Modal
     let currentPage='welcomePage',modalOpen=false;
     function updateHistory(p){currentPage=p;history.pushState({page:p},'','')}
     window.addEventListener('popstate',()=>{if(modalOpen){closeModal('helpModal');modalOpen=false}else if(currentPage!=='welcomePage')showPage('welcomePage')});
@@ -351,24 +360,106 @@
       clearInterval(countdownInterval);
       document.getElementById('resetSuccess').style.display='none';
       document.getElementById('resetForm').style.display='block';
+      if (id === 'resetPage') {
+        document.getElementById('lockIcon').src = 'aga/lock.png';
+      }
     };
 
-    // Password strength
-    const pwInput=document.getElementById('signupPassword');
-    function checkPasswordStrength(p){const l=p.length;if(l<6)return{level:'weak',text:'Zaif parol',class:'strength-weak'};if(l<10)return{level:'good',text:'Yaxshi parol',class:'strength-good'};return{level:'strong',text:'Ajoyib parol',class:'strength-strong'}}
-    pwInput?.addEventListener('input',e=>{const p=e.target.value,c=e.target.parentElement.querySelector('.password-strength'),b=c?.querySelector('.password-strength-bar'),t=e.target.parentElement.querySelector('.password-strength-text');if(!c||!b||!t)return;if(p.length===0){c.className='password-strength';t.textContent='';return}const r=checkPasswordStrength(p);c.className=`password-strength ${r.class}`;t.textContent=r.text});
+    const pwInput = document.getElementById('signupPassword');
+    const commonPasswords = ['abcd', '12345678', 'password', 'qwerty', 'abc123', 'admin', 'welcome', '1234567890', 'password123', '11111111', 'dragon', 'baseball', 'football', 'iloveyou'];
+    
+    function checkPasswordRequirements(p) {
+      const lengthOk = p.length >= 8;
+      const hasNumber = /\d/.test(p);
+      const hasUpper = /[A-Z]/.test(p);
+      const hasLower = /[a-z]/.test(p);
+      const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(p);
+      
+      document.getElementById('req-length').classList.toggle('met', lengthOk);
+      document.getElementById('req-number').classList.toggle('met', hasNumber);
+      document.getElementById('req-upper').classList.toggle('met', hasUpper);
+      document.getElementById('req-lower').classList.toggle('met', hasLower);
+      document.getElementById('req-special').classList.toggle('met', hasSpecial);
+      
+      const count = [lengthOk, hasNumber, hasUpper, hasLower, hasSpecial].filter(Boolean).length;
+      const isCommon = commonPasswords.includes(p.toLowerCase());
+      
+      let level, text, className;
+      if (isCommon || !lengthOk) {
+        level = 'weak'; text = 'Zaif parol (juda oddiy yoki qisqa)'; className = 'strength-weak';
+      } else if (count >= 3) {
+        level = 'good'; text = 'Yaxshi parol'; className = 'strength-good';
+      } else {
+        level = 'weak'; text = 'Zaif parol (ko\'proq shartlarni bajaring)'; className = 'strength-weak';
+      }
+      if (count === 5 && !isCommon) {
+        level = 'strong'; text = 'Ajoyib parol'; className = 'strength-strong';
+      }
+      
+      const container = pwInput.parentElement.querySelector('.password-strength');
+      const bar = container.querySelector('.password-strength-bar');
+      const textEl = pwInput.parentElement.querySelector('.password-strength-text');
+      container.className = `password-strength ${className}`;
+      bar.style.width = level === 'strong' ? '100%' : level === 'good' ? '66%' : '33%';
+      textEl.textContent = text;
+      
+      return { level, isStrong: level === 'strong' };
+    }
 
-    // Alert / Loading
+    pwInput?.addEventListener('input', e => {
+      const p = e.target.value;
+      const reqs = e.target.parentElement.querySelector('.password-requirements');
+      if (p.length === 0) {
+        reqs.style.display = 'none';
+        document.querySelectorAll('.req').forEach(req => req.classList.remove('met'));
+        const container = e.target.parentElement.querySelector('.password-strength');
+        const bar = container.querySelector('.password-strength-bar');
+        const textEl = e.target.parentElement.querySelector('.password-strength-text');
+        container.className = 'password-strength';
+        bar.style.width = '0%';
+        textEl.textContent = '';
+        return;
+      }
+      reqs.style.display = 'block';
+      checkPasswordRequirements(p);
+    });
+
     function showAlert(id,msg,type='error'){const a=document.getElementById(id);a.innerHTML=msg;a.className=`alert alert-${type} show`;if(type==='success')setTimeout(()=>a.classList.remove('show'),5000)}
     function setLoading(btn,load){if(load){btn.disabled=true;btn.classList.add('loading')}else{btn.disabled=false;btn.classList.remove('loading')}}
-    function clearForm(id){const f=document.getElementById(id);if(f){f.reset();const s=f.querySelector('.password-strength'),t=f.querySelector('.password-strength-text');if(s)s.className='password-strength';if(t)t.textContent=''}};
+    function clearForm(id){const f=document.getElementById(id);if(f){f.reset();const s=f.querySelector('.password-strength'),t=f.querySelector('.password-strength-text');if(s)s.className='password-strength';if(t)t.textContent=''; document.querySelectorAll('.req').forEach(req => req.classList.remove('met'));}};
 
-    function getErrorMessage(c){const m={'auth/invalid-email':'Noto\'g\'ri email format','auth/user-disabled':'Bu foydalanuvchi o\'chirilgan','auth/user-not-found':'Bunday foydalanuvchi topilmadi','auth/wrong-password':'Noto\'g\'ri parol kiritildi','auth/email-already-in-use':'Bu email allaqachon ro\'yxatdan o\'tgan','auth/weak-password':'Parol juda oddiy. Kamida 8 ta belgi kiriting','auth/network-request-failed':'Internet aloqasi yo\'q. Iltimos, ulanishni tekshiring','auth/too-many-requests':'Juda ko\'p urinish. Iltimos, biroz kutib qaytadan urinib ko\'ring','auth/invalid-credential':'Noto\'g\'ri email yoki parol','auth/missing-password':'Parol kiritilmagan'};return m[c]||`Xatolik: ${c}`}
+    function getErrorMessage(c){const m={'auth/invalid-email':'Noto\'g\'ri email format','auth/user-disabled':'Bu foydalanuvchi o\'chirilgan iltimos haqiqiy emaildan foydalaning','auth/user-not-found':'Bunday foydalanuvchi topilmadi','auth/wrong-password':'Noto\'g\'ri parol kiritildi','auth/email-already-in-use':'Bu email allaqachon ro\'yxatdan o\'tgan','auth/weak-password':'Parol juda oddiy. Kamida 8 ta belgi kiriting','auth/network-request-failed':'Internet aloqasi yo\'q. Iltimos, ulanishni tekshiring','auth/too-many-requests':'Juda ko\'p urinish. Iltimos, biroz kutib qaytadan urinib ko\'ring','auth/invalid-credential':'Noto\'g\'ri email yoki parol','auth/missing-password':'Parol kiritilmagan'};return m[c]||`Xatolik: ${c}`}
 
-    // Forms
     document.getElementById('loginForm').addEventListener('submit',async e=>{e.preventDefault();const b=e.target.querySelector('.btn-primary'),em=document.getElementById('loginEmail').value,pw=document.getElementById('loginPassword').value;setLoading(b,true);try{await signInWithEmailAndPassword(auth,em,pw);showAlert('loginAlert','Muvaffaqiyatli kirildi!','success');clearForm('loginForm');setTimeout(()=>location.href='index.html',1500)}catch(err){showAlert('loginAlert',getErrorMessage(err.code),'error');setLoading(b,false)}});
 
-    document.getElementById('signupForm').addEventListener('submit',async e=>{e.preventDefault();const b=e.target.querySelector('.btn-primary'),name=document.getElementById('signupName').value,em=document.getElementById('signupEmail').value,pw=document.getElementById('signupPassword').value,terms=document.getElementById('termsCheckbox').checked;if(!terms){showAlert('signupAlert','Iltimos, foydalanish shartlari bilan rozilik bildiring','error');return}setLoading(b,true);try{const uc=await createUserWithEmailAndPassword(auth,em,pw);await updateProfile(uc.user,{displayName:name});showAlert('signupAlert','Muvaffaqiyatli ro\'yxatdan o\'tdingiz!','success');clearForm('signupForm');setTimeout(()=>location.href='index.html',1500)}catch(err){showAlert('signupAlert',getErrorMessage(err.code),'error');setLoading(b,false)}});
+    document.getElementById('signupForm').addEventListener('submit',async e=>{
+      e.preventDefault();
+      const b = e.target.querySelector('.btn-primary');
+      const name = document.getElementById('signupName').value;
+      const em = document.getElementById('signupEmail').value;
+      const pw = document.getElementById('signupPassword').value;
+      const terms = document.getElementById('termsCheckbox').checked;
+      if (!terms) {
+        showAlert('signupAlert','Iltimos, foydalanish shartlari bilan rozilik bildiring','error');
+        return;
+      }
+      const pwCheck = checkPasswordRequirements(pw);
+      if (pwCheck.level === 'weak') {
+        showAlert('signupAlert','Parol juda zaif. Iltimos, kuchliroq parol yarating (kamida 3 ta shartni bajaring va oddiy parollardan qoching)','error');
+        return;
+      }
+      setLoading(b,true);
+      try{
+        const uc=await createUserWithEmailAndPassword(auth,em,pw);
+        await updateProfile(uc.user,{displayName:name});
+        showAlert('signupAlert','Muvaffaqiyatli ro\'yxatdan o\'tdingiz!','success');
+        clearForm('signupForm');
+        setTimeout(()=>location.href='index.html',1500)
+      }catch(err){
+        showAlert('signupAlert',getErrorMessage(err.code),'error');
+        setLoading(b,false)
+      }
+    });
 
     document.getElementById('resetForm').addEventListener('submit',async e=>{
       e.preventDefault();
