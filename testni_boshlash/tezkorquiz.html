@@ -6,25 +6,21 @@
   // Firebase SDK import qilingan deb faraz qilamiz
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
   import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-
   const firebaseConfig = {
    apiKey: "AIzaSyBxIpLY5WasiSIlDL4japBLnnXRwOLUKEQ",
       authDomain: "tezkor-quiz-bbe3c.firebaseapp.com",
     // ... boshqa sozlamalar
   };
-
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
-
   // Current page URL (return uchun)
   const returnUrl = encodeURIComponent(window.location.pathname + window.location.search);
-
   onAuthStateChanged(auth, (user) => {
     if (!user) {
-      // foydalanuvchi kirmagan — login sahifasiga yo'naltirish
+      // foydalanuvchi kirmagan – login sahifasiga yo'naltirish
       window.location.replace(`/kirish.html?returnUrl=${returnUrl}`);
     } else {
-      // foydalanuvchi kirdi — sahifa davom ettirilsin
+      // foydalanuvchi kirdi – sahifa davom ettirilsin
       console.log("User logged in:", user.uid);
     }
   });
@@ -41,14 +37,12 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             overflow-x: hidden;
         }
-
         .quiz-container {
             max-width: 900px;
             margin: 0 auto;
@@ -58,7 +52,6 @@
             flex-direction: column;
             justify-content: center;
         }
-
         .quiz-card {
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
@@ -68,7 +61,6 @@
             overflow: hidden;
             transition: all 0.3s ease;
         }
-
         .quiz-header {
             background: linear-gradient(135deg, #4f46e5, #7c3aed);
             color: white;
@@ -78,45 +70,38 @@
             border-top-left-radius: 20px;
             border-top-right-radius: 20px;
         }
-
         .quiz-title {
             font-size: 2rem;
             font-weight: 700;
             margin-bottom: 10px;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
-
         .quiz-subtitle {
             opacity: 0.9;
             font-size: 1.1rem;
         }
-
         .progress-container {
             padding: 20px 30px;
             background: #f8fafc;
             border: none;
         }
-
         .progress {
             height: 8px;
             border-radius: 10px;
             background: #e2e8f0;
             overflow: hidden;
         }
-
         .progress-bar {
             background: linear-gradient(90deg, #4f46e5, #7c3aed);
             transition: width 0.5s ease;
             border-radius: 10px;
         }
-
         .question-counter {
             text-align: center;
             margin-top: 15px;
             font-weight: 600;
             color: #64748b;
         }
-
         .question-container {
             padding: 40px 30px;
             min-height: 400px;
@@ -125,23 +110,19 @@
             justify-content: center;
             border-radius: 0 0 20px 20px;
         }
-
         .question-slide {
             opacity: 0;
             transform: translateX(50px);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
         .question-slide.active {
             opacity: 1;
             transform: translateX(0);
         }
-
         .question-slide.exit {
             opacity: 0;
             transform: translateX(-50px);
         }
-
         .question-text {
             font-size: 1.4rem;
             font-weight: 600;
@@ -150,12 +131,10 @@
             line-height: 1.6;
             text-align: center;
         }
-
         .options-container {
             display: grid;
             gap: 15px;
         }
-
         .option-btn {
             padding: 20px 25px;
             border: 2px solid #e2e8f0;
@@ -169,15 +148,14 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            user-select: none;
         }
-
         .option-btn:hover {
             border-color: #4f46e5;
             background: #f8fafc;
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(79, 70, 229, 0.15);
         }
-
         .option-btn.selected {
             border-color: #4f46e5;
             background: linear-gradient(135deg, #4f46e5, #7c3aed);
@@ -185,23 +163,26 @@
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3);
         }
-
         .option-btn.correct {
             border-color: #10b981;
             background: linear-gradient(135deg, #10b981, #059669);
             color: white;
         }
-
         .option-btn.incorrect {
             border-color: #ef4444;
             background: linear-gradient(135deg, #ef4444, #dc2626);
             color: white;
         }
-
+        .option-btn.disabled {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+        .option-btn.unselectable {
+            pointer-events: none;
+        }
         .option-letter {
             display: none;
         }
-
         .controls {
             padding: 30px;
             text-align: center;
@@ -209,8 +190,14 @@
             border: none;
             border-bottom-left-radius: 20px;
             border-bottom-right-radius: 20px;
+            transition: opacity 0.3s ease, max-height 0.3s ease;
         }
-
+        .controls.hidden {
+            max-height: 0;
+            padding: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
         .btn-primary, .btn-outline-primary {
             padding: 15px 40px;
             font-size: 1.2rem;
@@ -223,24 +210,20 @@
             gap: 10px;
             min-width: 200px;
         }
-
         .btn-primary {
             background: linear-gradient(135deg, #4f46e5, #7c3aed);
             border: none;
             box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
         }
-
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
         }
-
         .btn-outline-primary {
             border: 2px solid #4f46e5;
             color: #4f46e5;
             background: transparent;
         }
-
         .btn-outline-primary:hover {
             background: #4f46e5;
             color: white;
@@ -248,12 +231,11 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
         }
-
         .file-upload-container {
             text-align: center;
             padding: 60px 30px;
+            user-select: none;
         }
-
         .upload-area {
             border: 3px dashed #cbd5e1;
             border-radius: 0 0 20px 20px;
@@ -261,178 +243,583 @@
             cursor: pointer;
             transition: all 0.3s ease;
             background: rgba(248, 250, 252, 0.5);
+            user-select: none;
         }
-
         .upload-area:hover {
             border-color: #4f46e5;
             background: rgba(79, 70, 229, 0.05);
         }
-
+        .upload-area.dragover {
+            border-color: #4f46e5;
+            background: rgba(79, 70, 229, 0.1);
+        }
         .upload-icon {
             font-size: 4rem;
             color: #94a3b8;
             margin-bottom: 20px;
         }
-
         .upload-text {
             font-size: 1.3rem;
             font-weight: 600;
             color: #475569;
             margin-bottom: 10px;
         }
-
         .upload-subtext {
             color: #94a3b8;
             font-size: 1rem;
         }
-
         .result-container {
             text-align: center;
             padding: 60px 30px;
         }
-
         .result-icon {
             font-size: 5rem;
             margin-bottom: 30px;
         }
-
         .result-title {
             font-size: 2.5rem;
             font-weight: 700;
             margin-bottom: 20px;
         }
-
         .result-score {
             font-size: 3rem;
             font-weight: 800;
             margin-bottom: 20px;
         }
-
         .result-details {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 20px;
             margin: 40px 0;
         }
-
         .result-item {
             background: rgba(248, 250, 252, 0.8);
             padding: 20px;
             border-radius: 15px;
             border: 1px solid #e2e8f0;
         }
-
         .result-item-value {
             font-size: 2rem;
             font-weight: 700;
             color: #4f46e5;
         }
-
         .result-item-label {
             color: #64748b;
             font-weight: 500;
             margin-top: 5px;
         }
-
         .result-container .mt-4 {
             display: flex;
             justify-content: center;
             gap: 20px;
             flex-wrap: wrap;
         }
-
         .animate-fade-in {
             animation: fadeIn 0.5s ease-in-out;
         }
-
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
         .animate-bounce {
             animation: bounce 0.6s ease-in-out;
         }
-
         @keyframes bounce {
             0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
             40% { transform: translateY(-10px); }
             60% { transform: translateY(-5px); }
         }
-
         @media (max-width: 768px) {
             .quiz-container {
                 padding: 10px;
             }
-
             .quiz-title {
                 font-size: 1.5rem;
             }
-
             .question-text {
                 font-size: 1.2rem;
             }
-
             .option-btn {
                 padding: 15px 20px;
                 font-size: 1rem;
             }
-
             .progress-container,
             .question-container,
             .controls {
                 padding: 20px;
             }
-
             .result-score {
                 font-size: 2.5rem;
             }
-
             .result-title {
                 font-size: 2rem;
             }
-
             .btn-primary, .btn-outline-primary {
                 padding: 12px 30px;
                 font-size: 1rem;
                 gap: 8px;
                 min-width: 150px;
             }
-            
+           
             .result-details {
                 grid-template-columns: repeat(2, 1fr);
             }
-            
+           
             .result-item:last-child {
                 grid-column: 1 / -1;
             }
-        }
 
+            /* Toggle adjustments for mobile */
+            .toggle-container {
+                padding: 15px;
+                margin: 15px 0;
+            }
+            .toggle-item {
+                padding: 12px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .toggle-content {
+                margin-right: 0;
+                width: 100%;
+            }
+            .toggle-label {
+                font-size: 1rem;
+            }
+            .toggle-description {
+                font-size: 0.85rem;
+            }
+            .form-switch {
+                align-self: flex-end;
+            }
+        }
         @media (max-width: 480px) {
             .quiz-header {
                 padding: 20px;
             }
-
             .question-container {
                 min-height: 350px;
                 padding: 30px 20px;
             }
-
             .option-btn {
                 padding: 12px 15px;
                 font-size: 0.95rem;
                 text-align: center;
             }
-
             .option-letter {
                 display: none;
             }
-
             .btn-primary, .btn-outline-primary {
                 padding: 10px 25px;
                 font-size: 0.9rem;
                 gap: 6px;
                 min-width: 120px;
+            }
+
+            /* Further toggle adjustments for small mobile */
+            .toggle-container {
+                padding: 12px;
+            }
+            .toggle-item {
+                padding: 10px;
+            }
+            .toggle-label {
+                font-size: 0.95rem;
+            }
+            .toggle-description {
+                font-size: 0.8rem;
+            }
+        }
+        /* Sample modal styles - adapted */
+        .sample-modal {
+          display: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.4);
+          justify-content: center;
+          align-items: center;
+          z-index: 10000;
+        }
+        .sample-modal-content {
+          background-color: rgba(255, 255, 255, 0.95);
+          backdrop-filter: blur(10px);
+          padding: 24px;
+          border-radius: 12px;
+          width: 90%;
+          max-width: 400px;
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+          text-align: center;
+        }
+        .sample-modal-content h3 {
+          margin-bottom: 20px;
+          color: #1e293b;
+          font-size: 20px;
+          font-weight: 600;
+        }
+        .sample-modal-content p {
+          color: #64748b;
+          font-size: 16px;
+          margin-bottom: 20px;
+        }
+        .sample-modal-close {
+          background: linear-gradient(135deg, #4f46e5, #7c3aed);
+          color: white;
+          border: none;
+          padding: 12px 24px;
+          border-radius: 50px;
+          font-size: 16px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+        }
+        .sample-modal-close:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
+        }
+        @media (max-width: 576px) {
+          .sample-modal-content {
+            width: 95%;
+            padding: 20px;
+          }
+        }
+        .sample-section {
+            margin-top: 15px;
+            width: 100%;
+            text-align: center;
+        }
+        .sample-toggle {
+            background: transparent;
+            color: #4f46e5;
+            border: 2px solid #4f46e5;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-width: 200px;
+        }
+        .sample-toggle:hover {
+            background: #4f46e5;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
+        }
+        /* Toggle styles for settings */
+        .toggle-container {
+            background: rgba(248, 250, 252, 0.8);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        .toggle-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: white;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+        .toggle-item:hover {
+            background: #f8fafc;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
+        }
+        .toggle-content {
+            flex: 1;
+            margin-right: 15px;
+        }
+        .toggle-label {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #475569;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .toggle-description {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            line-height: 1.4;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .toggle-description.show {
+            max-height: 200px;
+            opacity: 1;
+            margin-top: 8px;
+        }
+        .form-switch {
+            margin: 0;
+            flex-shrink: 0;
+        }
+        .form-switch .form-check-input {
+            width: 3em;
+            height: 1.5em;
+            background-color: #cbd5e1;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .form-switch .form-check-input:checked {
+            background-color: #4f46e5;
+        }
+        .form-switch .form-check-input:focus {
+            box-shadow: 0 0 0 0.25rem rgba(79, 70, 229, 0.25);
+        }
+        /* Info Section Styles */
+        .info-container {
+            padding: 40px 30px;
+            background: #f8fafc;
+        }
+        .info-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.15);
+        }
+        .info-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 2rem;
+            color: white;
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3);
+        }
+        .info-title {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 25px;
+        }
+        .info-items {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        .info-item:hover {
+            background: #f1f5f9;
+            transform: translateX(5px);
+        }
+        .info-number {
+            min-width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: white;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+            flex-shrink: 0;
+        }
+        .info-text {
+            font-size: 1rem;
+            color: #475569;
+            line-height: 1.5;
+        }
+        .info-text strong {
+            color: #4f46e5;
+            font-weight: 600;
+        }
+        .info-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .info-stat {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+        .info-stat:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.15);
+        }
+        .info-stat i {
+            font-size: 2.5rem;
+            color: #4f46e5;
+            margin-bottom: 15px;
+        }
+        .info-stat span {
+            display: block;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+        .info-stat p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+        .info-footer {
+            padding: 30px;
+            text-align: center;
+            background: #f8fafc;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+        .btn-start {
+            padding: 18px 50px;
+            font-size: 1.3rem;
+            min-width: 250px;
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.35);
+            animation: pulse 2s infinite;
+        }
+        .btn-start:hover {
+            animation: none;
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 30px rgba(79, 70, 229, 0.45);
+        }
+        .info-tip {
+            margin-top: 20px;
+            color: #64748b;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .info-tip i {
+            color: #f59e0b;
+            font-size: 1.1rem;
+        }
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 8px 25px rgba(79, 70, 229, 0.35);
+            }
+            50% {
+                box-shadow: 0 8px 35px rgba(79, 70, 229, 0.5);
+            }
+        }
+        @media (max-width: 768px) {
+            .info-container {
+                padding: 30px 20px;
+            }
+           
+            .info-card {
+                padding: 25px 20px;
+                margin-bottom: 20px;
+            }
+           
+            .info-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 1.7rem;
+            }
+           
+            .info-title {
+                font-size: 1.3rem;
+            }
+           
+            .info-item {
+                gap: 15px;
+                padding: 12px;
+            }
+           
+            .info-number {
+                min-width: 45px;
+                height: 45px;
+                font-size: 1.1rem;
+            }
+           
+            .info-text {
+                font-size: 0.95rem;
+            }
+           
+            .info-stats {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+           
+            .info-stat {
+                padding: 20px;
+            }
+           
+            .info-stat i {
+                font-size: 2rem;
+            }
+           
+            .info-stat span {
+                font-size: 1.5rem;
+            }
+           
+            .btn-start {
+                padding: 15px 40px;
+                font-size: 1.1rem;
+                min-width: 200px;
+            }
+           
+            .info-footer {
+                padding: 25px 20px;
+            }
+        }
+        @media (max-width: 480px) {
+            .info-card {
+                padding: 20px 15px;
+            }
+           
+            .info-items {
+                gap: 15px;
+            }
+           
+            .info-item {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+           
+            .info-number {
+                min-width: 50px;
+            }
+           
+            .btn-start {
+                padding: 12px 30px;
+                font-size: 1rem;
+                min-width: 180px;
             }
         }
     </style>
@@ -448,31 +835,113 @@
                     </h1>
                     <p class="quiz-subtitle">Test faylini yuklang va bilimingizni sinab ko'ring!</p>
                 </div>
-                
-                <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+               
+                <div class="upload-area" id="uploadArea">
                     <i class="fas fa-cloud-upload-alt upload-icon"></i>
-                    <div class="upload-text">Test faylini yuklash uchun bosing!</div>
+                    <div class="upload-text">Test faylini yuklash uchun bosing yoki drop qiling</div>
                     <div class="upload-subtext">.txt formatda faylni tanlang</div>
                 </div>
-                
+               
                 <input type="file" id="fileInput" accept=".txt" style="display: none;">
-                
+               
+                <!-- Settings Toggles -->
+                <div class="toggle-container">
+                    <h5 style="text-align: center; margin-bottom: 15px; color: #4f46e5;">Test sozlamalari</h5>
+                    <div class="toggle-item" id="toggleItem">
+                        <div class="toggle-content">
+                            <label class="toggle-label" id="toggleLabel">Keyingi tugmasini ko'rsatish</label>
+                            <div class="toggle-description" id="toggleDescription">Agar yoqilsa, keyingi tugma ko'rinadi va odatiy ishlaydi. Agar o'chirilsa, bitta bosishda keyingi savolga o'tadi.</div>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="showNextToggle" checked>
+                        </div>
+                    </div>
+                </div>
+               
                 <div class="mt-4">
-                    <button class="btn btn-primary" onclick="loadSampleQuiz()">
-                        <i class="fas fa-play"></i> Namuna testni boshlash
-                    </button>
+                    <div class="sample-section" id="sampleSection">
+                        <button class="sample-toggle" id="sampleToggle">
+                            <i class="fas fa-download"></i> Namuna test yuklab olish
+                        </button>
+                        <p style="margin-top: 10px; color: #64748b; font-size: 0.9rem;">Kichik namuna test faylini yuklab oling va faylni yuklab sinab ko'ring.</p>
+                    </div>
                 </div>
             </div>
-
-            <!-- Quiz Section -->
-            <div id="quizSection" style="display: none;">
+            <!-- Info Section (fayl yuklangandan keyin ko'rsatiladi) -->
+            <div id="infoSection" style="display: none;">
                 <div class="quiz-header">
                     <h1 class="quiz-title">
-                        <i class="fas fa-brain"></i> Tezkor Quiz
+                        <i class="fas fa-rocket"></i> Tezkor Quiz
                     </h1>
-                    <p class="quiz-subtitle">Har bir savolga diqqat bilan javob bering</p>
+                    <p class="quiz-subtitle">Test boshlashdan oldin qoidalar bilan tanishing</p>
                 </div>
-
+               
+                <div class="info-container">
+                    <div class="info-card animate-fade-in">
+                        <div class="info-icon">
+                            <i class="fas fa-keyboard"></i>
+                        </div>
+                        <h3 class="info-title">Klaviatura bilan ishlash</h3>
+                        <div class="info-items">
+                            <div class="info-item">
+                                <div class="info-number">1-4</div>
+                                <div class="info-text">Variantlarni tanlash uchun <strong>1, 2, 3, 4</strong> raqamlarini bosing</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-number">2x</div>
+                                <div class="info-text">Raqamni <strong>ikki marta</strong> bosish keyingi savolga o'tadi</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-number">↵</div>
+                                <div class="info-text"><strong>Enter</strong> tugmasi javobni tasdiqlaydi va davom etadi</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info-card animate-fade-in" style="animation-delay: 0.1s;">
+                        <div class="info-icon" style="background: linear-gradient(135deg, #10b981, #059669);">
+                            <i class="fas fa-mouse-pointer"></i>
+                        </div>
+                        <h3 class="info-title">Sichqoncha bilan ishlash</h3>
+                        <div class="info-items">
+                            <div class="info-item">
+                                <div class="info-number"><i class="fas fa-hand-pointer"></i></div>
+                                <div class="info-text">Variantni <strong>bosing</strong> va keyin "Keyingi savol" tugmasini bosing</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-number"><i class="fas fa-mobile-alt"></i></div>
+                                <div class="info-text">Mobil qurilmada <strong>swipe</strong> qilish ham ishlaydi</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info-stats">
+                        <div class="info-stat">
+                            <i class="fas fa-list-ol"></i>
+                            <span id="infoQuestionCount">0</span>
+                            <p>Savollar soni</p>
+                        </div>
+                        <div class="info-stat">
+                            <i class="fas fa-random"></i>
+                            <span>Random</span>
+                            <p>Savollar tartibi</p>
+                        </div>
+                        <div class="info-stat">
+                            <i class="fas fa-stopwatch"></i>
+                            <span>Cheksiz</span>
+                            <p>Vaqt</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="info-footer">
+                    <button class="btn btn-primary btn-start" onclick="startQuizFromInfo()">
+                        <i class="fas fa-play"></i> Testni boshlash
+                    </button>
+                    <p class="info-tip">
+                        <i class="fas fa-lightbulb"></i> Maslahat: Klaviaturadan foydalanish tezroq natija beradi!
+                    </p>
+                </div>
+            </div>
+            <!-- Quiz Section -->
+            <div id="quizSection" style="display: none;">
                 <div class="progress-container">
                     <div class="progress">
                         <div class="progress-bar" id="progressBar" style="width: 0%"></div>
@@ -481,29 +950,26 @@
                         <span id="currentQuestion">1</span> / <span id="totalQuestions">10</span>
                     </div>
                 </div>
-
                 <div class="question-container">
                     <div id="questionSlide" class="question-slide">
                         <div class="question-text" id="questionText"></div>
                         <div class="options-container" id="optionsContainer"></div>
                     </div>
                 </div>
-
-                <div class="controls">
+                <div class="controls" id="controlsDiv">
                     <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>
                         <span id="nextBtnText">Keyingi savol</span>
                         <i class="fas fa-arrow-right"></i>
                     </button>
                 </div>
             </div>
-
             <!-- Result Section -->
             <div id="resultSection" style="display: none;">
                 <div class="result-container">
                     <div id="resultIcon" class="result-icon"></div>
                     <h2 id="resultTitle" class="result-title"></h2>
                     <div id="resultScore" class="result-score"></div>
-                    
+                   
                     <div class="result-details">
                         <div class="result-item">
                             <div id="correctCount" class="result-item-value">0</div>
@@ -518,7 +984,6 @@
                             <div class="result-item-label">Umumiy vaqt</div>
                         </div>
                     </div>
-
                     <div class="mt-4">
                         <button class="btn btn-outline-primary" onclick="restartQuiz()">
                             <i class="fas fa-redo"></i> Qayta boshlash
@@ -531,7 +996,14 @@
             </div>
         </div>
     </div>
-
+    <!-- Sample Modal -->
+    <div class="sample-modal" id="sampleModal">
+      <div class="sample-modal-content">
+        <h3>Namuna test yuklandi!</h3>
+        <p>Endi uni fayl tanlash joyiga yuklang.</p>
+        <button class="sample-modal-close" id="sampleModalClose">Hop, rahmat!</button>
+      </div>
+    </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
     <script>
         let questions = [];
@@ -540,7 +1012,10 @@
         let score = 0;
         let startTime;
         let selectedAnswer = null;
-
+        let showNextButton = true;
+        let lastKeyPressed = null;
+        let answerSelected = false; // Har bir savolda javob tanlangan yoki yo'qligini kuzatish
+        
         // Fisher-Yates shuffle algorithm
         function shuffle(array) {
             for (let i = array.length - 1; i > 0; i--) {
@@ -549,42 +1024,102 @@
             }
             return array;
         }
-
-        // Sample questions
-        const sampleQuestions = [
-            {
-                question: "Tezkor Quizning ustunligi nimada?",
-                options: [
-                    "Klaviaturada 1, 2, 3, 4 raqamlarni bosish orqali variantlarni tanlash mumkin va Keyingi savolga o'tish uchun Enter tugmasi bosiladi (Sinab ko'ringchi?) ",
-                    "Variant belgilangandan keyin avtomatik pastga tushadi.",
-                    "Imtihon ko'rinishidagi muhit bilan test yechiladi.",
-                    "Vaqt kam beriladi va tez ishlashga undaydi."
-                ],
-                answer: 0
-            },
-            {
-                question: "Pro Quiz tuzilishi qaysi sayt, ilova, botdan ilhomlanilgan?",
-                options: [
-                    "Telegram ijtimoiy tarmog'ining Quiz Botdan",
-                    "Kahoot saytidan",
-                    "Kreativ qilingan"
-                ],
-                answer: 0
-            },
-            {
-                question: "Umumiy sayt quizlari qanday formatda ishlaydi?",
-                options: [
-                    "Oddiy blaknot fayl .txt fayl orqali ishlaydi va har bir savol, variantlar bir qator bo'ladi, undan keyin A, B, C, D variantlari va ANSWER: so'zidan keyin bitta probel bilan to'g'ri javob (A, B, C yoki D) ko'rsatiladi va bir qator ochhiq joy (Enter) qoldiriladi va keyingi savol namunadek davom etadi.",
-                    "Pdf fayl orqali ishlaydi",
-                    "Har qanday farmotlarni qo'llab quvatlaydi"
-                ],
-                answer: 0
+        
+        // Toggle functionality
+        const toggleItem = document.getElementById('toggleItem');
+        const toggleLabel = document.getElementById('toggleLabel');
+        const toggleDescription = document.getElementById('toggleDescription');
+        const showNextToggle = document.getElementById('showNextToggle');
+        
+        // Toggle description ko'rinishini boshqarish
+        toggleItem.addEventListener('click', function(e) {
+            // Agar checkbox ustiga bosilgan bo'lsa, default action ishlaydi
+            if (e.target === showNextToggle) {
+                return;
             }
-        ];
-
+            
+            // Description ko'rsatish/yashirish
+            toggleDescription.classList.toggle('show');
+            
+            // Checkbox holatini o'zgartirish
+            showNextToggle.checked = !showNextToggle.checked;
+            showNextButton = showNextToggle.checked;
+            
+            // Label matnini o'zgartirish
+            if (showNextToggle.checked) {
+                toggleLabel.textContent = "Keyingi tugmasini ko'rsatish";
+            } else {
+                toggleLabel.textContent = "Keyingi tugmasini yashirish";
+            }
+            
+            // Smooth scroll
+            setTimeout(() => {
+                toggleItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 100);
+        });
+        
+        // Checkbox o'zgarishini kuzatish
+        showNextToggle.addEventListener('change', function() {
+            showNextButton = this.checked;
+            
+            // Label matnini o'zgartirish
+            if (this.checked) {
+                toggleLabel.textContent = "Keyingi tugmasini ko'rsatish";
+            } else {
+                toggleLabel.textContent = "Keyingi tugmasini yashirish";
+            }
+            
+            // Description ko'rsatish
+            if (!toggleDescription.classList.contains('show')) {
+                toggleDescription.classList.add('show');
+            }
+            
+            // Smooth scroll
+            setTimeout(() => {
+                toggleItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 100);
+        });
+        
+        // Drag and drop handlers
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, preventDefaults, false);
+        });
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        ['dragenter', 'dragover'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, highlight, false);
+        });
+        ['dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, unhighlight, false);
+        });
+        function highlight(e) {
+            uploadArea.classList.add('dragover');
+        }
+        function unhighlight(e) {
+            uploadArea.classList.remove('dragover');
+        }
+        uploadArea.addEventListener('drop', handleDrop, false);
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            handleFiles(files);
+        }
+        uploadArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+        
         // File upload handler
-        document.getElementById('fileInput').addEventListener('change', function(e) {
-            const file = e.target.files[0];
+        fileInput.addEventListener('change', function(e) {
+            const files = e.target.files;
+            handleFiles(files);
+        });
+        
+        function handleFiles(files) {
+            const file = files[0];
             if (!file) {
                 alert('Fayl tanlanmadi! Iltimos, .txt faylni tanlang. Yordam: telegram: @sobirweb');
                 return;
@@ -597,7 +1132,6 @@
                 alert('Fayl bo\'sh! Iltimos, savollar bilan fayl yuklang. Yordam: telegram: @sobirweb');
                 return;
             }
-
             const reader = new FileReader();
             reader.onload = function(e) {
                 try {
@@ -610,8 +1144,8 @@
                 alert('Faylni o\'qishda xatolik yuz berdi! Yordam: telegram: @sobirweb');
             };
             reader.readAsText(file);
-        });
-
+        }
+        
         // Parse questions from text file
         function parseQuestions(text) {
             const lines = text.split('\n').map(line => line.trim()).filter(line => line !== '');
@@ -619,7 +1153,6 @@
             let currentQuestion = null;
             let options = [];
             let answer = null;
-
             for (let i = 0; i < lines.length; i++) {
                 const line = lines[i];
                 if (line.startsWith('ANSWER:')) {
@@ -662,7 +1195,6 @@
                     answer = null;
                 }
             }
-
             // Handle the last question
             if (currentQuestion && options.length >= 2 && answer !== null) {
                 const answerIndex = 'ABCD'.indexOf(answer);
@@ -680,63 +1212,98 @@
             } else if (currentQuestion && answer === null) {
                 throw new Error('Oxirgi savol uchun javob topilmadi');
             }
-
             if (questions.length === 0) {
                 throw new Error('Faylda hech qanday savol topilmadi! Yordam: telegram: @sobirweb');
             }
-
             // Shuffle questions
             questions = shuffle(questions);
-            startQuiz();
+            showInfoSection();
         }
-
-        // Load sample quiz
-        function loadSampleQuiz() {
-            questions = [...sampleQuestions];
-            questions = shuffle(questions);
-            startQuiz();
+        
+        // Info section ni ko'rsatish funksiyasi
+        function showInfoSection() {
+            document.getElementById('uploadSection').style.display = 'none';
+            document.getElementById('infoSection').style.display = 'block';
+           
+            // Savollar sonini ko'rsatish
+            document.getElementById('infoQuestionCount').textContent = questions.length;
         }
-
+        
+        // Info section dan testni boshlash
+        function startQuizFromInfo() {
+            document.getElementById('infoSection').style.display = 'none';
+            document.getElementById('quizSection').style.display = 'block';
+            document.getElementById('totalQuestions').textContent = questions.length;
+          
+            // Apply settings
+            const controlsDiv = document.getElementById('controlsDiv');
+            if (!showNextButton) {
+                controlsDiv.classList.add('hidden');
+            } else {
+                controlsDiv.classList.remove('hidden');
+            }
+          
+            currentQuestionIndex = 0;
+            userAnswers = [];
+            score = 0;
+            selectedAnswer = null;
+            lastKeyPressed = null;
+            answerSelected = false;
+            startTime = new Date();
+          
+            showQuestion();
+        }
+        
         // Start the quiz
         function startQuiz() {
             document.getElementById('uploadSection').style.display = 'none';
             document.getElementById('quizSection').style.display = 'block';
             document.getElementById('totalQuestions').textContent = questions.length;
-            
+           
+            // Apply settings: controlsDiv ni ko'rsatish/yashirish
+            const controlsDiv = document.getElementById('controlsDiv');
+            if (!showNextButton) {
+                controlsDiv.classList.add('hidden');
+            } else {
+                controlsDiv.classList.remove('hidden');
+            }
+           
             currentQuestionIndex = 0;
             userAnswers = [];
             score = 0;
             selectedAnswer = null;
+            lastKeyPressed = null;
+            answerSelected = false;
             startTime = new Date();
-            
+           
             showQuestion();
         }
-
+        
         // Show current question
         function showQuestion() {
             const question = questions[currentQuestionIndex];
             const questionSlide = document.getElementById('questionSlide');
-            
+           
             // Exit animation
             questionSlide.classList.add('exit');
-            
+           
             setTimeout(() => {
                 // Update content
                 document.getElementById('questionText').textContent = question.question;
                 document.getElementById('currentQuestion').textContent = currentQuestionIndex + 1;
-                
+               
                 const optionsContainer = document.getElementById('optionsContainer');
                 optionsContainer.innerHTML = '';
-                
+               
                 // Shuffle options
                 const shuffledOptions = [...question.options];
                 const shuffledIndices = Array.from({length: question.options.length}, (_, i) => i);
                 shuffle(shuffledIndices);
-                
+               
                 // Update correct answer index
                 const correctAnswerIndex = shuffledIndices.indexOf(question.answer);
                 question.shuffledAnswer = correctAnswerIndex;
-                
+               
                 shuffledIndices.forEach((shuffledIndex, index) => {
                     const optionBtn = document.createElement('button');
                     optionBtn.className = 'option-btn';
@@ -744,23 +1311,28 @@
                     optionBtn.onclick = () => selectAnswer(index);
                     optionsContainer.appendChild(optionBtn);
                 });
-                
+               
                 // Update progress
                 const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
                 document.getElementById('progressBar').style.width = progress + '%';
-                
-                // Reset button
-                document.getElementById('nextBtn').disabled = true;
+               
+                // Reset button and selection
+                const nextBtn = document.getElementById('nextBtn');
+                if (showNextButton) {
+                    nextBtn.disabled = true;
+                }
                 selectedAnswer = null;
-                
+                lastKeyPressed = null;
+                answerSelected = false;
+               
                 // Update button text
                 const isLastQuestion = currentQuestionIndex === questions.length - 1;
                 document.getElementById('nextBtnText').textContent = isLastQuestion ? 'Testni yakunlash' : 'Keyingi savol';
-                
+               
                 // Enter animation
                 questionSlide.classList.remove('exit');
                 questionSlide.classList.add('active');
-                
+               
                 // Add bounce animation to options
                 setTimeout(() => {
                     const options = optionsContainer.querySelectorAll('.option-btn');
@@ -772,51 +1344,74 @@
                 }, 200);
             }, 200);
         }
-
+        
         // Select an answer
         function selectAnswer(index) {
-            selectedAnswer = index;
+            // Agar keyingi tugma yashirilgan bo'lsa va javob allaqachon tanlangan bo'lsa, qayta tanlashni oldini olish
+            if (!showNextButton && answerSelected) {
+                return;
+            }
             
+            selectedAnswer = index;
+            answerSelected = true;
+           
             // Remove previous selections
             document.querySelectorAll('.option-btn').forEach(btn => {
                 btn.classList.remove('selected');
             });
-            
+           
             // Add selection to clicked option
-            document.querySelectorAll('.option-btn')[index].classList.add('selected');
-            
-            // Enable next button
-            document.getElementById('nextBtn').disabled = false;
-            
+            const selectedBtn = document.querySelectorAll('.option-btn')[index];
+            selectedBtn.classList.add('selected');
+           
+            // Enable next button if shown
+            if (showNextButton) {
+                document.getElementById('nextBtn').disabled = false;
+            }
+           
             // Add click animation
-            document.querySelectorAll('.option-btn')[index].classList.add('animate-fade-in');
+            selectedBtn.classList.add('animate-fade-in');
+           
+            // Agar keyingi tugma yashirilgan bo'lsa, avtomatik keyingi savolga o'tish
+            if (!showNextButton && selectedAnswer !== null) {
+                // Barcha variantlarni faqat bosilmaydigan qilish (vizual o'zgarishsiz)
+                document.querySelectorAll('.option-btn').forEach(btn => {
+                    btn.classList.add('unselectable');
+                });
+                
+                setTimeout(() => {
+                    nextQuestion();
+                }, 300);
+            }
         }
-
+        
         // Move to next question
         function nextQuestion() {
             if (selectedAnswer === null) return;
-            
+           
             const question = questions[currentQuestionIndex];
             const correctAnswerIndex = question.shuffledAnswer;
-            
+           
             userAnswers.push(selectedAnswer);
-            
+           
             // Show correct/incorrect feedback
             const options = document.querySelectorAll('.option-btn');
             options[correctAnswerIndex].classList.add('correct');
-            
+           
             if (selectedAnswer !== correctAnswerIndex) {
                 options[selectedAnswer].classList.add('incorrect');
             } else {
                 score++;
             }
-            
-            // Disable next button temporarily
-            document.getElementById('nextBtn').disabled = true;
-            
+           
+            // Disable next button temporarily if shown
+            if (showNextButton) {
+                document.getElementById('nextBtn').disabled = true;
+            }
+           
             setTimeout(() => {
                 currentQuestionIndex++;
-                
+               
                 if (currentQuestionIndex < questions.length) {
                     showQuestion();
                 } else {
@@ -824,21 +1419,21 @@
                 }
             }, 1500);
         }
-
+        
         // Show quiz results
         function showResults() {
             document.getElementById('quizSection').style.display = 'none';
             document.getElementById('resultSection').style.display = 'block';
-            
+           
             const endTime = new Date();
             const totalTime = Math.round((endTime - startTime) / 1000);
             const percentage = Math.round((score / questions.length) * 100);
-            
+           
             // Set result content
             document.getElementById('correctCount').textContent = score;
             document.getElementById('incorrectCount').textContent = questions.length - score;
             document.getElementById('totalTime').textContent = formatTime(totalTime);
-            
+           
             // Set result based on score
             if (percentage >= 80) {
                 document.getElementById('resultIcon').innerHTML = '<i class="fas fa-trophy" style="color: #f59e0b;"></i>';
@@ -853,18 +1448,18 @@
                 document.getElementById('resultTitle').textContent = 'Qayta urinib ko\'ring';
                 document.getElementById('resultScore').innerHTML = `<span style="color: #ef4444;">${percentage}%</span>`;
             }
-            
+           
             // Add animation
             document.querySelector('.result-container').classList.add('animate-fade-in');
         }
-
+        
         // Format time in MM:SS
         function formatTime(seconds) {
             const minutes = Math.floor(seconds / 60);
             const remainingSeconds = seconds % 60;
             return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
         }
-
+        
         // Restart quiz
         function restartQuiz() {
             questions = shuffle(questions);
@@ -872,68 +1467,105 @@
             userAnswers = [];
             score = 0;
             selectedAnswer = null;
-            
+            answerSelected = false;
+           
             document.getElementById('resultSection').style.display = 'none';
             document.getElementById('quizSection').style.display = 'block';
-            
+           
+            // Re-apply settings
+            const controlsDiv = document.getElementById('controlsDiv');
+            if (!showNextButton) {
+                controlsDiv.classList.add('hidden');
+            } else {
+                controlsDiv.classList.remove('hidden');
+            }
+           
             startTime = new Date();
             showQuestion();
         }
-
+        
         // Start new quiz
         function newQuiz() {
             document.getElementById('resultSection').style.display = 'none';
             document.getElementById('uploadSection').style.display = 'block';
-            
+           
             // Reset file input
             document.getElementById('fileInput').value = '';
-            
+           
             // Reset all variables
             questions = [];
             currentQuestionIndex = 0;
             userAnswers = [];
             score = 0;
             selectedAnswer = null;
+            answerSelected = false;
         }
-
+        
         // Keyboard navigation
         document.addEventListener('keydown', function(e) {
             if (document.getElementById('quizSection').style.display !== 'none') {
                 if (e.key >= '1' && e.key <= '4') {
                     const index = parseInt(e.key) - 1;
                     if (index < questions[currentQuestionIndex].options.length) {
-                        selectAnswer(index);
+                        // Agar keyingi tugma yashirilgan bo'lsa va javob allaqachon tanlangan bo'lsa, qayta tanlashni oldini olish
+                        if (!showNextButton && answerSelected) {
+                            return;
+                        }
+                        
+                        if (lastKeyPressed === index && selectedAnswer === index && showNextButton) {
+                            // Agar tugma ko'rinib tursa, ikki marta bosishda o'tish
+                            e.preventDefault();
+                            nextQuestion();
+                        } else {
+                            // Select
+                            selectAnswer(index);
+                            lastKeyPressed = index;
+                        }
                     }
-                } else if (e.key === 'Enter' && !document.getElementById('nextBtn').disabled) {
+                } else if (e.key === 'Enter' && selectedAnswer !== null && showNextButton) {
+                    e.preventDefault();
                     nextQuestion();
                 }
             }
         });
-
+        
         // Touch gestures for mobile
         let touchStartX = 0;
         let touchEndX = 0;
-
         document.addEventListener('touchstart', function(e) {
             touchStartX = e.changedTouches[0].screenX;
         });
-
         document.addEventListener('touchend', function(e) {
             touchEndX = e.changedTouches[0].screenX;
             handleSwipe();
         });
-
         function handleSwipe() {
             const swipeThreshold = 50;
             const diff = touchStartX - touchEndX;
-            
+           
             if (Math.abs(diff) > swipeThreshold) {
-                if (diff > 0 && !document.getElementById('nextBtn').disabled) {
+                if (diff > 0 && selectedAnswer !== null && showNextButton) {
                     nextQuestion();
                 }
             }
         }
+        
+        // Sample download functionality
+        const sampleModal = document.getElementById("sampleModal");
+        const sampleModalClose = document.getElementById("sampleModalClose");
+        const sampleToggle = document.getElementById("sampleToggle");
+        sampleToggle.addEventListener("click", function() {
+            const link = document.createElement("a");
+            link.href = "https://tezkorquiz.uz/namuna_test.txt";
+            link.download = "namuna_test.txt";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            sampleModal.style.display = 'flex';
+        });
+        sampleModalClose.addEventListener("click", function() {
+            sampleModal.style.display = 'none';
+        });
     </script>
 </body>
 </html>
-
