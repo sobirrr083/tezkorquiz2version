@@ -1832,22 +1832,29 @@
         let scrollTimeout;
         let lastScrollTop = 0;
 
-        // Auth state observer
-        onAuthStateChanged(auth, user => {
-            if (user) {
-                nameEl.textContent = user.displayName || "Foydalanuvchi";
-                emailEl.textContent = user.email;
-                
-                if (user.photoURL) {
-                    const img = `<img src="${user.photoURL}" alt="Profil">`;
-                    desktopBtn.innerHTML = img;
-                    mobileBtn.innerHTML = img;
-                    dropdownAvatar.innerHTML = img;
-                }
-            } else {
-                window.location.href = 'kirish.html';
-            }
+      onAuthStateChanged(auth, user => {
+    if (user) {
+        // kirgan bo‘lsa
+        nameEl.textContent = user.displayName || "Foydalanuvchi";
+        emailEl.textContent = user.email;
+        if (user.photoURL) {
+            const img = `<img src="${user.photoURL}" alt="Profil">`;
+            desktopBtn.innerHTML = img;
+            mobileBtn.innerHTML = img;
+            dropdownAvatar.innerHTML = img;
+        }
+    } else {
+        // kirmagan bo‘lsa – profil tugmasini "Kirish" ga aylantiramiz
+        nameEl.textContent = "Tizimga kirish";
+        emailEl.textContent = "Yoki ro‘yxatdan o‘tish";
+
+        // Profil tugmasini bosganda kirish sahifasiga o‘tadi
+        [desktopBtn, mobileBtn].forEach(btn => {
+            btn.onclick = () => window.location.href = 'kirish.html';
+            btn.style.cursor = "pointer";
         });
+    }
+});
 
         // Profile dropdown toggle
         [desktopBtn, mobileBtn].forEach(btn => {
@@ -2005,6 +2012,7 @@
     </script>
 </body>
 </html>
+
 
 
 
