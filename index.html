@@ -1834,28 +1834,46 @@
 
       onAuthStateChanged(auth, user => {
     if (user) {
-        // kirgan bo‘lsa
+        // Foydalanuvchi tizimga kirgan
         nameEl.textContent = user.displayName || "Foydalanuvchi";
         emailEl.textContent = user.email;
+
         if (user.photoURL) {
-            const img = `<img src="${user.photoURL}" alt="Profil">`;
+            const img = `<img src="${user.photoURL}" alt="Profil rasmi">`;
             desktopBtn.innerHTML = img;
             mobileBtn.innerHTML = img;
             dropdownAvatar.innerHTML = img;
+        } else {
+            // Agar rasm bo‘lmasa standart SVG qaytarib qo‘yamiz
+            const defaultSvg = `<svg viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>`;
+            desktopBtn.innerHTML = defaultSvg;
+            mobileBtn.innerHTML = defaultSvg;
+            dropdownAvatar.innerHTML = defaultSvg;
         }
     } else {
-        // kirmagan bo‘lsa – profil tugmasini "Kirish" ga aylantiramiz
+        // Foydalanuvchi tizimga KIRMAGAN — endi hech qayerga yo‘naltirmaymiz!
         nameEl.textContent = "Tizimga kirish";
-        emailEl.textContent = "Yoki ro‘yxatdan o‘tish";
+        emailEl.textContent = "Yoki ro'yxatdan o'tish";
 
-        // Profil tugmasini bosganda kirish sahifasiga o‘tadi
+        // Profil rasmni standart qoldiramiz
+        const guestSvg = `<svg viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>`;
+        desktopBtn.innerHTML = guestSvg;
+        mobileBtn.innerHTML = guestSvg;
+        dropdownAvatar.innerHTML = guestSvg;
+
+        // Profil tugmasini bosganda faqat kirish sahifasiga o‘tadi
         [desktopBtn, mobileBtn].forEach(btn => {
-            btn.onclick = () => window.location.href = 'kirish.html';
+            btn.onclick = (e) => {
+                e.stopPropagation();
+                window.location.href = 'kirish.html';
+            };
             btn.style.cursor = "pointer";
         });
+
+        // Chiqish tugmasini yashiramiz (mehmon uchun kerak emas)
+        logoutTrigger.style.display = "none";
     }
 });
-
         // Profile dropdown toggle
         [desktopBtn, mobileBtn].forEach(btn => {
             btn.addEventListener('click', e => {
@@ -2012,6 +2030,7 @@
     </script>
 </body>
 </html>
+
 
 
 
