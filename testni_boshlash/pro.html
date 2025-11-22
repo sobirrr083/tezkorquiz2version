@@ -922,6 +922,17 @@
     }
   }
 
+  // Testlar sahifasidan faylida testni olish kodi tugadi
+    const testData = localStorage.getItem('currentTestData');
+  const testFile = localStorage.getItem('currentTestFile');
+  
+  // Test ma'lumotlarini parse qilish va ko'rsatish
+  if (testData) {
+      // testData - bu .txt fayldagi barcha savol va javoblar
+      console.log('Test yuklandi:', testData);
+  }
+    // Testlar sahifasidan faylida testni olish kodi tugadi
+    
   async function shareToPlatform(platform, includeScreenshot = true) {
     try {
       const timeSpent = endTime && startTime ? formatTime(endTime - startTime) : "Noma'lum";
@@ -1497,5 +1508,6 @@
 </script>
 </body>
 </html>
+
 
 
