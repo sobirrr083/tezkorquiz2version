@@ -922,33 +922,6 @@
     }
   }
 
-  // Testlar sahifasidan faylida testni olish kodi tugadi
-  // Test ma'lumotlarini olish
-        const testData = localStorage.getItem('currentTestData');
-
-        if (testData) {
-            // Test yuklandi
-            console.log('Test yuklandi:', testData);
-            
-            // Test ma'lumotlarini ko'rsatish (siz o'z kodingizni yozing)
-            document.getElementById('test-container').innerHTML = '<pre>' + testData + '</pre>';
-            
-            // MUHIM: Ma'lumotlarni tozalash
-            setTimeout(() => {
-                localStorage.removeItem('currentTestData');
-                localStorage.removeItem('currentTestFile');
-                localStorage.removeItem('testSaveTime');
-                console.log('Test ma\'lumotlari tozalandi');
-            }, 10000); // 10 soniyadan keyin
-            
-        } else {
-            // Test topilmadi
-            console.log('Test ma\'lumotlari topilmadi');
-            alert('Test ma\'lumotlari topilmadi. Iltimos, qaytadan urinib ko\'ring.');
-            window.location.href = '/testlar'; // Testlar sahifasiga qaytarish
-        }
-    // Testlar sahifasidan faylida testni olish kodi tugadi
-    
   async function shareToPlatform(platform, includeScreenshot = true) {
     try {
       const timeSpent = endTime && startTime ? formatTime(endTime - startTime) : "Noma'lum";
@@ -1515,15 +1488,39 @@
       }, 10);
     }
   });
-
+  
   document.addEventListener("DOMContentLoaded", function() {
-    const initialAnimation = getRandomAnimation();
-    loadLottieAnimation(initialAnimation);
-    loadFileHistory();
-  });
+      const initialAnimation = getRandomAnimation();
+      loadLottieAnimation(initialAnimation);
+      loadFileHistory();
+      
+      // ========================
+      // Testlar sahifasidan test yuklash
+      // ========================
+      const testData = localStorage.getItem('currentTestData');
+      
+      if (testData) {
+        console.log('✅ Test localStorage dan yuklandi');
+        
+        // Test ma'lumotlarini darhol tozalash
+        localStorage.removeItem('currentTestData');
+        localStorage.removeItem('currentTestFile');
+        localStorage.removeItem('testSaveTime');
+        
+        // Test faylini parse qilish
+        parseTestFile(testData);
+        
+        // Fayl yuklash bo'limini yashirish
+        document.getElementById('fileSection').style.display = 'none';
+        uploadStatus.textContent = "Test yuklandi! Testni boshlang.";
+      }
+    });
+
+  
 </script>
 </body>
 </html>
+
 
 
 
