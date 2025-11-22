@@ -757,8 +757,8 @@
     <div id="questionsContainer"></div>
   </div>
 
-  <!-- defaultMessage div ichida, pre dan keyin qo'shing -->
-<div style="text-align: center; margin-top: 20px;">
+<!-- YANGI: Faqat testlar.html dan kelganda ko'rinadi -->
+<div id="backToTestsButton" style="display: none; text-align: center; margin-top: 20px;">
   <button class="action-button" onclick="window.location.reload();" style="display: inline-flex; align-items: center; gap: 8px;">
     <i class="bi bi-arrow-clockwise"></i>
     Oddiy Pro Quizga qaytish
@@ -1497,37 +1497,33 @@
     }
   });
   
-  document.addEventListener("DOMContentLoaded", function() {
-      const initialAnimation = getRandomAnimation();
-      loadLottieAnimation(initialAnimation);
-      loadFileHistory();
-      
-      // ========================
-      // Testlar sahifasidan test yuklash
-      // ========================
-      const testData = localStorage.getItem('currentTestData');
-      
-      if (testData) {
-        console.log('✅ Test localStorage dan yuklandi');
-        
-        // Test ma'lumotlarini darhol tozalash
-        localStorage.removeItem('currentTestData');
-        localStorage.removeItem('currentTestFile');
-        localStorage.removeItem('testSaveTime');
-        
-        // Test faylini parse qilish
-        parseTestFile(testData);
-        
-        // Fayl yuklash bo'limini yashirish
-        document.getElementById('fileSection').style.display = 'none';
-        uploadStatus.textContent = "Test yuklandi! Testni boshlang.";
-      }
-    });
-
+document.addEventListener("DOMContentLoaded", function() {
+  const initialAnimation = getRandomAnimation();
+  loadLottieAnimation(initialAnimation);
+  loadFileHistory();
   
+  // Testlar sahifasidan test yuklash
+  const testData = localStorage.getItem('currentTestData');
+  
+  if (testData) {
+    // Tugmani ko'rsatish
+    document.getElementById('backToTestsButton').style.display = 'block';
+    
+    // Ma'lumotlarni tozalash
+    localStorage.removeItem('currentTestData');
+    localStorage.removeItem('currentTestFile');
+    localStorage.removeItem('testSaveTime');
+    
+    // Testni yuklash
+    parseTestFile(testData);
+    document.getElementById('fileSection').style.display = 'none';
+    uploadStatus.textContent = "Test yuklandi! Testni boshlang.";
+  }
+});
 </script>
 </body>
 </html>
+
 
 
 
