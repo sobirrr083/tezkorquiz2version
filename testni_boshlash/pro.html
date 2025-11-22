@@ -924,19 +924,29 @@
 
   // Testlar sahifasidan faylida testni olish kodi tugadi
   // Test ma'lumotlarini olish
-  const testData = localStorage.getItem('currentTestData');
-  
-  if (testData) {
-      // Test ma'lumotlarini ishlatish
-      console.log('Test yuklandi');
-      
-      // Test tugagach, darhol tozalash
-      localStorage.removeItem('currentTestData');
-      localStorage.removeItem('currentTestFile');
-      localStorage.removeItem('testSaveTime');
-  } else {
-      console.log('Test ma\'lumotlari topilmadi yoki muddati o\'tgan');
-  }
+        const testData = localStorage.getItem('currentTestData');
+
+        if (testData) {
+            // Test yuklandi
+            console.log('Test yuklandi:', testData);
+            
+            // Test ma'lumotlarini ko'rsatish (siz o'z kodingizni yozing)
+            document.getElementById('test-container').innerHTML = '<pre>' + testData + '</pre>';
+            
+            // MUHIM: Ma'lumotlarni tozalash
+            setTimeout(() => {
+                localStorage.removeItem('currentTestData');
+                localStorage.removeItem('currentTestFile');
+                localStorage.removeItem('testSaveTime');
+                console.log('Test ma\'lumotlari tozalandi');
+            }, 10000); // 10 soniyadan keyin
+            
+        } else {
+            // Test topilmadi
+            console.log('Test ma\'lumotlari topilmadi');
+            alert('Test ma\'lumotlari topilmadi. Iltimos, qaytadan urinib ko\'ring.');
+            window.location.href = '/testlar'; // Testlar sahifasiga qaytarish
+        }
     // Testlar sahifasidan faylida testni olish kodi tugadi
     
   async function shareToPlatform(platform, includeScreenshot = true) {
@@ -1514,6 +1524,7 @@
 </script>
 </body>
 </html>
+
 
 
 
