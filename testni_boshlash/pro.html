@@ -707,6 +707,15 @@
   </div>
 
   <h1 class="text-center mb-4">Pro Quiz</h1>
+
+  <!-- YANGI: Faqat testlar.html dan kelganda ko'rinadi -->
+<div id="backToTestsButton" style="display: none; text-align: center; margin-top: 20px;">
+  <button class="action-button" onclick="window.location.reload();" style="display: inline-flex; align-items: center; gap: 8px;">
+    <i class="bi bi-arrow-clockwise"></i>
+    Oddiy Pro Quizga qaytish
+  </button>
+</div>
+  
   <div class="mb-4" id="fileSection">
     <label for="fileInput" class="form-label file-label">Fayl tanlash (.txt)</label>
     <input type="file" class="form-control" id="fileInput" accept=".txt" />
@@ -756,14 +765,6 @@
     <p id="testCount" class="text-success fw-bold"></p>
     <div id="questionsContainer"></div>
   </div>
-
-<!-- YANGI: Faqat testlar.html dan kelganda ko'rinadi -->
-<div id="backToTestsButton" style="display: none; text-align: center; margin-top: 20px;">
-  <button class="action-button" onclick="window.location.reload();" style="display: inline-flex; align-items: center; gap: 8px;">
-    <i class="bi bi-arrow-clockwise"></i>
-    Oddiy Pro Quizga qaytish
-  </button>
-</div>
   
   <div id="quizCompletionSection">
     <div id="lottieContainer"></div>
@@ -1523,6 +1524,7 @@ document.addEventListener("DOMContentLoaded", function() {
 </script>
 </body>
 </html>
+
 
 
 
