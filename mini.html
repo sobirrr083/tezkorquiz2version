@@ -6,7 +6,7 @@
   <title>Tizimga kirish</title>
   <meta name="description" content="Tezkor Quiz tizimiga kirish. Online testlar, quizlar va imtihon tayyorlov uchun shaxsiy kabinetga kirish sahifasi.">
 
-   <link rel="icon" href="aga/iconcha.png">
+  <link rel="icon" href="aga/iconcha.png">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     *{margin:0;padding:0;box-sizing:border-box;user-select:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none}
@@ -29,7 +29,6 @@
     input{width:100%;padding:12px 16px;border:1px solid #e1e8ed;border-radius:10px;font-size:15px;transition:all .3s;outline:none;background:#fff;font-weight:400}
     input:focus{border-color:#4361ee;box-shadow:0 0 0 3px rgba(67,97,238,.08)}
     input.error{border-color:#ff4757}
-    /* KO'Z ICONKASI */
     .eye-toggle{position:absolute;right:12px;top:42px;cursor:pointer;color:#888;transition:color .2s;z-index:2}
     .eye-toggle:hover{color:#4361ee}
     .eye-toggle svg{width:20px;height:20px}
@@ -57,9 +56,8 @@
     .forgot-password a:hover{text-decoration:underline}
     .icon{text-align:center;margin-bottom:20px;font-size:48px}
     .icon img{width:500px;height:500px;object-fit:contain;max-width:100%;height:auto}
-    /* Reset page uchun maxsus icon stillari - ixcham va chiroyli, shadow'siz */
-    #resetPage .icon {margin-bottom: 15px;}
-    #resetPage .icon img {width: 80px; height: 80px; max-width: 80px; max-height: 80px; object-fit: contain;}
+    #resetPage .icon {margin-bottom:15px;}
+    #resetPage .icon img {width:80px;height:80px;max-width:80px;max-height:80px;object-fit:contain;}
     .alert{padding:12px 16px;border-radius:8px;margin-bottom:20px;font-size:14px;display:none;animation:slideDown .3s ease;font-weight:400}
     @keyframes slideDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
     .alert.show{display:block}
@@ -111,10 +109,11 @@
     .countdown{font-size:14px;color:#2e7d32;margin-top:10px;text-align:center}
     .back-to-login{margin-top:15px}
   </style>
+</style>
 </head>
 <body>
   <div class="copy-notification" id="copyNotification">
-    www.tezkorquiz.uz saytida parolni nusxalash mumkin emas
+    www.tezkorquiz.uz saytida nusxalash mumkin emas!
   </div>
 
   <div class="main-wrapper">
@@ -259,250 +258,300 @@
   </div>
 
   <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, updateProfile } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, updateProfile, signInWithPopup, GoogleAuthProvider } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyBxIpLY5WasiSIlDL4japBLnnXRwOLUKEQ",
-      authDomain: "tezkor-quiz-bbe3c.firebaseapp.com",
-      projectId: "tezkor-quiz-bbe3c",
-      storageBucket: "tezkor-quiz-bbe3c.firebasestorage.app",
-      messagingSenderId: "143161522496",
-      appId: "1:143161522496:web:252108ace3a4c19f35e2a5",
-    };
+const firebaseConfig = {
+  apiKey: "AIzaSyBxIpLY5WasiSIlDL4japBLnnXRwOLUKEQ",
+  authDomain: "tezkorquiz.uz",
+  projectId: "tezkor-quiz-bbe3c",
+  storageBucket: "tezkor-quiz-bbe3c.firebasestorage.app",
+  messagingSenderId: "143161522496",
+  appId: "1:143161522496:web:252108ace3a4c19f35e2a5",
+};
 
-    let app, auth;
-    try {
-      app = initializeApp(firebaseConfig);
-      auth = getAuth(app);
-      console.log('Firebase muvaffaqiyatli ulandi');
-    } catch (e) {
-      console.error('Firebase ulanishda xatolik:', e);
-      showAlert('welcomeAlert','Firebase ulanishida xatolik. Console ni tekshiring.','error');
-    }
+let app, auth;
+try {
+  app = initializeApp(firebaseConfig);
+  auth = getAuth(app);
+  console.log('Firebase muvaffaqiyatli ulandi');
+  
+  // Google tugmalarini faollashtirish
+  document.getElementById('welcomeGoogle').disabled = false;
+  document.getElementById('signupGoogle').disabled = false;
+} catch (e) {
+  console.error('Firebase ulanishda xatolik:', e);
+  showAlert('welcomeAlert','Firebase ulanishida xatolik. Console ni tekshiring.','error');
+}
 
-    /* ==== KO'Z ICONKASI - TO'G'IRLANGAN: TESKARI EMAS, OCHIQ/YOPIQ ALMASHTIRILGAN ==== */
-    // Ochiq ko'z (ko'rish uchun)
-    const eyeOpenSVG = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-    </svg>`;
+const eyeOpenSVG = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+</svg>`;
 
-    // Yopiq ko'z (yashirish uchun - slash bilan)
-    const eyeClosedSVG = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
-    </svg>`;
+const eyeClosedSVG = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
+</svg>`;
 
-    function togglePassword(inputId, eyeId) {
-      const input = document.getElementById(inputId);
-      const eye = document.getElementById(eyeId);
-      // Boshida yopiq ko'z (yashirin holat)
+function togglePassword(inputId, eyeId) {
+  const input = document.getElementById(inputId);
+  const eye = document.getElementById(eyeId);
+  eye.innerHTML = eyeClosedSVG;
+  eye.addEventListener('click', () => {
+    if (input.type === 'password') {
+      input.type = 'text';
+      eye.innerHTML = eyeOpenSVG;
+    } else {
+      input.type = 'password';
       eye.innerHTML = eyeClosedSVG;
-      eye.addEventListener('click', () => {
-        if (input.type === 'password') {
-          // Yashirilgan -> ko'rsatish: ochiq ko'z
-          input.type = 'text';
-          eye.innerHTML = eyeOpenSVG;
-        } else {
-          // Ko'rsatilgan -> yashirish: yopiq ko'z
-          input.type = 'password';
-          eye.innerHTML = eyeClosedSVG;
-        }
-      });
     }
-    togglePassword('loginPassword', 'loginEye');
-    togglePassword('signupPassword', 'signupEye');
+  });
+}
+togglePassword('loginPassword', 'loginEye');
+togglePassword('signupPassword', 'signupEye');
 
-    /* ==== COUNTDOWN ==== */
-    let countdownInterval;
-    function startCountdown() {
-      let sec = 60;
-      const secEl = document.getElementById('seconds');
-      const successDiv = document.getElementById('resetSuccess');
-      const form = document.getElementById('resetForm');
-      form.style.display = 'none';
-      successDiv.style.display = 'block';
-      document.getElementById('sentEmail').textContent = document.getElementById('resetEmail').value;
-      document.getElementById('lockIcon').src = 'aga/lock-loading.gif'; // GIF ga o'zgartirish
+let countdownInterval;
+function startCountdown() {
+  let sec = 60;
+  const secEl = document.getElementById('seconds');
+  const successDiv = document.getElementById('resetSuccess');
+  const form = document.getElementById('resetForm');
+  form.style.display = 'none';
+  successDiv.style.display = 'block';
+  document.getElementById('sentEmail').textContent = document.getElementById('resetEmail').value;
+  document.getElementById('lockIcon').src = 'aga/lock-loading.gif';
 
-      countdownInterval = setInterval(() => {
-        sec--;
-        secEl.textContent = sec;
-        if (sec <= 0) {
-          clearInterval(countdownInterval);
-          document.querySelector('#countdown').innerHTML = 'Endi qayta urinib koʻrishingiz mumkin';
-          document.getElementById('lockIcon').src = 'aga/lock.png'; // Qaytadan rasmga
-        }
-      }, 1000);
-    }
-
-    /* ==== QOLGAN FUNKSIYALAR ==== */
-    function getDynamicGreeting(){
-      const g={timeBased:[{text:'Xayrli tong!',startHour:5,endHour:9},{text:'Nurli tong',startHour:5,endHour:9},{text:'Xayrli kun!',startHour:12,endHour:17},{text:'Xayrli kech!',startHour:18,endHour:24}],
-               random:['Salom do‘stim!','Assalomu aleykum!','Marhamat kiring!','Harakatni boshlang!','Yaxshi kayfiyat!','Kirish vaqti','Yangi start!','Kirish oson','Tizim tayyor','Keling, kiraylik','Profilga qadam','Profilga qadam','Tezkor kirish','Salom mehmon!','Omadli boshlang!']};
-      const h=new Date().getHours();
-      const match=g.timeBased.filter(i=>h>=i.startHour&&h<i.endHour).map(i=>i.text);
-      const all=[...match,...g.random];
-      return all[Math.floor(Math.random()*all.length)];
-    }
-    function updateGreeting(){document.querySelector('#welcomePage h2').textContent=getDynamicGreeting()}
-    document.addEventListener('DOMContentLoaded',updateGreeting);
-
-    // Security
-    document.addEventListener('keydown',e=>{if(e.key==='F12'||(e.ctrlKey&&e.shiftKey&&['I','J','C'].includes(e.key))||(e.ctrlKey&&e.key==='u')){e.preventDefault();return false}});
-    document.addEventListener('contextmenu',e=>e.preventDefault());
-    window.handleCopy=e=>{e.preventDefault();showCopyNotification()};
-    ['copy','cut','paste','selectstart'].forEach(ev=>document.addEventListener(ev,e=>{if(e.target.tagName!=='INPUT'){e.preventDefault();if(['copy','cut'].includes(ev))showCopyNotification();return false}}));
-    function showCopyNotification(){const n=document.getElementById('copyNotification');n.classList.add('show');setTimeout(()=>n.classList.remove('show'),3000)}
-
-    // Page / Modal
-    let currentPage='welcomePage',modalOpen=false;
-    function updateHistory(p){currentPage=p;history.pushState({page:p},'','')}
-    window.addEventListener('popstate',()=>{if(modalOpen){closeModal('helpModal');modalOpen=false}else if(currentPage!=='welcomePage')showPage('welcomePage')});
-    window.showModal=id=>{document.getElementById(id).classList.add('show');modalOpen=true;history.pushState({modal:id},'','')};
-    window.closeModal=id=>{document.getElementById(id).classList.remove('show');modalOpen=false;history.back()};
-    document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)closeModal(m.id)}));
-    window.showPage=id=>{
-      document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-      document.querySelectorAll('.alert').forEach(a=>{a.classList.remove('show');a.innerHTML=''});
-      updateHistory(id);
-      if(id==='welcomePage') updateGreeting();
+  countdownInterval = setInterval(() => {
+    sec--;
+    secEl.textContent = sec;
+    if (sec <= 0) {
       clearInterval(countdownInterval);
-      document.getElementById('resetSuccess').style.display='none';
-      document.getElementById('resetForm').style.display='block';
-      if (id === 'resetPage') {
-        document.getElementById('lockIcon').src = 'aga/lock.png'; // Rasmga qaytarish
-      }
-    };
-
-    // Password strength - Yangi versiya
-    const pwInput = document.getElementById('signupPassword');
-    const commonPasswords = ['123456', '12345678', 'password', 'qwerty', 'abc123', 'admin', 'letmein', 'welcome', 'monkey', '1234567890', 'password123', '111111', 'dragon', 'baseball', 'football', 'iloveyou'];
-    
-    function checkPasswordRequirements(p) {
-      const lengthOk = p.length >= 8;
-      const hasNumber = /\d/.test(p);
-      const hasUpper = /[A-Z]/.test(p);
-      const hasLower = /[a-z]/.test(p);
-      const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(p);
-      
-      // Har birini tekshirish va class qo'shish
-      document.getElementById('req-length').classList.toggle('met', lengthOk);
-      document.getElementById('req-number').classList.toggle('met', hasNumber);
-      document.getElementById('req-upper').classList.toggle('met', hasUpper);
-      document.getElementById('req-lower').classList.toggle('met', hasLower);
-      document.getElementById('req-special').classList.toggle('met', hasSpecial);
-      
-      const count = [lengthOk, hasNumber, hasUpper, hasLower, hasSpecial].filter(Boolean).length;
-      const isCommon = commonPasswords.includes(p.toLowerCase());
-      
-      let level, text, className;
-      if (isCommon || !lengthOk) {
-        level = 'weak';
-        text = 'Zaif parol (juda oddiy yoki qisqa)';
-        className = 'strength-weak';
-      } else if (count >= 3) {
-        level = 'good';
-        text = 'Yaxshi parol';
-        className = 'strength-good';
-      } else {
-        level = 'weak';
-        text = 'Zaif parol (ko\'proq shartlarni bajaring)';
-        className = 'strength-weak';
-      }
-      if (count === 5 && !isCommon) {
-        level = 'strong';
-        text = 'Ajoyib parol';
-        className = 'strength-strong';
-      }
-      
-      // Progress bar va text yangilash
-      const container = pwInput.parentElement.querySelector('.password-strength');
-      const bar = container.querySelector('.password-strength-bar');
-      const textEl = pwInput.parentElement.querySelector('.password-strength-text');
-      container.className = `password-strength ${className}`;
-      bar.style.width = level === 'strong' ? '100%' : level === 'good' ? '66%' : '33%';
-      textEl.textContent = text;
-      
-      return { level, isStrong: level === 'strong' };
+      document.querySelector('#countdown').innerHTML = 'Endi qayta urinib ko\'rishingiz mumkin';
+      document.getElementById('lockIcon').src = 'aga/lock.png';
     }
+  }, 1000);
+}
 
-    pwInput?.addEventListener('input', e => {
-      const p = e.target.value;
-      const reqs = e.target.parentElement.querySelector('.password-requirements');
-      if (p.length === 0) {
-        // Boshlang'ich holat
-        reqs.style.display = 'none';
-        document.querySelectorAll('.req').forEach(req => req.classList.remove('met'));
-        const container = e.target.parentElement.querySelector('.password-strength');
-        const bar = container.querySelector('.password-strength-bar');
-        const textEl = e.target.parentElement.querySelector('.password-strength-text');
-        container.className = 'password-strength';
-        bar.style.width = '0%';
-        textEl.textContent = '';
-        return;
-      }
-      reqs.style.display = 'block';
-      checkPasswordRequirements(p);
-    });
+function getDynamicGreeting(){
+  const g={timeBased:[{text:'Xayrli tong!',startHour:5,endHour:9},{text:'Nurli tong',startHour:5,endHour:9},{text:'Xayrli kun!',startHour:12,endHour:17},{text:'Xayrli kech!',startHour:18,endHour:24}],
+           random:['Salom do\'stim!','Assalomu aleykum!','Marhamat kiring!','Harakatni boshlang!','Yaxshi kayfiyat!','Kirish vaqti','Yangi start!','Kirish oson','Tizim tayyor','Keling, kiraylik','Profilga qadam','Tezkor kirish','Salom mehmon!','Omadli boshlang!']};
+  const h=new Date().getHours();
+  const match=g.timeBased.filter(i=>h>=i.startHour&&h<i.endHour).map(i=>i.text);
+  const all=[...match,...g.random];
+  return all[Math.floor(Math.random()*all.length)];
+}
+function updateGreeting(){document.querySelector('#welcomePage h2').textContent=getDynamicGreeting()}
+document.addEventListener('DOMContentLoaded',updateGreeting);
 
-    // Alert / Loading
-    function showAlert(id,msg,type='error'){const a=document.getElementById(id);a.innerHTML=msg;a.className=`alert alert-${type} show`;if(type==='success')setTimeout(()=>a.classList.remove('show'),5000)}
-    function setLoading(btn,load){if(load){btn.disabled=true;btn.classList.add('loading')}else{btn.disabled=false;btn.classList.remove('loading')}}
-    function clearForm(id){const f=document.getElementById(id);if(f){f.reset();const s=f.querySelector('.password-strength'),t=f.querySelector('.password-strength-text');if(s)s.className='password-strength';if(t)t.textContent=''; document.querySelectorAll('.req').forEach(req => req.classList.remove('met'));}};
+document.addEventListener('keydown',e=>{if(e.key==='F12'||(e.ctrlKey&&e.shiftKey&&['I','J','C'].includes(e.key))||(e.ctrlKey&&e.key==='u')){e.preventDefault();return false}});
+document.addEventListener('contextmenu',e=>e.preventDefault());
+window.handleCopy=e=>{e.preventDefault();showCopyNotification()};
+['copy','cut','paste','selectstart'].forEach(ev=>document.addEventListener(ev,e=>{if(e.target.tagName!=='INPUT'){e.preventDefault();if(['copy','cut'].includes(ev))showCopyNotification();return false}}));
+function showCopyNotification(){const n=document.getElementById('copyNotification');n.classList.add('show');setTimeout(()=>n.classList.remove('show'),3000)}
 
-    function getErrorMessage(c){const m={'auth/invalid-email':'Noto\'g\'ri email format','auth/user-disabled':'Bu foydalanuvchi o\'chirilgan','auth/user-not-found':'Bunday foydalanuvchi topilmadi','auth/wrong-password':'Noto\'g\'ri parol kiritildi','auth/email-already-in-use':'Bu email allaqachon ro\'yxatdan o\'tgan','auth/weak-password':'Parol juda oddiy. Kamida 8 ta belgi kiriting','auth/network-request-failed':'Internet aloqasi yo\'q. Iltimos, ulanishni tekshiring','auth/too-many-requests':'Juda ko\'p urinish. Iltimos, biroz kutib qaytadan urinib ko\'ring','auth/invalid-credential':'Noto\'g\'ri email yoki parol','auth/missing-password':'Parol kiritilmagan'};return m[c]||`Xatolik: ${c}`}
+let currentPage='welcomePage',modalOpen=false;
+function updateHistory(p){currentPage=p;history.pushState({page:p},'','')}
+window.addEventListener('popstate',()=>{if(modalOpen){closeModal('helpModal');modalOpen=false}else if(currentPage!=='welcomePage')showPage('welcomePage')});
+window.showModal=id=>{document.getElementById(id).classList.add('show');modalOpen=true;history.pushState({modal:id},'','')};
+window.closeModal=id=>{document.getElementById(id).classList.remove('show');modalOpen=false;history.back()};
+document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)closeModal(m.id)}));
+window.showPage=id=>{
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.alert').forEach(a=>{a.classList.remove('show');a.innerHTML=''});
+  updateHistory(id);
+  if(id==='welcomePage') updateGreeting();
+  clearInterval(countdownInterval);
+  document.getElementById('resetSuccess').style.display='none';
+  document.getElementById('resetForm').style.display='block';
+  if (id === 'resetPage') {
+    document.getElementById('lockIcon').src = 'aga/lock.png';
+  }
+};
 
-    // Forms
-    document.getElementById('loginForm').addEventListener('submit',async e=>{e.preventDefault();const b=e.target.querySelector('.btn-primary'),em=document.getElementById('loginEmail').value,pw=document.getElementById('loginPassword').value;setLoading(b,true);try{await signInWithEmailAndPassword(auth,em,pw);showAlert('loginAlert','Muvaffaqiyatli kirildi!','success');clearForm('loginForm');setTimeout(()=>location.href='index.html',1500)}catch(err){showAlert('loginAlert',getErrorMessage(err.code),'error');setLoading(b,false)}});
+const pwInput = document.getElementById('signupPassword');
+const commonPasswords = ['abcd', '12345678', 'password', 'qwerty', 'abc123', 'admin', 'welcome', '1234567890', 'password123', '11111111', 'dragon', 'baseball', 'football', 'iloveyou'];
 
-    document.getElementById('signupForm').addEventListener('submit',async e=>{
-      e.preventDefault();
-      const b = e.target.querySelector('.btn-primary');
-      const name = document.getElementById('signupName').value;
-      const em = document.getElementById('signupEmail').value;
-      const pw = document.getElementById('signupPassword').value;
-      const terms = document.getElementById('termsCheckbox').checked;
-      if (!terms) {
-        showAlert('signupAlert','Iltimos, foydalanish shartlari bilan rozilik bildiring','error');
-        return;
-      }
-      const pwCheck = checkPasswordRequirements(pw);
-      if (pwCheck.level === 'weak') {
-        showAlert('signupAlert','Parol juda zaif. Iltimos, kuchliroq parol yarating (kamida 3 ta shartni bajaring va oddiy parollardan qoching)','error');
-        return;
-      }
-      setLoading(b,true);
-      try{
-        const uc=await createUserWithEmailAndPassword(auth,em,pw);
-        await updateProfile(uc.user,{displayName:name});
-        showAlert('signupAlert','Muvaffaqiyatli ro\'yxatdan o\'tdingiz!','success');
-        clearForm('signupForm');
-        setTimeout(()=>location.href='index.html',1500)
-      }catch(err){
-        showAlert('signupAlert',getErrorMessage(err.code),'error');
-        setLoading(b,false)
-      }
-    });
+function checkPasswordRequirements(p) {
+  const lengthOk = p.length >= 8;
+  const hasNumber = /\d/.test(p);
+  const hasUpper = /[A-Z]/.test(p);
+  const hasLower = /[a-z]/.test(p);
+  const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(p);
+  
+  document.getElementById('req-length').classList.toggle('met', lengthOk);
+  document.getElementById('req-number').classList.toggle('met', hasNumber);
+  document.getElementById('req-upper').classList.toggle('met', hasUpper);
+  document.getElementById('req-lower').classList.toggle('met', hasLower);
+  document.getElementById('req-special').classList.toggle('met', hasSpecial);
+  
+  const count = [lengthOk, hasNumber, hasUpper, hasLower, hasSpecial].filter(Boolean).length;
+  const isCommon = commonPasswords.includes(p.toLowerCase());
+  
+  let level, text, className;
+  if (isCommon || !lengthOk) {
+    level = 'weak'; text = 'Zaif parol (juda oddiy yoki qisqa)'; className = 'strength-weak';
+  } else if (count >= 3) {
+    level = 'good'; text = 'Yaxshi parol'; className = 'strength-good';
+  } else {
+    level = 'weak'; text = 'Zaif parol (ko\'proq shartlarni bajaring)'; className = 'strength-weak';
+  }
+  if (count === 5 && !isCommon) {
+    level = 'strong'; text = 'Ajoyib parol'; className = 'strength-strong';
+  }
+  
+  const container = pwInput.parentElement.querySelector('.password-strength');
+  const bar = container.querySelector('.password-strength-bar');
+  const textEl = pwInput.parentElement.querySelector('.password-strength-text');
+  container.className = `password-strength ${className}`;
+  bar.style.width = level === 'strong' ? '100%' : level === 'good' ? '66%' : '33%';
+  textEl.textContent = text;
+  
+  return { level, isStrong: level === 'strong' };
+}
 
-    document.getElementById('resetForm').addEventListener('submit',async e=>{
-      e.preventDefault();
-      const b=e.target.querySelector('.btn-primary'),em=document.getElementById('resetEmail').value;
-      setLoading(b,true);
-      try{
-        await sendPasswordResetEmail(auth,em);
-        showAlert('resetAlert','Havola muvaffaqiyatli yuborildi!','success');
-        startCountdown();
-        setLoading(b,false);
-      }catch(err){
-        showAlert('resetAlert',err.code==='auth/user-not-found'?'Bu email bilan ro\'yxatdan o\'tilmagan':getErrorMessage(err.code),'error');
-        setLoading(b,false);
-      }
-    });
+pwInput?.addEventListener('input', e => {
+  const p = e.target.value;
+  const reqs = e.target.parentElement.querySelector('.password-requirements');
+  if (p.length === 0) {
+    reqs.style.display = 'none';
+    document.querySelectorAll('.req').forEach(req => req.classList.remove('met'));
+    const container = e.target.parentElement.querySelector('.password-strength');
+    const bar = container.querySelector('.password-strength-bar');
+    const textEl = e.target.parentElement.querySelector('.password-strength-text');
+    container.className = 'password-strength';
+    bar.style.width = '0%';
+    textEl.textContent = '';
+    return;
+  }
+  reqs.style.display = 'block';
+  checkPasswordRequirements(p);
+});
 
-    auth.onAuthStateChanged(u=>{console.log(u?'Foydalanuvchi tizimda: '+u.email:'Foydalanuvchi tizimda emas')});
-    history.replaceState({page:'welcomePage'},'','');
-  </script>
+function showAlert(id,msg,type='error'){const a=document.getElementById(id);a.innerHTML=msg;a.className=`alert alert-${type} show`;if(type==='success')setTimeout(()=>a.classList.remove('show'),5000)}
+function setLoading(btn,load){if(load){btn.disabled=true;btn.classList.add('loading')}else{btn.disabled=false;btn.classList.remove('loading')}}
+function clearForm(id){const f=document.getElementById(id);if(f){f.reset();const s=f.querySelector('.password-strength'),t=f.querySelector('.password-strength-text');if(s)s.className='password-strength';if(t)t.textContent=''; document.querySelectorAll('.req').forEach(req => req.classList.remove('met'));}};
+
+function getErrorMessage(c){const m={'auth/invalid-email':'Noto\'g\'ri email format','auth/user-disabled':'Bu foydalanuvchi o\'chirilgan iltimos haqiqiy emaildan foydalaning','auth/user-not-found':'Bunday foydalanuvchi topilmadi','auth/wrong-password':'Noto\'g\'ri parol kiritildi','auth/email-already-in-use':'Bu email allaqachon ro\'yxatdan o\'tgan','auth/weak-password':'Parol juda oddiy. Kamida 8 ta belgi kiriting','auth/network-request-failed':'Internet aloqasi yo\'q. Iltimos, ulanishni tekshiring','auth/too-many-requests':'Juda ko\'p urinish. Iltimos, biroz kutib qaytadan urinib ko\'ring','auth/invalid-credential':'Noto\'g\'ri email yoki parol','auth/missing-password':'Parol kiritilmagan'};return m[c]||`Xatolik: ${c}`}
+
+// Email bilan kirish
+document.getElementById('loginForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const b=e.target.querySelector('.btn-primary'),em=document.getElementById('loginEmail').value,pw=document.getElementById('loginPassword').value;
+  setLoading(b,true);
+  try{
+    await signInWithEmailAndPassword(auth,em,pw);
+    showAlert('loginAlert','Muvaffaqiyatli kirildi!','success');
+    clearForm('loginForm');
+    setTimeout(()=>location.href='index.html',1500)
+  }catch(err){
+    showAlert('loginAlert',getErrorMessage(err.code),'error');
+    setLoading(b,false)
+  }
+});
+
+// Ro'yxatdan o'tish
+document.getElementById('signupForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const b = e.target.querySelector('.btn-primary');
+  const name = document.getElementById('signupName').value;
+  const em = document.getElementById('signupEmail').value;
+  const pw = document.getElementById('signupPassword').value;
+  const terms = document.getElementById('termsCheckbox').checked;
+  if (!terms) {
+    showAlert('signupAlert','Iltimos, foydalanish shartlari bilan rozilik bildiring','error');
+    return;
+  }
+  const pwCheck = checkPasswordRequirements(pw);
+  if (pwCheck.level === 'weak') {
+    showAlert('signupAlert','Parol juda zaif. Iltimos, kuchliroq parol yarating (kamida 3 ta shartni bajaring va oddiy parollardan qoching)','error');
+    return;
+  }
+  setLoading(b,true);
+  try{
+    const uc=await createUserWithEmailAndPassword(auth,em,pw);
+    await updateProfile(uc.user,{displayName:name});
+    showAlert('signupAlert','Muvaffaqiyatli ro\'yxatdan o\'tdingiz!','success');
+    clearForm('signupForm');
+    setTimeout(()=>location.href='index.html',1500)
+  }catch(err){
+    showAlert('signupAlert',getErrorMessage(err.code),'error');
+    setLoading(b,false)
+  }
+});
+
+// Parolni tiklash
+document.getElementById('resetForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const b=e.target.querySelector('.btn-primary'),em=document.getElementById('resetEmail').value;
+  setLoading(b,true);
+  try{
+    await sendPasswordResetEmail(auth,em);
+    showAlert('resetAlert','Havola muvaffaqiyatli yuborildi!','success');
+    startCountdown();
+    setLoading(b,false);
+  }catch(err){
+    showAlert('resetAlert',err.code==='auth/user-not-found'?'Bu email bilan ro\'yxatdan o\'tilmagan':getErrorMessage(err.code),'error');
+    setLoading(b,false);
+  }
+});
+
+// Google orqali kirish funksiyasi
+async function signInWithGoogle(buttonId, alertId) {
+  const btn = document.getElementById(buttonId);
+  setLoading(btn, true);
+  
+  const provider = new GoogleAuthProvider();
+  provider.setCustomParameters({
+    prompt: 'select_account'
+  });
+  
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+    
+    showAlert(alertId, 'Google orqali muvaffaqiyatli kirildi!', 'success');
+    console.log('Google user:', user.displayName, user.email);
+    
+    setTimeout(() => {
+      location.href = 'index.html';
+    }, 1500);
+    
+  } catch (error) {
+    console.error('Google kirish xatoligi:', error);
+    
+    let errorMsg = 'Google orqali kirishda xatolik';
+    if (error.code === 'auth/popup-closed-by-user') {
+      errorMsg = 'Kirish bekor qilindi';
+    } else if (error.code === 'auth/popup-blocked') {
+      errorMsg = 'Pop-up oyna bloklandi. Brauzer sozlamalarini tekshiring';
+    } else if (error.code === 'auth/cancelled-popup-request') {
+      errorMsg = 'So\'rov bekor qilindi';
+    } else if (error.code === 'auth/network-request-failed') {
+      errorMsg = 'Internet aloqasi yo\'q';
+    } else {
+      errorMsg = getErrorMessage(error.code);
+    }
+    
+    showAlert(alertId, errorMsg, 'error');
+    setLoading(btn, false);
+  }
+}
+
+// Google tugmalariga event listener qo'shish
+document.getElementById('welcomeGoogle').addEventListener('click', () => {
+  signInWithGoogle('welcomeGoogle', 'welcomeAlert');
+});
+
+document.getElementById('signupGoogle').addEventListener('click', () => {
+  signInWithGoogle('signupGoogle', 'signupAlert');
+});
+
+// Auth state o'zgarishini kuzatish
+auth.onAuthStateChanged(u=>{
+  console.log(u?'Foydalanuvchi tizimda: '+u.email:'Foydalanuvchi tizimda emas')
+});
+
+history.replaceState({page:'welcomePage'},'','');
 </body>
 </html>
