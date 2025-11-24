@@ -12,6 +12,12 @@
     *{margin:0;padding:0;box-sizing:border-box;user-select:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none}
     body{font-family:'Poppins',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,sans-serif;background:#fff;min-height:100vh;position:relative;overflow-x:hidden}
     body::before{content:'';position:fixed;inset:0;background:#fff;background-image:radial-gradient(circle at top left,rgba(70,130,180,.3),transparent 70%);filter:blur(80px);z-index:0;pointer-events:none}
+    @media (max-width: 768px){
+    .container{padding:30px 20px;margin:10px}
+    .modal-content{padding:20px;max-width:95%}
+    }
+    .offline-mode{position:fixed;top:10px;left:50%;transform:translateX(-50%);background:#ff4757;color:#fff;padding:8px 16px;border-radius:6px;font-size:13px;z-index:9999;box-shadow:0 4px 12px rgba(255,71,87,.3);display:none;animation:slideDown .3s ease}
+    .offline-mode.show{display:block}
     .main-wrapper{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;position:relative;z-index:1}
     .container{background:rgba(255,255,255,.98);backdrop-filter:blur(10px);border-radius:20px;box-shadow:0 8px 32px rgba(67,97,238,.08);padding:40px;width:100%;max-width:420px;animation:slideUp .5s ease;border:1px solid rgba(67,97,238,.05)}
     @keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
@@ -82,9 +88,13 @@
     .strength-good .password-strength-text{color:#ffa502}
     .strength-strong .password-strength-bar{width:100%;background:#26de81}
     .strength-strong .password-strength-text{color:#26de81}
-    .password-requirements{display:none;margin-top:10px}
-    .password-requirements .req{font-size:12px;color:#888;margin-bottom:4px;line-height:1.3;transition:color .3s}
-    .password-requirements .req.met{color:#26de81}
+    .password-requirements{display:none;margin-top:10px;background:#f8f9fa;padding:12px;border-radius:8px;border:1px solid #e1e8ed}
+    .password-requirements .req{font-size:13px;color:#555;margin-bottom:6px;line-height:1.4;transition:all .3s;display:flex;align-items:center;gap:8px;font-weight:400}
+    .password-requirements .req:last-child{margin-bottom:0}
+    .password-requirements .req::before{content:'✗';color:#ff4757;font-weight:bold;font-size:16px;flex-shrink:0;transition:all .3s}
+    .password-requirements .req.met::before{content:'✓';color:#26de81}
+    .password-requirements .req.met{color:#26de81;font-weight:500}
+    .password-requirements .req.met::before{content:'✓';color:#26de81}
     .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);backdrop-filter:blur(4px);z-index:1000;align-items:center;justify-content:center;padding:20px;animation:fadeIn .3s ease}
     .modal.show{display:flex}
     .modal-content{background:#fff;border-radius:16px;padding:28px;max-width:480px;width:100%;max-height:80vh;overflow-y:auto;animation:modalSlideUp .3s ease;box-shadow:0 12px 40px rgba(0,0,0,.15)}
@@ -130,7 +140,7 @@
 
         <div class="divider">yoki</div>
 
-        <button id="welcomeGoogle" class="btn btn-google" disabled>
+        <button id="welcomeGoogle" class="btn btn-google">
           <svg class="google-icon" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
             <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -190,11 +200,11 @@
             <div class="password-strength"><div class="password-strength-bar"></div></div>
             <div class="password-strength-text"></div>
             <div class="password-requirements">
-              <div class="req" id="req-length">• Kamida 8 ta belgi</div>
-              <div class="req" id="req-number">• Kamida bitta raqam (0-9)</div>
-              <div class="req" id="req-upper">• Kamida bitta katta harf (A-Z)</div>
-              <div class="req" id="req-lower">• Kamida bitta kichik harf (a-z)</div>
-              <div class="req" id="req-special">• Kamida bitta maxsus belgi (!@#$%^&*)</div>
+              <div class="req" id="req-length">Kamida 8 ta belgi</div>
+              <div class="req" id="req-number">Kamida bitta raqam (0-9)</div>
+              <div class="req" id="req-upper">Kamida bitta katta harf (A-Z)</div>
+              <div class="req" id="req-lower">Kamida bitta kichik harf (a-z)</div>
+              <div class="req" id="req-special">Kamida bitta maxsus belgi (!@#$%^&*)</div>
             </div>
           </div>
           <div class="checkbox-group"><input type="checkbox" id="termsCheckbox" required>
@@ -203,7 +213,7 @@
           <button type="submit" class="btn btn-primary"><span class="btn-text">Ro'yxatdan o'tish</span><div class="spinner"></div></button>
         </form>
         <div class="divider">yoki</div>
-        <button id="signupGoogle" class="btn btn-google" disabled>
+        <button id="signupGoogle" class="btn btn-google">
           <svg class="google-icon" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
             <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -258,226 +268,321 @@
   </div>
 
   <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, updateProfile } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, updateProfile, signInWithPopup, GoogleAuthProvider } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyBxIpLY5WasiSIlDL4japBLnnXRwOLUKEQ",
-      authDomain: "tezkorquiz.uz",
-      projectId: "tezkor-quiz-bbe3c",
-      storageBucket: "tezkor-quiz-bbe3c.firebasestorage.app",
-      messagingSenderId: "143161522496",
-      appId: "1:143161522496:web:252108ace3a4c19f35e2a5",
-    };
+const firebaseConfig = {
+  apiKey: "AIzaSyBxIpLY5WasiSIlDL4japBLnnXRwOLUKEQ",
+  authDomain: "tezkor-quiz-bbe3c.firebaseapp.com",
+  projectId: "tezkor-quiz-bbe3c",
+  storageBucket: "tezkor-quiz-bbe3c.firebasestorage.app",
+  messagingSenderId: "143161522496",
+  appId: "1:143161522496:web:252108ace3a4c19f35e2a5",
+};
 
-    let app, auth;
-    try {
-      app = initializeApp(firebaseConfig);
-      auth = getAuth(app);
-      console.log('Firebase muvaffaqiyatli ulandi');
-    } catch (e) {
-      console.error('Firebase ulanishda xatolik:', e);
-      showAlert('welcomeAlert','Firebase ulanishida xatolik. Console ni tekshiring.','error');
-    }
-
-    const eyeOpenSVG = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-    </svg>`;
-
-    const eyeClosedSVG = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
-    </svg>`;
-
-    function togglePassword(inputId, eyeId) {
-      const input = document.getElementById(inputId);
-      const eye = document.getElementById(eyeId);
-      eye.innerHTML = eyeClosedSVG;
-      eye.addEventListener('click', () => {
-        if (input.type === 'password') {
-          input.type = 'text';
-          eye.innerHTML = eyeOpenSVG;
-        } else {
-          input.type = 'password';
-          eye.innerHTML = eyeClosedSVG;
-        }
-      });
-    }
-    togglePassword('loginPassword', 'loginEye');
-    togglePassword('signupPassword', 'signupEye');
-
-    let countdownInterval;
-    function startCountdown() {
-      let sec = 60;
-      const secEl = document.getElementById('seconds');
-      const successDiv = document.getElementById('resetSuccess');
-      const form = document.getElementById('resetForm');
-      form.style.display = 'none';
-      successDiv.style.display = 'block';
-      document.getElementById('sentEmail').textContent = document.getElementById('resetEmail').value;
-      document.getElementById('lockIcon').src = 'aga/lock-loading.gif';
-
-      countdownInterval = setInterval(() => {
-        sec--;
-        secEl.textContent = sec;
-        if (sec <= 0) {
-          clearInterval(countdownInterval);
-          document.querySelector('#countdown').innerHTML = 'Endi qayta urinib koʻrishingiz mumkin';
-          document.getElementById('lockIcon').src = 'aga/lock.png';
-        }
-      }, 1000);
-    }
-
-    function getDynamicGreeting(){
-      const g={timeBased:[{text:'Xayrli tong!',startHour:5,endHour:9},{text:'Nurli tong',startHour:5,endHour:9},{text:'Xayrli kun!',startHour:12,endHour:17},{text:'Xayrli kech!',startHour:18,endHour:24}],
-               random:['Salom do‘stim!','Assalomu aleykum!','Marhamat kiring!','Harakatni boshlang!','Yaxshi kayfiyat!','Kirish vaqti','Yangi start!','Kirish oson','Tizim tayyor','Keling, kiraylik','Profilga qadam','Tezkor kirish','Salom mehmon!','Omadli boshlang!']};
-      const h=new Date().getHours();
-      const match=g.timeBased.filter(i=>h>=i.startHour&&h<i.endHour).map(i=>i.text);
-      const all=[...match,...g.random];
-      return all[Math.floor(Math.random()*all.length)];
-    }
-    function updateGreeting(){document.querySelector('#welcomePage h2').textContent=getDynamicGreeting()}
-    document.addEventListener('DOMContentLoaded',updateGreeting);
-
-    document.addEventListener('keydown',e=>{if(e.key==='F12'||(e.ctrlKey&&e.shiftKey&&['I','J','C'].includes(e.key))||(e.ctrlKey&&e.key==='u')){e.preventDefault();return false}});
-    document.addEventListener('contextmenu',e=>e.preventDefault());
-    window.handleCopy=e=>{e.preventDefault();showCopyNotification()};
-    ['copy','cut','paste','selectstart'].forEach(ev=>document.addEventListener(ev,e=>{if(e.target.tagName!=='INPUT'){e.preventDefault();if(['copy','cut'].includes(ev))showCopyNotification();return false}}));
-    function showCopyNotification(){const n=document.getElementById('copyNotification');n.classList.add('show');setTimeout(()=>n.classList.remove('show'),3000)}
-
-    let currentPage='welcomePage',modalOpen=false;
-    function updateHistory(p){currentPage=p;history.pushState({page:p},'','')}
-    window.addEventListener('popstate',()=>{if(modalOpen){closeModal('helpModal');modalOpen=false}else if(currentPage!=='welcomePage')showPage('welcomePage')});
-    window.showModal=id=>{document.getElementById(id).classList.add('show');modalOpen=true;history.pushState({modal:id},'','')};
-    window.closeModal=id=>{document.getElementById(id).classList.remove('show');modalOpen=false;history.back()};
-    document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)closeModal(m.id)}));
-    window.showPage=id=>{
-      document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-      document.querySelectorAll('.alert').forEach(a=>{a.classList.remove('show');a.innerHTML=''});
-      updateHistory(id);
-      if(id==='welcomePage') updateGreeting();
-      clearInterval(countdownInterval);
-      document.getElementById('resetSuccess').style.display='none';
-      document.getElementById('resetForm').style.display='block';
-      if (id === 'resetPage') {
-        document.getElementById('lockIcon').src = 'aga/lock.png';
-      }
-    };
-
-    const pwInput = document.getElementById('signupPassword');
-    const commonPasswords = ['abcd', '12345678', 'password', 'qwerty', 'abc123', 'admin', 'welcome', '1234567890', 'password123', '11111111', 'dragon', 'baseball', 'football', 'iloveyou'];
+let app, auth;
+try {
+  app = initializeApp(firebaseConfig);
+  auth = getAuth(app);
+  console.log('Firebase muvaffaqiyatli ulandi');
+  
+  // Google tugmalarini faollashtirish - DOMContentLoaded kutib
+  window.addEventListener('DOMContentLoaded', () => {
+    const welcomeBtn = document.getElementById('welcomeGoogle');
+    const signupBtn = document.getElementById('signupGoogle');
     
-    function checkPasswordRequirements(p) {
-      const lengthOk = p.length >= 8;
-      const hasNumber = /\d/.test(p);
-      const hasUpper = /[A-Z]/.test(p);
-      const hasLower = /[a-z]/.test(p);
-      const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(p);
-      
-      document.getElementById('req-length').classList.toggle('met', lengthOk);
-      document.getElementById('req-number').classList.toggle('met', hasNumber);
-      document.getElementById('req-upper').classList.toggle('met', hasUpper);
-      document.getElementById('req-lower').classList.toggle('met', hasLower);
-      document.getElementById('req-special').classList.toggle('met', hasSpecial);
-      
-      const count = [lengthOk, hasNumber, hasUpper, hasLower, hasSpecial].filter(Boolean).length;
-      const isCommon = commonPasswords.includes(p.toLowerCase());
-      
-      let level, text, className;
-      if (isCommon || !lengthOk) {
-        level = 'weak'; text = 'Zaif parol (juda oddiy yoki qisqa)'; className = 'strength-weak';
-      } else if (count >= 3) {
-        level = 'good'; text = 'Yaxshi parol'; className = 'strength-good';
-      } else {
-        level = 'weak'; text = 'Zaif parol (ko\'proq shartlarni bajaring)'; className = 'strength-weak';
-      }
-      if (count === 5 && !isCommon) {
-        level = 'strong'; text = 'Ajoyib parol'; className = 'strength-strong';
-      }
-      
-      const container = pwInput.parentElement.querySelector('.password-strength');
-      const bar = container.querySelector('.password-strength-bar');
-      const textEl = pwInput.parentElement.querySelector('.password-strength-text');
-      container.className = `password-strength ${className}`;
-      bar.style.width = level === 'strong' ? '100%' : level === 'good' ? '66%' : '33%';
-      textEl.textContent = text;
-      
-      return { level, isStrong: level === 'strong' };
+    if (welcomeBtn) {
+      welcomeBtn.disabled = false;
+      welcomeBtn.style.opacity = '1';
+      welcomeBtn.style.cursor = 'pointer';
     }
+    if (signupBtn) {
+      signupBtn.disabled = false;
+      signupBtn.style.opacity = '1';
+      signupBtn.style.cursor = 'pointer';
+    }
+    
+    console.log('Google tugmalari faollashtirildi');
+  });
+} catch (e) {
+  console.error('Firebase ulanishda xatolik:', e);
+  showAlert('welcomeAlert','Firebase ulanishida xatolik. Console ni tekshiring.','error');
+}
 
-    pwInput?.addEventListener('input', e => {
-      const p = e.target.value;
-      const reqs = e.target.parentElement.querySelector('.password-requirements');
-      if (p.length === 0) {
-        reqs.style.display = 'none';
-        document.querySelectorAll('.req').forEach(req => req.classList.remove('met'));
-        const container = e.target.parentElement.querySelector('.password-strength');
-        const bar = container.querySelector('.password-strength-bar');
-        const textEl = e.target.parentElement.querySelector('.password-strength-text');
-        container.className = 'password-strength';
-        bar.style.width = '0%';
-        textEl.textContent = '';
-        return;
-      }
-      reqs.style.display = 'block';
-      checkPasswordRequirements(p);
-    });
+const eyeOpenSVG = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+</svg>`;
 
-    function showAlert(id,msg,type='error'){const a=document.getElementById(id);a.innerHTML=msg;a.className=`alert alert-${type} show`;if(type==='success')setTimeout(()=>a.classList.remove('show'),5000)}
-    function setLoading(btn,load){if(load){btn.disabled=true;btn.classList.add('loading')}else{btn.disabled=false;btn.classList.remove('loading')}}
-    function clearForm(id){const f=document.getElementById(id);if(f){f.reset();const s=f.querySelector('.password-strength'),t=f.querySelector('.password-strength-text');if(s)s.className='password-strength';if(t)t.textContent=''; document.querySelectorAll('.req').forEach(req => req.classList.remove('met'));}};
+const eyeClosedSVG = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
+</svg>`;
 
-    function getErrorMessage(c){const m={'auth/invalid-email':'Noto\'g\'ri email format','auth/user-disabled':'Bu foydalanuvchi o\'chirilgan iltimos haqiqiy emaildan foydalaning','auth/user-not-found':'Bunday foydalanuvchi topilmadi','auth/wrong-password':'Noto\'g\'ri parol kiritildi','auth/email-already-in-use':'Bu email allaqachon ro\'yxatdan o\'tgan','auth/weak-password':'Parol juda oddiy. Kamida 8 ta belgi kiriting','auth/network-request-failed':'Internet aloqasi yo\'q. Iltimos, ulanishni tekshiring','auth/too-many-requests':'Juda ko\'p urinish. Iltimos, biroz kutib qaytadan urinib ko\'ring','auth/invalid-credential':'Noto\'g\'ri email yoki parol','auth/missing-password':'Parol kiritilmagan'};return m[c]||`Xatolik: ${c}`}
+function togglePassword(inputId, eyeId) {
+  const input = document.getElementById(inputId);
+  const eye = document.getElementById(eyeId);
+  eye.innerHTML = eyeClosedSVG;
+  eye.addEventListener('click', () => {
+    if (input.type === 'password') {
+      input.type = 'text';
+      eye.innerHTML = eyeOpenSVG;
+    } else {
+      input.type = 'password';
+      eye.innerHTML = eyeClosedSVG;
+    }
+  });
+}
+togglePassword('loginPassword', 'loginEye');
+togglePassword('signupPassword', 'signupEye');
 
-    document.getElementById('loginForm').addEventListener('submit',async e=>{e.preventDefault();const b=e.target.querySelector('.btn-primary'),em=document.getElementById('loginEmail').value,pw=document.getElementById('loginPassword').value;setLoading(b,true);try{await signInWithEmailAndPassword(auth,em,pw);showAlert('loginAlert','Muvaffaqiyatli kirildi!','success');clearForm('loginForm');setTimeout(()=>location.href='index.html',1500)}catch(err){showAlert('loginAlert',getErrorMessage(err.code),'error');setLoading(b,false)}});
+let countdownInterval;
+function startCountdown() {
+  let sec = 60;
+  const secEl = document.getElementById('seconds');
+  const successDiv = document.getElementById('resetSuccess');
+  const form = document.getElementById('resetForm');
+  form.style.display = 'none';
+  successDiv.style.display = 'block';
+  document.getElementById('sentEmail').textContent = document.getElementById('resetEmail').value;
+  document.getElementById('lockIcon').src = 'aga/lock-loading.gif';
 
-    document.getElementById('signupForm').addEventListener('submit',async e=>{
-      e.preventDefault();
-      const b = e.target.querySelector('.btn-primary');
-      const name = document.getElementById('signupName').value;
-      const em = document.getElementById('signupEmail').value;
-      const pw = document.getElementById('signupPassword').value;
-      const terms = document.getElementById('termsCheckbox').checked;
-      if (!terms) {
-        showAlert('signupAlert','Iltimos, foydalanish shartlari bilan rozilik bildiring','error');
-        return;
-      }
-      const pwCheck = checkPasswordRequirements(pw);
-      if (pwCheck.level === 'weak') {
-        showAlert('signupAlert','Parol juda zaif. Iltimos, kuchliroq parol yarating (kamida 3 ta shartni bajaring va oddiy parollardan qoching)','error');
-        return;
-      }
-      setLoading(b,true);
-      try{
-        const uc=await createUserWithEmailAndPassword(auth,em,pw);
-        await updateProfile(uc.user,{displayName:name});
-        showAlert('signupAlert','Muvaffaqiyatli ro\'yxatdan o\'tdingiz!','success');
-        clearForm('signupForm');
-        setTimeout(()=>location.href='index.html',1500)
-      }catch(err){
-        showAlert('signupAlert',getErrorMessage(err.code),'error');
-        setLoading(b,false)
-      }
-    });
+  countdownInterval = setInterval(() => {
+    sec--;
+    secEl.textContent = sec;
+    if (sec <= 0) {
+      clearInterval(countdownInterval);
+      document.querySelector('#countdown').innerHTML = 'Endi qayta urinib ko\'rishingiz mumkin';
+      document.getElementById('lockIcon').src = 'aga/lock.png';
+    }
+  }, 1000);
+}
 
-    document.getElementById('resetForm').addEventListener('submit',async e=>{
-      e.preventDefault();
-      const b=e.target.querySelector('.btn-primary'),em=document.getElementById('resetEmail').value;
-      setLoading(b,true);
-      try{
-        await sendPasswordResetEmail(auth,em);
-        showAlert('resetAlert','Havola muvaffaqiyatli yuborildi!','success');
-        startCountdown();
-        setLoading(b,false);
-      }catch(err){
-        showAlert('resetAlert',err.code==='auth/user-not-found'?'Bu email bilan ro\'yxatdan o\'tilmagan':getErrorMessage(err.code),'error');
-        setLoading(b,false);
-      }
-    });
+function getDynamicGreeting(){
+  const g={timeBased:[{text:'Xayrli tong!',startHour:5,endHour:9},{text:'Nurli tong',startHour:5,endHour:9},{text:'Xayrli kun!',startHour:12,endHour:17},{text:'Xayrli kech!',startHour:18,endHour:24}],
+           random:['Salom do\'stim!','Assalomu aleykum!','Marhamat kiring!','Harakatni boshlang!','Yaxshi kayfiyat!','Kirish vaqti','Yangi start!','Kirish oson','Tizim tayyor','Keling, kiraylik','Profilga qadam','Tezkor kirish','Salom mehmon!','Omadli boshlang!']};
+  const h=new Date().getHours();
+  const match=g.timeBased.filter(i=>h>=i.startHour&&h<i.endHour).map(i=>i.text);
+  const all=[...match,...g.random];
+  return all[Math.floor(Math.random()*all.length)];
+}
+function updateGreeting(){document.querySelector('#welcomePage h2').textContent=getDynamicGreeting()}
+document.addEventListener('DOMContentLoaded',updateGreeting);
 
-    auth.onAuthStateChanged(u=>{console.log(u?'Foydalanuvchi tizimda: '+u.email:'Foydalanuvchi tizimda emas')});
-    history.replaceState({page:'welcomePage'},'','');
-  </script>
-</body>
+document.addEventListener('keydown',e=>{if(e.key==='F12'||(e.ctrlKey&&e.shiftKey&&['I','J','C'].includes(e.key))||(e.ctrlKey&&e.key==='u')){e.preventDefault();return false}});
+document.addEventListener('contextmenu',e=>e.preventDefault());
+window.handleCopy=e=>{e.preventDefault();showCopyNotification()};
+['copy','cut','paste','selectstart'].forEach(ev=>document.addEventListener(ev,e=>{if(e.target.tagName!=='INPUT'){e.preventDefault();if(['copy','cut'].includes(ev))showCopyNotification();return false}}));
+function showCopyNotification(){const n=document.getElementById('copyNotification');n.classList.add('show');setTimeout(()=>n.classList.remove('show'),3000)}
+
+let currentPage='welcomePage',modalOpen=false;
+function updateHistory(p){currentPage=p;history.pushState({page:p},'','')}
+window.addEventListener('popstate',()=>{if(modalOpen){closeModal('helpModal');modalOpen=false}else if(currentPage!=='welcomePage')showPage('welcomePage')});
+window.showModal=id=>{document.getElementById(id).classList.add('show');modalOpen=true;history.pushState({modal:id},'','')};
+window.closeModal=id=>{document.getElementById(id).classList.remove('show');modalOpen=false;history.back()};
+document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)closeModal(m.id)}));
+window.showPage=id=>{
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.alert').forEach(a=>{a.classList.remove('show');a.innerHTML=''});
+  updateHistory(id);
+  if(id==='welcomePage') updateGreeting();
+  clearInterval(countdownInterval);
+  document.getElementById('resetSuccess').style.display='none';
+  document.getElementById('resetForm').style.display='block';
+  if (id === 'resetPage') {
+    document.getElementById('lockIcon').src = 'aga/lock.png';
+  }
+};
+
+const pwInput = document.getElementById('signupPassword');
+const commonPasswords = ['abcd', '12345678', 'password', 'qwerty', 'abc123', 'admin', 'welcome', '1234567890', 'password123', '11111111', 'dragon', 'baseball', 'football', 'iloveyou'];
+
+function checkPasswordRequirements(p) {
+  const lengthOk = p.length >= 8;
+  const hasNumber = /\d/.test(p);
+  const hasUpper = /[A-Z]/.test(p);
+  const hasLower = /[a-z]/.test(p);
+  const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(p);
+  
+  document.getElementById('req-length').classList.toggle('met', lengthOk);
+  document.getElementById('req-number').classList.toggle('met', hasNumber);
+  document.getElementById('req-upper').classList.toggle('met', hasUpper);
+  document.getElementById('req-lower').classList.toggle('met', hasLower);
+  document.getElementById('req-special').classList.toggle('met', hasSpecial);
+  
+  const count = [lengthOk, hasNumber, hasUpper, hasLower, hasSpecial].filter(Boolean).length;
+  const isCommon = commonPasswords.includes(p.toLowerCase());
+  
+  let level, text, className;
+  if (isCommon || !lengthOk) {
+    level = 'weak'; text = 'Zaif parol (juda oddiy yoki qisqa)'; className = 'strength-weak';
+  } else if (count >= 3) {
+    level = 'good'; text = 'Yaxshi parol'; className = 'strength-good';
+  } else {
+    level = 'weak'; text = 'Zaif parol (ko\'proq shartlarni bajaring)'; className = 'strength-weak';
+  }
+  if (count === 5 && !isCommon) {
+    level = 'strong'; text = 'Ajoyib parol'; className = 'strength-strong';
+  }
+  
+  const container = pwInput.parentElement.querySelector('.password-strength');
+  const bar = container.querySelector('.password-strength-bar');
+  const textEl = pwInput.parentElement.querySelector('.password-strength-text');
+  container.className = `password-strength ${className}`;
+  bar.style.width = level === 'strong' ? '100%' : level === 'good' ? '66%' : '33%';
+  textEl.textContent = text;
+  
+  return { level, isStrong: level === 'strong' };
+}
+
+pwInput?.addEventListener('input', e => {
+  const p = e.target.value;
+  const reqs = e.target.parentElement.querySelector('.password-requirements');
+  if (p.length === 0) {
+    reqs.style.display = 'none';
+    document.querySelectorAll('.req').forEach(req => req.classList.remove('met'));
+    const container = e.target.parentElement.querySelector('.password-strength');
+    const bar = container.querySelector('.password-strength-bar');
+    const textEl = e.target.parentElement.querySelector('.password-strength-text');
+    container.className = 'password-strength';
+    bar.style.width = '0%';
+    textEl.textContent = '';
+    return;
+  }
+  reqs.style.display = 'block';
+  checkPasswordRequirements(p);
+});
+
+function showAlert(id,msg,type='error'){const a=document.getElementById(id);a.innerHTML=msg;a.className=`alert alert-${type} show`;if(type==='success')setTimeout(()=>a.classList.remove('show'),5000)}
+function setLoading(btn,load){if(load){btn.disabled=true;btn.classList.add('loading')}else{btn.disabled=false;btn.classList.remove('loading')}}
+function clearForm(id){const f=document.getElementById(id);if(f){f.reset();const s=f.querySelector('.password-strength'),t=f.querySelector('.password-strength-text');if(s)s.className='password-strength';if(t)t.textContent=''; document.querySelectorAll('.req').forEach(req => req.classList.remove('met'));}};
+
+function getErrorMessage(c){const m={'auth/invalid-email':'Noto\'g\'ri email format','auth/user-disabled':'Bu foydalanuvchi o\'chirilgan iltimos haqiqiy emaildan foydalaning','auth/user-not-found':'Bunday foydalanuvchi topilmadi','auth/wrong-password':'Noto\'g\'ri parol kiritildi','auth/email-already-in-use':'Bu email allaqachon ro\'yxatdan o\'tgan','auth/weak-password':'Parol juda oddiy. Kamida 8 ta belgi kiriting','auth/network-request-failed':'Internet aloqasi yo\'q. Iltimos, ulanishni tekshiring','auth/too-many-requests':'Juda ko\'p urinish. Iltimos, biroz kutib qaytadan urinib ko\'ring','auth/invalid-credential':'Noto\'g\'ri email yoki parol','auth/missing-password':'Parol kiritilmagan'};return m[c]||`Xatolik: ${c}`}
+
+// Email bilan kirish
+document.getElementById('loginForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const b=e.target.querySelector('.btn-primary'),em=document.getElementById('loginEmail').value,pw=document.getElementById('loginPassword').value;
+  setLoading(b,true);
+  try{
+    await signInWithEmailAndPassword(auth,em,pw);
+    showAlert('loginAlert','Muvaffaqiyatli kirildi!','success');
+    clearForm('loginForm');
+    setTimeout(()=>location.href='index.html',1500)
+  }catch(err){
+    showAlert('loginAlert',getErrorMessage(err.code),'error');
+    setLoading(b,false)
+  }
+});
+
+// Ro'yxatdan o'tish
+document.getElementById('signupForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const b = e.target.querySelector('.btn-primary');
+  const name = document.getElementById('signupName').value;
+  const em = document.getElementById('signupEmail').value;
+  const pw = document.getElementById('signupPassword').value;
+  const terms = document.getElementById('termsCheckbox').checked;
+  if (!terms) {
+    showAlert('signupAlert','Iltimos, foydalanish shartlari bilan rozilik bildiring','error');
+    return;
+  }
+  const pwCheck = checkPasswordRequirements(pw);
+  if (pwCheck.level === 'weak') {
+    showAlert('signupAlert','Parol juda zaif. Iltimos, kuchliroq parol yarating (kamida 3 ta shartni bajaring va oddiy parollardan qoching)','error');
+    return;
+  }
+  setLoading(b,true);
+  try{
+    const uc=await createUserWithEmailAndPassword(auth,em,pw);
+    await updateProfile(uc.user,{displayName:name});
+    showAlert('signupAlert','Muvaffaqiyatli ro\'yxatdan o\'tdingiz!','success');
+    clearForm('signupForm');
+    setTimeout(()=>location.href='index.html',1500)
+  }catch(err){
+    showAlert('signupAlert',getErrorMessage(err.code),'error');
+    setLoading(b,false)
+  }
+});
+
+// Parolni tiklash
+document.getElementById('resetForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const b=e.target.querySelector('.btn-primary'),em=document.getElementById('resetEmail').value;
+  setLoading(b,true);
+  try{
+    await sendPasswordResetEmail(auth,em);
+    showAlert('resetAlert','Havola muvaffaqiyatli yuborildi!','success');
+    startCountdown();
+    setLoading(b,false);
+  }catch(err){
+    showAlert('resetAlert',err.code==='auth/user-not-found'?'Bu email bilan ro\'yxatdan o\'tilmagan':getErrorMessage(err.code),'error');
+    setLoading(b,false);
+  }
+});
+
+// Google orqali kirish funksiyasi
+async function signInWithGoogle(buttonId, alertId) {
+  const btn = document.getElementById(buttonId);
+  setLoading(btn, true);
+  
+  const provider = new GoogleAuthProvider();
+  provider.setCustomParameters({
+    prompt: 'select_account'
+  });
+  
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+    
+    showAlert(alertId, 'Google orqali muvaffaqiyatli kirildi!', 'success');
+    console.log('Google user:', user.displayName, user.email);
+    
+    setTimeout(() => {
+      location.href = 'index.html';
+    }, 1500);
+    
+  } catch (error) {
+    console.error('Google kirish xatoligi:', error);
+    
+    let errorMsg = 'Google orqali kirishda xatolik';
+    if (error.code === 'auth/popup-closed-by-user') {
+      errorMsg = 'Kirish bekor qilindi';
+    } else if (error.code === 'auth/popup-blocked') {
+      errorMsg = 'Pop-up oyna bloklandi. Brauzer sozlamalarini tekshiring';
+    } else if (error.code === 'auth/cancelled-popup-request') {
+      errorMsg = 'So\'rov bekor qilindi';
+    } else if (error.code === 'auth/network-request-failed') {
+      errorMsg = 'Internet aloqasi yo\'q';
+    } else {
+      errorMsg = getErrorMessage(error.code);
+    }
+    
+    showAlert(alertId, errorMsg, 'error');
+    setLoading(btn, false);
+    
+    // 5 soniyadan keyin alertni yashirish
+    setTimeout(() => {
+      const alert = document.getElementById(alertId);
+      if (alert) alert.classList.remove('show');
+    }, 5000);
+  }
+}
+
+// Google tugmalariga event listener qo'shish
+document.getElementById('welcomeGoogle').addEventListener('click', () => {
+  signInWithGoogle('welcomeGoogle', 'welcomeAlert');
+});
+
+document.getElementById('signupGoogle').addEventListener('click', () => {
+  signInWithGoogle('signupGoogle', 'signupAlert');
+});
+
+// Auth state o'zgarishini kuzatish
+auth.onAuthStateChanged(u=>{
+  console.log(u?'Foydalanuvchi tizimda: '+u.email:'Foydalanuvchi tizimda emas')
+});
+
+history.replaceState({page:'welcomePage'},'',''); </script>
+  </body>
 </html>
