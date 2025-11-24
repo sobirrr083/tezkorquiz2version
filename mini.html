@@ -89,9 +89,10 @@
     .strength-strong .password-strength-bar{width:100%;background:#26de81}
     .strength-strong .password-strength-text{color:#26de81}
     .password-requirements{display:none;margin-top:10px;background:#f8f9fa;padding:12px;border-radius:8px;border:1px solid #e1e8ed}
-    .password-requirements .req{font-size:13px;color:#666;margin-bottom:6px;line-height:1.4;transition:all .3s;display:flex;align-items:center;gap:8px;font-weight:400}
+    .password-requirements .req{font-size:13px;color:#555;margin-bottom:6px;line-height:1.4;transition:all .3s;display:flex;align-items:center;gap:8px;font-weight:400}
     .password-requirements .req:last-child{margin-bottom:0}
     .password-requirements .req::before{content:'✗';color:#ff4757;font-weight:bold;font-size:16px;flex-shrink:0;transition:all .3s}
+    .password-requirements .req.met::before{content:'✓';color:#26de81}
     .password-requirements .req.met{color:#26de81;font-weight:500}
     .password-requirements .req.met::before{content:'✓';color:#26de81}
     .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);backdrop-filter:blur(4px);z-index:1000;align-items:center;justify-content:center;padding:20px;animation:fadeIn .3s ease}
