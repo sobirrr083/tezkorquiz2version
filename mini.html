@@ -12,6 +12,12 @@
     *{margin:0;padding:0;box-sizing:border-box;user-select:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none}
     body{font-family:'Poppins',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,sans-serif;background:#fff;min-height:100vh;position:relative;overflow-x:hidden}
     body::before{content:'';position:fixed;inset:0;background:#fff;background-image:radial-gradient(circle at top left,rgba(70,130,180,.3),transparent 70%);filter:blur(80px);z-index:0;pointer-events:none}
+    @media (max-width: 768px){
+    .container{padding:30px 20px;margin:10px}
+    .modal-content{padding:20px;max-width:95%}
+    }
+    .offline-mode{position:fixed;top:10px;left:50%;transform:translateX(-50%);background:#ff4757;color:#fff;padding:8px 16px;border-radius:6px;font-size:13px;z-index:9999;box-shadow:0 4px 12px rgba(255,71,87,.3);display:none;animation:slideDown .3s ease}
+    .offline-mode.show{display:block}
     .main-wrapper{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;position:relative;z-index:1}
     .container{background:rgba(255,255,255,.98);backdrop-filter:blur(10px);border-radius:20px;box-shadow:0 8px 32px rgba(67,97,238,.08);padding:40px;width:100%;max-width:420px;animation:slideUp .5s ease;border:1px solid rgba(67,97,238,.05)}
     @keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
@@ -82,9 +88,12 @@
     .strength-good .password-strength-text{color:#ffa502}
     .strength-strong .password-strength-bar{width:100%;background:#26de81}
     .strength-strong .password-strength-text{color:#26de81}
-    .password-requirements{display:none;margin-top:10px}
-    .password-requirements .req{font-size:12px;color:#888;margin-bottom:4px;line-height:1.3;transition:color .3s}
-    .password-requirements .req.met{color:#26de81}
+    .password-requirements{display:none;margin-top:10px;background:#f8f9fa;padding:12px;border-radius:8px;border:1px solid #e1e8ed}
+    .password-requirements .req{font-size:13px;color:#666;margin-bottom:6px;line-height:1.4;transition:all .3s;display:flex;align-items:center;gap:8px;font-weight:400}
+    .password-requirements .req:last-child{margin-bottom:0}
+    .password-requirements .req::before{content:'✗';color:#ff4757;font-weight:bold;font-size:16px;flex-shrink:0;transition:all .3s}
+    .password-requirements .req.met{color:#26de81;font-weight:500}
+    .password-requirements .req.met::before{content:'✓';color:#26de81}
     .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);backdrop-filter:blur(4px);z-index:1000;align-items:center;justify-content:center;padding:20px;animation:fadeIn .3s ease}
     .modal.show{display:flex}
     .modal-content{background:#fff;border-radius:16px;padding:28px;max-width:480px;width:100%;max-height:80vh;overflow-y:auto;animation:modalSlideUp .3s ease;box-shadow:0 12px 40px rgba(0,0,0,.15)}
@@ -190,11 +199,11 @@
             <div class="password-strength"><div class="password-strength-bar"></div></div>
             <div class="password-strength-text"></div>
             <div class="password-requirements">
-              <div class="req" id="req-length">• Kamida 8 ta belgi</div>
-              <div class="req" id="req-number">• Kamida bitta raqam (0-9)</div>
-              <div class="req" id="req-upper">• Kamida bitta katta harf (A-Z)</div>
-              <div class="req" id="req-lower">• Kamida bitta kichik harf (a-z)</div>
-              <div class="req" id="req-special">• Kamida bitta maxsus belgi (!@#$%^&*)</div>
+              <div class="req" id="req-length">Kamida 8 ta belgi</div>
+              <div class="req" id="req-number">Kamida bitta raqam (0-9)</div>
+              <div class="req" id="req-upper">Kamida bitta katta harf (A-Z)</div>
+              <div class="req" id="req-lower">Kamida bitta kichik harf (a-z)</div>
+              <div class="req" id="req-special">Kamida bitta maxsus belgi (!@#$%^&*)</div>
             </div>
           </div>
           <div class="checkbox-group"><input type="checkbox" id="termsCheckbox" required>
@@ -550,6 +559,12 @@ async function signInWithGoogle(buttonId, alertId) {
     
     showAlert(alertId, errorMsg, 'error');
     setLoading(btn, false);
+    
+    // 5 soniyadan keyin alertni yashirish
+    setTimeout(() => {
+      const alert = document.getElementById(alertId);
+      if (alert) alert.classList.remove('show');
+    }, 5000);
   }
 }
 
