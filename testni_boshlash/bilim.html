@@ -122,6 +122,68 @@
             background: #ef4444;
             animation: pulse 1s infinite;
         }
+        .editable-time {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+        padding: 0.5rem 1rem;
+        background: #f5f5f5;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+        }
+        
+        .editable-time:hover {
+            background: #e8e8e8;
+        }
+        
+        .time-edit-icon {
+            color: #6c757d;
+            font-size: 0.85rem;
+        }
+        
+        .time-input-wrapper {
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .time-input-wrapper.active {
+            display: flex;
+        }
+        
+        .time-input {
+            width: 70px;
+            padding: 0.4rem;
+            border: 2px solid #2c2c2c;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .time-save-btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+        }
+        
+        .time-save-btn:hover {
+            background: #059669;
+        }
+        
+        .editable-label {
+            font-size: 0.75rem;
+            color: #6c757d;
+            margin-top: 0.25rem;
+        }
+
         .question-container {
             display: none;
             animation: scaleIn 0.3s ease;
@@ -603,9 +665,29 @@
                         <div class="stat-number" id="loadedQuestionsCount">0</div>
                         <div class="stat-label">Savollar</div>
                     </div>
+                  <!-- 2. HTML o'zgartirish (loadedQuestionsInfo ichidagi vaqt qismini) -->
                     <div class="stat-item">
-                        <div class="stat-number" id="calculatedTime">0</div>
+                        <div class="editable-time" id="editableTimeContainer">
+                            <div id="timeDisplay">
+                                <div class="stat-number" id="calculatedTime">0</div>
+                                <i class="fas fa-edit time-edit-icon"></i>
+                            </div>
+                            <div class="time-input-wrapper" id="timeInputWrapper">
+                                <input type="number" 
+                                       id="timeInput" 
+                                       class="time-input" 
+                                       min="1" 
+                                       max="999"
+                                       placeholder="Daqiqa">
+                                <button class="time-save-btn" id="saveTimeBtn">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                            </div>
+                        </div>
                         <div class="stat-label">Daqiqa</div>
+                        <div class="editable-label">
+                            <i class="fas fa-info-circle"></i> Tahrirlash mumkin
+                        </div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-number">4</div>
@@ -729,6 +811,13 @@
                 this.startBtn = document.getElementById('startBtn');
                 this.showMoreBtn = document.getElementById('showMoreBtn');
                 this.timeUpMessage = document.getElementById('timeUpMessage');
+                // initElements() metodiga qo'shish:
+                this.editableTimeContainer = document.getElementById('editableTimeContainer');
+                this.timeDisplay = document.getElementById('timeDisplay');
+                this.timeInputWrapper = document.getElementById('timeInputWrapper');
+                this.timeInput = document.getElementById('timeInput');
+                this.saveTimeBtn = document.getElementById('saveTimeBtn');
+                this.calculatedTimeEl = document.getElementById('calculatedTime');
             }
             
             bindEvents() {
@@ -741,6 +830,24 @@
                 document.getElementById('restartBtn').addEventListener('click', () => this.restartQuiz());
                 document.getElementById('newTestBtn').addEventListener('click', () => this.newTest());
                 this.showMoreBtn.addEventListener('click', () => this.toggleFullReview());
+                // bindEvents() metodiga qo'shish:
+                this.editableTimeContainer.addEventListener('click', (e) => {
+                    if (!this.timeInputWrapper.classList.contains('active')) {
+                        this.enableTimeEdit();
+                    }
+                });
+                
+                this.saveTimeBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.saveCustomTime();
+                });
+                
+                this.timeInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        this.saveCustomTime();
+                    }
+                });
             }
             
             showToast(title, message, type = 'success') {
@@ -880,17 +987,17 @@
                 }
             }
             
-            calculateTime() {
-                const minutes = Math.ceil(this.questions.length / 10);
-                this.totalTime = minutes * 60;
-                this.timeLeft = this.totalTime;
-                
-                document.getElementById('loadedQuestionsCount').textContent = this.questions.length;
-                document.getElementById('calculatedTime').textContent = minutes;
-                this.totalQuestionsEl.textContent = this.questions.length;
-                this.timerCloneEl.textContent = this.formatTime(this.totalTime);
-            }
-            
+          // calculateTime() metodini o'zgartirish:
+          calculateTime() {
+              const minutes = Math.ceil(this.questions.length / 10);
+              this.totalTime = minutes * 60;
+              this.timeLeft = this.totalTime;
+              
+              document.getElementById('loadedQuestionsCount').textContent = this.questions.length;
+              this.calculatedTimeEl.textContent = minutes;
+              this.totalQuestionsEl.textContent = this.questions.length;
+              this.timerCloneEl.textContent = this.formatTime(this.totalTime);
+          }            
             formatTime(seconds) {
                 const mins = Math.floor(seconds / 60);
                 const secs = seconds % 60;
@@ -926,7 +1033,44 @@
                     }
                 }, 1000);
             }
-            
+            // Yangi metodlar qo'shish:
+          enableTimeEdit() {
+              const currentMinutes = Math.ceil(this.questions.length / 10);
+              this.timeInput.value = currentMinutes;
+              this.timeDisplay.style.display = 'none';
+              this.timeInputWrapper.classList.add('active');
+              this.timeInput.focus();
+              this.timeInput.select();
+          }
+          
+          saveCustomTime() {
+              const customMinutes = parseInt(this.timeInput.value);
+              
+              if (isNaN(customMinutes) || customMinutes < 1) {
+                  this.showToast('Xatolik', 'Iltimos, to\'g\'ri vaqt kiriting (minimum 1 daqiqa)', 'error');
+                  return;
+              }
+              
+              if (customMinutes > 999) {
+                  this.showToast('Xatolik', 'Maksimal 999 daqiqa kiritish mumkin', 'error');
+                  return;
+              }
+              
+              // Vaqtni yangilash
+              this.totalTime = customMinutes * 60;
+              this.timeLeft = this.totalTime;
+              
+              // Displayni yangilash
+              this.calculatedTimeEl.textContent = customMinutes;
+              this.timerCloneEl.textContent = this.formatTime(this.totalTime);
+              
+              // Edit rejimini yopish
+              this.timeInputWrapper.classList.remove('active');
+              this.timeDisplay.style.display = 'flex';
+              
+              this.showToast('Muvaffaqiyatli', `Vaqt ${customMinutes} daqiqaga o'zgartirildi`);
+          }
+
             showQuestion() {
                 const qIdx = this.questionOrder[this.currentQuestion];
                 const question = this.questions[qIdx];
