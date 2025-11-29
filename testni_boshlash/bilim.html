@@ -1,35 +1,6 @@
 <!DOCTYPE html>
 <html lang="uz">
-<!-- himoyalangan sahifa: protected.html -->
-<script type="module">
-  // Firebase SDK import qilingan deb faraz qilamiz
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-
-  const firebaseConfig = {
-   apiKey: "AIzaSyBxIpLY5WasiSIlDL4japBLnnXRwOLUKEQ",
-      authDomain: "tezkor-quiz-bbe3c.firebaseapp.com",
-    // ... boshqa sozlamalar
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-
-  // Current page URL (return uchun)
-  const returnUrl = encodeURIComponent(window.location.pathname + window.location.search);
-
-  onAuthStateChanged(auth, (user) => {
-    if (!user) {
-      // foydalanuvchi kirmagan — login sahifasiga yo'naltirish
-      window.location.replace(`/kirish.html?returnUrl=${returnUrl}`);
-    } else {
-      // foydalanuvchi kirdi — sahifa davom ettirilsin
-      console.log("User logged in:", user.uid);
-    }
-  });
-</script>
-    
-    <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bilim Quiz</title>
@@ -123,15 +94,15 @@
             animation: pulse 1s infinite;
         }
         .editable-time {
-        position: relative;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        cursor: pointer;
-        padding: 0.5rem 1rem;
-        background: #f5f5f5;
-        border-radius: 8px;
-        transition: all 0.2s ease;
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            background: #f5f5f5;
+            border-radius: 8px;
+            transition: all 0.2s ease;
         }
         
         .editable-time:hover {
@@ -274,7 +245,6 @@
         .btn-secondary-custom {
             background: #e8e8e8;
             color: #2c2c2c !important;
-            margin-right: 1rem;
         }
         .btn-secondary-custom:hover {
             background: #d0d0d0;
@@ -365,6 +335,38 @@
             color: #6c757d;
             margin-bottom: 1rem;
         }
+        
+        /* YANGI: Natijalar uchun maxsus grid */
+        .result-stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+            width: 100%;
+        }
+        
+        .result-stat-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: #fafafa;
+            border-radius: 12px;
+            border: 1px solid #e8e8e8;
+        }
+        
+        /* Tugmalar konteyner */
+        .result-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+        
+        .result-buttons .btn-custom {
+            flex: 0 1 auto;
+            min-width: 180px;
+        }
+        
         @keyframes scaleIn {
             from {
                 opacity: 0;
@@ -391,28 +393,43 @@
             margin-top: 2rem;
             text-align: left;
             display: none;
+            max-width: 100%;
+            margin-left: auto;
+            margin-right: auto;
         }
         .review-question {
             background: #fafafa;
             border-radius: 12px;
-            padding: 1.5rem;
+            padding: 2.5rem;
             margin-bottom: 1.5rem;
             border: 1px solid #e8e8e8;
+            max-width: 100%;
+            width: 100%;
         }
         .review-question-text {
             font-weight: 600;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             color: #2c2c2c;
             word-wrap: break-word;
+            overflow-wrap: break-word;
+            line-height: 1.8;
+            font-size: 1.1rem;
         }
         .review-options {
             margin-left: 0;
+            display: grid;
+            gap: 0.75rem;
         }
         .review-option {
-            margin-bottom: 0.5rem;
-            padding: 0.8rem;
-            border-radius: 6px;
+            margin-bottom: 0;
+            padding: 1.2rem 1.5rem;
+            border-radius: 8px;
             word-wrap: break-word;
+            overflow-wrap: break-word;
+            line-height: 1.6;
+            font-size: 1rem;
+            background: white;
+            border: 1px solid #e8e8e8;
         }
         .review-correct {
             color: #10b981;
@@ -425,10 +442,12 @@
         .user-answer-info {
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px dashed #e8e8e8;
             color: #6c757d;
-            font-size: 0.9rem;
+            font-size: 1rem;
         }
         .user-answer-info strong {
             font-weight: 600;
@@ -542,6 +561,8 @@
             margin: 1rem 0;
             font-size: 1.1rem;
         }
+        
+        /* Tablet responsive */
         @media (max-width: 992px) {
             .quiz-container {
                 padding: 1.5rem;
@@ -552,7 +573,22 @@
             .answer-option {
                 padding: 1rem 1.2rem;
             }
+            .result-stats-row {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .review-question {
+                padding: 2rem;
+            }
+            .review-question-text {
+                font-size: 1rem;
+            }
+            .review-option {
+                padding: 1rem 1.2rem;
+                font-size: 0.95rem;
+            }
         }
+        
+        /* Mobile responsive */
         @media (max-width: 768px) {
             body {
                 padding: 0.5rem;
@@ -575,6 +611,33 @@
             .quiz-stats {
                 grid-template-columns: 1fr;
             }
+            /* Natijalar uchun bir qator saqlash */
+            .result-stats-row {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.5rem;
+            }
+            .result-stat-item {
+                padding: 1rem 0.5rem;
+            }
+            .result-stat-item .stat-number {
+                font-size: 1.5rem;
+            }
+            .result-stat-item .stat-label {
+                font-size: 0.7rem;
+            }
+            .review-question {
+                padding: 1.5rem;
+            }
+            .review-question-text {
+                font-size: 0.95rem;
+            }
+            .review-option {
+                padding: 1rem;
+                font-size: 0.9rem;
+            }
+            .user-answer-info {
+                font-size: 0.9rem;
+            }
             .toast-container {
                 right: 10px;
                 left: 10px;
@@ -596,9 +659,13 @@
                 padding: 10px 24px;
                 font-size: 0.9rem;
             }
-            .btn-secondary-custom {
-                margin-right: 0;
-                margin-bottom: 0.5rem;
+            .result-buttons {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+            .result-buttons .btn-custom {
+                width: 100%;
+                min-width: auto;
             }
             .result-badge {
                 font-size: 1.1rem;
@@ -609,6 +676,7 @@
                 padding: 1.5rem;
             }
         }
+        
         @media (max-width: 480px) {
             .quiz-container {
                 padding: 1rem;
@@ -626,8 +694,32 @@
                 padding: 0.9rem;
                 font-size: 0.9rem;
             }
-            .stat-number {
-                font-size: 1.75rem;
+            .result-stats-row {
+                gap: 0.5rem;
+            }
+            .result-stat-item {
+                padding: 0.8rem 0.3rem;
+            }
+            .result-stat-item .stat-number {
+                font-size: 1.3rem;
+            }
+            .result-stat-item .stat-label {
+                font-size: 0.65rem;
+            }
+            .review-question {
+                padding: 1.2rem;
+            }
+            .review-question-text {
+                font-size: 0.9rem;
+            }
+            .review-option {
+                padding: 0.9rem;
+                font-size: 0.85rem;
+            }
+            .user-answer-info {
+                font-size: 0.85rem;
+                margin-top: 1rem;
+                padding-top: 1rem;
             }
             .upload-icon {
                 font-size: 2.5rem;
@@ -665,7 +757,6 @@
                         <div class="stat-number" id="loadedQuestionsCount">0</div>
                         <div class="stat-label">Savollar</div>
                     </div>
-                  <!-- 2. HTML o'zgartirish (loadedQuestionsInfo ichidagi vaqt qismini) -->
                     <div class="stat-item">
                         <div class="editable-time" id="editableTimeContainer">
                             <div id="timeDisplay">
@@ -733,22 +824,22 @@
                 <div id="resultBadge" class="result-badge"></div>
                 <div id="timeUpMessage" style="display: none;"></div>
                
-                <div class="quiz-stats">
-                    <div class="stat-item">
+                <div class="result-stats-row">
+                    <div class="result-stat-item">
                         <div class="stat-number" style="color: #10b981;" id="correctAnswers">0</div>
-                        <div class="stat-label">To'g'ri javoblar</div>
+                        <div class="stat-label">To'g'ri</div>
                         <div class="result-progress-bar">
                             <div class="result-progress-fill correct" id="correctProgress" style="width: 0%"></div>
                         </div>
                     </div>
-                    <div class="stat-item">
+                    <div class="result-stat-item">
                         <div class="stat-number" style="color: #ef4444;" id="wrongAnswers">0</div>
-                        <div class="stat-label">Noto'g'ri javoblar</div>
+                        <div class="stat-label">Xato</div>
                         <div class="result-progress-bar">
                             <div class="result-progress-fill incorrect" id="incorrectProgress" style="width: 0%"></div>
                         </div>
                     </div>
-                    <div class="stat-item">
+                    <div class="result-stat-item">
                         <div class="stat-number" id="finalScore">0%</div>
                         <div class="stat-label">Ball</div>
                         <div class="result-progress-bar">
@@ -756,19 +847,21 @@
                         </div>
                     </div>
                 </div>
+                
                 <div id="reviewSummary">
                     <h5 style="color: #2c2c2c; font-weight: 600; margin-bottom: 1rem;">Natija</h5>
-                    <p style="font-size: 0.95rem;">To'g'ri: <strong style="color: #10b981;" id="summaryCorrect">0</strong> | Noto'g'ri: <strong style="color: #ef4444;" id="summaryWrong">0</strong></p>
+                    <p style="font-size: 0.95rem;">To'g'ri: <strong style="color: #10b981;" id="summaryCorrect">0</strong> | Xato: <strong style="color: #ef4444;" id="summaryWrong">0</strong></p>
                     <button id="showMoreBtn" class="btn btn-custom btn-secondary-custom mt-3">
                         Batafsil ko'rish <i class="fas fa-chevron-down"></i>
                     </button>
                 </div>
                 <div id="reviewList"></div>
-                <div class="mt-4">
-                    <button id="restartBtn" class="btn btn-custom btn-primary-custom me-2 mb-2">
+                
+                <div class="result-buttons">
+                    <button id="restartBtn" class="btn btn-custom btn-primary-custom">
                         <i class="fas fa-redo"></i> Qayta Boshlash
                     </button>
-                    <button id="newTestBtn" class="btn btn-custom btn-secondary-custom mb-2">
+                    <button id="newTestBtn" class="btn btn-custom btn-secondary-custom">
                         <i class="fas fa-file-upload"></i> Yangi Test
                     </button>
                 </div>
@@ -811,7 +904,6 @@
                 this.startBtn = document.getElementById('startBtn');
                 this.showMoreBtn = document.getElementById('showMoreBtn');
                 this.timeUpMessage = document.getElementById('timeUpMessage');
-                // initElements() metodiga qo'shish:
                 this.editableTimeContainer = document.getElementById('editableTimeContainer');
                 this.timeDisplay = document.getElementById('timeDisplay');
                 this.timeInputWrapper = document.getElementById('timeInputWrapper');
@@ -830,7 +922,7 @@
                 document.getElementById('restartBtn').addEventListener('click', () => this.restartQuiz());
                 document.getElementById('newTestBtn').addEventListener('click', () => this.newTest());
                 this.showMoreBtn.addEventListener('click', () => this.toggleFullReview());
-                // bindEvents() metodiga qo'shish:
+                
                 this.editableTimeContainer.addEventListener('click', (e) => {
                     if (!this.timeInputWrapper.classList.contains('active')) {
                         this.enableTimeEdit();
@@ -987,17 +1079,17 @@
                 }
             }
             
-          // calculateTime() metodini o'zgartirish:
-          calculateTime() {
-              const minutes = Math.ceil(this.questions.length / 10);
-              this.totalTime = minutes * 60;
-              this.timeLeft = this.totalTime;
-              
-              document.getElementById('loadedQuestionsCount').textContent = this.questions.length;
-              this.calculatedTimeEl.textContent = minutes;
-              this.totalQuestionsEl.textContent = this.questions.length;
-              this.timerCloneEl.textContent = this.formatTime(this.totalTime);
-          }            
+            calculateTime() {
+                const minutes = Math.ceil(this.questions.length / 10);
+                this.totalTime = minutes * 60;
+                this.timeLeft = this.totalTime;
+                
+                document.getElementById('loadedQuestionsCount').textContent = this.questions.length;
+                this.calculatedTimeEl.textContent = minutes;
+                this.totalQuestionsEl.textContent = this.questions.length;
+                this.timerCloneEl.textContent = this.formatTime(this.totalTime);
+            }
+            
             formatTime(seconds) {
                 const mins = Math.floor(seconds / 60);
                 const secs = seconds % 60;
@@ -1033,43 +1125,40 @@
                     }
                 }, 1000);
             }
-            // Yangi metodlar qo'shish:
-          enableTimeEdit() {
-              const currentMinutes = Math.ceil(this.questions.length / 10);
-              this.timeInput.value = currentMinutes;
-              this.timeDisplay.style.display = 'none';
-              this.timeInputWrapper.classList.add('active');
-              this.timeInput.focus();
-              this.timeInput.select();
-          }
-          
-          saveCustomTime() {
-              const customMinutes = parseInt(this.timeInput.value);
-              
-              if (isNaN(customMinutes) || customMinutes < 1) {
-                  this.showToast('Xatolik', 'Iltimos, to\'g\'ri vaqt kiriting (minimum 1 daqiqa)', 'error');
-                  return;
-              }
-              
-              if (customMinutes > 999) {
-                  this.showToast('Xatolik', 'Maksimal 999 daqiqa kiritish mumkin', 'error');
-                  return;
-              }
-              
-              // Vaqtni yangilash
-              this.totalTime = customMinutes * 60;
-              this.timeLeft = this.totalTime;
-              
-              // Displayni yangilash
-              this.calculatedTimeEl.textContent = customMinutes;
-              this.timerCloneEl.textContent = this.formatTime(this.totalTime);
-              
-              // Edit rejimini yopish
-              this.timeInputWrapper.classList.remove('active');
-              this.timeDisplay.style.display = 'flex';
-              
-              this.showToast('Muvaffaqiyatli', `Vaqt ${customMinutes} daqiqaga o'zgartirildi`);
-          }
+            
+            enableTimeEdit() {
+                const currentMinutes = Math.ceil(this.questions.length / 10);
+                this.timeInput.value = currentMinutes;
+                this.timeDisplay.style.display = 'none';
+                this.timeInputWrapper.classList.add('active');
+                this.timeInput.focus();
+                this.timeInput.select();
+            }
+            
+            saveCustomTime() {
+                const customMinutes = parseInt(this.timeInput.value);
+                
+                if (isNaN(customMinutes) || customMinutes < 1) {
+                    this.showToast('Xatolik', 'Iltimos, to\'g\'ri vaqt kiriting (minimum 1 daqiqa)', 'error');
+                    return;
+                }
+                
+                if (customMinutes > 999) {
+                    this.showToast('Xatolik', 'Maksimal 999 daqiqa kiritish mumkin', 'error');
+                    return;
+                }
+                
+                this.totalTime = customMinutes * 60;
+                this.timeLeft = this.totalTime;
+                
+                this.calculatedTimeEl.textContent = customMinutes;
+                this.timerCloneEl.textContent = this.formatTime(this.totalTime);
+                
+                this.timeInputWrapper.classList.remove('active');
+                this.timeDisplay.style.display = 'flex';
+                
+                this.showToast('Muvaffaqiyatli', `Vaqt ${customMinutes} daqiqaga o'zgartirildi`);
+            }
 
             showQuestion() {
                 const qIdx = this.questionOrder[this.currentQuestion];
@@ -1235,19 +1324,19 @@
                     
                     const status = (userIdx === correctIdx) 
                         ? '<span style="color:#10b981; font-weight: 600;">To\'g\'ri</span>' 
-                        : '<span style="color:#ef4444; font-weight: 600;">Noto\'g\'ri</span>';
+                        : '<span style="color:#ef4444; font-weight: 600;">Xato</span>';
                     
                     reviewList.innerHTML += `
                         <div class="review-question">
                             <div class="review-question-text">
-                                ${origQ.question} 
+                                ${disp + 1}. ${origQ.question} 
                                 <span style="float: right;">${status}</span>
                             </div>
                             <div class="review-options">
                                 ${optionsHTML}
                                 <div class="user-answer-info">
-                                    <div>Sizning javobingiz: <strong>${userOrigLetter}</strong></div>
-                                    <div>To'g'ri javob: <strong style="color: #10b981;">${correctOrigLetter}</strong></div>
+                                    <div><i class="fas fa-user"></i> Sizning javobingiz: <strong>${userOrigLetter}</strong></div>
+                                    <div><i class="fas fa-check-circle" style="color: #10b981;"></i> To'g'ri javob: <strong style="color: #10b981;">${correctOrigLetter}</strong></div>
                                 </div>
                             </div>
                         </div>
