@@ -1673,15 +1673,17 @@
                 </div>
             </div>
         </div>
-<iframe id="myFrame" src="appd.html" style="width:100%; border:none;"></iframe>
+        <!-- bohsqa htmlni chaqirib olish appd -->
+        <div id="container"></div>
 
-<script>
-    function autoHeight() {
-        var iframe = document.getElementById('myFrame');
-        iframe.style.height = iframe.contentWindow.document.body.scrollHeight + "px";
-    }
-    window.onload = autoHeight;
-</script>
+        <script>
+        fetch("appd.html")
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("container").innerHTML = data;
+            });
+        </script>
+
 
 
         <!-- Footer -->
