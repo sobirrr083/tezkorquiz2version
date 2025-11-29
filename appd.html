@@ -286,8 +286,7 @@
                     <img src="aga/phonephoto.png" alt="Tezkor Quiz App" class="phone-image">
 
                     <button class="download-btn" onclick="downloadApp()">
-                        <span>⬇</span>
-                        <span>Yuklab Olish</span>
+                        <span>Yuklab olish</span>
                     </button>
 
                     <div class="platform-info">
@@ -297,17 +296,12 @@
             </div>
         </div>
     </div>
-
     <script>
         function downloadApp() {
-            // Bu yerda yuklab olish logikasi qo'shiladi
-            alert('Yuklab olish boshlandi!\n\nIlova tez orada yuklanadi.');
-            
-            // Misol uchun: faylni yuklab olish simulyatsiyasi
-            // Haqiqiy ilovada bu qism server bilan bog'lanadi
-            console.log('Yuklab olish boshlandi...');
+            // Boshqa HTML faylga yo'naltirish
+            window.location.href = "yuklab-olish.html"; 
         }
-
+    
         // Animatsiya effektlari
         document.addEventListener('DOMContentLoaded', function() {
             const features = document.querySelectorAll('.feature');
@@ -322,5 +316,6 @@
             });
         });
     </script>
+
 </body>
 </html>
