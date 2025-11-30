@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TezkorQuiz - Testlar</title>
-    <meta name="description" content="Tezkor Quiz test platformasi: matematika, fizika, kimyo, ona tili, adabiyot, geografiya va informatika bo‘yicha eng qulay onlayn testlar. Testlarni yuklab oling, boshlang va bilimlaringizni oshiring.">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -698,9 +697,6 @@
                 <button class="category-btn" onclick="filterCategory('adabiyot')">
                     <i class="fas fa-book"></i> Adabiyot
                 </button>
-                <button class="category-btn" onclick="filterCategory('onatili')">
-                    <i class="fas fa-book"></i> Ona tili
-                </button>
                 <button class="category-btn" onclick="filterCategory('informatika')">
                     <i class="fas fa-laptop-code"></i> Informatika
                 </button>
@@ -747,7 +743,7 @@
                     </div>
                 </div>
                 <div class="test-actions">
-                    <button class="btn btn-start" onclick="startTest('https://tezkorquiz.uz/testres/algebra01.txt', 'https://tezkorquiz.uz/testni_boshlash/pro.html')">
+                    <button class="btn btn-start" onclick="startTest('https://tezkorquiz.uz/testlar/algebra.txt', 'https://tezkorquiz.uz/testni_boshlash/pro.html')">
                         <i class="fas fa-play"></i> Boshlash
                     </button>
                 </div>
@@ -828,25 +824,6 @@
                 </div>
                 <div class="test-actions">
                     <button class="btn btn-start" onclick="startTest('https://tezkorquiz.uz/testlar/uzbek_adabiyoti.txt', 'https://tezkorquiz.uz/testni_boshlash/pro.html')">
-                        <i class="fas fa-play"></i> Boshlash
-                    </button>
-                </div>
-            </div>
-            <div class="test-card" data-category="onatili">
-                <span class="test-category"><i class="fas fa-book"></i> Ona tili</span>
-                <h3>Ona tili</h3>
-                <p class="test-description">Bu sizning grammatikangiz, imlo qoidalari, matn bilan ishlash ko‘nikmalaringiz va til boyligingizni tekshiruvchi sinovdir.</p>
-                <div class="test-author">
-                    <i class="fas fa-user-edit"></i>
-                    <span>Muallif: Tezkor Quiz jamoasi</span>
-                </div>
-                <div class="test-info">
-                    <div class="test-info-item">
-                        <i class="far fa-question-circle"></i> 25 savol
-                    </div>
-                </div>
-                <div class="test-actions">
-                    <button class="btn btn-start" onclick="startTest('https://tezkorquiz.uz/testres/onatili01.txt', 'https://tezkorquiz.uz/testni_boshlash/pro.html')">
                         <i class="fas fa-play"></i> Boshlash
                     </button>
                 </div>
@@ -1018,10 +995,18 @@
                     loadingBtn.style.background = '#4caf50';
                     loadingBtn.style.color = 'white';
                     
-                    // 3 soniyadan keyin quiz sahifasiga o'tish
+                    // 1 soniyadan keyin quiz sahifasiga o'tish
                     setTimeout(() => {
                         window.location.href = quizPageUrl;
-                    }, 3000);
+                        
+                        // 2 soniyadan keyin tugmani default holatga qaytarish
+                        setTimeout(() => {
+                            loadingBtn.innerHTML = originalContent;
+                            loadingBtn.disabled = false;
+                            loadingBtn.style.background = '#4460ef';
+                            loadingBtn.style.color = 'white';
+                        }, 2000);
+                    }, 1000);
                 })
                 .catch(error => {
                     console.error('Xatolik:', error);
