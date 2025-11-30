@@ -1,0 +1,174 @@
+5 ning 20% i necha bo‘ladi?
+A. 1
+B. 0.5
+C. 10
+D. 2
+ANSWER: A
+
+3/4 kasrni o‘nli kasr ko‘rinishida yozing.
+A. 0.34
+B. 0.75
+C. 0.4
+D. 3.4
+ANSWER: B
+
+Eng kichik tub sonni toping.
+A. 0
+B. 1
+C. 2
+D. 3
+ANSWER: C
+
+18 va 24 sonlarining EKUBi (Eng Katta Umumiy Bo‘luvchisi) nechaga teng?
+A. 2
+B. 3
+C. 6
+D. 72
+ANSWER: C
+
+45 soni qaysi songa bo‘linmaydi?
+A. 3
+B. 5
+C. 9
+D. 4
+ANSWER: D
+
+-5 + 8 amalini bajaring.
+A. -13
+B. -3
+C. 3
+D. 13
+ANSWER: C
+
+Qaysi son ratsional son hisoblanadi?
+A. Pi ($\pi$)
+B. Ikkining ildizi ($\sqrt{2}$)
+C. 0.333...
+D. Uchning ildizi ($\sqrt{3}$)
+ANSWER: C
+
+1/2 + 1/4 yig‘indisini toping.
+A. 2/6
+B. 1/3
+C. 3/4
+D. 1/2
+ANSWER: C
+
+2x - 5 = 11 tenglamaning yechimini toping.
+A. x=3
+B. x=8
+C. x=16
+D. x=6
+ANSWER: B
+
+x² = 49 tenglamaning nechta ildizi bor?
+A. 1
+B. 2
+C. 0
+D. Cheksiz
+ANSWER: B
+
+a³ ⋅ a⁵ ko‘paytmasini soddalashtiring.
+A. a¹⁵
+B. a⁸
+C. 2a⁸
+D. a²
+ANSWER: B
+
+x + 3 < 7 tengsizlikning yechimi qaysi?
+A. x > 4
+B. x < 4
+C. x < 10
+D. x > 10
+ANSWER: B
+
+(2+y)² ni oching.
+A. 4+y²
+B. 4+2y+y²
+C. 4+4y+y²
+D. 2+y²
+ANSWER: C
+
+Kvadrat funksiya grafigi nima deb ataladi?
+A. To‘g‘ri chiziq
+B. Parabola
+C. Giperbola
+D. Aylana
+ANSWER: B
+
+Agar 3a = 9 bo‘lsa, a ning qiymatini toping.
+A. 3
+B. 6
+C. 27
+D. 0
+ANSWER: A
+
+Arifmetik progressiyaning keyingi haddini toping: 2, 5, 8, 11, ...
+A. 13
+B. 14
+C. 15
+D. 16
+ANSWER: B
+
+Tomoni 4 sm bo‘lgan kvadratning yuzini toping.
+A. 8 sm²
+B. 16 sm²
+C. 12 sm²
+D. 4 sm²
+ANSWER: B
+
+Radiusi 5 sm bo‘lgan doiraning diametri qancha?
+A. 5 sm
+B. 10 sm
+C. 25 sm
+D. 7.5 sm
+ANSWER: B
+
+Uchburchak ichki burchaklari yig‘indisi nechaga teng?
+A. 90°
+B. 180°
+C. 270°
+D. 360°
+ANSWER: B
+
+To‘g‘ri burchak necha gradusga teng?
+A. 45°
+B. 90°
+C. 180°
+D. 360°
+ANSWER: B
+
+To‘g‘ri to‘rtburchakning perimetri formulasi qaysi?
+A. a ⋅ b
+B. 2(a ⋅ b)
+C. a²
+D. 2(a+b)
+ANSWER: D
+
+Agar velosipedchi 2 soatda 30 km yo‘l bosgan bo‘lsa, uning tezligi qancha?
+A. 10 km/h
+B. 15 km/h
+C. 20 km/h
+D. 60 km/h
+ANSWER: B
+
+Xaltada 5 ta qizil va 3 ta yashil shar bor. Tasodifan olingan shar yashil bo‘lish ehtimoli qancha?
+A. 5/8
+B. 3/8
+C. 1/2
+D. 5/3
+ANSWER: B
+
+Uchta uzluksiz ketma-ket kelgan butun sonning yig‘indisi 21 ga teng. Eng kichik sonni toping.
+A. 6
+B. 7
+C. 8
+D. 5
+ANSWER: A
+
+5/3 kasrning butun qismini toping.
+A. 2
+B. 1
+C. 0
+D. 3
+ANSWER: B

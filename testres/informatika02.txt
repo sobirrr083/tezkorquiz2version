@@ -1,0 +1,174 @@
+Kompyuterning barcha jarayonlarini boshqaradigan va ma’lumotlarni qayta ishlaydigan asosiy qism nima?
+A. Tezkor xotira (RAM)
+B. Protsessor (CPU)
+C. Qattiq disk (HDD)
+D. Monitor
+ANSWER: B
+
+Ma’lumotlarni uzoq muddat saqlash uchun mo‘ljallangan qurilma qaysi?
+A. Protsessor
+B. Tezkor xotira (RAM)
+C. Qattiq disk (HDD)
+D. Sichqoncha
+ANSWER: C
+
+Ma’lumotlarni kompyuterga kiritish uchun ishlatiladigan qurilma qaysi?
+A. Printer
+B. Monitor
+C. Klaviatura
+D. Plotter
+ANSWER: C
+
+Ma’lumotni vaqtincha saqlash va protsessorga tezkor uzatish uchun ishlatiladigan xotira turi nima?
+A. ROM (Doimiy xotira)
+B. HDD (Qattiq disk)
+C. RAM (Tezkor xotira)
+D. Flesh-xotira
+ANSWER: C
+
+Kompyuterning asosiy ishlash ko‘rsatkichi nimada o‘lchanadi?
+A. Gigabayt (GB)
+B. Gerts (Hz) yoki GigaGerts (GHz)
+C. Dots per inch (DPI)
+D. Volt (V)
+ANSWER: B
+
+Kompyuter ekranida tasvirni hosil qilish uchun javobgar bo‘lgan qurilma nima?
+A. Tarmoq kartasi
+B. Ovoz kartasi
+C. Videokarta
+D. Modem
+ANSWER: C
+
+1 Megabayt (MB) necha Kilobayt (KB)ga teng?
+A. 1000 KB
+B. 1024 KB
+C. 1048 KB
+D. 8192 KB
+ANSWER: B
+
+Kompyuterning ishlashini va apparat ta’minoti bilan dasturlar o‘zaro aloqasini boshqaruvchi dasturlar majmuasi nima?
+A. Amaliy dasturlar
+B. Antiviruslar
+C. Operatsion tizim (OT)
+D. Dasturlash tillari
+ANSWER: C
+
+Ma’lumotlarni tasodifiy o‘chirilishdan yoki ruxsatsiz kirishdan himoya qilish uchun ishlatiladigan dastur turi qaysi?
+A. Brauzer
+B. Grafika muharriri
+C. Antivirus dasturlari
+D. Elektron jadval
+ANSWER: C
+
+Qaysi biri operatsion tizim (OT)ga misol bo‘la olmaydi?
+A. Microsoft Windows
+B. Linux
+C. Microsoft Word
+D. macOS
+ANSWER: C
+
+Matnli hujjatlarni yaratish va tahrirlash uchun mo‘ljallangan dastur turi qaysi?
+A. Veb-brauzer
+B. Matn muharriri
+C. Elektron pochta
+D. Ma’lumotlar bazasi
+ANSWER: B
+
+Kompyuter tizimiga yashirin kiruvchi va uning ishiga zarar yetkazuvchi dastur qanday ataladi?
+A. Drayver
+B. Kompilyator
+C. Virus
+D. Fayl
+ANSWER: C
+
+Kompyuterga biriktirilgan qurilmalarni boshqarish uchun mo‘ljallangan dastur nima?
+A. Interfeys
+B. Drayver
+C. Protokol
+D. Yuklama
+ANSWER: B
+
+Algoritmlarning to‘g‘ri yechimga erishishini ta’minlaydigan xususiyati nima?
+A. Ommaviylik
+B. Natijaviylik (aniqlik)
+C. Diskretlik
+D. Tushunarlilik
+ANSWER: B
+
+Qaysi biri dasturlash tili emas?
+A. Python
+B. Java
+C. HTML
+D. C++
+ANSWER: C
+
+Shartning bajarilishiga yoki bajarilmasligiga qarab, keyingi amalni tanlashga imkon beruvchi algoritm tuzilishi nima?
+A. Chiziqli
+B. Tarmoqlanuvchi
+C. Takrorlanuvchi (sikl)
+D. Modulli
+ANSWER: B
+
+Dastur matnini mashina tiliga o‘giruvchi dastur qanday ataladi?
+A. Interpretator
+B. Kompilyator
+C. Drayver
+D. Protsessor
+ANSWER: B
+
+Haqiqiy sonlarni (kasr qismli sonlarni) saqlash uchun mo‘ljallangan ma’lumot turi qanday ataladi?
+A. Integer (butun)
+B. Boolean (mantiqiy)
+C. Float (haqiqiy/o‘nli)
+D. String (qatordan)
+ANSWER: C
+
+Bir necha marta takrorlanadigan amallar ketma-ketligini amalga oshirishga imkon beruvchi algoritm tuzilishi nima?
+A. Chiziqli
+B. Tarmoqlanuvchi
+C. Takrorlanuvchi (sikl)
+D. Shartli
+ANSWER: C
+
+Kompyuter tarmoqlari o‘rtasida ma’lumotlarni uzatish uchun ishlatiladigan asosiy qoidalar to‘plami nima?
+A. Protokol
+B. Interfeys
+C. Drayver
+D. Brauzer
+ANSWER: A
+
+Butun dunyo bo‘ylab millionlab kompyuterlarni bog‘laydigan global tarmoq nima?
+A. Lokal tarmoq (LAN)
+B. Intranet
+C. Internet
+D. Server
+ANSWER: C
+
+Har bir kompyuter va qurilmaga tayinlangan noyob manzil nima deb ataladi?
+A. DNS
+B. URL
+C. IP-manzil
+D. HTML
+ANSWER: C
+
+Ma’lumotlarning eng kichik o‘lchov birligi nima?
+A. Bayt (Byte)
+B. Kilobayt (KB)
+C. Bit (Bit)
+D. Gigabayt (GB)
+ANSWER: C
+
+1 (bir) Bayt necha Bitga teng?
+A. 4 Bit
+B. 8 Bit
+C. 10 Bit
+D. 16 Bit
+ANSWER: B
+
+HTML qanday maqsadda ishlatiladi?
+A. Dasturlash tili sifatida
+B. Veb-sahifalarni yaratish va tuzilishini belgilash uchun
+C. Ma’lumotlar bazasini boshqarish uchun
+D. Videolarni tahrirlash uchun
+ANSWER: B

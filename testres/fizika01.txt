@@ -1,0 +1,174 @@
+Jismning tezligi, yo‘nalishi va trayektoriyasini o‘rganuvchi fizika bo‘limi nima deb ataladi?
+A. Dinamika
+B. Statika
+C. Kinematika
+D. Termodinamika
+ANSWER: C
+
+Kuchning SI dagi birligi qaysi?
+A. Kilogramm (kg)
+B. Joul (J)
+C. Nyuton (N)
+D. Vatt (W)
+ANSWER: C
+
+Jismning massasi va tezlanishi ko‘paytmasiga teng bo‘lgan kattalik nima?
+A. Bosim
+B. Quvvat
+C. Kuch
+D. Energiya
+ANSWER: C
+
+Jismni harakat holatini saqlab qolish xususiyati nima deyiladi?
+A. Inertsiya
+B. Impuls
+C. Ish
+D. Gravitatsiya
+ANSWER: A
+
+Ish (A) ning o‘lchov birligi qaysi?
+A. Nyuton
+B. Vatt
+C. Joul
+D. Paskal
+ANSWER: C
+
+Jismning harakati tufayli yuzaga keladigan energiya turi qanday ataladi?
+A. Potensial energiya
+B. Kimyoviy energiya
+C. Kinetik energiya
+D. Issiqlik energiyasi
+ANSWER: C
+
+Mexanik ishning bajarilish tezligini ifodalovchi kattalik nima?
+A. Energiya
+B. Bosim
+C. Quvvat
+D. Tezlik
+ANSWER: C
+
+Gidrostatik bosim qaysi kattalikka bog‘liq emas?
+A. Suyuqlik zichligi
+B. Idish shakli
+C. Chuqurlik
+D. Erkin tushish tezlanishi
+ANSWER: B
+
+O‘rtacha tezlikni topish formulasi qaysi?
+A. v(o'r) = S ⋅ t
+B. v(o'r) = S / t
+C. v(o'r) = t / S
+D. v(o'r) = a ⋅ t
+ANSWER: B
+
+Erkin tushish tezlanishi (g) ning qiymati taxminan nechaga teng?
+A. 9.8 m/s
+B. 9.8 m/s²
+C. 10 m/s
+D. 98 m/s²
+ANSWER: B
+
+Moddaning qaysi holatida uning zarrachalari tartibsiz harakatlanadi va ajralmas bog‘liq bo‘ladi?
+A. Gazsimon
+B. Qattiq
+C. Suyuq
+D. Plazma
+ANSWER: C
+
+Modda qattiq holatdan to‘g‘ridan-to‘g‘ri gaz holatiga o‘tishi qanday ataladi?
+A. Erish
+B. Bug‘lanish
+C. Sublimatsiya
+D. Kondensatsiya
+ANSWER: C
+
+Issiqlik uzatishning modda oqimi orqali sodir bo‘ladigan turi qaysi?
+A. Issiqlik o‘tkazuvchanlik
+B. Konvektsiya
+C. Radiatsiya
+D. Issiqlik sig‘imi
+ANSWER: B
+
+Haroratni o‘lchash birligi qaysi?
+A. Joul
+B. Kalvin
+C. Nyuton
+D. Volt
+ANSWER: B
+
+Ichki energiya nima?
+A. Mexanik ish
+B. Jismning kinetik va potensial energiyalari yig‘indisi
+C. Zarrachalarning kinetik va potensial energiyalari yig‘indisi
+D. Atrofdagi havo bosimi
+ANSWER: C
+
+Tok kuchini o‘lchash birligi qaysi?
+A. Volt (V)
+B. Amper (A)
+C. Om (Ω)
+D. Koulon (C)
+ANSWER: B
+
+Zanjirning bir qismi uchun kuchlanish, tok kuchi va qarshilikni bog‘lovchi qonun qaysi?
+A. Nyuton qonuni
+B. Paskal qonuni
+C. Om qonuni
+D. Arximed qonuni
+ANSWER: C
+
+Elektr zaryadining o‘lchov birligi nima?
+A. Amper
+B. Volt
+C. Koulon
+D. Joul
+ANSWER: C
+
+Elektr tokining issiqlik effektini (isitishini) ifodalovchi qonun qaysi?
+A. Faradey qonuni
+B. Kulon qonuni
+C. Joul-Lens qonuni
+D. Gyuks qonuni
+ANSWER: C
+
+Magnit maydonni nima hosil qiladi?
+A. Harakatlanuvchi elektr zaryadlari
+B. Tinch turgan elektr zaryadlari
+C. Faqat izolyatorlar
+D. Faqat dielektriklar
+ANSWER: A
+
+Yassi ko‘zguda hosil bo‘lgan tasvir qanday bo‘ladi?
+A. Haqiqiy va kattalashgan
+B. Mavhum va to‘g‘ri
+C. Haqiqiy va kichraygan
+D. Mavhum va teskari
+ANSWER: B
+
+Yorug‘likning bir muhitdan ikkinchisiga o‘tishda tarqalish yo‘nalishini o‘zgartirishi qanday hodisa?
+A. Qaytish
+B. Sinish
+C. Interferensiya
+D. Diffraktsiya
+ANSWER: B
+
+Ovoz qaysi muhitda eng tez tarqaladi?
+A. Havoda (Gaz)
+B. Suyuqlikda
+C. Vakuumda
+D. Qattiq jismlarda
+ANSWER: D
+
+Yorug‘lik to‘lqinlarining vakuumdagi tezligi taxminan nechaga teng?
+A. $3 \cdot 10^5$ m/s
+B. $3 \cdot 10^8$ m/s
+C. $3 \cdot 10^6$ m/s
+D. $3 \cdot 10^4$ km/s
+ANSWER: B
+
+To‘lqin uzunligi va chastotasi orasidagi bog‘liqlik qaysi formula orqali ifodalanadi?
+A. $v = \lambda + \nu$
+B. $v = \lambda \cdot \nu$
+C. $v = \lambda / \nu$
+D. $v = \nu / \lambda$
+ANSWER: B

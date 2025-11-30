@@ -1,0 +1,174 @@
+Atom yadrosi qaysi zarrachalardan tashkil topgan?
+A. Elektron va proton
+B. Neytron va elektron
+C. Proton va neytron
+D. Faqat proton
+ANSWER: C
+
+Elementning tartib raqami (Z) nimani ifodalaydi?
+A. Neytronlar sonini
+B. Atom massasini
+C. Protonlar sonini
+D. Atomning zichligini
+ANSWER: C
+
+Kimyoviy elementlarning eng asosiy xususiyatlarini belgilovchi qonun qaysi?
+A. Om qonuni
+B. Dalton qonuni
+C. Davriy qonun
+D. Gey-Lyussak qonuni
+ANSWER: C
+
+Qaysi element Davriy jadvalda 2-davr 1-guruhda joylashgan?
+A. Natriy (Na)
+B. Kaliy (K)
+C. Litiy (Li)
+D. Berilliy (Be)
+ANSWER: C
+
+Elementning valentligi nimani bildiradi?
+A. Atom massasini
+B. Kimyoviy bog‘lanish hosil qilish qobiliyatini
+C. Elektronlar sonini
+D. Zichlikni
+ANSWER: B
+
+Izotoplar qaysi xususiyati bilan bir-biridan farq qiladi?
+A. Protonlar soni
+B. Elektronlar soni
+C. Neytronlar soni
+D. Tartib raqami
+ANSWER: C
+
+Murakkab modda deb nimaga aytiladi?
+A. Bir xil atomlardan tashkil topgan modda
+B. Turli xil molekulalardan tashkil topgan aralashma
+C. Har xil atomlarning kimyoviy bog‘lanishi natijasida hosil bo‘lgan modda
+D. Atomlarning yadro reaksiyasi
+ANSWER: C
+
+Metall va nometall atomlari orasida hosil bo‘ladigan bog‘lanish turi qaysi?
+A. Kovalent qutbli
+B. Kovalent qutbsiz
+C. Ionli
+D. Vodorodli
+ANSWER: C
+
+Suv molekulasidagi (H₂O) kimyoviy bog‘lanish turi qaysi?
+A. Ionli
+B. Metall
+C. Vodorod
+D. Kovalent qutbli
+ANSWER: D
+
+Eng yuqori elektromanfiylikka ega bo‘lgan element qaysi?
+A. Kislorod (O)
+B. Ftor (F)
+C. Azot (N)
+D. Xlor (Cl)
+ANSWER: B
+
+Atom tashqi elektron qavatidagi elektronlarni umumiy foydalanish orqali hosil qilgan bog‘lanish qanday ataladi?
+A. Ionli
+B. Kovalent
+C. Metall
+D. Vodorod
+ANSWER: B
+
+Metan molekulasining (CH₄) markaziy uglerod atomining oksidlanish darajasi nechaga teng?
+A. +4
+B. -4
+C. 0
+D. +2
+ANSWER: B
+
+Tarkibida vodorod ioni (H⁺) tutgan murakkab moddalar sinfi qaysi?
+A. Asoslar
+B. Tuzlar
+C. Oksidlar
+D. Kislotalar
+ANSWER: D
+
+Ishqoriy metallarning suv bilan reaksiyasi natijasida qanday modda hosil bo‘ladi?
+A. Tuz
+B. Asos va vodorod
+C. Kislota
+D. Oksid
+ANSWER: B
+
+Amfoter oksidga misol keltiring.
+A. Na₂O
+B. CO₂
+C. Al₂O₃
+D. H₂O
+ANSWER: C
+
+Neftning asosiy komponentlari qaysilar?
+A. Spirtlar
+B. Uglevodorodlar
+C. Kislotalar
+D. Efirlar
+ANSWER: B
+
+Qaysi gaz Yer yuzasi haroratini ushlab turish (issiqxona effekti) uchun javobgardir?
+A. Azot (N₂)
+B. Kislorod (O₂)
+C. Karbonat angidrid (CO₂)
+D. Argon (Ar)
+ANSWER: C
+
+Reaksiya tezligini oshiradigan, ammo reaksiyada sarflanmaydigan modda nima deb ataladi?
+A. Inhibitor
+B. Katalizator
+C. Reagent
+D. Asos
+ANSWER: B
+
+Moddaning molyar massasining o‘lchov birligi qaysi?
+A. Gram (g)
+B. Mol (mol)
+C. Gram/mol (g/mol)
+D. Litr (L)
+ANSWER: C
+
+Uglerod atomlari orasida faqat bitta bog‘lanish (sigma bog‘lanish) mavjud bo‘lgan uglevodorodlar sinfi qaysi?
+A. Alkenlar
+B. Alkinlar
+C. Alkanlar
+D. Arenlar
+ANSWER: C
+
+Spirtlarning funktsional guruhi nima?
+A. Karboksil (-COOH)
+B. Amin (-NH₂)
+C. Gidroksil (-OH)
+D. Aldegid (-CHO)
+ANSWER: C
+
+Sirka kislotasining kimyoviy formulasi qaysi?
+A. CH₄
+B. C₂H₅OH
+C. CH₃COOH
+D. H₂SO₄
+ANSWER: C
+
+Eng oddiy alkan (to‘yingan uglevodorod) qaysi?
+A. Etan
+B. Propan
+C. Metan
+D. Etilen
+ANSWER: C
+
+Qaysi reaktsiya turida ikkita modda birlashib, bitta yangi moddani hosil qiladi?
+A. Almashinish
+B. Parçalanish
+C. Birikish
+D. O‘rin almashish
+ANSWER: C
+
+1 mol har qanday gaz normal sharoitda qancha hajm (L) egallaydi?
+A. 11.2 L
+B. 2.24 L
+C. 22.4 L
+D. 44.8 L
+ANSWER: C
