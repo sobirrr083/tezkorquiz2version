@@ -746,7 +746,7 @@
                     </div>
                 </div>
                 <div class="test-actions">
-                    <button class="btn btn-start" onclick="startTest('https://tezkorquiz.uz/testres/algebra.txt', 'https://tezkorquiz.uz/testni_boshlash/pro.html')">
+                    <button class="btn btn-start" onclick="startTest('https://tezkorquiz.uz/testres/algebra01.txt', 'https://tezkorquiz.uz/testni_boshlash/pro.html')">
                         <i class="fas fa-play"></i> Boshlash
                     </button>
                 </div>
@@ -766,7 +766,7 @@
                     </div>
                 </div>
                 <div class="test-actions">
-                    <button class="btn btn-start" onclick="startTest('https://tezkorquiz.uz/testres/mexanika.txt', 'https://tezkorquiz.uz/testni_boshlash/pro.html')">
+                    <button class="btn btn-start" onclick="startTest('https://tezkorquiz.uz/testlar/mexanika.txt', 'https://tezkorquiz.uz/testni_boshlash/pro.html')">
                         <i class="fas fa-play"></i> Boshlash
                     </button>
                 </div>
@@ -786,7 +786,7 @@
                     </div>
                 </div>
                 <div class="test-actions">
-                    <button class="btn btn-start" onclick="startTest('https://tezkorquiz.uz/testres/organik_kimyo.txt', 'https://tezkorquiz.uz/testni_boshlash/pro.html')">
+                    <button class="btn btn-start" onclick="startTest('https://tezkorquiz.uz/testlar/organik_kimyo.txt', 'https://tezkorquiz.uz/testni_boshlash/pro.html')">
                         <i class="fas fa-play"></i> Boshlash
                     </button>
                 </div>
@@ -806,7 +806,7 @@
                     </div>
                 </div>
                 <div class="test-actions">
-                    <button class="btn btn-start" onclick="startTest('https://tezkorquiz.uz/testres/uzbekiston_geografiya.txt', 'https://tezkorquiz.uz/testni_boshlash/pro.html')">
+                    <button class="btn btn-start" onclick="startTest('https://tezkorquiz.uz/testlar/uzbekiston_geografiya.txt', 'https://tezkorquiz.uz/testni_boshlash/pro.html')">
                         <i class="fas fa-play"></i> Boshlash
                     </button>
                 </div>
@@ -826,12 +826,12 @@
                     </div>
                 </div>
                 <div class="test-actions">
-                    <button class="btn btn-start" onclick="startTest('https://tezkorquiz.uz/testres/uzbek_adabiyoti.txt', 'https://tezkorquiz.uz/testni_boshlash/pro.html')">
+                    <button class="btn btn-start" onclick="startTest('https://tezkorquiz.uz/testlar/uzbek_adabiyoti.txt', 'https://tezkorquiz.uz/testni_boshlash/pro.html')">
                         <i class="fas fa-play"></i> Boshlash
                     </button>
                 </div>
             </div>
-<div class="test-card" data-category="onatili">
+            <div class="test-card" data-category="onatili">
                 <span class="test-category"><i class="fas fa-book"></i> Ona tili</span>
                 <h3>Ona tili</h3>
                 <p class="test-description">Bu sizning grammatikangiz, imlo qoidalari, matn bilan ishlash ko‘nikmalaringiz va til boyligingizni tekshiruvchi sinovdir.</p>
@@ -1012,8 +1012,15 @@
                     localStorage.setItem('currentTestData', testData);
                     localStorage.setItem('currentTestFile', testFileUrl);
                     
-                    // Quiz sahifasiga o'tish
-                    window.location.href = quizPageUrl;
+                    // Muvaffaqiyatli yuklandi
+                    loadingBtn.innerHTML = '<i class="fas fa-check"></i> Yuklandi';
+                    loadingBtn.style.background = '#4caf50';
+                    loadingBtn.style.color = 'white';
+                    
+                    // 3 soniyadan keyin quiz sahifasiga o'tish
+                    setTimeout(() => {
+                        window.location.href = quizPageUrl;
+                    }, 3000);
                 })
                 .catch(error => {
                     console.error('Xatolik:', error);
