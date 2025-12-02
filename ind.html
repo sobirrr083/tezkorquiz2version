@@ -256,9 +256,8 @@
     .custom-option {
       margin-top: 12px;
       padding: 12px;
-      background-color: white;
+      background-color: transparent;
       border-radius: var(--border-radius);
-      border: 1px solid #ddd;
     }
 
     .custom-option-content {
@@ -1091,9 +1090,16 @@ ANSWER: C
 
     if (originalTests.length > 0) {
       uploadStatus.textContent = "Fayl yuklandi!";
-      fileSection.style.display = "none";
-      randomizeTests();
-      startExam();
+      
+      // Sahifani yuqoriga scroll qilish
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      
+      // Scroll tugaganidan keyin test boshlash
+      setTimeout(() => {
+        fileSection.style.display = "none";
+        randomizeTests();
+        startExam();
+      }, 500);
     } else {
       uploadStatus.textContent = "Xatolik: Test ma'lumotlari topilmadi yoki noto'g'ri format!";
       fileInput.value = "";
