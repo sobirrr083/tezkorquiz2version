@@ -1,618 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uz">
 <head>
-    <title>Tezkor Quiz: Asosan talabalar va o'quvchilar uchun</title>
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- AOS Animation CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
-    <!-- Font Awesome icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Manifest faylga ulanish -->
-    <link rel="manifest" href="/manifest.json" />
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="icon" href="aga/iconcha.png">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tezkor Quiz - testlarni yaratish, boshqarish va yechish uchun qulay platforma">
-    <!-- Audio elements for sound effects -->
-    <audio id="openSound" preload="auto">
-        <source src="https://cdnjs.cloudflare.com/ajax/libs/simple-sounds/1.0.0/sounds/pop-up.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="messageSound" preload="auto">
-        <source src="https://cdnjs.cloudflare.com/ajax/libs/simple-sounds/1.0.0/sounds/notification.mp3" type="audio/mpeg">
-    </audio>
-    <style>
-        :root {
-            --primary-color: #4361ee;
-            --secondary-color: #3a0ca3;
-            --accent-color: #f72585;
-            --light-color: #f8f9fa;
-            --dark-color: #212529;
-            --success-color: #4cc9f0;
-            --warning-color: #f8961e;
-            --gradient-1: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            --white: #fff;
-            --black: #282936;
-            --burger-active-color: #ff0000;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Nunito', 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #ECF2FF;
-            min-height: 100vh;
-            padding-top: 0px;
-        }
-
-        /* Qolgan stillar (hero, cards, footer va boshqalar) */
-        /* Hero section */
-        .hero-section {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            padding: 70px 0;
-            border-radius: 15px;
-            margin-bottom: 50px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-section::before {
-            content: "";
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            top: -100px;
-            right: -100px;
-        }
-
-        .hero-title {
-            color: white;
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
-
-        .hero-text {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 1.1rem;
-            margin-bottom: 20px;
-        }
-
-        .hero-btn {
-            padding: 10px 20px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            border-radius: 50px;
-            transition: all 0.3s ease;
-            width: 100%;
-            max-width: 200px;
-            text-align: center;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .btn-light {
-            background: white;
-            color: var(--primary-color);
-            border: none;
-        }
-
-        .btn-light:hover {
-            background: rgba(255, 255, 255, 0.9);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn-outline-light {
-            border: 2px solid white;
-            color: white;
-        }
-
-        .btn-outline-light:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-3px);
-        }
-
-        .hero-buttons-container {
-            display: flex;
-            flex-direction: row;
-            gap: 10px;
-            align-items: center;
-            justify-content: flex-start;
-            margin-bottom: 20px;
-        }
-
-        /* Footer */
-        .footer {
-            padding: 50px 0 20px;
-            background-color: var(--dark-color);
-            color: white;
-            margin-top: 50px;
-        }
-
-        .footer-title {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
-
-        .footer-link {
-            display: block;
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 10px;
-            transition: all 0.3s ease;
-            text-decoration: none;
-        }
-
-        .footer-link:hover {
-            color: white;
-            padding-left: 5px;
-        }
-
-        .social-icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.1);
-            color: white;
-            margin-right: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .social-icon:hover {
-            background-color: var(--primary-color);
-            transform: translateY(-3px);
-        }
-
-        .copyright {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.6);
-            text-align: center;
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        /* Cards CSS */
-        .card-container {
-            margin-bottom: 40px;
-            transition: all 0.3s ease;
-        }
-
-        .hero-card {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 16/9;
-            border-radius: 24px !important;
-            overflow: hidden;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
-            margin-bottom: 20px;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-
-        .hero-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 35px 70px rgba(0, 0, 0, 0.3);
-        }
-
-        .card-container:hover .hero-card {
-            transform: translateY(-10px);
-            box-shadow: 0 35px 70px rgba(0, 0, 0, 0.3);
-        }
-
-        .card-container:hover .learn-more-button .circle {
-            width: 100%;
-        }
-
-        .card-container:hover .learn-more-button .arrow {
-            background: var(--white);
-            transform: translate(1rem, 0);
-        }
-
-        .card-container:hover .learn-more-button .button-text {
-            color: var(--white);
-        }
-
-        .card-image {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            transition: transform 0.3s ease;
-        }
-
-        .card-1 .card-image {
-            background-image: url('aga/card1.webp');
-        }
-
-        .card-2 .card-image {
-            background-image: url('aga/card2.webp');
-        }
-
-        .card-3 .card-image {
-            background-image: url('aga/card3.webp');
-        }
-
-        .card-4 .card-image {
-            background-image: url('aga/card4.webp');
-        }
-
-        .hero-card:hover .card-image {
-            transform: scale(1.05);
-        }
-
-        .card-container:hover .card-image {
-            transform: scale(1.05);
-        }
-
-        .card-button-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 15px;
-            z-index: 10;
-        }
-
-        .hero-card::after {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 100px;
-            background: linear-gradient(transparent, rgba(0, 0, 0, 0.2));
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-
-        .hero-card:hover::after {
-            opacity: 0.7;
-        }
-
-        .card-container:hover .hero-card::after {
-            opacity: 0.7;
-        }
-
-        .hero-card {
-            opacity: 0;
-            transform: translateY(50px);
-            transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s ease;
-        }
-
-        .hero-card.animate {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .learn-more-button {
-            position: relative;
-            display: inline-block;
-            cursor: pointer;
-            outline: none;
-            border: 0;
-            vertical-align: middle;
-            text-decoration: none;
-            background: transparent;
-            padding: 0;
-            font-size: inherit;
-            font-family: inherit;
-            width: 12rem;
-            height: auto;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-
-        .circle {
-            transition: all 0.45s cubic-bezier(0.65,0,.076,1);
-            position: relative;
-            display: block;
-            margin: 0;
-            width: 3rem;
-            height: 3rem;
-            background: var(--black);
-            border-radius: 1.625rem;
-        }
-
-        .icon {
-            transition: all 0.45s cubic-bezier(0.65,0,.076,1);
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            margin: auto;
-            background: var(--white);
-        }
-
-        .arrow {
-            transition: all 0.45s cubic-bezier(0.65,0,.076,1);
-            left: 0.625rem;
-            width: 1.125rem;
-            height: 0.125rem;
-            background: none;
-        }
-
-        .arrow::before {
-            position: absolute;
-            content: '';
-            top: -0.25rem;
-            right: 0.0625rem;
-            width: 0.625rem;
-            height: 0.625rem;
-            border-top: 0.125rem solid #fff;
-            border-right: 0.125rem solid #fff;
-            transform: rotate(45deg);
-        }
-
-        .button-text {
-            transition: all 0.45s cubic-bezier(0.65,0,.076,1);
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            padding: 0.75rem 0;
-            margin: 0 0 0 1.85rem;
-            color: var(--black);
-            font-weight: 700;
-            line-height: 1.6;
-            text-align: center;
-            text-transform: uppercase;
-        }
-
-        .learn-more-button:hover .circle {
-            width: 100%;
-        }
-
-        .learn-more-button:hover .arrow {
-            background: var(--white);
-            transform: translate(1rem, 0);
-        }
-
-        .learn-more-button:hover .button-text {
-            color: var(--white);
-        }
-
-        @supports (display: grid) {
-            .card-button-container {
-                display: grid;
-                place-items: center;
-            }
-        }
-
-        /* Qolgan responsive stillar (hero, cards va h.k.) */
-        @media (max-width: 767px) {
-            .hero-section {
-                padding: 70px 0;
-                border-radius: 15px;
-                margin-bottom: 50px;
-                display: flex;
-                align-items: center;
-                min-height: auto;
-            }
-
-            .hero-title {
-                font-size: 2rem;
-                text-align: center;
-                margin-bottom: 30px;
-                margin-top: 0;
-            }
-
-            .hero-text {
-                font-size: 1.1rem;
-                text-align: center;
-                margin-bottom: 25px;
-            }
-
-            .hero-buttons-container {
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                gap: 15px;
-            }
-
-            .hero-btn {
-                font-size: 0.9rem;
-                padding: 10px 20px;
-                width: 100%;
-                max-width: 200px;
-                height: 50px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-
-            .d-flex {
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero-card {
-                border-radius: 16px !important;
-            }
-
-            .card-button-container {
-                margin-top: 10px;
-            }
-        }
-
-        @media (min-width: 768px) {
-            .card-container {
-                margin-bottom: 50px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- Hero Section -->
-    <section class="container mt-5" data-aos="fade-up" data-aos-duration="1000">
-        <div class="hero-section">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-md-7">
-                        <h1 class="hero-title">Tezkor Quiz bilan bilimlaringizni sinovdan o'tkazing</h1>
-                        <p class="hero-text">Talabalarga sessiyaga tayyorlanish uchun moslashtirilgan mukammal sayt. 
-                        O'z bilimlaringizni sinab ko'ring va yangi ma'lumotlarni o'rganing.</p>
-                        <div class="hero-buttons-container">
-                            <a href="testni_boshlash.html" class="btn btn-light hero-btn">
-                                <i class="fas fa-play me-2"></i>Testni boshlash
-                            </a>
-                            <a href="testyaratish.html" class="btn btn-outline-light hero-btn">
-                                <i class="fas fa-file-alt me-2"></i>Test yaratish
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-md-5 d-none d-md-block">
-                        <div style="max-width: 350px; margin: 0 auto;">
-                            <img src="aga/kamlogo.webp" alt="Tezkor Quiz Logosi" class="img-fluid rounded">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Cards Section -->
-    <div class="container">
-        <div class="row g-4">
-            <!-- test yaratish Card -->
-            <div class="col-12 col-md-6">
-                <div class="card-container">
-                    <div class="hero-card card-3" onclick="handleCardClick(3)">
-                        <div class="card-image"></div>
-                    </div>
-                    <div class="card-button-container">
-                        <div class="learn-more-button" onclick="handleEnter(3)">
-                            <span class="circle" aria-hidden="true">
-                                <span class="icon arrow"></span>
-                            </span>
-                            <span class="button-text">Kirish</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- quiz test -->
-            <div class="col-12 col-md-6">
-                <div class="card-container">
-                    <div class="hero-card card-4" onclick="handleCardClick(4)">
-                        <div class="card-image"></div>
-                    </div>
-                    <div class="card-button-container">
-                        <div class="learn-more-button" onclick="handleEnter(4)">
-                            <span class="circle" aria-hidden="true">
-                                <span class="icon arrow"></span>
-                            </span>
-                            <span class="button-text">Kirish</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Segment 25 Card -->
-            <div class="col-12 col-md-6">
-                <div class="card-container">
-                    <div class="hero-card card-1" onclick="handleCardClick(1)">
-                        <div class="card-image"></div>
-                    </div>
-                    <div class="card-button-container">
-                        <div class="learn-more-button" onclick="handleEnter(1)">
-                            <span class="circle" aria-hidden="true">
-                                <span class="icon arrow"></span>
-                            </span>
-                            <span class="button-text">Kirish</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Segment umumiy Card -->
-            <div class="col-12 col-md-6">
-                <div class="card-container">
-                    <div class="hero-card card-2" onclick="handleCardClick(2)">
-                        <div class="card-image"></div>
-                    </div>
-                    <div class="card-button-container">
-                        <div class="learn-more-button" onclick="handleEnter(2)">
-                            <span class="circle" aria-hidden="true">
-                                <span class="icon arrow"></span>
-                            </span>
-                            <span class="button-text">Kirish</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-           
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 mb-4 mb-lg-0">
-                    <h5 class="footer-title">Tezkor Quiz</h5>
-                    <p>Talabalarga sessiyaga tayyorlanish uchun moslashtirilgan mukammal sayt.</p>
-                    <div class="mt-4">
-                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-                        <a href="https://t.me/quiztezkor" class="social-icon"><i class="fab fa-telegram"></i></a>
-                        <a href="https://www.instagram.com/tezkorquiz.uz" class="social-icon"><i class="fab fa-instagram"></i></a>
-                        <a href="https://www.youtube.com/@QuizTezkor" class="social-icon"><i class="fab fa-youtube"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
-                    <h5 class="footer-title">Havolalar</h5>
-                    <a href="index.html" class="footer-link">Bosh sahifa</a>
-                    <a href="segment25.html" class="footer-link">Segment</a>
-                    <a href="faq.html" class="footer-link">Yordam</a>
-                </div>
-                <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
-                    <h5 class="footer-title">Testni boshlash</h5>
-                    <a href="testni_boshlash/tezkorquiz.html" class="footer-link">Tezkor Quiz</a>
-                    <a href="testni_boshlash/bilim.html" class="footer-link">Bilim Quiz</a>
-                    <a href="testni_boshlash/smart.html" class="footer-link">Smart Quiz</a>
-                    <a href="testni_boshlash/pro.html" class="footer-link">Pro Quiz</a>
-                    <a href="testni_boshlash/imtihon.html" class="footer-link">Imtihon Quiz</a>
-                </div>
-                <div class="col-lg-4 col-md-4">
-                    <h5 class="footer-title">Biz bilan bog'laning</h5>
-                    <p class="mb-2"><i class="fas fa-envelope me-2"></i> tezkorquiz@gmail.com</p>
-                    <p class="mb-2"><i class="fas fa-phone me-2"></i> +998 90 577 08 32</p>
-                    <p><i class="fas fa-map-marker-alt me-2"></i> O'zbekiston</p>
-                </div>
-            </div>
-           <div class="copyright">
-            <p>© 2025 Tezkor Quiz. Barcha huquqlar himoyalangan. 
-           <a href="https://tezkorquiz.uz/privacy_policy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
-            </p>
-    </div>
-        </div>
-    </footer>
-    
-<!-- himoyalangan sahifa: protected.html -->
+  <!-- himoyalangan sahifa: protected.html -->
 <script type="module">
   // Firebase SDK import qilingan deb faraz qilamiz
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
@@ -639,95 +28,1439 @@
       console.log("User logged in:", user.uid);
     }
   });
-
 </script>
-<!-- google analiz kodi -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-6HJZ457YMB"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-6HJZ457YMB');
-</script>
-<!-- Google tag tugadi -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="quiz.png">
+  <title>Imtihon Quiz</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #4361ee;
+      --primary-hover: #7b8fff;
+      --primary-light: #e8ebff;
+      --border-radius: 12px;
+    }
     
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-    <script src="//code.tidio.co/dp3xu5h0swhcq9n7ir1qs8kzethsdome.js" async></script>
+    body {
+      background-color: #f4f6f9;
+      overflow-x: hidden;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: 20px auto;
+      background-color: #fff;
+      padding: 15px;
+      border-radius: var(--border-radius);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    .file-label {
+      margin-bottom: 10px;
+    }
+    
+    #uploadStatus {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    
+    .question-container {
+      border: 1px solid #ddd;
+      border-radius: var(--border-radius);
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+    
+    .question-text {
+      font-weight: bold;
+      margin-bottom: 10px;
+      word-wrap: break-word;
+      white-space: normal;
+    }
+    
+    .options-container .form-check {
+      margin-bottom: 8px;
+      display: flex;
+      align-items: flex-start;
+    }
+    
+    .form-check-input {
+      transform: scale(1.2);
+      margin-right: 10px;
+      margin-top: 5px;
+    }
+    
+    .form-check-label {
+      word-wrap: break-word;
+      white-space: normal;
+      flex: 1;
+    }
+    
+    .correct {
+      background-color: #d1e7dd !important;
+    }
+    
+    .incorrect {
+      background-color: #f8d7da !important;
+    }
+    
+    .unanswered-correct {
+      background-color: #fff3e0 !important;
+    }
+    
+    .check-icon {
+      font-weight: bold;
+      margin-left: 8px;
+    }
+    
+    .score-container {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: bold;
+      opacity: 0;
+      transition: opacity 1s ease-in;
+    }
+    
+    .show-feedback {
+      opacity: 1 !important;
+    }
+    
+    .feedback-text {
+      font-size: 1.1rem;
+      margin-top: 10px;
+      color: #444;
+    }
+    
+    .feedback-text span {
+      font-weight: bold;
+      color: var(--primary-color);
+    }
+    
+    .timer-container {
+      background-color: #f8f9fa;
+      border-radius: var(--border-radius);
+      padding: 12px 20px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
+    }
+    
+    .timer-container.compact-timer {
+      position: fixed !important;
+      top: 15px !important;
+      right: 15px !important;
+      width: auto !important;
+      padding: 8px 12px !important;
+      z-index: 2000;
+      background-color: white !important;
+      border: 1px solid #ddd;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      animation: fadeIn 0.5s forwards;
+    }
+    
+    .timer-container.compact-timer .timer-text span {
+      display: none;
+    }
+    
+    .timer {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #333;
+    }
+    
+    .timer.warning {
+      color: #dc3545;
+      animation: pulse 1s infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+    
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+    
+    .time-settings {
+      margin: 15px 0;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: var(--border-radius);
+      background-color: #f8f9fa;
+    }
 
-    <script>
-        // Initialize AOS
-        document.addEventListener('DOMContentLoaded', function() {
-            AOS.init({
-                duration: 800,
-                once: true
-            });
-        });
+    .settings-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 15px;
+      color: var(--primary-color);
+    }
 
-        // Cards JavaScript (asl koddan)
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                const focusedButton = document.activeElement;
-                if (focusedButton.classList.contains('learn-more-button')) {
-                    focusedButton.click();
-                }
-            }
-        });
+    .settings-header i {
+      font-size: 1.5rem;
+    }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const cards = document.querySelectorAll('.hero-card');
-            const animateCard = (card, delay) => {
-                setTimeout(() => {
-                    card.classList.add('animate');
-                }, delay);
-            };
-            cards.forEach((card, index) => {
-                animateCard(card, index * 200);
-            });
-        });
+    .settings-header h5 {
+      margin: 0;
+      font-weight: 600;
+    }
+    
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: flex-start;
+    }
+    
+    .btn-group button {
+      flex: 1 1 auto;
+      min-width: 90px;
+      max-width: 120px;
+      white-space: nowrap;
+      border: 2px solid var(--primary-color);
+      color: var(--primary-color);
+      background-color: white;
+      transition: all 0.2s ease;
+      border-radius: 25px;
+      padding: 8px 16px;
+      font-weight: 500;
+    }
+    
+    .btn-group button:hover {
+      background-color: var(--primary-color);
+      color: white;
+      border-color: var(--primary-color);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(67, 97, 238, 0.3);
+    }
+    
+    .btn-group button.active {
+      background-color: var(--primary-color);
+      color: white;
+      border-color: var(--primary-color);
+      box-shadow: 0 4px 8px rgba(67, 97, 238, 0.3);
+    }
 
-        if ('IntersectionObserver' in window) {
-            const observerOptions = {
-                threshold: 0.2,
-                rootMargin: '0px 0px -100px 0px'
-            };
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('animate');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, observerOptions);
-            document.querySelectorAll('.hero-card').forEach(card => {
-                observer.observe(card);
-            }); 
+    .custom-option {
+      margin-top: 12px;
+      padding: 12px;
+      background-color: white;
+      border-radius: var(--border-radius);
+      border: 1px solid #ddd;
+    }
+
+    .custom-option-content {
+      display: none;
+      margin-top: 10px;
+    }
+
+    .custom-option-content.show {
+      display: block;
+    }
+    
+    .confetti-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 999;
+    }
+    
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: #f00;
+      border-radius: 50%;
+      animation: fall 5s ease-in-out;
+    }
+    
+    @keyframes fall {
+      0% {
+        top: -10px;
+        transform: translateX(0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        top: 100vh;
+        transform: translateX(100px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+    
+    .new-test-btn {
+      margin: 20px auto;
+      max-width: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background-color: var(--primary-light);
+      color: var(--primary-color);
+      border: 1.5px solid var(--primary-color);
+      padding: 10px 20px;
+      font-weight: 600;
+      border-radius: var(--border-radius);
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    
+    .new-test-btn:hover {
+      background-color: var(--primary-color);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(91, 155, 213, 0.3);
+    }
+    
+    .results-card {
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 20px;
+      background-color: #fff;
+      margin-top: 30px;
+      text-align: center;
+    }
+    
+    .progress-container {
+      margin: 25px 0;
+    }
+    
+    .progress-bar {
+      height: 20px;
+      border-radius: 10px;
+      background-color: #f0f0f0;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #4CAF50, #8BC34A);
+      transition: width 1.5s ease-in-out;
+      border-radius: 10px;
+    }
+    
+    .progress-fill.low {
+      background: linear-gradient(90deg, #FF5252, #FF8A80);
+    }
+    
+    .stats-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 20px 0;
+      gap: 10px;
+    }
+    
+    .stat-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: bold;
+      flex: 1;
+      min-width: 120px;
+      box-sizing: border-box;
+      text-align: center;
+      gap: 8px;
+    }
+    
+    .total-questions {
+      background-color: #E3F2FD;
+      color: #1976D2;
+    }
+    
+    .correct-answers {
+      background-color: #E8F5E9;
+      color: #388E3C;
+    }
+    
+    .incorrect-answers {
+      background-color: #FFEBEE;
+      color: #D32F2F;
+    }
+    
+    .unanswered {
+      background-color: #FFF3E0;
+      color: #F57C00;
+    }
+    
+    .gif-container {
+      margin: 20px auto;
+      text-align: center;
+      max-width: 350px;
+      height: 250px;
+      overflow: hidden;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .gif-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .salute {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      animation: salute 2s forwards;
+      opacity: 0;
+    }
+    
+    @keyframes salute {
+      0% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      50% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh);
+        opacity: 0;
+      }
+    }
+    
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      visibility: hidden;
+      opacity: 0;
+      transition: all 0.3s;
+    }
+    
+    .modal-overlay.show {
+      visibility: visible;
+      opacity: 1;
+    }
+    
+    .confirm-modal {
+      background-color: white;
+      border-radius: 10px;
+      padding: 25px;
+      max-width: 450px;
+      width: 90%;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      text-align: center;
+      transform: translateY(-20px);
+      transition: transform 0.3s;
+    }
+    
+    .modal-overlay.show .confirm-modal {
+      transform: translateY(0);
+    }
+    
+    #infoModal .confirm-modal {
+      max-width: 90%;
+      width: 600px;
+      max-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      background-color: #fff;
+      border-radius: 12px;
+      padding: 0;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+      position: relative;
+    }
+    
+    #infoModal .modal-header {
+      padding: 20px 25px;
+      border-bottom: 1px solid #e0e0e0;
+      position: sticky;
+      top: 0;
+      background-color: #fff;
+      z-index: 10;
+      border-radius: 12px 12px 0 0;
+    }
+    
+    #infoModal .modal-header h4 {
+      margin: 0;
+      color: var(--primary-color);
+      font-size: 1.4rem;
+    }
+    
+    #infoModal .modal-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 25px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--primary-color) #f0f4f8;
+      text-align: left;
+    }
+    
+    #infoModal .modal-content::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    #infoModal .modal-content::-webkit-scrollbar-track {
+      background: #f0f4f8;
+    }
+    
+    #infoModal .modal-content::-webkit-scrollbar-thumb {
+      background-color: var(--primary-color);
+      border-radius: 4px;
+    }
+    
+    #infoModal .modal-content p {
+      margin-bottom: 15px;
+      line-height: 1.6;
+      color: #333;
+    }
+    
+    #infoModal .scrollable-section {
+      background-color: #f0f4f8;
+      border-left: 4px solid var(--primary-color);
+      padding: 12px;
+      border-radius: 0 6px 6px 0;
+      font-size: 0.95rem;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      max-height: 250px;
+      overflow-y: auto;
+      margin-bottom: 15px;
+      font-family: monospace;
+    }
+    
+    #infoModal .modal-footer {
+      display: flex;
+      justify-content: center;
+      position: sticky;
+      bottom: 0;
+      background-color: #fff;
+      padding: 15px 25px;
+      border-top: 1px solid #e0e0e0;
+      border-radius: 0 0 12px 12px;
+    }
+    
+    #infoModal .modal-footer button {
+      width: auto;
+      padding: 10px 24px;
+    }
+    
+    #emojiPlaceholder {
+      text-align: center;
+      min-height: 48px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2rem;
+    }
+    
+    #infoRow {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+    
+    #infoBtn {
+      background-color: white;
+      color: var(--primary-color);
+      border: 1.5px solid var(--primary-color);
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+    
+    #infoBtn:hover {
+      background-color: var(--primary-color);
+      color: white;
+      border-color: var(--primary-color);
+      transform: translateY(-1px);
+    }
+    
+    #finishBtn {
+      max-width: 250px;
+      margin: 20px auto;
+      display: block;
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+      font-weight: 600;
+      padding: 12px 24px;
+      transition: all 0.2s ease;
+    }
+    
+    #finishBtn:hover {
+      background-color: var(--primary-hover);
+      border-color: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(91, 155, 213, 0.3);
+    }
+    
+    .confirm-btn-group {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 20px;
+      padding-bottom: 15px;
+    }
+    
+    .confirm-btn-group .btn-primary {
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+    }
+    
+    .confirm-btn-group .btn-primary:hover {
+      background-color: var(--primary-hover);
+      border-color: var(--primary-hover);
+    }
+
+    @media (max-width: 576px) {
+      .container {
+        padding: 10px;
+        margin: 5px;
+      }
+      
+      .question-container {
+        padding: 10px;
+      }
+      
+      .timer-container.compact-timer {
+        width: 85px !important;
+        padding: 6px 10px !important;
+        font-size: 0.9rem !important;
+      }
+      
+      .timer {
+        font-size: 1.2rem;
+      }
+      
+      .question-text {
+        font-size: 0.95rem;
+      }
+      
+      .form-check-label {
+        font-size: 0.9rem;
+      }
+      
+      .btn-group button {
+        flex: 1 1 45%;
+        min-width: 80px;
+        max-width: 110px;
+        font-size: 0.85rem;
+      }
+      
+      .new-test-btn {
+        max-width: 180px;
+        padding: 10px 16px;
+        font-size: 0.9rem;
+      }
+      
+      #finishBtn {
+        max-width: 200px;
+        padding: 10px 20px;
+      }
+
+      .gif-container {
+        max-width: 300px;
+        height: 200px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1 class="text-center mb-4">Imtihon Quiz</h1>
+
+  <div id="infoRow">
+    <button id="infoBtn" class="btn">
+      <i class="fas fa-info-circle me-2"></i>Imtihon Quiz qanday ishlaydi?
+    </button>
+    <div id="emojiPlaceholder"></div>
+  </div>
+
+  <div id="timeSettings" class="time-settings">
+    <div class="settings-header">
+      <i class="fas fa-clock"></i>
+      <h5>Imtihon sozlamalari</h5>
+    </div>
+
+    <h6 class="mb-2">Imtihon vaqti:</h6>
+    <div class="btn-group mb-3" role="group" id="timeButtonGroup">
+      <button type="button" class="btn btn-outline-primary" data-time="10">10 daq</button>
+      <button type="button" class="btn btn-outline-primary" data-time="15">15 daq</button>
+      <button type="button" class="btn btn-outline-primary" data-time="20">20 daq</button>
+      <button type="button" class="btn btn-outline-primary active" data-time="25">25 daq</button>
+      <button type="button" class="btn btn-outline-primary" data-time="30">30 daq</button>
+    </div>
+
+    <div class="custom-option">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="customTimeCheck">
+        <label class="form-check-label" for="customTimeCheck">Boshqa vaqt</label>
+      </div>
+      <div id="customTimeInput" class="custom-option-content">
+        <div class="input-group" style="max-width: 200px;">
+          <input type="number" class="form-control" id="minutesInput" min="1" max="180" value="25">
+          <span class="input-group-text">daqiqa</span>
+        </div>
+      </div>
+    </div>
+
+    <h6 class="mb-2 mt-3">Testlar soni:</h6>
+    <div class="btn-group mb-3" role="group" id="testCountButtonGroup">
+      <button type="button" class="btn btn-outline-primary" data-count="10">10 ta</button>
+      <button type="button" class="btn btn-outline-primary" data-count="15">15 ta</button>
+      <button type="button" class="btn btn-outline-primary" data-count="20">20 ta</button>
+      <button type="button" class="btn btn-outline-primary active" data-count="25">25 ta</button>
+      <button type="button" class="btn btn-outline-primary" data-count="30">30 ta</button>
+    </div>
+
+    <div class="custom-option">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="allTestsCheck">
+        <label class="form-check-label" for="allTestsCheck">Barcha testlarni ko'rsatish</label>
+      </div>
+    </div>
+  </div>
+
+  <div id="timerContainer" class="timer-container" style="display: none;">
+    <div class="timer-text">
+      <i class="fas fa-clock"></i>
+      <span>Qolgan vaqt:</span>
+    </div>
+    <div id="timer" class="timer">00:00</div>
+  </div>
+
+  <div id="fileSection" class="mb-3">
+    <label for="fileInput" class="form-label file-label">Iltimos umumiy test faylini tanlang!</label>
+    <input type="file" class="form-control" id="fileInput" accept=".txt" />
+    <div id="uploadStatus"></div>
+  </div>
+
+  <div id="quizList" style="display: none;">
+    <p id="testCount" class="text-success fw-bold"></p>
+    <div id="questionsContainer"></div>
+    <button id="finishBtn" class="btn btn-primary">Testni yakunlash</button>
+  </div>
+
+  <div id="scoreContainer" class="score-container">
+    <div class="results-card">
+      <h3 class="mb-3">Imtihon natijalari:</h3>
+      
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div id="progressFill" class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div id="progressText" class="mt-2">0%</div>
+      </div>
+      
+      <div class="stats-container">
+        <div class="stat-item total-questions">
+          <i class="fas fa-clipboard-list"></i>
+          <span>Jami: </span>
+          <span id="totalQuestions">0</span>
+        </div>
+        
+        <div class="stat-item correct-answers">
+          <i class="fas fa-check-circle"></i>
+          <span>To'g'ri: </span>
+          <span id="correctAnswers">0</span>
+        </div>
+        
+        <div class="stat-item incorrect-answers">
+          <i class="fas fa-times-circle"></i>
+          <span>Xato: </span>
+          <span id="incorrectAnswers">0</span>
+        </div>
+        
+        <div class="stat-item unanswered">
+          <i class="fas fa-question-circle"></i>
+          <span>Javobsiz: </span>
+          <span id="unanswered">0</span>
+        </div>
+      </div>
+      
+      <div id="gifContainer" class="gif-container"></div>
+      
+      <div id="feedbackText" class="feedback-text mt-3"></div>
+    </div>
+  </div>
+
+  <button id="newTestBtn" class="btn new-test-btn" style="display: none;">
+    <i class="fas fa-plus"></i> Yangi test
+  </button>
+
+  <div id="confettiContainer" class="confetti-container"></div>
+  <div id="saluteContainer"></div>
+  
+  <div id="confirmModal" class="modal-overlay">
+    <div class="confirm-modal">
+      <h4 class="mb-3">Diqqat!</h4>
+      <p id="confirmMessage">Barcha savollarga javob berdingizmi?</p>
+      <div class="confirm-btn-group">
+        <button id="cancelFinish" class="btn btn-secondary">Bekor qilish</button>
+        <button id="confirmFinish" class="btn btn-primary">Tasdiqlash</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="newTestModal" class="modal-overlay">
+    <div class="confirm-modal">
+      <h4 class="mb-3">Yangi imtihon</h4>
+      <p>Yangi imtihonga tayyormisiz?</p>
+      <div class="confirm-btn-group">
+        <button id="cancelNewTest" class="btn btn-secondary">Yo'q</button>
+        <button id="confirmNewTest" class="btn btn-primary">Ha</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="infoModal" class="modal-overlay">
+    <div class="confirm-modal">
+      <div class="modal-content">
+        <h4>Imtihon quiz qanday ishlaydi?</h4>
+        <p>
+          Testlarni boshlash uchun yuqoridagi "Fayl tanlash" orqali .txt faylini yuklang. Fayl quyidagi formatda bo'lishi kerak:
+        </p>
+        <pre>O'zbekiston poytaxti qayer?
+A. Toshkent
+B. Samarqand
+C. Namangan
+D. Buxoro
+ANSWER: A
+
+Kompyuterda yozish uchun nima kerak?
+A. Monitor
+B. Sichqoncha
+C. Klaviatura
+D. Printer
+ANSWER: C
+</pre>
+        <p>
+          <strong>Izoh:</strong> Har bir savol bir qatordan boshlanadi, undan keyin A, B, C, D variantlari va ANSWER: so'zidan keyin bitta probel bilan to'g'ri javob (A, B, C yoki D) ko'rsatiladi va bir qator ochiq joy (Enter) qoldiriladi va keyingi savol namunadek davom etadi.
+          <br><br>
+          Barcha testlar shu ko'rinishda bo'lishi lozim. 
+          <br>
+          Yordam: <a href="https://t.me/sobirweb" target="_blank">@sobirweb</a>
+        </p>
+      </div>
+      <div class="confirm-btn-group">
+        <button id="closeInfo" class="btn btn-primary">Yopish</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let originalTests = [];
+  let randomizedTests = [];
+  let timerInterval;
+  let totalSeconds = 25 * 60;
+  let examStarted = false;
+  let selectedTestCount = 25;
+
+  const gifGroups = {
+    veryLow: [
+      { url: "https://media.giphy.com/media/17mAJxOsYBR1nTZYXi/giphy.gif", alt: "Xafa 1" },
+      { url: "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExM2ljcGt1ZnJmb2x0cXBnaGhhcWV2bno5cmR3NW90cHlybWVuOGF5MyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/7a7NZ63gUrdx7Vc8xY/giphy.gif", alt: "Xafa 2" },
+      { url: "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3dmF4cndzMnZyN2I3eGJxY2NkaGZucHhnOXhuNzYxN2VleWRncXgxdCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Ibn7LZ38Sy4wDeoQz9/giphy.gif", alt: "Xafa 3" }
+    ],
+    low: [
+      { url: "https://media.giphy.com/media/VmBr6jHKt2TXbJsqao/giphy.gif", alt: "O'rtacha 1" },
+      { url: "https://media.giphy.com/media/LFdzb6oZwntwQuxhPE/giphy.gif", alt: "O'rtacha 2" },
+      { url: "https://media.giphy.com/media/fHUpoPfK3bBDwB7Nhn/giphy.gif", alt: "O'rtacha 3" }
+    ],
+    medium: [
+      { url: "https://media.giphy.com/media/aQEbYNzDg3f2O6NHHZ/giphy.gif", alt: "Yaxshi 1" },
+      { url: "https://media.giphy.com/media/7BN2vSKokJhhTnfj9w/giphy.gif", alt: "Yaxshi 2" },
+      { url: "https://media.giphy.com/media/mwrMzvCG11qlEgOMef/giphy.gif", alt: "Yaxshi 3" }
+    ],
+    high: [
+      { url: "https://media.giphy.com/media/wxutdWM3fug3UmKxa2/giphy.gif", alt: "Juda yaxshi 1" },
+      { url: "https://media.giphy.com/media/Gz6nYcm8oXE4dFTC8j/giphy.gif", alt: "Juda yaxshi 2" },
+      { url: "https://media.giphy.com/media/fVmM8GMSVp2DIjnl1i/giphy.gif", alt: "Juda yaxshi 3" }
+    ],
+    excellent: [
+      { url: "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExbGJ4bzZ0ZnN5czJsZ2Zqem5pdnV4ZTA0a2w1NzB2cTF1NTJ0YWZrZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/YLe3fUeRlIbNXxN5nV/giphy.gif", alt: "A'lo 1" },
+      { url: "https://media.giphy.com/media/n2pEms37feoXhzB6pC/giphy.gif", alt: "A'lo 2" },
+      { url: "https://media.giphy.com/media/AepMHW1bDrLnXyiqAU/giphy.gif", alt: "A'lo 3" }
+    ]
+  };
+  let gifIndices = {
+    veryLow: 0,
+    low: 0,
+    medium: 0,
+    high: 0,
+    excellent: 0
+  };
+
+  const fileInput = document.getElementById("fileInput");
+  const uploadStatus = document.getElementById("uploadStatus");
+  const quizList = document.getElementById("quizList");
+  const testCount = document.getElementById("testCount");
+  const questionsContainer = document.getElementById("questionsContainer");
+  const finishBtn = document.getElementById("finishBtn");
+  const scoreContainer = document.getElementById("scoreContainer");
+  const feedbackText = document.getElementById("feedbackText");
+  const newTestBtn = document.getElementById("newTestBtn");
+  const timeSettings = document.getElementById("timeSettings");
+  const timerContainer = document.getElementById("timerContainer");
+  const timerElement = document.getElementById("timer");
+  const customTimeCheck = document.getElementById("customTimeCheck");
+  const customTimeInput = document.getElementById("customTimeInput");
+  const minutesInput = document.getElementById("minutesInput");
+  const timeButtons = document.querySelectorAll("#timeButtonGroup button");
+  const testCountButtons = document.querySelectorAll("#testCountButtonGroup button");
+  const allTestsCheck = document.getElementById("allTestsCheck");
+  const confirmModal = document.getElementById("confirmModal");
+  const confirmMessage = document.getElementById("confirmMessage");
+  const cancelFinish = document.getElementById("cancelFinish");
+  const confirmFinish = document.getElementById("confirmFinish");
+  const progressFill = document.getElementById("progressFill");
+  const progressText = document.getElementById("progressText");
+  const totalQuestionsEl = document.getElementById("totalQuestions");
+  const correctAnswersEl = document.getElementById("correctAnswers");
+  const incorrectAnswersEl = document.getElementById("incorrectAnswers");
+  const unansweredEl = document.getElementById("unanswered");
+  const gifContainer = document.getElementById("gifContainer");
+  const saluteContainer = document.getElementById("saluteContainer");
+  const infoBtn = document.getElementById("infoBtn");
+  const infoModal = document.getElementById("infoModal");
+  const closeInfo = document.getElementById("closeInfo");
+  const fileSection = document.getElementById("fileSection");
+  const emojiPlaceholder = document.getElementById("emojiPlaceholder");
+  const newTestModal = document.getElementById("newTestModal");
+  const cancelNewTest = document.getElementById("cancelNewTest");
+  const confirmNewTest = document.getElementById("confirmNewTest");
+
+  // Info modal
+  infoBtn.addEventListener("click", () => {
+    infoModal.classList.add("show");
+    confirmModal.classList.remove("show");
+    newTestModal.classList.remove("show");
+  });
+
+  closeInfo.addEventListener("click", () => {
+    infoModal.classList.remove("show");
+  });
+
+  // Scroll behavior for timer
+  window.addEventListener('scroll', () => {
+    if (examStarted) {
+      const scrollY = window.scrollY;
+      if (scrollY > 100) {
+        timerContainer.classList.add('compact-timer');
+      } else {
+        timerContainer.classList.remove('compact-timer');
+      }
+    }
+  });
+
+  // Time buttons
+  timeButtons.forEach(button => {
+    button.addEventListener("click", () => {
+      timeButtons.forEach(btn => btn.classList.remove("active"));
+      button.classList.add("active");
+      const minutes = parseInt(button.getAttribute("data-time"));
+      totalSeconds = minutes * 60;
+      customTimeCheck.checked = false;
+      customTimeInput.classList.remove("show");
+    });
+  });
+
+  // Custom time checkbox
+  customTimeCheck.addEventListener("change", () => {
+    if (customTimeCheck.checked) {
+      customTimeInput.classList.add("show");
+      timeButtons.forEach(btn => btn.classList.remove("active"));
+      totalSeconds = parseInt(minutesInput.value) * 60;
+    } else {
+      customTimeInput.classList.remove("show");
+    }
+  });
+
+  minutesInput.addEventListener("change", () => {
+    if (customTimeCheck.checked) {
+      totalSeconds = parseInt(minutesInput.value) * 60;
+    }
+  });
+
+  // Test count buttons
+  testCountButtons.forEach(button => {
+    button.addEventListener("click", () => {
+      testCountButtons.forEach(btn => btn.classList.remove("active"));
+      button.classList.add("active");
+      selectedTestCount = parseInt(button.getAttribute("data-count"));
+      allTestsCheck.checked = false;
+    });
+  });
+
+  // All tests checkbox
+  allTestsCheck.addEventListener("change", () => {
+    if (allTestsCheck.checked) {
+      testCountButtons.forEach(btn => btn.classList.remove("active"));
+      selectedTestCount = -1; // -1 means all tests
+    } else {
+      // Reset to default
+      testCountButtons.forEach(btn => {
+        if (btn.getAttribute("data-count") === "25") {
+          btn.classList.add("active");
+        }
+      });
+      selectedTestCount = 25;
+    }
+  });
+
+  function shuffleArray(array) {
+    const newArray = [...array];
+    for (let i = newArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+    }
+    return newArray;
+  }
+
+  fileInput.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (!examStarted) {
+      if (totalSeconds <= 0) {
+        uploadStatus.textContent = "Xatolik: Iltimos, avval imtihon vaqtini tanlang!";
+        fileInput.value = "";
+        return;
+      }
+
+      uploadStatus.textContent = "Fayl yuklanmoqda...";
+
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const content = ev.target.result;
+        parseTestFile(content);
+      };
+      reader.readAsText(file);
+    }
+  });
+
+  function parseTestFile(content) {
+    originalTests = [];
+    const lines = content.split("\n").map(line => line.trim()).filter(Boolean);
+
+    let currentTest = null;
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      if (line.startsWith("ANSWER:")) {
+        if (currentTest) {
+          currentTest.answer = line.replace("ANSWER:", "").trim();
+          originalTests.push(currentTest);
+          currentTest = null;
+        }
+      } else if (/^[A-D]\./.test(line)) {
+        if (currentTest) {
+          const optionText = line.replace(/^[A-D]\.\s*/, "").trim();
+          const optionLetter = line.split(".")[0].trim();
+          currentTest.options.push({ letter: optionLetter, text: optionText });
+        }
+      } else {
+        if (currentTest) {}
+        currentTest = { question: line, options: [], answer: "" };
+      }
+    }
+
+    if (originalTests.length > 0) {
+      uploadStatus.textContent = "Fayl yuklandi!";
+      fileSection.style.display = "none";
+      randomizeTests();
+      startExam();
+    } else {
+      uploadStatus.textContent = "Xatolik: Test ma'lumotlari topilmadi yoki noto'g'ri format!";
+      fileInput.value = "";
+    }
+  }
+
+  function randomizeTests() {
+    let testsToUse;
+    if (selectedTestCount === -1 || selectedTestCount >= originalTests.length) {
+      // Show all tests
+      testsToUse = shuffleArray(originalTests);
+    } else {
+      // Show selected number of tests
+      testsToUse = shuffleArray(originalTests).slice(0, selectedTestCount);
+    }
+    
+    randomizedTests = testsToUse.map(test => {
+      const shuffledOptions = shuffleArray(test.options);
+      const correctOptionIndex = shuffledOptions.findIndex(option => option.letter === test.answer);
+      return { question: test.question, options: shuffledOptions, correctOptionIndex };
+    });
+  }
+
+  function startExam() {
+    examStarted = true;
+    timeSettings.style.display = "none";
+    infoBtn.style.display = "none";
+    fileInput.disabled = true;
+    timerContainer.style.display = "flex";
+    updateTimerDisplay();
+    startTimer();
+    showTests();
+  }
+
+  function showTests() {
+    quizList.style.display = "block";
+    if (selectedTestCount === -1 || selectedTestCount >= originalTests.length) {
+      testCount.textContent = `${randomizedTests.length} ta test (Barcha testlar)`;
+    } else if (originalTests.length > selectedTestCount) {
+      testCount.textContent = `${selectedTestCount} ta test ${originalTests.length} tadan tasodifiy tanlandi!`;
+    } else {
+      testCount.textContent = `${randomizedTests.length} ta test yuklandi!`;
+    }
+    questionsContainer.innerHTML = "";
+    randomizedTests.forEach((test, index) => {
+      const questionDiv = document.createElement("div");
+      questionDiv.className = "question-container";
+      questionDiv.dataset.correctOptionIndex = test.correctOptionIndex;
+
+      const qText = document.createElement("div");
+      qText.className = "question-text";
+      qText.textContent = (index + 1) + ". " + test.question;
+      questionDiv.appendChild(qText);
+
+      const optionsDiv = document.createElement("div");
+      optionsDiv.className = "options-container";
+      test.options.forEach((opt, optIndex) => {
+        const formCheck = document.createElement("div");
+        formCheck.className = "form-check";
+        const input = document.createElement("input");
+        input.className = "form-check-input";
+        input.type = "radio";
+        input.name = "question_" + index;
+        input.id = "question_" + index + "_option_" + optIndex;
+        input.dataset.originalLetter = opt.letter;
+        const label = document.createElement("label");
+        label.className = "form-check-label";
+        label.setAttribute("for", input.id);
+        label.textContent = opt.text;
+        formCheck.appendChild(input);
+        formCheck.appendChild(label);
+        optionsDiv.appendChild(formCheck);
+      });
+      questionDiv.appendChild(optionsDiv);
+      questionsContainer.appendChild(questionDiv);
+    });
+  }
+
+  function startTimer() {
+    timerInterval = setInterval(() => {
+      if (totalSeconds > 0) {
+        totalSeconds--;
+        updateTimerDisplay();
+        if (totalSeconds < 60) timerElement.classList.add("warning");
+      } else {
+        clearInterval(timerInterval);
+        endExam("Vaqt tugadi!");
+      }
+    }, 1000);
+  }
+
+  function updateTimerDisplay() {
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  }
+
+  function stopTimer() {
+    clearInterval(timerInterval);
+  }
+
+  function endExam(message = "") {
+    stopTimer();
+    checkAnswers();
+    if (message) uploadStatus.textContent = message;
+    newTestBtn.style.display = "block";
+    const allRadios = document.querySelectorAll('input[type="radio"]');
+    allRadios.forEach(radio => {
+      radio.disabled = true;
+    });
+    examStarted = false;
+  }
+
+  finishBtn.addEventListener("click", () => {
+    const totalQuestions = randomizedTests.length;
+    let answeredCount = 0;
+    
+    randomizedTests.forEach((test, index) => {
+      const radios = document.querySelectorAll(`input[name="question_${index}"]`);
+      let answered = false;
+      radios.forEach(radio => {
+        if (radio.checked) answered = true;
+      });
+      if (answered) answeredCount++;
+    });
+    
+    confirmMessage.innerHTML = `<strong>${answeredCount}</strong> ta savolga javob berildi, <strong>${totalQuestions - answeredCount}</strong> ta savol javobsiz. <br><br>Testni yakunlashni tasdiqlaysizmi?`;
+    confirmModal.classList.add("show");
+    newTestModal.classList.remove("show");
+  });
+  
+  cancelFinish.addEventListener("click", () => {
+    confirmModal.classList.remove("show");
+  });
+  
+  confirmFinish.addEventListener("click", () => {
+    confirmModal.classList.remove("show");
+    endExam("Test yakunlandi!");
+  });
+
+  newTestBtn.addEventListener("click", () => {
+    newTestModal.classList.add("show");
+    confirmModal.classList.remove("show");
+    infoModal.classList.remove("show");
+  });
+
+  cancelNewTest.addEventListener("click", () => {
+    newTestModal.classList.remove("show");
+  });
+
+  confirmNewTest.addEventListener("click", () => {
+    newTestModal.classList.remove("show");
+    resetTest();
+  });
+
+  function checkAnswers() {
+    let correctCount = 0;
+    let incorrectCount = 0;
+    let unansweredCount = 0;
+    const totalQuestions = randomizedTests.length;
+    
+    randomizedTests.forEach((test, index) => {
+      const correctOptionIndex = test.correctOptionIndex;
+      const radios = document.querySelectorAll(`input[name="question_${index}"]`);
+      
+      // Barcha labellarni tozalash
+      radios.forEach(radio => {
+        const label = document.querySelector(`label[for="${radio.id}"]`);
+        label.classList.remove("correct", "incorrect", "unanswered-correct");
+        const checkIcon = label.querySelector(".check-icon");
+        if (checkIcon) checkIcon.remove();
+      });
+
+      let selectedOptionIndex = -1;
+      radios.forEach((radio, idx) => { 
+        if (radio.checked) selectedOptionIndex = idx; 
+      });
+
+      if (selectedOptionIndex >= 0) {
+        const chosenLabel = document.querySelector(`label[for="question_${index}_option_${selectedOptionIndex}"]`);
+        if (selectedOptionIndex === correctOptionIndex) {
+          chosenLabel.classList.add("correct");
+          chosenLabel.innerHTML += '<span class="check-icon">✅</span>';
+          correctCount++;
         } else {
-            document.querySelectorAll('.hero-card').forEach(card => {
-                card.classList.add('animate');
-            });
+          chosenLabel.classList.add("incorrect");
+          chosenLabel.innerHTML += '<span class="check-icon">❌</span>';
+          incorrectCount++;
+          const correctLabel = document.querySelector(`label[for="question_${index}_option_${correctOptionIndex}"]`);
+          correctLabel.classList.add("correct");
+          correctLabel.innerHTML += '<span class="check-icon">✅</span>';
         }
+      } else {
+        unansweredCount++;
+        const correctLabel = document.querySelector(`label[for="question_${index}_option_${correctOptionIndex}"]`);
+        correctLabel.classList.add("unanswered-correct");
+        correctLabel.innerHTML += '<span class="check-icon">✅</span>';
+      }
+    });
 
-        document.addEventListener('scroll', () => {}, { passive: true });
-        document.addEventListener('touchstart', () => {}, { passive: true });
+    const ratio = correctCount / totalQuestions;
+    const percentage = Math.round(ratio * 100);
+    
+    // Progress bar yangilash
+    setTimeout(() => {
+      progressFill.style.width = `${percentage}%`;
+      progressFill.classList.toggle('low', ratio < 0.6);
+      progressText.textContent = `${percentage}%`;
+    }, 100);
+    
+    // Statistikani yangilash
+    totalQuestionsEl.textContent = totalQuestions;
+    correctAnswersEl.textContent = correctCount;
+    incorrectAnswersEl.textContent = incorrectCount;
+    unansweredEl.textContent = unansweredCount;
+    
+    // GIF va emoji tanlash
+    let gifGroupKey, emoji;
+    if (percentage <= 29) {
+      gifGroupKey = "veryLow";
+      emoji = "😔 😢 📚";
+    } else if (percentage <= 59) {
+      gifGroupKey = "low";
+      emoji = "😐 📖";
+    } else if (percentage <= 70) {
+      gifGroupKey = "medium";
+      emoji = "🙂 👍";
+    } else if (percentage <= 81) {
+      gifGroupKey = "high";
+      emoji = "😊 🎉";
+    } else {
+      gifGroupKey = "excellent";
+      emoji = "🎉 🥳 🎊";
+    }
 
-        function handleEnter(cardNumber) {
-            const pages = {
-                1: 'segment25.html',
-                2: 'segmentumumiy.html',
-                3: 'testyaratish.html',
-                4: 'testni_boshlash.html'
-            };
-            if (pages[cardNumber]) {
-                window.location.href = pages[cardNumber];
-            }
-        }
+    emojiPlaceholder.textContent = emoji;
 
-        function handleCardClick(cardNumber) {
-            handleEnter(cardNumber);
-        }
-    </script>
+    const currentIndex = gifIndices[gifGroupKey];
+    const selectedGif = gifGroups[gifGroupKey][currentIndex];
+    gifContainer.innerHTML = `
+      <img src="${selectedGif.url}" alt="${selectedGif.alt}" style="width: 100%; height: 100%; object-fit: cover;">
+    `;
+    
+    gifIndices[gifGroupKey] = (currentIndex + 1) % gifGroups[gifGroupKey].length;
+
+    if (percentage >= 60) {
+      createConfetti();
+      createSalute();
+    }
+
+    // Feedback matnini yaratish
+    let feedback = "";
+    if (percentage < 30) {
+      feedback = `Natijangiz <span>qoniqarli emas</span>.<br>Hali hammasi oldinda! Ko'proq o'qib, mashq qiling va qayta urinib ko'ring!`;
+    } else if (percentage < 60) {
+      feedback = `Natijangiz <span>o'rtacha</span>.<br>Yana biroz harakat qilsangiz, yaxshi natijaga erishasiz!`;
+    } else if (percentage <= 70) {
+      feedback = `Natijangiz <span>yaxshi</span>!<br>Siz yaxshi bilimga egasiz, lekin yanada yaxshiroq bo'lishingiz mumkin.`;
+    } else if (percentage <= 81) {
+      feedback = `Natijangiz <span>juda yaxshi</span>!<br>Siz mavzuni yaxshi o'zlashtirgansiz. Ajoyib!`;
+    } else {
+      feedback = `Natijangiz <span>a'lo darajada</span>!<br>Siz mavzuni chuqur o'zlashtirgan ko'rinasiz. Tabriklaymiz!`;
+    }
+
+    feedbackText.innerHTML = feedback;
+    
+    // Natijalar containerini ko'rsatish
+    scoreContainer.style.opacity = "1";
+    scoreContainer.classList.add("show-feedback");
+    
+    // Finish tugmasini yashirish
+    finishBtn.style.display = "none";
+    
+    // Sahifani yuqoriga scroll qilish
+    setTimeout(() => {
+      scoreContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 300);
+  }
+
+  function resetTest() {
+    examStarted = false;
+    stopTimer();
+    fileInput.disabled = false;
+    fileInput.value = "";
+    uploadStatus.textContent = "";
+    quizList.style.display = "none";
+    scoreContainer.style.opacity = "0";
+    scoreContainer.classList.remove("show-feedback");
+    timerElement.classList.remove("warning");
+    timerContainer.style.display = "none";
+    timerContainer.classList.remove("compact-timer");
+    newTestBtn.style.display = "none";
+    finishBtn.style.display = "block";
+    timeSettings.style.display = "block";
+    fileSection.style.display = "block";
+    infoBtn.style.display = "block";
+    
+    // Time buttons reset
+    timeButtons.forEach(btn => btn.classList.remove("active"));
+    document.querySelector('#timeButtonGroup button[data-time="25"]').classList.add("active");
+    customTimeCheck.checked = false;
+    customTimeInput.classList.remove("show");
+    totalSeconds = 25 * 60;
+    minutesInput.value = "25";
+    
+    // Test count buttons reset
+    testCountButtons.forEach(btn => btn.classList.remove("active"));
+    document.querySelector('#testCountButtonGroup button[data-count="25"]').classList.add("active");
+    allTestsCheck.checked = false;
+    selectedTestCount = 25;
+    
+    emojiPlaceholder.textContent = "";
+    
+    // Statistikalarni reset qilish
+    progressFill.style.width = "0%";
+    progressText.textContent = "0%";
+    totalQuestionsEl.textContent = "0";
+    correctAnswersEl.textContent = "0";
+    incorrectAnswersEl.textContent = "0";
+    unansweredEl.textContent = "0";
+    gifContainer.innerHTML = "";
+    feedbackText.innerHTML = "";
+    
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function createConfetti() {
+    const confettiContainer = document.getElementById('confettiContainer');
+    confettiContainer.innerHTML = '';
+    const colors = ["#fd5e53", "#3cc47c", "#1e1f26", "#df678c", "#3d8eb9", "#f9c80e"];
+    
+    for (let i = 0; i < 100; i++) {
+      const confetti = document.createElement('div');
+      confetti.className = 'confetti';
+      confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+      confetti.style.left = Math.random() * 100 + 'vw';
+      confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+      confetti.style.animationDelay = (Math.random() * 5) + 's';
+      confetti.style.width = (Math.random() * 10 + 5) + 'px';
+      confetti.style.height = (Math.random() * 10 + 5) + 'px';
+      confettiContainer.appendChild(confetti);
+    }
+    
+    setTimeout(() => {
+      confettiContainer.innerHTML = '';
+    }, 8000);
+  }
+  
+  function createSalute() {
+    saluteContainer.innerHTML = '';
+    const colors = ["#ff4136", "#0074d9", "#2ecc40", "#ffdc00", "#f012be", "#ff851b"];
+    
+    for (let i = 0; i < 50; i++) {
+      setTimeout(() => {
+        const salute = document.createElement('div');
+        salute.className = 'salute';
+        salute.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        salute.style.left = Math.random() * 100 + 'vw';
+        salute.style.bottom = Math.random() * 20 + 'vh';
+        saluteContainer.appendChild(salute);
+        
+        setTimeout(() => {
+          salute.remove();
+        }, 2000);
+      }, Math.random() * 3000);
+    }
+  }
+</script>
 </body>
 </html>
