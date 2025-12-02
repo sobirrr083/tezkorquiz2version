@@ -250,8 +250,8 @@
     }
 
     .success-message {
-      background-color: #d1f2eb;
-      border: 2px solid #1abc9c;
+      background-color: #e8ebff;
+      border: 2px solid var(--primary-color);
       border-radius: var(--border-radius);
       padding: 20px;
       margin: 20px 0;
@@ -265,19 +265,19 @@
     }
 
     .success-message h4 {
-      color: #16a085;
+      color: var(--primary-color);
       margin-bottom: 10px;
       font-size: 1.3rem;
     }
 
     .success-message p {
-      color: #27ae60;
+      color: #333;
       margin: 5px 0;
       font-size: 1rem;
     }
 
     .start-exam-btn {
-      background-color: #1abc9c;
+      background-color: var(--primary-color);
       border: none;
       color: white;
       padding: 15px 40px;
@@ -287,13 +287,21 @@
       cursor: pointer;
       transition: all 0.3s ease;
       margin-top: 15px;
-      box-shadow: 0 4px 15px rgba(26, 188, 156, 0.3);
+      box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
     }
 
     .start-exam-btn:hover {
-      background-color: #16a085;
+      background-color: var(--primary-hover);
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(26, 188, 156, 0.4);
+      box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
+    }
+
+    .start-exam-btn:active {
+      transform: translateY(0);
     }
 
     @keyframes slideDown {
@@ -800,6 +808,59 @@
         max-width: 300px;
         height: 200px;
       }
+
+      .start-exam-btn {
+        padding: 12px 30px;
+        font-size: 1rem;
+        width: 100%;
+        max-width: 300px;
+      }
+
+      .countdown-number {
+        font-size: 80px;
+      }
+
+      .countdown-text {
+        font-size: 20px;
+      }
+
+      .countdown-message {
+        font-size: 16px;
+      }
+
+      .success-message h4 {
+        font-size: 1.1rem;
+      }
+
+      .success-message p {
+        font-size: 0.9rem;
+      }
+    }
+
+    @media (min-width: 577px) and (max-width: 768px) {
+      .start-exam-btn {
+        padding: 14px 35px;
+        font-size: 1.1rem;
+        max-width: 350px;
+      }
+
+      .countdown-number {
+        font-size: 100px;
+      }
+
+      .countdown-text {
+        font-size: 24px;
+      }
+
+      .countdown-message {
+        font-size: 18px;
+      }
+    }
+
+    @media (min-width: 769px) {
+      .start-exam-btn {
+        max-width: 400px;
+      }
     }
   </style>
 </head>
@@ -1226,10 +1287,7 @@ ANSWER: C
 
     if (originalTests.length > 0) {
       uploadStatus.textContent = "Fayl yuklandi!";
-      uploadStatus.style.color = "#16a085";
-      
-      // Sahifani yuqoriga scroll qilish
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      uploadStatus.style.color = "#4361ee";
       
       // Success message ko'rsatish
       setTimeout(() => {
@@ -1242,7 +1300,12 @@ ANSWER: C
         }
         successMessage.classList.add("show");
         fileInput.disabled = true;
-      }, 500);
+        
+        // Success message ga scroll qilish (pastga)
+        setTimeout(() => {
+          successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
+      }, 300);
     } else {
       uploadStatus.textContent = "Xatolik: Test ma'lumotlari topilmadi yoki noto'g'ri format!";
       uploadStatus.style.color = "#e74c3c";
@@ -1252,8 +1315,64 @@ ANSWER: C
 
   // Start exam button click
   startExamBtn.addEventListener("click", () => {
-    startCountdown();
+    // Orqa fonda testlarni tayyorlash
+    prepareTestsInBackground();
+    // Yuqoriga scroll qilish
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Teskari sanoqni boshlash
+    setTimeout(() => {
+      startCountdown();
+    }, 300);
   });
+
+  function prepareTestsInBackground() {
+    // Testlarni oldindan render qilish (ko'rinmaydi)
+    quizList.style.display = "block";
+    quizList.style.visibility = "hidden";
+    quizList.style.position = "absolute";
+    
+    if (selectedTestCount === -1 || selectedTestCount >= originalTests.length) {
+      testCount.textContent = `${randomizedTests.length} ta test (Barcha testlar)`;
+    } else if (originalTests.length > selectedTestCount) {
+      testCount.textContent = `${selectedTestCount} ta test ${originalTests.length} tadan tasodifiy tanlandi!`;
+    } else {
+      testCount.textContent = `${randomizedTests.length} ta test yuklandi!`;
+    }
+    
+    questionsContainer.innerHTML = "";
+    randomizedTests.forEach((test, index) => {
+      const questionDiv = document.createElement("div");
+      questionDiv.className = "question-container";
+      questionDiv.dataset.correctOptionIndex = test.correctOptionIndex;
+
+      const qText = document.createElement("div");
+      qText.className = "question-text";
+      qText.textContent = (index + 1) + ". " + test.question;
+      questionDiv.appendChild(qText);
+
+      const optionsDiv = document.createElement("div");
+      optionsDiv.className = "options-container";
+      test.options.forEach((opt, optIndex) => {
+        const formCheck = document.createElement("div");
+        formCheck.className = "form-check";
+        const input = document.createElement("input");
+        input.className = "form-check-input";
+        input.type = "radio";
+        input.name = "question_" + index;
+        input.id = "question_" + index + "_option_" + optIndex;
+        input.dataset.originalLetter = opt.letter;
+        const label = document.createElement("label");
+        label.className = "form-check-label";
+        label.setAttribute("for", input.id);
+        label.textContent = opt.text;
+        formCheck.appendChild(input);
+        formCheck.appendChild(label);
+        optionsDiv.appendChild(formCheck);
+      });
+      questionDiv.appendChild(optionsDiv);
+      questionsContainer.appendChild(questionDiv);
+    });
+  }
 
   function startCountdown() {
     let count = 3;
@@ -1274,10 +1393,18 @@ ANSWER: C
         countdownNumber.textContent = "Boshlandi!";
         setTimeout(() => {
           countdownOverlay.classList.remove("show");
-          startExam();
+          // Testlarni ko'rinadigan qilish
+          showPreparedTests();
         }, 1000);
       }
     }, 1000);
+  }
+
+  function showPreparedTests() {
+    // Oldindan tayyorlangan testlarni ko'rsatish
+    quizList.style.visibility = "visible";
+    quizList.style.position = "relative";
+    startExam();
   }
 
   function randomizeTests() {
@@ -1305,10 +1432,8 @@ ANSWER: C
     infoBtn.style.display = "none";
     fileInput.disabled = true;
     timerContainer.style.display = "flex";
-    quizList.style.display = "block";
     updateTimerDisplay();
     startTimer();
-    showTests();
   }
 
   function showTests() {
@@ -1352,11 +1477,6 @@ ANSWER: C
       questionDiv.appendChild(optionsDiv);
       questionsContainer.appendChild(questionDiv);
     });
-    
-    // Testlar ko'rsatilgandan keyin yuqoriga scroll qilish
-    setTimeout(() => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 100);
   }
 
   function startTimer() {
