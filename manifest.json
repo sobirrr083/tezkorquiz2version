@@ -9,6 +9,10 @@
   "background_color": "#ffffff",
   "theme_color": "#ffffff",
   "description": "Bu tezkor quiz saytining rasmiy ilovasi",
+  
+  "version": "1.0.1",
+  "app_version": "1.0.1",
+
   "icons": [
     {
       "src": "/appicon/maskable.png",
