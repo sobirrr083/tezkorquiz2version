@@ -257,11 +257,15 @@
       margin: 20px 0;
       text-align: center;
       display: none;
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: all 0.5s ease;
     }
 
     .success-message.show {
       display: block;
-      animation: slideDown 0.5s ease;
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .success-message h4 {
@@ -1286,39 +1290,59 @@ ANSWER: C
     }
 
     if (originalTests.length > 0) {
-      uploadStatus.textContent = "Fayl yuklandi!";
+      uploadStatus.textContent = "Fayl muvaffaqiyatli yuklandi!";
       uploadStatus.style.color = "#4361ee";
+      uploadStatus.style.fontWeight = "bold";
+      
+      // Testlarni tayyorlash
+      randomizeTests();
+      
+      // Success message ma'lumotlarini yangilash
+      let testsCount = randomizedTests.length;
+      if (selectedTestCount === -1 || selectedTestCount >= originalTests.length) {
+        loadedTestsInfo.textContent = `${testsCount} ta test yuklandi (Barcha testlar)`;
+      } else {
+        loadedTestsInfo.textContent = `${testsCount} ta test ${originalTests.length} tadan tasodifiy tanlandi`;
+      }
       
       // Success message ko'rsatish
+      fileInput.disabled = true;
+      
+      // Display block qilib, keyin opacity bilan ko'rsatish
+      successMessage.style.display = "block";
       setTimeout(() => {
-        randomizeTests();
-        let testsCount = randomizedTests.length;
-        if (selectedTestCount === -1 || selectedTestCount >= originalTests.length) {
-          loadedTestsInfo.textContent = `${testsCount} ta test yuklandi (Barcha testlar)`;
-        } else {
-          loadedTestsInfo.textContent = `${testsCount} ta test ${originalTests.length} tadan tasodifiy tanlandi`;
-        }
         successMessage.classList.add("show");
-        fileInput.disabled = true;
         
         // Success message ga scroll qilish (pastga)
         setTimeout(() => {
           successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 100);
-      }, 300);
+        }, 200);
+      }, 50);
+      
     } else {
       uploadStatus.textContent = "Xatolik: Test ma'lumotlari topilmadi yoki noto'g'ri format!";
       uploadStatus.style.color = "#e74c3c";
+      uploadStatus.style.fontWeight = "bold";
       fileInput.value = "";
     }
   }
 
   // Start exam button click
   startExamBtn.addEventListener("click", () => {
+    console.log("Start exam button clicked");
+    console.log("Randomized tests count:", randomizedTests.length);
+    
+    // Testlarni qayta tayyorlash (agar sozlamalar o'zgargan bo'lsa)
+    if (randomizedTests.length === 0) {
+      randomizeTests();
+    }
+    
     // Orqa fonda testlarni tayyorlash
     prepareTestsInBackground();
+    
     // Yuqoriga scroll qilish
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    
     // Teskari sanoqni boshlash
     setTimeout(() => {
       startCountdown();
@@ -1326,10 +1350,21 @@ ANSWER: C
   });
 
   function prepareTestsInBackground() {
+    console.log("Preparing tests in background...");
+    
+    // Agar testlar bo'sh bo'lsa, qayta tayyorlash
+    if (randomizedTests.length === 0) {
+      console.log("No tests found, randomizing...");
+      randomizeTests();
+    }
+    
     // Testlarni oldindan render qilish (ko'rinmaydi)
     quizList.style.display = "block";
     quizList.style.visibility = "hidden";
     quizList.style.position = "absolute";
+    quizList.style.top = "0";
+    quizList.style.left = "0";
+    quizList.style.width = "100%";
     
     if (selectedTestCount === -1 || selectedTestCount >= originalTests.length) {
       testCount.textContent = `${randomizedTests.length} ta test (Barcha testlar)`;
@@ -1372,6 +1407,8 @@ ANSWER: C
       questionDiv.appendChild(optionsDiv);
       questionsContainer.appendChild(questionDiv);
     });
+    
+    console.log("Tests prepared:", randomizedTests.length);
   }
 
   function startCountdown() {
@@ -1401,9 +1438,12 @@ ANSWER: C
   }
 
   function showPreparedTests() {
+    console.log("Showing prepared tests...");
     // Oldindan tayyorlangan testlarni ko'rsatish
     quizList.style.visibility = "visible";
     quizList.style.position = "relative";
+    quizList.style.top = "auto";
+    quizList.style.left = "auto";
     startExam();
   }
 
@@ -1686,8 +1726,16 @@ ANSWER: C
     fileInput.disabled = false;
     fileInput.value = "";
     uploadStatus.textContent = "";
+    uploadStatus.style.fontWeight = "normal";
     successMessage.classList.remove("show");
+    successMessage.style.display = "none";
+    successMessage.style.opacity = "0";
+    successMessage.style.transform = "translateY(-10px)";
     quizList.style.display = "none";
+    quizList.style.visibility = "visible";
+    quizList.style.position = "relative";
+    quizList.style.top = "auto";
+    quizList.style.left = "auto";
     scoreContainer.style.opacity = "0";
     scoreContainer.classList.remove("show-feedback");
     timerElement.classList.remove("warning");
@@ -1712,6 +1760,10 @@ ANSWER: C
     document.querySelector('#testCountButtonGroup button[data-count="25"]').classList.add("active");
     allTestsCheck.checked = false;
     selectedTestCount = 25;
+    
+    // Reset tests array
+    originalTests = [];
+    randomizedTests = [];
     
     emojiPlaceholder.textContent = "";
     
