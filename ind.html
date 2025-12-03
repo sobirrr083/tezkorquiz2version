@@ -1,7 +1,621 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-  <!-- himoyalangan sahifa: protected.html -->
+  <meta charset="UTF-8">
+  <link rel="icon" href="aga/iconcha.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tezkor Quiz - Savol Qo'shish</title>
+  <style>
+    :root {
+      --primary-color: #4560e5;
+      --bg-color: #ffffff;
+      --text-color: #333333;
+      --light-gray: #f5f7ff;
+      --border-color: #e0e4f5;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+            background-color: #ededf7; /* O'zingiz xohlagan rang, masalan, och kulrang */
+        }
+    
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    header {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 15px 0;
+      margin-bottom: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(69, 96, 229, 0.2);
+    }
+
+    header h1 {
+      text-align: center;
+    }
+
+    .form-container {
+      background-color: var(--bg-color);
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+
+    .quiz-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    label {
+      font-weight: 600;
+      color: var(--text-color);
+    }
+
+    input, textarea, select {
+      padding: 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-size: 16px;
+      transition: border-color 0.3s;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(69, 96, 229, 0.2);
+    }
+
+    button {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #3a51c1;
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    .options-container {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .option input[type="radio"] {
+      width: 20px;
+      height: 20px;
+    }
+
+    .option input[type="text"] {
+      flex-grow: 1;
+    }
+
+    .add-btn {
+      align-self: flex-start;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background-color: #f0f3ff;
+      color: var(--primary-color);
+      border: 1px solid var(--primary-color);
+    }
+
+    .add-btn:hover {
+      background-color: #e5eaff;
+    }
+
+    .remove-btn {
+      background-color: rgba(255, 77, 77, 0.1);
+      color: #ff4d4d;
+      border: 1px solid #ff4d4d;
+      padding: 8px 12px;
+    }
+
+    .remove-btn:hover {
+      background-color: rgba(255, 77, 77, 0.2);
+    }
+
+    .preview-container {
+      background-color: var(--light-gray);
+      padding: 25px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+    }
+
+    .preview-container h2 {
+      color: var(--primary-color);
+      margin-bottom: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .question-preview {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    }
+
+    .question-text {
+      font-size: 18px;
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+
+    .option-preview {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+
+    .option-preview:hover {
+      background-color: var(--light-gray);
+    }
+
+    .correct {
+      background-color: rgba(76, 175, 80, 0.1);
+      border: 1px solid #4caf50;
+    }
+
+    .quiz-list {
+      list-style: none;
+    }
+
+    .quiz-item {
+      background-color: white;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .quiz-item:hover {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .edit-btn {
+      background-color: #ffc107;
+      color: #333;
+    }
+
+    .edit-btn:hover {
+      background-color: #e5ac06;
+    }
+
+    .error {
+      color: #ff4d4d;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+
+    .tab-container {
+      margin-bottom: 20px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .tab {
+      padding: 10px 20px;
+      background-color: var(--light-gray);
+      border-radius: 6px 6px 0 0;
+      cursor: pointer;
+    }
+
+    .tab.active {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .success-message {
+      background-color: rgba(76, 175, 80, 0.1);
+      color: #4caf50;
+      padding: 15px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      border-left: 4px solid #4caf50;
+    }
+    
+    .error-message {
+      background-color: rgba(255, 77, 77, 0.1);
+      color: #ff4d4d;
+      padding: 15px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      border-left: 4px solid #ff4d4d;
+    }
+    
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    
+    .loading::after {
+      content: "";
+      width: 30px;
+      height: 30px;
+      border: 4px solid var(--light-gray);
+      border-top: 4px solid var(--primary-color);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .list-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .download-btn {
+      background-color: #28a745;
+      color: white;
+    }
+
+    .download-btn:hover {
+      background-color: #218838;
+    }
+
+    .finish-test-btn {
+      background-color: #17a2b8;
+      color: white;
+      margin-top: 10px;
+    }
+
+    .finish-test-btn:hover {
+      background-color: #138496;
+    }
+
+    .test-group {
+      background-color: white;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+    }
+
+    .test-header {
+      background-color: var(--light-gray);
+      padding: 15px;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .test-header-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .test-content {
+      padding: 0;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+    }
+
+    .test-content.active {
+      max-height: 1000px;
+      padding: 15px;
+    }
+
+    .question-list {
+      list-style-type: decimal;
+      padding-left: 20px;
+    }
+
+    .question-list li {
+      margin-bottom: 10px;
+      padding: 10px;
+      background-color: var(--light-gray);
+      border-radius: 5px;
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    .question-list li.removing {
+      animation: fadeOut 0.5s ease-out forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeOut {
+      from { opacity: 1; transform: translateY(0); }
+      to { opacity: 0; transform: translateY(-20px); }
+    }
+
+    .active-test-info {
+      background-color: rgba(69, 96, 229, 0.1);
+      padding: 10px 15px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      border-left: 4px solid var(--primary-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .active-test-name {
+      font-weight: 600;
+      color: var(--primary-color);
+    }
+
+    .message-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      max-width: 300px;
+    }
+    
+    .added-question {
+      animation: slideDown 0.5s ease-out;
+    }
+    
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .test-name-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .test-name-display {
+      font-weight: 600;
+      color: var(--primary-color);
+    }
+    
+    .hidden {
+      display: none !important;
+    }
+    
+    .preview-questions {
+      margin-top: 15px;
+    }
+    
+    .preview-question-item {
+      background-color: white;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      animation: fadeIn 0.5s ease-out;
+    }
+    /* yuqordagi bildirishnoma uchun kod */
+        
+        .conicha {
+            width: 100%;
+            overflow: hidden;
+            background-color: #4660e5;
+            padding: 12px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .moving-text {
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            white-space: nowrap;
+            animation: moveLeftToRight 15s linear infinite;
+            padding: 5px;
+        }
+        
+        @keyframes moveLeftToRight {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+
+  </style>
+</head>
+<body>
+
+<!-- <div class="container conicha">
+    <div class="moving-text">
+        Bu sahifa sinov tariqasida ishlayapti. Tez orada to'liq versiya bilan qaytamiz!   
+    </div>
+</div> -->
+
+
+</br>
+  <div class="container">
+    <header>
+      <h1>Tezkor Test Qo'shish</h1>
+    </header>
+
+    <div class="message-container" id="messageContainer"></div>
+
+    <div class="tab-container">
+      <div class="tabs">
+        <div class="tab active" data-tab="create">Savol yaratish</div>
+        <div class="tab" data-tab="list">Testlar ro'yxati</div>
+      </div>
+    </div>
+
+    <div id="create-tab" class="tab-content active">
+      <div id="activeTestInfo" class="active-test-info hidden">
+        <div class="test-name-container">
+          <span>Joriy test:</span>
+          <span class="active-test-name" id="activeTestName"></span>
+        </div>
+        <button id="finishTestBtn" class="finish-test-btn">Testni yakunlash</button>
+      </div>
+      
+      <div class="form-container">
+        <h2>Yangi test qo'shish</h2>
+        <form class="quiz-form" id="quizForm">
+          <div id="testNameGroup" class="form-group">
+            <label for="testName">Test nomi</label>
+            <input type="text" id="testName" placeholder="Test nomini kiriting" required>
+            <div id="testNameError" class="error"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="question">Savol matni</label>
+            <textarea id="question" rows="3" placeholder="Savolingizni kiriting" required></textarea>
+            <div id="questionError" class="error"></div>
+          </div>
+
+          <div class="form-group">
+            <label>Javob variantlari</label>
+            <select id="optionCountSelect">
+              <option value="2">2 ta variant</option>
+              <option value="3">3 ta variant</option>
+              <option value="4" selected>4 ta variant</option>
+       
+            </select>
+            <div class="options-container" id="optionsContainer">
+              <div class="option">
+                <input type="radio" name="correctAnswer" value="0" required>
+                <input type="text" placeholder="Variant 1" required>
+              </div>
+              <div class="option">
+                <input type="radio" name="correctAnswer" value="1">
+                <input type="text" placeholder="Variant 2" required>
+              </div>
+              <div class="option">
+                <input type="radio" name="correctAnswer" value="2">
+                <input type="text" placeholder="Variant 3" required>
+              </div>
+              <div class="option">
+                <input type="radio" name="correctAnswer" value="3">
+                <input type="text" placeholder="Variant 4" required>
+              </div>
+            </div>
+            <div id="optionsError" class="error"></div>
+          </div>
+
+          <button type="submit" id="submitBtn">Saqlash</button>
+        </form>
+      </div>
+
+      <div class="preview-container">
+        <h2>
+          <span>Oldindan ko'rish</span>
+          <span id="previewTestName" class="test-name-display"></span>
+        </h2>
+        <div class="question-preview" id="questionPreview">
+          <div class="question-text">Savol matni bu yerda ko'rinadi</div>
+          <div id="optionsPreview">
+            <div class="option-preview">
+              <input type="radio" name="previewOption" disabled>
+              <span>Variant 1</span>
+            </div>
+            <div class="option-preview">
+              <input type="radio" name="previewOption" disabled>
+              <span>Variant 2</span>
+            </div>
+            <div class="option-preview">
+              <input type="radio" name="previewOption" disabled>
+              <span>Variant 3</span>
+            </div>
+            <div class="option-preview">
+              <input type="radio" name="previewOption" disabled>
+              <span>Variant 4</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="preview-questions" id="previewQuestions">
+          <!-- Saqlangan savollar ro'yxati -->
+        </div>
+      </div>
+    </div>
+
+    <div id="list-tab" class="tab-content">
+      <div class="form-container">
+        <div class="list-header">
+          <h2>Testlar ro'yxati</h2>
+        </div>
+        <div id="quizListLoader" class="loading"></div>
+        <div id="testGroups">
+          <!-- Test guruhlar ro'yxati dinamik ravishda to'ldiriladi -->
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- himoyalangan sahifa: protected.html -->
 <script type="module">
   // Firebase SDK import qilingan deb faraz qilamiz
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
@@ -29,1823 +643,812 @@
     }
   });
 </script>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="quiz.png">
-  <title>Imtihon Quiz</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
-  <style>
-    :root {
-      --primary-color: #4361ee;
-      --primary-hover: #7b8fff;
-      --primary-light: #e8ebff;
-      --border-radius: 12px;
-    }
-    
-    body {
-      background-color: #f4f6f9;
-      overflow-x: hidden;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-    
-    .container {
-      max-width: 900px;
-      margin: 20px auto;
-      background-color: #fff;
-      padding: 15px;
-      border-radius: var(--border-radius);
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-    
-    .file-label {
-      margin-bottom: 10px;
-    }
-    
-    #uploadStatus {
-      font-weight: bold;
-      margin-top: 10px;
-    }
-    
-    .question-container {
-      border: 1px solid #ddd;
-      border-radius: var(--border-radius);
-      padding: 15px;
-      margin-bottom: 15px;
-    }
-    
-    .question-text {
-      font-weight: bold;
-      margin-bottom: 10px;
-      word-wrap: break-word;
-      white-space: normal;
-    }
-    
-    .options-container .form-check {
-      margin-bottom: 8px;
-      display: flex;
-      align-items: flex-start;
-    }
-    
-    .form-check-input {
-      transform: scale(1.2);
-      margin-right: 10px;
-      margin-top: 5px;
-    }
-    
-    .form-check-label {
-      word-wrap: break-word;
-      white-space: normal;
-      flex: 1;
-    }
-    
-    .correct {
-      background-color: #d1e7dd !important;
-    }
-    
-    .incorrect {
-      background-color: #f8d7da !important;
-    }
-    
-    .unanswered-correct {
-      background-color: #fff3e0 !important;
-    }
-    
-    .check-icon {
-      font-weight: bold;
-      margin-left: 8px;
-    }
-    
-    .score-container {
-      margin-top: 20px;
-      text-align: center;
-      font-size: 1.2rem;
-      font-weight: bold;
-      opacity: 0;
-      transition: opacity 1s ease-in;
-    }
-    
-    .show-feedback {
-      opacity: 1 !important;
-    }
-    
-    .feedback-text {
-      font-size: 1.1rem;
-      margin-top: 10px;
-      color: #444;
-    }
-    
-    .feedback-text span {
-      font-weight: bold;
-      color: var(--primary-color);
-    }
-    
-    .timer-container {
-      background-color: #f8f9fa;
-      border-radius: var(--border-radius);
-      padding: 12px 20px;
-      margin-bottom: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.08);
-      transition: all 0.3s ease;
-    }
-    
-    .timer-container.compact-timer {
-      position: fixed !important;
-      top: 15px !important;
-      right: 15px !important;
-      width: auto !important;
-      padding: 8px 12px !important;
-      z-index: 2000;
-      background-color: white !important;
-      border: 1px solid #ddd;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-      animation: fadeIn 0.5s forwards;
-    }
-    
-    .timer-container.compact-timer .timer-text span {
-      display: none;
-    }
-    
-    .timer {
-      font-size: 1.4rem;
-      font-weight: bold;
-      color: #333;
-    }
-    
-    .timer.warning {
-      color: #dc3545;
-      animation: pulse 1s infinite;
-    }
-    
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.7; }
-    }
-    
-    .countdown-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, rgba(67, 97, 238, 0.95), rgba(123, 143, 255, 0.95));
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 3000;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.5s ease;
-    }
+  <script>
+    const API_BASE_URL = 'http://localhost:3000/api/quizzes';
+    const quizForm = document.getElementById('quizForm');
+    const testNameInput = document.getElementById('testName');
+    const testNameGroup = document.getElementById('testNameGroup');
+    const questionInput = document.getElementById('question');
+    const optionsContainer = document.getElementById('optionsContainer');
+    const optionCountSelect = document.getElementById('optionCountSelect');
+    const tabs = document.querySelectorAll('.tab');
+    const tabContents = document.querySelectorAll('.tab-content');
+    const submitBtn = document.getElementById('submitBtn');
+    const finishTestBtn = document.getElementById('finishTestBtn');
+    const testNameError = document.getElementById('testNameError');
+    const questionError = document.getElementById('questionError');
+    const optionsError = document.getElementById('optionsError');
+    const questionPreview = document.querySelector('.question-text');
+    const optionsPreview = document.getElementById('optionsPreview');
+    const testGroups = document.getElementById('testGroups');
+    const quizListLoader = document.getElementById('quizListLoader');
+    const messageContainer = document.getElementById('messageContainer');
+    const activeTestInfo = document.getElementById('activeTestInfo');
+    const activeTestName = document.getElementById('activeTestName');
+    const previewTestName = document.getElementById('previewTestName');
+    const previewQuestions = document.getElementById('previewQuestions');
+    const STORAGE_KEY = 'menda_quiz_items';
+    const ACTIVE_TEST_KEY = 'menda_active_test';
+    let quizItems = [];
+    let activeTest = null;
 
-    .countdown-overlay.show {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .countdown-content {
-      text-align: center;
-      color: white;
-    }
-
-    .countdown-number {
-      font-size: 120px;
-      font-weight: bold;
-      margin: 20px 0;
-      animation: countdownPulse 1s ease-in-out;
-    }
-
-    .countdown-text {
-      font-size: 28px;
-      font-weight: 600;
-      margin-bottom: 20px;
-      letter-spacing: 1px;
-    }
-
-    .countdown-message {
-      font-size: 20px;
-      margin-top: 20px;
-      opacity: 0.9;
-    }
-
-    @keyframes countdownPulse {
-      0% {
-        transform: scale(0.5);
-        opacity: 0;
-      }
-      50% {
-        transform: scale(1.2);
-      }
-      100% {
-        transform: scale(1);
-        opacity: 1;
-      }
-    }
-
-    .success-message {
-      background-color: #e8ebff;
-      border: 2px solid var(--primary-color);
-      border-radius: var(--border-radius);
-      padding: 20px;
-      margin: 20px 0;
-      text-align: center;
-      display: none;
-      opacity: 0;
-      transform: translateY(-20px);
-      transition: opacity 0.5s ease, transform 0.5s ease;
-    }
-
-    .success-message.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .success-message h4 {
-      color: var(--primary-color);
-      margin-bottom: 10px;
-      font-size: 1.3rem;
-    }
-
-    .success-message p {
-      color: #333;
-      margin: 5px 0;
-      font-size: 1rem;
-    }
-
-    .start-exam-btn {
-      background-color: var(--primary-color);
-      border: none;
-      color: white;
-      padding: 15px 40px;
-      font-size: 1.2rem;
-      font-weight: 600;
-      border-radius: 50px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      margin-top: 15px;
-      box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-    }
-
-    .start-exam-btn:hover {
-      background-color: var(--primary-hover);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
-    }
-
-    .start-exam-btn:active {
-      transform: translateY(0);
-    }
-
-    @keyframes slideDown {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    
-    .time-settings {
-      margin: 15px 0;
-      padding: 20px;
-      border: 1px solid #ddd;
-      border-radius: var(--border-radius);
-      background-color: #f8f9fa;
-    }
-
-    .settings-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 15px;
-      color: var(--primary-color);
-    }
-
-    .settings-header i {
-      font-size: 1.5rem;
-    }
-
-    .settings-header h5 {
-      margin: 0;
-      font-weight: 600;
-    }
-    
-    .btn-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: flex-start;
-    }
-    
-    .btn-group button {
-      flex: 1 1 auto;
-      min-width: 90px;
-      max-width: 120px;
-      white-space: nowrap;
-      border: 2px solid var(--primary-color);
-      color: var(--primary-color);
-      background-color: white;
-      transition: all 0.2s ease;
-      border-radius: 25px;
-      padding: 8px 16px;
-      font-weight: 500;
-    }
-    
-    .btn-group button:hover {
-      background-color: var(--primary-color);
-      color: white;
-      border-color: var(--primary-color);
-      transform: translateY(-1px);
-      box-shadow: 0 4px 8px rgba(67, 97, 238, 0.3);
-    }
-    
-    .btn-group button.active {
-      background-color: var(--primary-color);
-      color: white;
-      border-color: var(--primary-color);
-      box-shadow: 0 4px 8px rgba(67, 97, 238, 0.3);
-    }
-
-    .custom-option {
-      margin-top: 12px;
-      padding: 12px;
-      background-color: transparent;
-      border-radius: var(--border-radius);
-    }
-
-    .custom-option-content {
-      display: none;
-      margin-top: 10px;
-    }
-
-    .custom-option-content.show {
-      display: block;
-    }
-    
-    .confetti-container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 999;
-    }
-    
-    .confetti {
-      position: absolute;
-      width: 10px;
-      height: 10px;
-      background-color: #f00;
-      border-radius: 50%;
-      animation: fall 5s ease-in-out;
-    }
-    
-    @keyframes fall {
-      0% {
-        top: -10px;
-        transform: translateX(0) rotate(0deg);
-        opacity: 1;
-      }
-      100% {
-        top: 100vh;
-        transform: translateX(100px) rotate(360deg);
-        opacity: 0;
-      }
-    }
-    
-    .new-test-btn {
-      margin: 20px auto;
-      max-width: 200px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      background-color: var(--primary-light);
-      color: var(--primary-color);
-      border: 1.5px solid var(--primary-color);
-      padding: 10px 20px;
-      font-weight: 600;
-      border-radius: var(--border-radius);
-      transition: all 0.2s ease;
-      cursor: pointer;
-    }
-    
-    .new-test-btn:hover {
-      background-color: var(--primary-color);
-      color: white;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(91, 155, 213, 0.3);
-    }
-    
-    .results-card {
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      padding: 20px;
-      background-color: #fff;
-      margin-top: 30px;
-      text-align: center;
-    }
-    
-    .progress-container {
-      margin: 25px 0;
-    }
-    
-    .progress-bar {
-      height: 20px;
-      border-radius: 10px;
-      background-color: #f0f0f0;
-      overflow: hidden;
-      margin-bottom: 10px;
-    }
-    
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #4CAF50, #8BC34A);
-      transition: width 1.5s ease-in-out;
-      border-radius: 10px;
-    }
-    
-    .progress-fill.low {
-      background: linear-gradient(90deg, #FF5252, #FF8A80);
-    }
-    
-    .stats-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin: 20px 0;
-      gap: 10px;
-    }
-    
-    .stat-item {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10px 20px;
-      border-radius: 8px;
-      font-weight: bold;
-      flex: 1;
-      min-width: 120px;
-      box-sizing: border-box;
-      text-align: center;
-      gap: 8px;
-    }
-    
-    .total-questions {
-      background-color: #E3F2FD;
-      color: #1976D2;
-    }
-    
-    .correct-answers {
-      background-color: #E8F5E9;
-      color: #388E3C;
-    }
-    
-    .incorrect-answers {
-      background-color: #FFEBEE;
-      color: #D32F2F;
-    }
-    
-    .unanswered {
-      background-color: #FFF3E0;
-      color: #F57C00;
-    }
-    
-    .gif-container {
-      margin: 20px auto;
-      text-align: center;
-      max-width: 350px;
-      height: 250px;
-      overflow: hidden;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .gif-container img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    
-    .salute {
-      position: fixed;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      animation: salute 2s forwards;
-      opacity: 0;
-    }
-    
-    @keyframes salute {
-      0% {
-        transform: translateY(0);
-        opacity: 1;
-      }
-      50% {
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-100vh);
-        opacity: 0;
-      }
-    }
-    
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0,0,0,0.5);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      visibility: hidden;
-      opacity: 0;
-      transition: all 0.3s;
-    }
-    
-    .modal-overlay.show {
-      visibility: visible;
-      opacity: 1;
-    }
-    
-    .confirm-modal {
-      background-color: white;
-      border-radius: 10px;
-      padding: 25px;
-      max-width: 450px;
-      width: 90%;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-      text-align: center;
-      transform: translateY(-20px);
-      transition: transform 0.3s;
-    }
-    
-    .modal-overlay.show .confirm-modal {
-      transform: translateY(0);
-    }
-    
-    #infoModal .confirm-modal {
-      max-width: 90%;
-      width: 600px;
-      max-height: 80vh;
-      display: flex;
-      flex-direction: column;
-      background-color: #fff;
-      border-radius: 12px;
-      padding: 0;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-      position: relative;
-    }
-    
-    #infoModal .modal-header {
-      padding: 20px 25px;
-      border-bottom: 1px solid #e0e0e0;
-      position: sticky;
-      top: 0;
-      background-color: #fff;
-      z-index: 10;
-      border-radius: 12px 12px 0 0;
-    }
-    
-    #infoModal .modal-header h4 {
-      margin: 0;
-      color: var(--primary-color);
-      font-size: 1.4rem;
-    }
-    
-    #infoModal .modal-content {
-      flex: 1;
-      overflow-y: auto;
-      padding: 20px 25px;
-      scrollbar-width: thin;
-      scrollbar-color: var(--primary-color) #f0f4f8;
-      text-align: left;
-    }
-    
-    #infoModal .modal-content::-webkit-scrollbar {
-      width: 8px;
-    }
-    
-    #infoModal .modal-content::-webkit-scrollbar-track {
-      background: #f0f4f8;
-    }
-    
-    #infoModal .modal-content::-webkit-scrollbar-thumb {
-      background-color: var(--primary-color);
-      border-radius: 4px;
-    }
-    
-    #infoModal .modal-content p {
-      margin-bottom: 15px;
-      line-height: 1.6;
-      color: #333;
-    }
-    
-    #infoModal .scrollable-section {
-      background-color: #f0f4f8;
-      border-left: 4px solid var(--primary-color);
-      padding: 12px;
-      border-radius: 0 6px 6px 0;
-      font-size: 0.95rem;
-      overflow-x: auto;
-      white-space: pre-wrap;
-      word-wrap: break-word;
-      max-height: 250px;
-      overflow-y: auto;
-      margin-bottom: 15px;
-      font-family: monospace;
-    }
-    
-    #infoModal .modal-footer {
-      display: flex;
-      justify-content: center;
-      position: sticky;
-      bottom: 0;
-      background-color: #fff;
-      padding: 15px 25px;
-      border-top: 1px solid #e0e0e0;
-      border-radius: 0 0 12px 12px;
-    }
-    
-    #infoModal .modal-footer button {
-      width: auto;
-      padding: 10px 24px;
-    }
-    
-    #emojiPlaceholder {
-      text-align: center;
-      min-height: 48px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 2rem;
-    }
-    
-    #infoRow {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 15px;
-      margin-bottom: 15px;
-      flex-wrap: wrap;
-    }
-    
-    #infoBtn {
-      background-color: white;
-      color: var(--primary-color);
-      border: 1.5px solid var(--primary-color);
-      font-weight: 500;
-      transition: all 0.2s ease;
-    }
-    
-    #infoBtn:hover {
-      background-color: var(--primary-color);
-      color: white;
-      border-color: var(--primary-color);
-      transform: translateY(-1px);
-    }
-    
-    #finishBtn {
-      max-width: 250px;
-      margin: 20px auto;
-      display: block;
-      background-color: var(--primary-color);
-      border-color: var(--primary-color);
-      font-weight: 600;
-      padding: 12px 24px;
-      transition: all 0.2s ease;
-    }
-    
-    #finishBtn:hover {
-      background-color: var(--primary-hover);
-      border-color: var(--primary-hover);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(91, 155, 213, 0.3);
-    }
-    
-    .confirm-btn-group {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      margin-top: 20px;
-      padding-bottom: 15px;
-    }
-    
-    .confirm-btn-group .btn-primary {
-      background-color: var(--primary-color);
-      border-color: var(--primary-color);
-    }
-    
-    .confirm-btn-group .btn-primary:hover {
-      background-color: var(--primary-hover);
-      border-color: var(--primary-hover);
-    }
-
-    @media (max-width: 576px) {
-      .container {
-        padding: 10px;
-        margin: 5px;
-      }
-      
-      .question-container {
-        padding: 10px;
-      }
-      
-      .timer-container.compact-timer {
-        width: 85px !important;
-        padding: 6px 10px !important;
-        font-size: 0.9rem !important;
-      }
-      
-      .timer {
-        font-size: 1.2rem;
-      }
-      
-      .question-text {
-        font-size: 0.95rem;
-      }
-      
-      .form-check-label {
-        font-size: 0.9rem;
-      }
-      
-      .btn-group button {
-        flex: 1 1 45%;
-        min-width: 80px;
-        max-width: 110px;
-        font-size: 0.85rem;
-      }
-      
-      .new-test-btn {
-        max-width: 180px;
-        padding: 10px 16px;
-        font-size: 0.9rem;
-      }
-      
-      #finishBtn {
-        max-width: 200px;
-        padding: 10px 20px;
-      }
-
-      .gif-container {
-        max-width: 300px;
-        height: 200px;
-      }
-
-      .start-exam-btn {
-        padding: 12px 30px;
-        font-size: 1rem;
-        width: 100%;
-        max-width: 300px;
-      }
-
-      .countdown-number {
-        font-size: 80px;
-      }
-
-      .countdown-text {
-        font-size: 20px;
-      }
-
-      .countdown-message {
-        font-size: 16px;
-      }
-
-      .success-message h4 {
-        font-size: 1.1rem;
-      }
-
-      .success-message p {
-        font-size: 0.9rem;
-      }
-    }
-
-    @media (min-width: 577px) and (max-width: 768px) {
-      .start-exam-btn {
-        padding: 14px 35px;
-        font-size: 1.1rem;
-        max-width: 350px;
-      }
-
-      .countdown-number {
-        font-size: 100px;
-      }
-
-      .countdown-text {
-        font-size: 24px;
-      }
-
-      .countdown-message {
-        font-size: 18px;
-      }
-    }
-
-    @media (min-width: 769px) {
-      .start-exam-btn {
-        max-width: 400px;
-      }
-    }
-  </style>
-</head>
-<body>
-<div class="container">
-  <h1 class="text-center mb-4">Imtihon Quiz</h1>
-
-  <div id="infoRow">
-    <button id="infoBtn" class="btn">
-      <i class="fas fa-info-circle me-2"></i>Imtihon Quiz qanday ishlaydi?
-    </button>
-    <div id="emojiPlaceholder"></div>
-  </div>
-
-  <div id="timeSettings" class="time-settings">
-    <div class="settings-header">
-      <i class="fas fa-clock"></i>
-      <h5>Imtihon sozlamalari</h5>
-    </div>
-
-    <h6 class="mb-2">Imtihon vaqti:</h6>
-    <div class="btn-group mb-3" role="group" id="timeButtonGroup">
-      <button type="button" class="btn btn-outline-primary" data-time="10">10 daq</button>
-      <button type="button" class="btn btn-outline-primary" data-time="15">15 daq</button>
-      <button type="button" class="btn btn-outline-primary" data-time="20">20 daq</button>
-      <button type="button" class="btn btn-outline-primary active" data-time="25">25 daq</button>
-      <button type="button" class="btn btn-outline-primary" data-time="30">30 daq</button>
-    </div>
-
-    <div class="custom-option">
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" id="customTimeCheck">
-        <label class="form-check-label" for="customTimeCheck">Boshqa vaqt</label>
-      </div>
-      <div id="customTimeInput" class="custom-option-content">
-        <div class="input-group" style="max-width: 200px;">
-          <input type="number" class="form-control" id="minutesInput" min="1" max="180" value="25">
-          <span class="input-group-text">daqiqa</span>
-        </div>
-      </div>
-    </div>
-
-    <h6 class="mb-2 mt-3">Testlar soni:</h6>
-    <div class="btn-group mb-3" role="group" id="testCountButtonGroup">
-      <button type="button" class="btn btn-outline-primary" data-count="10">10 ta</button>
-      <button type="button" class="btn btn-outline-primary" data-count="15">15 ta</button>
-      <button type="button" class="btn btn-outline-primary" data-count="20">20 ta</button>
-      <button type="button" class="btn btn-outline-primary active" data-count="25">25 ta</button>
-      <button type="button" class="btn btn-outline-primary" data-count="30">30 ta</button>
-    </div>
-
-    <div class="custom-option">
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" id="allTestsCheck">
-        <label class="form-check-label" for="allTestsCheck">Barcha testlarni ko'rsatish</label>
-      </div>
-    </div>
-  </div>
-
-  <div id="timerContainer" class="timer-container" style="display: none;">
-    <div class="timer-text">
-      <i class="fas fa-clock"></i>
-      <span>Qolgan vaqt:</span>
-    </div>
-    <div id="timer" class="timer">00:00</div>
-  </div>
-
-  <div id="fileSection" class="mb-3">
-    <label for="fileInput" class="form-label file-label">Iltimos umumiy test faylini tanlang!</label>
-    <input type="file" class="form-control" id="fileInput" accept=".txt" />
-    <div id="uploadStatus"></div>
-    
-    <div id="successMessage" class="success-message">
-      <h4>✅ Fayl muvaffaqiyatli yuklandi!</h4>
-      <p id="loadedTestsInfo"></p>
-      <button id="startExamBtn" class="start-exam-btn">
-        <i class="fas fa-play-circle me-2"></i>Imtihonni boshlash
-      </button>
-    </div>
-  </div>
-
-  <div id="quizList" style="display: none;">
-    <p id="testCount" class="text-success fw-bold"></p>
-    <div id="questionsContainer"></div>
-    <button id="finishBtn" class="btn btn-primary">Testni yakunlash</button>
-  </div>
-
-  <div id="scoreContainer" class="score-container">
-    <div class="results-card">
-      <h3 class="mb-3">Imtihon natijalari:</h3>
-      
-      <div class="progress-container">
-        <div class="progress-bar">
-          <div id="progressFill" class="progress-fill" style="width: 0%"></div>
-        </div>
-        <div id="progressText" class="mt-2">0%</div>
-      </div>
-      
-      <div class="stats-container">
-        <div class="stat-item total-questions">
-          <i class="fas fa-clipboard-list"></i>
-          <span>Jami: </span>
-          <span id="totalQuestions">0</span>
-        </div>
-        
-        <div class="stat-item correct-answers">
-          <i class="fas fa-check-circle"></i>
-          <span>To'g'ri: </span>
-          <span id="correctAnswers">0</span>
-        </div>
-        
-        <div class="stat-item incorrect-answers">
-          <i class="fas fa-times-circle"></i>
-          <span>Xato: </span>
-          <span id="incorrectAnswers">0</span>
-        </div>
-        
-        <div class="stat-item unanswered">
-          <i class="fas fa-question-circle"></i>
-          <span>Javobsiz: </span>
-          <span id="unanswered">0</span>
-        </div>
-      </div>
-      
-      <div id="gifContainer" class="gif-container"></div>
-      
-      <div id="feedbackText" class="feedback-text mt-3"></div>
-    </div>
-  </div>
-
-  <button id="newTestBtn" class="btn new-test-btn" style="display: none;">
-    <i class="fas fa-plus"></i> Yangi test
-  </button>
-
-  <div id="confettiContainer" class="confetti-container"></div>
-  <div id="saluteContainer"></div>
-  
-  <div id="countdownOverlay" class="countdown-overlay">
-    <div class="countdown-content">
-      <div class="countdown-text">Imtihon boshlanmoqda...</div>
-      <div id="countdownNumber" class="countdown-number">3</div>
-      <div class="countdown-message">Omad tilaymiz! 🍀</div>
-    </div>
-  </div>
-  
-  <div id="confirmModal" class="modal-overlay">
-    <div class="confirm-modal">
-      <h4 class="mb-3">Diqqat!</h4>
-      <p id="confirmMessage">Barcha savollarga javob berdingizmi?</p>
-      <div class="confirm-btn-group">
-        <button id="cancelFinish" class="btn btn-secondary">Bekor qilish</button>
-        <button id="confirmFinish" class="btn btn-primary">Tasdiqlash</button>
-      </div>
-    </div>
-  </div>
-
-  <div id="newTestModal" class="modal-overlay">
-    <div class="confirm-modal">
-      <h4 class="mb-3">Yangi imtihon</h4>
-      <p>Yangi imtihonga tayyormisiz?</p>
-      <div class="confirm-btn-group">
-        <button id="cancelNewTest" class="btn btn-secondary">Yo'q</button>
-        <button id="confirmNewTest" class="btn btn-primary">Ha</button>
-      </div>
-    </div>
-  </div>
-
-  <div id="infoModal" class="modal-overlay">
-    <div class="confirm-modal">
-      <div class="modal-content">
-        <h4>Imtihon quiz qanday ishlaydi?</h4>
-        <p>
-          Testlarni boshlash uchun yuqoridagi "Fayl tanlash" orqali .txt faylini yuklang. Fayl quyidagi formatda bo'lishi kerak:
-        </p>
-        <pre>O'zbekiston poytaxti qayer?
-A. Toshkent
-B. Samarqand
-C. Namangan
-D. Buxoro
-ANSWER: A
-
-Kompyuterda yozish uchun nima kerak?
-A. Monitor
-B. Sichqoncha
-C. Klaviatura
-D. Printer
-ANSWER: C
-</pre>
-        <p>
-          <strong>Izoh:</strong> Har bir savol bir qatordan boshlanadi, undan keyin A, B, C, D variantlari va ANSWER: so'zidan keyin bitta probel bilan to'g'ri javob (A, B, C yoki D) ko'rsatiladi va bir qator ochiq joy (Enter) qoldiriladi va keyingi savol namunadek davom etadi.
-          <br><br>
-          Barcha testlar shu ko'rinishda bo'lishi lozim. 
-          <br>
-          Yordam: <a href="https://t.me/sobirweb" target="_blank">@sobirweb</a>
-        </p>
-      </div>
-      <div class="confirm-btn-group">
-        <button id="closeInfo" class="btn btn-primary">Yopish</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-  let originalTests = [];
-  let randomizedTests = [];
-  let timerInterval;
-  let totalSeconds = 25 * 60;
-  let examStarted = false;
-  let selectedTestCount = 25;
-
-  const gifGroups = {
-    veryLow: [
-      { url: "https://media.giphy.com/media/17mAJxOsYBR1nTZYXi/giphy.gif", alt: "Xafa 1" },
-      { url: "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExM2ljcGt1ZnJmb2x0cXBnaGhhcWV2bno5cmR3NW90cHlybWVuOGF5MyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/7a7NZ63gUrdx7Vc8xY/giphy.gif", alt: "Xafa 2" },
-      { url: "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3dmF4cndzMnZyN2I3eGJxY2NkaGZucHhnOXhuNzYxN2VleWRncXgxdCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Ibn7LZ38Sy4wDeoQz9/giphy.gif", alt: "Xafa 3" }
-    ],
-    low: [
-      { url: "https://media.giphy.com/media/VmBr6jHKt2TXbJsqao/giphy.gif", alt: "O'rtacha 1" },
-      { url: "https://media.giphy.com/media/LFdzb6oZwntwQuxhPE/giphy.gif", alt: "O'rtacha 2" },
-      { url: "https://media.giphy.com/media/fHUpoPfK3bBDwB7Nhn/giphy.gif", alt: "O'rtacha 3" }
-    ],
-    medium: [
-      { url: "https://media.giphy.com/media/aQEbYNzDg3f2O6NHHZ/giphy.gif", alt: "Yaxshi 1" },
-      { url: "https://media.giphy.com/media/7BN2vSKokJhhTnfj9w/giphy.gif", alt: "Yaxshi 2" },
-      { url: "https://media.giphy.com/media/mwrMzvCG11qlEgOMef/giphy.gif", alt: "Yaxshi 3" }
-    ],
-    high: [
-      { url: "https://media.giphy.com/media/wxutdWM3fug3UmKxa2/giphy.gif", alt: "Juda yaxshi 1" },
-      { url: "https://media.giphy.com/media/Gz6nYcm8oXE4dFTC8j/giphy.gif", alt: "Juda yaxshi 2" },
-      { url: "https://media.giphy.com/media/fVmM8GMSVp2DIjnl1i/giphy.gif", alt: "Juda yaxshi 3" }
-    ],
-    excellent: [
-      { url: "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExbGJ4bzZ0ZnN5czJsZ2Zqem5pdnV4ZTA0a2w1NzB2cTF1NTJ0YWZrZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/YLe3fUeRlIbNXxN5nV/giphy.gif", alt: "A'lo 1" },
-      { url: "https://media.giphy.com/media/n2pEms37feoXhzB6pC/giphy.gif", alt: "A'lo 2" },
-      { url: "https://media.giphy.com/media/AepMHW1bDrLnXyiqAU/giphy.gif", alt: "A'lo 3" }
-    ]
-  };
-  let gifIndices = {
-    veryLow: 0,
-    low: 0,
-    medium: 0,
-    high: 0,
-    excellent: 0
-  };
-
-  const fileInput = document.getElementById("fileInput");
-  const uploadStatus = document.getElementById("uploadStatus");
-  const quizList = document.getElementById("quizList");
-  const testCount = document.getElementById("testCount");
-  const questionsContainer = document.getElementById("questionsContainer");
-  const finishBtn = document.getElementById("finishBtn");
-  const scoreContainer = document.getElementById("scoreContainer");
-  const feedbackText = document.getElementById("feedbackText");
-  const newTestBtn = document.getElementById("newTestBtn");
-  const timeSettings = document.getElementById("timeSettings");
-  const timerContainer = document.getElementById("timerContainer");
-  const timerElement = document.getElementById("timer");
-  const customTimeCheck = document.getElementById("customTimeCheck");
-  const customTimeInput = document.getElementById("customTimeInput");
-  const minutesInput = document.getElementById("minutesInput");
-  const timeButtons = document.querySelectorAll("#timeButtonGroup button");
-  const testCountButtons = document.querySelectorAll("#testCountButtonGroup button");
-  const allTestsCheck = document.getElementById("allTestsCheck");
-  const confirmModal = document.getElementById("confirmModal");
-  const confirmMessage = document.getElementById("confirmMessage");
-  const cancelFinish = document.getElementById("cancelFinish");
-  const confirmFinish = document.getElementById("confirmFinish");
-  const progressFill = document.getElementById("progressFill");
-  const progressText = document.getElementById("progressText");
-  const totalQuestionsEl = document.getElementById("totalQuestions");
-  const correctAnswersEl = document.getElementById("correctAnswers");
-  const incorrectAnswersEl = document.getElementById("incorrectAnswers");
-  const unansweredEl = document.getElementById("unanswered");
-  const gifContainer = document.getElementById("gifContainer");
-  const saluteContainer = document.getElementById("saluteContainer");
-  const infoBtn = document.getElementById("infoBtn");
-  const infoModal = document.getElementById("infoModal");
-  const closeInfo = document.getElementById("closeInfo");
-  const fileSection = document.getElementById("fileSection");
-  const emojiPlaceholder = document.getElementById("emojiPlaceholder");
-  const newTestModal = document.getElementById("newTestModal");
-  const cancelNewTest = document.getElementById("cancelNewTest");
-  const confirmNewTest = document.getElementById("confirmNewTest");
-  const successMessage = document.getElementById("successMessage");
-  const startExamBtn = document.getElementById("startExamBtn");
-  const loadedTestsInfo = document.getElementById("loadedTestsInfo");
-  const countdownOverlay = document.getElementById("countdownOverlay");
-  const countdownNumber = document.getElementById("countdownNumber");
-
-  // Info modal
-  infoBtn.addEventListener("click", () => {
-    infoModal.classList.add("show");
-    confirmModal.classList.remove("show");
-    newTestModal.classList.remove("show");
-  });
-
-  closeInfo.addEventListener("click", () => {
-    infoModal.classList.remove("show");
-  });
-
-  // Scroll behavior for timer
-  window.addEventListener('scroll', () => {
-    if (examStarted) {
-      const scrollY = window.scrollY;
-      if (scrollY > 100) {
-        timerContainer.classList.add('compact-timer');
-      } else {
-        timerContainer.classList.remove('compact-timer');
-      }
-    }
-  });
-
-  // Time buttons
-  timeButtons.forEach(button => {
-    button.addEventListener("click", () => {
-      timeButtons.forEach(btn => btn.classList.remove("active"));
-      button.classList.add("active");
-      const minutes = parseInt(button.getAttribute("data-time"));
-      totalSeconds = minutes * 60;
-      customTimeCheck.checked = false;
-      customTimeInput.classList.remove("show");
-    });
-  });
-
-  // Custom time checkbox
-  customTimeCheck.addEventListener("change", () => {
-    if (customTimeCheck.checked) {
-      customTimeInput.classList.add("show");
-      timeButtons.forEach(btn => btn.classList.remove("active"));
-      totalSeconds = parseInt(minutesInput.value) * 60;
-    } else {
-      customTimeInput.classList.remove("show");
-    }
-  });
-
-  minutesInput.addEventListener("change", () => {
-    if (customTimeCheck.checked) {
-      totalSeconds = parseInt(minutesInput.value) * 60;
-    }
-  });
-
-  // Test count buttons
-  testCountButtons.forEach(button => {
-    button.addEventListener("click", () => {
-      testCountButtons.forEach(btn => btn.classList.remove("active"));
-      button.classList.add("active");
-      selectedTestCount = parseInt(button.getAttribute("data-count"));
-      allTestsCheck.checked = false;
-    });
-  });
-
-  // All tests checkbox
-  allTestsCheck.addEventListener("change", () => {
-    if (allTestsCheck.checked) {
-      testCountButtons.forEach(btn => btn.classList.remove("active"));
-      selectedTestCount = -1; // -1 means all tests
-    } else {
-      // Reset to default
-      testCountButtons.forEach(btn => {
-        if (btn.getAttribute("data-count") === "25") {
-          btn.classList.add("active");
-        }
+    document.addEventListener('DOMContentLoaded', () => {
+      loadQuizItems();
+      loadActiveTest();
+      updateOptionIndexes();
+      updatePreview();
+      updateTestGroupList();
+      document.querySelectorAll('.option input[type="text"]').forEach(input => {
+        input.addEventListener('input', updatePreview);
       });
-      selectedTestCount = 25;
+      adjustOptions(4); // Default 4 ta variant
+    });
+
+    // Joriy testni saqlash
+    function saveActiveTest(testName) {
+      activeTest = testName;
+      localStorage.setItem(ACTIVE_TEST_KEY, testName);
+      activeTestName.textContent = testName;
+      previewTestName.textContent = testName;
+      activeTestInfo.classList.remove('hidden');
+      testNameGroup.classList.add('hidden');
+      updatePreviewQuestions();
     }
-  });
 
-  function shuffleArray(array) {
-    const newArray = [...array];
-    for (let i = newArray.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+    // Joriy testni yuklash
+    function loadActiveTest() {
+      const savedTest = localStorage.getItem(ACTIVE_TEST_KEY);
+      if (savedTest) {
+        saveActiveTest(savedTest);
+        testNameInput.value = savedTest;
+      }
     }
-    return newArray;
-  }
 
-  fileInput.addEventListener("change", (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+    // Testni yakunlash
+    finishTestBtn.addEventListener('click', () => {
+      activeTest = null;
+      localStorage.removeItem(ACTIVE_TEST_KEY);
+      activeTestInfo.classList.add('hidden');
+      testNameGroup.classList.remove('hidden');
+      testNameInput.value = '';
+      previewTestName.textContent = '';
+      previewQuestions.innerHTML = '';
+      showMessage('Test yakunlandi!', 'success');
+    });
 
-    if (!examStarted) {
-      if (totalSeconds <= 0) {
-        uploadStatus.textContent = "Xatolik: Iltimos, avval imtihon vaqtini tanlang!";
-        fileInput.value = "";
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        const tabId = tab.getAttribute('data-tab');
+        tabContents.forEach(content => {
+          content.classList.remove('active');
+          if (content.id === `${tabId}-tab`) {
+            content.classList.add('active');
+            if (tabId === 'list') {
+              fetchQuestions();
+            }
+          }
+        });
+      });
+    });
+
+    optionCountSelect.addEventListener('change', (e) => {
+      adjustOptions(parseInt(e.target.value));
+    });
+
+    function adjustOptions(count) {
+      while (optionsContainer.children.length > count) {
+        optionsContainer.lastChild.remove();
+      }
+      while (optionsContainer.children.length < count) {
+        const optionIndex = optionsContainer.children.length;
+        const optionDiv = document.createElement('div');
+        optionDiv.className = 'option';
+        const radioInput = document.createElement('input');
+        radioInput.type = 'radio';
+        radioInput.name = 'correctAnswer';
+        radioInput.value = optionIndex;
+        const textInput = document.createElement('input');
+        textInput.type = 'text';
+        textInput.placeholder = `Variant ${optionIndex + 1}`;
+        textInput.required = true;
+        optionDiv.appendChild(radioInput);
+        optionDiv.appendChild(textInput);
+        optionsContainer.appendChild(optionDiv);
+        textInput.addEventListener('input', updatePreview);
+      }
+      updateOptionIndexes();
+      updatePreview();
+    }
+
+    function updateOptionIndexes() {
+      const options = optionsContainer.querySelectorAll('.option');
+      options.forEach((option, index) => {
+        const radio = option.querySelector('input[type="radio"]');
+        radio.value = index;
+        const textInput = option.querySelector('input[type="text"]');
+        textInput.placeholder = `Variant ${index + 1}`;
+      });
+    }
+
+    function updatePreview() {
+      questionPreview.textContent = questionInput.value || 'Savol matni bu yerda ko\'rinadi';
+      optionsPreview.innerHTML = '';
+      const options = optionsContainer.querySelectorAll('.option');
+      options.forEach((option, index) => {
+        const textInput = option.querySelector('input[type="text"]');
+        const radioInput = option.querySelector('input[type="radio"]');
+        const optionDiv = document.createElement('div');
+        optionDiv.className = 'option-preview';
+        if (radioInput.checked) {
+          optionDiv.classList.add('correct');
+        }
+        const radioPreview = document.createElement('input');
+        radioPreview.type = 'radio';
+        radioPreview.name = 'previewOption';
+        radioPreview.disabled = true;
+        if (radioInput.checked) {
+          radioPreview.checked = true;
+        }
+        const textSpan = document.createElement('span');
+        textSpan.textContent = textInput.value || `Variant ${index + 1}`;
+        optionDiv.appendChild(radioPreview);
+        optionDiv.appendChild(textSpan);
+        optionsPreview.appendChild(optionDiv);
+      });
+    }
+
+    // Saqlangan savollar ro'yxatini yangilash
+    function updatePreviewQuestions() {
+      if (!activeTest) {
+        previewQuestions.innerHTML = '';
+        return;
+      }
+      
+      const testQuestions = quizItems.filter(item => item.testName === activeTest);
+      previewQuestions.innerHTML = '';
+      
+      if (testQuestions.length === 0) {
+        return;
+      }
+      
+      const questionsList = document.createElement('h3');
+      questionsList.textContent = 'Saqlangan savollar:';
+      questionsList.style.marginTop = '20px';
+      questionsList.style.marginBottom = '10px';
+      previewQuestions.appendChild(questionsList);
+      
+      testQuestions.forEach((item, index) => {
+        const questionItem = document.createElement('div');
+        questionItem.className = 'preview-question-item';
+        
+        const questionNumber = document.createElement('div');
+        questionNumber.style.fontWeight = 'bold';
+        questionNumber.textContent = `${index + 1}. ${item.question}`;
+        
+        const optionsList = document.createElement('div');
+        optionsList.style.marginTop = '10px';
+        
+        const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
+        item.options.forEach((option, optIndex) => {
+          const optionItem = document.createElement('div');
+          optionItem.style.margin = '5px 0';
+          optionItem.innerHTML = `${letters[optIndex]}. ${option} ${optIndex === item.correctIndex ? '<strong>(✓)</strong>' : ''}`;
+          optionsList.appendChild(optionItem);
+        });
+        
+        questionItem.appendChild(questionNumber);
+        questionItem.appendChild(optionsList);
+        previewQuestions.appendChild(questionItem);
+      });
+    }
+
+    questionInput.addEventListener('input', updatePreview);
+    optionsContainer.addEventListener('change', (e) => {
+      if (e.target.type === 'radio') {
+        updatePreview();
+      }
+    });
+    optionsContainer.addEventListener('input', (e) => {
+      if (e.target.type === 'text') {
+        updatePreview();
+      }
+    });
+
+    quizForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!validateForm()) return;
+      
+      const formData = getFormData();
+      
+      try {
+        await createQuizItem(formData);
+        
+        // Aktiv test yo'q bo'lsa, yangi saqlayapmiz
+        if (!activeTest) {
+          saveActiveTest(formData.testName);
+        }
+        
+        // Yangi qo'shilgan savolni ko'rsatish effekti
+        const newQuestion = document.createElement('div');
+        newQuestion.className = 'preview-question-item added-question';
+        newQuestion.innerHTML = `
+          <div style="font-weight: bold">${formData.question}</div>
+          <div style="margin-top: 10px;">Savol muvaffaqiyatli qo'shildi!</div>
+        `;
+        
+        previewQuestions.appendChild(newQuestion);
+        setTimeout(() => {
+          updatePreviewQuestions();
+        }, 1000);
+        
+        showMessage('Savol muvaffaqiyatli saqlandi!', 'success');
+        resetFormExceptTestName();
+      } catch (error) {
+        showMessage(`Xatolik: ${error.message || 'Nomalum xatolik'}`, 'error');
+      }
+    });
+
+    function validateForm() {
+      let isValid = true;
+      
+      if (!activeTest && !testNameInput.value.trim()) {
+        testNameError.textContent = 'Test nomini kiriting';
+        isValid = false;
+      } else {
+        testNameError.textContent = '';
+      }
+      
+      if (!questionInput.value.trim()) {
+        questionError.textContent = 'Savol kiritilishi shart';
+        isValid = false;
+      } else {
+        questionError.textContent = '';
+      }
+      
+      const options = optionsContainer.querySelectorAll('.option');
+      const optionValues = Array.from(options).map(option => 
+        option.querySelector('input[type="text"]').value.trim()
+      );
+      
+      if (optionValues.some(value => !value)) {
+        optionsError.textContent = 'Barcha variantlarni to\'ldiring';
+        isValid = false;
+      } else if (new Set(optionValues).size !== optionValues.length) {
+        optionsError.textContent = 'Variantlar takrorlanmasligi kerak';
+        isValid = false;
+      } else {
+        optionsError.textContent = '';
+      }
+      
+      const correctAnswer = document.querySelector('input[name="correctAnswer"]:checked');
+      if (!correctAnswer) {
+        optionsError.textContent = 'To\'g\'ri javobni belgilang';
+        isValid = false;
+      }
+      
+      return isValid;
+    }
+
+    function getFormData() {
+      const options = optionsContainer.querySelectorAll('.option');
+      const optionValues = Array.from(options).map(option => 
+        option.querySelector('input[type="text"]').value.trim()
+      );
+      const correctAnswer = document.querySelector('input[name="correctAnswer"]:checked');
+      
+      return {
+        id: Date.now(),
+        testName: activeTest || testNameInput.value.trim(),
+        question: questionInput.value.trim(),
+        options: optionValues,
+        correctIndex: parseInt(correctAnswer.value)
+      };
+    }
+
+    function resetFormExceptTestName() {
+      // Test nomini saqlab qolish va faqat savol va variantlarni tozalash
+      const testName = testNameInput.value;
+      
+      // Forma tozalash
+      questionInput.value = '';
+      document.querySelectorAll('.option input[type="text"]').forEach(input => {
+        input.value = '';
+      });
+      document.querySelectorAll('.option input[type="radio"]').forEach((radio, index) => {
+        radio.checked = index === 0; // Birinchi variantni tanlash
+      });
+      
+      // Test nomi inputni avvalgi qiymatini tiklash
+      testNameInput.value = testName;
+      
+      // Tahrirlash rejimidan chiqish
+      delete quizForm.dataset.editId;
+      submitBtn.textContent = 'Saqlash';
+      
+      // Xatolik xabarlarini tozalash
+      questionError.textContent = '';
+      optionsError.textContent = '';
+      
+      updatePreview();
+    }
+
+    function resetForm() {
+      // To'liq formani tozalash
+      quizForm.reset();
+      delete quizForm.dataset.editId;
+      adjustOptions(parseInt(optionCountSelect.value));
+      submitBtn.textContent = 'Saqlash';
+      questionError.textContent = '';
+      optionsError.textContent = '';
+      testNameError.textContent = '';
+      updatePreview();
+    }
+
+    // Savollarni API orqali yaratish
+    async function createQuizItem(formData) {
+      try {
+        // Local storageda saqlash
+        quizItems.push(formData);
+        saveQuizItems();
+        return formData;
+      } catch (error) {
+        console.error('Error creating quiz item:', error);
+        throw error;
+      }
+    }
+
+    // Quiz elementlarini saqlash
+    function saveQuizItems() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(quizItems));
+    }
+
+    // Quiz elementlarini yuklash
+    function loadQuizItems() {
+      const items = localStorage.getItem(STORAGE_KEY);
+      quizItems = items ? JSON.parse(items) : [];
+    }
+
+    // Savollarni fetch qilish
+    async function fetchQuestions() {
+      quizListLoader.style.display = 'flex';
+      try {
+        // Mahalliy saqlangan ma'lumotlarni ishlatamiz
+        await updateTestGroupList();
+      } catch (error) {
+        console.error('Error fetching questions:', error);
+        showMessage('Savollarni yuklashda xatolik yuz berdi', 'error');
+      } finally {
+        quizListLoader.style.display = 'none';
+      }
+    }
+
+    // Test guruhlar ro'yxatini yangilash
+    async function updateTestGroupList() {
+      testGroups.innerHTML = '';
+      
+      // Testlar bo'yicha guruhlaymiz
+      const groupedByTest = {};
+      quizItems.forEach(item => {
+        if (!groupedByTest[item.testName]) {
+          groupedByTest[item.testName] = [];
+        }
+        groupedByTest[item.testName].push(item);
+      });
+
+      // Agar test yo'q bo'lsa
+      if (Object.keys(groupedByTest).length === 0) {
+        const noTestsMessage = document.createElement('div');
+        noTestsMessage.textContent = 'Hozircha testlar mavjud emas';
+        noTestsMessage.style.padding = '20px';
+        noTestsMessage.style.textAlign = 'center';
+        testGroups.appendChild(noTestsMessage);
         return;
       }
 
-      uploadStatus.textContent = "Fayl yuklanmoqda...";
-
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        const content = ev.target.result;
-        parseTestFile(content);
-      };
-      reader.readAsText(file);
-    }
-  });
-
-  function parseTestFile(content) {
-    originalTests = [];
-    const lines = content.split("\n").map(line => line.trim()).filter(Boolean);
-
-    let currentTest = null;
-    for (let i = 0; i < lines.length; i++) {
-      const line = lines[i];
-      if (line.startsWith("ANSWER:")) {
-        if (currentTest) {
-          currentTest.answer = line.replace("ANSWER:", "").trim();
-          originalTests.push(currentTest);
-          currentTest = null;
-        }
-      } else if (/^[A-D]\./.test(line)) {
-        if (currentTest) {
-          const optionText = line.replace(/^[A-D]\.\s*/, "").trim();
-          const optionLetter = line.split(".")[0].trim();
-          currentTest.options.push({ letter: optionLetter, text: optionText });
-        }
-      } else {
-        if (currentTest) {}
-        currentTest = { question: line, options: [], answer: "" };
-      }
-    }
-
-    if (originalTests.length > 0) {
-      console.log("✅ Tests loaded:", originalTests.length);
-      
-      uploadStatus.textContent = "Fayl muvaffaqiyatli yuklandi!";
-      uploadStatus.style.color = "#4361ee";
-      uploadStatus.style.fontWeight = "bold";
-      
-      // File input ni disable qilish
-      fileInput.disabled = true;
-      
-      // Testlarni darhol tayyorlash
-      randomizeTests();
-      console.log("✅ Tests randomized:", randomizedTests.length);
-      
-      // Success message ma'lumotlarini yangilash
-      let testsCount = randomizedTests.length;
-      if (selectedTestCount === -1 || selectedTestCount >= originalTests.length) {
-        loadedTestsInfo.textContent = `${testsCount} ta test yuklandi (Barcha testlar)`;
-      } else {
-        loadedTestsInfo.textContent = `${testsCount} ta test ${originalTests.length} tadan tasodifiy tanlandi`;
-      }
-      
-      // Success message ni darhol ko'rsatish
-      successMessage.style.display = 'block';
-      console.log("✅ Success message display set to block");
-      
-      // Animatsiyani qo'shish
-      setTimeout(() => {
-        successMessage.classList.add("show");
-        console.log("✅ Success message class 'show' added");
+      // Har bir test uchun guruh yaratamiz
+      Object.entries(groupedByTest).forEach(([testName, questions]) => {
+        const testGroup = document.createElement('div');
+        testGroup.className = 'test-group';
         
-        // Success message ga scroll qilish
-        setTimeout(() => {
-          successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          console.log("✅ Scrolled to success message");
-        }, 300);
-      }, 50);
-      
-      // 3 soniyadan keyin tugma ko'rinishini tekshirish
-      setTimeout(() => {
-        const btnVisible = startExamBtn.offsetParent !== null;
-        console.log("Button visibility check:", btnVisible);
+        const testHeader = document.createElement('div');
+        testHeader.className = 'test-header';
+        testHeader.innerHTML = `
+          <span>${testName} (${questions.length} ta savol)</span>
+          <div class="test-header-actions">
+            <button class="edit-btn continue-test" data-test="${testName}">Davom ettirish</button>
+            <button class="download-btn" data-test="${testName}">Yuklab olish</button>
+            <button class="remove-btn" data-test="${testName}">O'chirish</button>
+          </div>
+        `;
         
-        if (!btnVisible) {
-          uploadStatus.textContent = "⚠️ Xatolik yuz berdi. Iltimos, qayta faylni yuklang!";
-          uploadStatus.style.color = "#ff6b6b";
-          uploadStatus.style.fontWeight = "bold";
+        const testContent = document.createElement('div');
+        testContent.className = 'test-content';
+        
+        // Savollar ro'yxatini yaratish
+        const questionList = document.createElement('ol');
+        questionList.className = 'question-list';
+        
+        questions.forEach(question => {
+          const li = document.createElement('li');
+          li.dataset.id = question.id;
           
-          // Faylni qayta yuklash imkonini berish
-          fileInput.disabled = false;
-          fileInput.value = "";
-          successMessage.style.display = 'none';
-          successMessage.classList.remove("show");
-        }
-      }, 3000);
-      
-    } else {
-      uploadStatus.textContent = "Xatolik: Test ma'lumotlari topilmadi yoki noto'g'ri format!";
-      uploadStatus.style.color = "#e74c3c";
-      uploadStatus.style.fontWeight = "bold";
-      fileInput.value = "";
-      fileInput.disabled = false;
-      successMessage.style.display = 'none';
-      successMessage.classList.remove("show");
-    }
-  }
-
-  // Start exam button click
-  startExamBtn.addEventListener("click", () => {
-    console.log("Start exam button clicked");
-    console.log("Randomized tests count:", randomizedTests.length);
-    
-    // Testlarni qayta tayyorlash (agar sozlamalar o'zgargan bo'lsa)
-    if (randomizedTests.length === 0) {
-      randomizeTests();
-    }
-    
-    // Orqa fonda testlarni tayyorlash
-    prepareTestsInBackground();
-    
-    // Yuqoriga scroll qilish
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    
-    // Teskari sanoqni boshlash
-    setTimeout(() => {
-      startCountdown();
-    }, 300);
-  });
-
-  function prepareTestsInBackground() {
-    console.log("Preparing tests in background...");
-    
-    // Agar testlar bo'sh bo'lsa, qayta tayyorlash
-    if (randomizedTests.length === 0) {
-      console.log("No tests found, randomizing...");
-      randomizeTests();
-    }
-    
-    // Testlarni oldindan render qilish (ko'rinmaydi)
-    quizList.style.display = "block";
-    quizList.style.visibility = "hidden";
-    quizList.style.position = "absolute";
-    quizList.style.top = "0";
-    quizList.style.left = "0";
-    quizList.style.width = "100%";
-    
-    if (selectedTestCount === -1 || selectedTestCount >= originalTests.length) {
-      testCount.textContent = `${randomizedTests.length} ta test (Barcha testlar)`;
-    } else if (originalTests.length > selectedTestCount) {
-      testCount.textContent = `${selectedTestCount} ta test ${originalTests.length} tadan tasodifiy tanlandi!`;
-    } else {
-      testCount.textContent = `${randomizedTests.length} ta test yuklandi!`;
-    }
-    
-    questionsContainer.innerHTML = "";
-    randomizedTests.forEach((test, index) => {
-      const questionDiv = document.createElement("div");
-      questionDiv.className = "question-container";
-      questionDiv.dataset.correctOptionIndex = test.correctOptionIndex;
-
-      const qText = document.createElement("div");
-      qText.className = "question-text";
-      qText.textContent = (index + 1) + ". " + test.question;
-      questionDiv.appendChild(qText);
-
-      const optionsDiv = document.createElement("div");
-      optionsDiv.className = "options-container";
-      test.options.forEach((opt, optIndex) => {
-        const formCheck = document.createElement("div");
-        formCheck.className = "form-check";
-        const input = document.createElement("input");
-        input.className = "form-check-input";
-        input.type = "radio";
-        input.name = "question_" + index;
-        input.id = "question_" + index + "_option_" + optIndex;
-        input.dataset.originalLetter = opt.letter;
-        const label = document.createElement("label");
-        label.className = "form-check-label";
-        label.setAttribute("for", input.id);
-        label.textContent = opt.text;
-        formCheck.appendChild(input);
-        formCheck.appendChild(label);
-        optionsDiv.appendChild(formCheck);
-      });
-      questionDiv.appendChild(optionsDiv);
-      questionsContainer.appendChild(questionDiv);
-    });
-    
-    console.log("Tests prepared:", randomizedTests.length);
-  }
-
-  function startCountdown() {
-    let count = 3;
-    countdownOverlay.classList.add("show");
-    countdownNumber.textContent = count;
-    
-    const countInterval = setInterval(() => {
-      count--;
-      if (count > 0) {
-        countdownNumber.textContent = count;
-        // Reset animation
-        countdownNumber.style.animation = 'none';
-        setTimeout(() => {
-          countdownNumber.style.animation = 'countdownPulse 1s ease-in-out';
-        }, 10);
-      } else {
-        clearInterval(countInterval);
-        countdownNumber.textContent = "Boshlandi!";
-        setTimeout(() => {
-          countdownOverlay.classList.remove("show");
-          // Testlarni ko'rinadigan qilish
-          showPreparedTests();
-        }, 1000);
-      }
-    }, 1000);
-  }
-
-  function showPreparedTests() {
-    console.log("Showing prepared tests...");
-    // Oldindan tayyorlangan testlarni ko'rsatish
-    quizList.style.visibility = "visible";
-    quizList.style.position = "relative";
-    quizList.style.top = "auto";
-    quizList.style.left = "auto";
-    startExam();
-  }
-
-  function randomizeTests() {
-    let testsToUse;
-    if (selectedTestCount === -1 || selectedTestCount >= originalTests.length) {
-      // Show all tests
-      testsToUse = shuffleArray(originalTests);
-    } else {
-      // Show selected number of tests
-      testsToUse = shuffleArray(originalTests).slice(0, selectedTestCount);
-    }
-    
-    randomizedTests = testsToUse.map(test => {
-      const shuffledOptions = shuffleArray(test.options);
-      const correctOptionIndex = shuffledOptions.findIndex(option => option.letter === test.answer);
-      return { question: test.question, options: shuffledOptions, correctOptionIndex };
-    });
-  }
-
-  function startExam() {
-    examStarted = true;
-    timeSettings.style.display = "none";
-    successMessage.style.display = "none";
-    fileSection.style.display = "none";
-    infoBtn.style.display = "none";
-    fileInput.disabled = true;
-    timerContainer.style.display = "flex";
-    updateTimerDisplay();
-    startTimer();
-  }
-
-  function showTests() {
-    if (selectedTestCount === -1 || selectedTestCount >= originalTests.length) {
-      testCount.textContent = `${randomizedTests.length} ta test (Barcha testlar)`;
-    } else if (originalTests.length > selectedTestCount) {
-      testCount.textContent = `${selectedTestCount} ta test ${originalTests.length} tadan tasodifiy tanlandi!`;
-    } else {
-      testCount.textContent = `${randomizedTests.length} ta test yuklandi!`;
-    }
-    questionsContainer.innerHTML = "";
-    randomizedTests.forEach((test, index) => {
-      const questionDiv = document.createElement("div");
-      questionDiv.className = "question-container";
-      questionDiv.dataset.correctOptionIndex = test.correctOptionIndex;
-
-      const qText = document.createElement("div");
-      qText.className = "question-text";
-      qText.textContent = (index + 1) + ". " + test.question;
-      questionDiv.appendChild(qText);
-
-      const optionsDiv = document.createElement("div");
-      optionsDiv.className = "options-container";
-      test.options.forEach((opt, optIndex) => {
-        const formCheck = document.createElement("div");
-        formCheck.className = "form-check";
-        const input = document.createElement("input");
-        input.className = "form-check-input";
-        input.type = "radio";
-        input.name = "question_" + index;
-        input.id = "question_" + index + "_option_" + optIndex;
-        input.dataset.originalLetter = opt.letter;
-        const label = document.createElement("label");
-        label.className = "form-check-label";
-        label.setAttribute("for", input.id);
-        label.textContent = opt.text;
-        formCheck.appendChild(input);
-        formCheck.appendChild(label);
-        optionsDiv.appendChild(formCheck);
-      });
-      questionDiv.appendChild(optionsDiv);
-      questionsContainer.appendChild(questionDiv);
-    });
-  }
-
-  function startTimer() {
-    timerInterval = setInterval(() => {
-      if (totalSeconds > 0) {
-        totalSeconds--;
-        updateTimerDisplay();
-        if (totalSeconds < 60) timerElement.classList.add("warning");
-      } else {
-        clearInterval(timerInterval);
-        endExam("Vaqt tugadi!");
-      }
-    }, 1000);
-  }
-
-  function updateTimerDisplay() {
-    const minutes = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
-    timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-  }
-
-  function stopTimer() {
-    clearInterval(timerInterval);
-  }
-
-  function endExam(message = "") {
-    stopTimer();
-    checkAnswers();
-    if (message) uploadStatus.textContent = message;
-    newTestBtn.style.display = "block";
-    const allRadios = document.querySelectorAll('input[type="radio"]');
-    allRadios.forEach(radio => {
-      radio.disabled = true;
-    });
-    examStarted = false;
-  }
-
-  finishBtn.addEventListener("click", () => {
-    const totalQuestions = randomizedTests.length;
-    let answeredCount = 0;
-    
-    randomizedTests.forEach((test, index) => {
-      const radios = document.querySelectorAll(`input[name="question_${index}"]`);
-      let answered = false;
-      radios.forEach(radio => {
-        if (radio.checked) answered = true;
-      });
-      if (answered) answeredCount++;
-    });
-    
-    confirmMessage.innerHTML = `<strong>${answeredCount}</strong> ta savolga javob berildi, <strong>${totalQuestions - answeredCount}</strong> ta savol javobsiz. <br><br>Testni yakunlashni tasdiqlaysizmi?`;
-    confirmModal.classList.add("show");
-    newTestModal.classList.remove("show");
-  });
-  
-  cancelFinish.addEventListener("click", () => {
-    confirmModal.classList.remove("show");
-  });
-  
-  confirmFinish.addEventListener("click", () => {
-    confirmModal.classList.remove("show");
-    endExam("Test yakunlandi!");
-  });
-
-  newTestBtn.addEventListener("click", () => {
-    newTestModal.classList.add("show");
-    confirmModal.classList.remove("show");
-    infoModal.classList.remove("show");
-  });
-
-  cancelNewTest.addEventListener("click", () => {
-    newTestModal.classList.remove("show");
-  });
-
-  confirmNewTest.addEventListener("click", () => {
-    newTestModal.classList.remove("show");
-    resetTest();
-  });
-
-  function checkAnswers() {
-    let correctCount = 0;
-    let incorrectCount = 0;
-    let unansweredCount = 0;
-    const totalQuestions = randomizedTests.length;
-    
-    randomizedTests.forEach((test, index) => {
-      const correctOptionIndex = test.correctOptionIndex;
-      const radios = document.querySelectorAll(`input[name="question_${index}"]`);
-      
-      // Barcha labellarni tozalash
-      radios.forEach(radio => {
-        const label = document.querySelector(`label[for="${radio.id}"]`);
-        label.classList.remove("correct", "incorrect", "unanswered-correct");
-        const checkIcon = label.querySelector(".check-icon");
-        if (checkIcon) checkIcon.remove();
-      });
-
-      let selectedOptionIndex = -1;
-      radios.forEach((radio, idx) => { 
-        if (radio.checked) selectedOptionIndex = idx; 
-      });
-
-      if (selectedOptionIndex >= 0) {
-        const chosenLabel = document.querySelector(`label[for="question_${index}_option_${selectedOptionIndex}"]`);
-        if (selectedOptionIndex === correctOptionIndex) {
-          chosenLabel.classList.add("correct");
-          chosenLabel.innerHTML += '<span class="check-icon">✅</span>';
-          correctCount++;
-        } else {
-          chosenLabel.classList.add("incorrect");
-          chosenLabel.innerHTML += '<span class="check-icon">❌</span>';
-          incorrectCount++;
-          const correctLabel = document.querySelector(`label[for="question_${index}_option_${correctOptionIndex}"]`);
-          correctLabel.classList.add("correct");
-          correctLabel.innerHTML += '<span class="check-icon">✅</span>';
-        }
-      } else {
-        unansweredCount++;
-        const correctLabel = document.querySelector(`label[for="question_${index}_option_${correctOptionIndex}"]`);
-        correctLabel.classList.add("unanswered-correct");
-        correctLabel.innerHTML += '<span class="check-icon">✅</span>';
-      }
-    });
-
-    const ratio = correctCount / totalQuestions;
-    const percentage = Math.round(ratio * 100);
-    
-    // Progress bar yangilash
-    setTimeout(() => {
-      progressFill.style.width = `${percentage}%`;
-      progressFill.classList.toggle('low', ratio < 0.6);
-      progressText.textContent = `${percentage}%`;
-    }, 100);
-    
-    // Statistikani yangilash
-    totalQuestionsEl.textContent = totalQuestions;
-    correctAnswersEl.textContent = correctCount;
-    incorrectAnswersEl.textContent = incorrectCount;
-    unansweredEl.textContent = unansweredCount;
-    
-    // GIF va emoji tanlash
-    let gifGroupKey, emoji;
-    if (percentage <= 29) {
-      gifGroupKey = "veryLow";
-      emoji = "😔 😢 📚";
-    } else if (percentage <= 59) {
-      gifGroupKey = "low";
-      emoji = "😐 📖";
-    } else if (percentage <= 70) {
-      gifGroupKey = "medium";
-      emoji = "🙂 👍";
-    } else if (percentage <= 81) {
-      gifGroupKey = "high";
-      emoji = "😊 🎉";
-    } else {
-      gifGroupKey = "excellent";
-      emoji = "🎉 🥳 🎊";
-    }
-
-    emojiPlaceholder.textContent = emoji;
-
-    const currentIndex = gifIndices[gifGroupKey];
-    const selectedGif = gifGroups[gifGroupKey][currentIndex];
-    gifContainer.innerHTML = `
-      <img src="${selectedGif.url}" alt="${selectedGif.alt}" style="width: 100%; height: 100%; object-fit: cover;">
-    `;
-    
-    gifIndices[gifGroupKey] = (currentIndex + 1) % gifGroups[gifGroupKey].length;
-
-    if (percentage >= 60) {
-      createConfetti();
-      createSalute();
-    }
-
-    // Feedback matnini yaratish
-    let feedback = "";
-    if (percentage < 30) {
-      feedback = `Natijangiz <span>qoniqarli emas</span>.<br>Hali hammasi oldinda! Ko'proq o'qib, mashq qiling va qayta urinib ko'ring!`;
-    } else if (percentage < 60) {
-      feedback = `Natijangiz <span>o'rtacha</span>.<br>Yana biroz harakat qilsangiz, yaxshi natijaga erishasiz!`;
-    } else if (percentage <= 70) {
-      feedback = `Natijangiz <span>yaxshi</span>!<br>Siz yaxshi bilimga egasiz, lekin yanada yaxshiroq bo'lishingiz mumkin.`;
-    } else if (percentage <= 81) {
-      feedback = `Natijangiz <span>juda yaxshi</span>!<br>Siz mavzuni yaxshi o'zlashtirgansiz. Ajoyib!`;
-    } else {
-      feedback = `Natijangiz <span>a'lo darajada</span>!<br>Siz mavzuni chuqur o'zlashtirgan ko'rinasiz. Tabriklaymiz!`;
-    }
-
-    feedbackText.innerHTML = feedback;
-    
-    // Natijalar containerini ko'rsatish
-    scoreContainer.style.opacity = "1";
-    scoreContainer.classList.add("show-feedback");
-    
-    // Finish tugmasini yashirish
-    finishBtn.style.display = "none";
-    
-    // Sahifani yuqoriga scroll qilish
-    setTimeout(() => {
-      scoreContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, 300);
-  }
-
-  function resetTest() {
-    examStarted = false;
-    stopTimer();
-    fileInput.disabled = false;
-    fileInput.value = "";
-    uploadStatus.textContent = "";
-    uploadStatus.style.fontWeight = "normal";
-    successMessage.classList.remove("show");
-    quizList.style.display = "none";
-    quizList.style.visibility = "visible";
-    quizList.style.position = "relative";
-    quizList.style.top = "auto";
-    quizList.style.left = "auto";
-    scoreContainer.style.opacity = "0";
-    scoreContainer.classList.remove("show-feedback");
-    timerElement.classList.remove("warning");
-    timerContainer.style.display = "none";
-    timerContainer.classList.remove("compact-timer");
-    newTestBtn.style.display = "none";
-    finishBtn.style.display = "block";
-    timeSettings.style.display = "block";
-    fileSection.style.display = "block";
-    infoBtn.style.display = "block";
-    
-    // Time buttons reset
-    timeButtons.forEach(btn => btn.classList.remove("active"));
-    document.querySelector('#timeButtonGroup button[data-time="25"]').classList.add("active");
-    customTimeCheck.checked = false;
-    customTimeInput.classList.remove("show");
-    totalSeconds = 25 * 60;
-    minutesInput.value = "25";
-    
-    // Test count buttons reset
-    testCountButtons.forEach(btn => btn.classList.remove("active"));
-    document.querySelector('#testCountButtonGroup button[data-count="25"]').classList.add("active");
-    allTestsCheck.checked = false;
-    selectedTestCount = 25;
-    
-    // Reset tests array
-    originalTests = [];
-    randomizedTests = [];
-    
-    emojiPlaceholder.textContent = "";
-    
-    // Statistikalarni reset qilish
-    progressFill.style.width = "0%";
-    progressText.textContent = "0%";
-    totalQuestionsEl.textContent = "0";
-    correctAnswersEl.textContent = "0";
-    incorrectAnswersEl.textContent = "0";
-    unansweredEl.textContent = "0";
-    gifContainer.innerHTML = "";
-    feedbackText.innerHTML = "";
-    
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  function createConfetti() {
-    const confettiContainer = document.getElementById('confettiContainer');
-    confettiContainer.innerHTML = '';
-    const colors = ["#fd5e53", "#3cc47c", "#1e1f26", "#df678c", "#3d8eb9", "#f9c80e"];
-    
-    for (let i = 0; i < 100; i++) {
-      const confetti = document.createElement('div');
-      confetti.className = 'confetti';
-      confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-      confetti.style.left = Math.random() * 100 + 'vw';
-      confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
-      confetti.style.animationDelay = (Math.random() * 5) + 's';
-      confetti.style.width = (Math.random() * 10 + 5) + 'px';
-      confetti.style.height = (Math.random() * 10 + 5) + 'px';
-      confettiContainer.appendChild(confetti);
-    }
-    
-    setTimeout(() => {
-      confettiContainer.innerHTML = '';
-    }, 8000);
-  }
-  
-  function createSalute() {
-    saluteContainer.innerHTML = '';
-    const colors = ["#ff4136", "#0074d9", "#2ecc40", "#ffdc00", "#f012be", "#ff851b"];
-    
-    for (let i = 0; i < 50; i++) {
-      setTimeout(() => {
-        const salute = document.createElement('div');
-        salute.className = 'salute';
-        salute.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-        salute.style.left = Math.random() * 100 + 'vw';
-        salute.style.bottom = Math.random() * 20 + 'vh';
-        saluteContainer.appendChild(salute);
+          const questionText = document.createElement('div');
+          questionText.textContent = question.question;
+          questionText.style.fontWeight = 'bold';
+          
+          const optionsContainer = document.createElement('div');
+          optionsContainer.style.marginTop = '10px';
+          
+          // Variantlarni ko'rsatish
+          const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
+          question.options.forEach((option, index) => {
+            const optionElement = document.createElement('div');
+            optionElement.style.margin = '5px 0';
+            optionElement.innerHTML = `${letters[index]}. ${option} ${index === question.correctIndex ? '<strong>(✓)</strong>' : ''}`;
+            optionsContainer.appendChild(optionElement);
+          });
+          
+          // Amallar tugmalari
+          const actions = document.createElement('div');
+          actions.className = 'action-buttons';
+          actions.style.marginTop = '10px';
+          
+          const editBtn = document.createElement('button');
+          editBtn.className = 'edit-btn';
+          editBtn.textContent = 'Tahrirlash';
+          editBtn.dataset.id = question.id;
+          
+          const deleteBtn = document.createElement('button');
+          deleteBtn.className = 'remove-btn';
+          deleteBtn.textContent = 'O\'chirish';
+          deleteBtn.dataset.id = question.id;
+          
+          actions.appendChild(editBtn);
+          actions.appendChild(deleteBtn);
+          
+          li.appendChild(questionText);
+          li.appendChild(optionsContainer);
+          li.appendChild(actions);
+          questionList.appendChild(li);
+        });
         
+        testContent.appendChild(questionList);
+        testGroup.appendChild(testHeader);
+        testGroup.appendChild(testContent);
+        testGroups.appendChild(testGroup);
+        
+        // Test header click harakatini qo'shish
+        testHeader.addEventListener('click', (e) => {
+          // Tugmalarni bosgan holda ochilmasligi uchun
+          if (e.target.tagName === 'BUTTON') return;
+          
+          testContent.classList.toggle('active');
+        });
+      });
+      
+      // Yaratish va o'chirish tugmalariga hodisalar biriktirish
+      attachEventListeners();
+    }
+
+    // Tugmalar uchun hodisalar biriktirish
+    function attachEventListeners() {
+      // Tahrirlash tugmalari
+      document.querySelectorAll('.edit-btn').forEach(btn => {
+        if (btn.classList.contains('continue-test')) {
+          btn.addEventListener('click', function() {
+            const testName = this.dataset.test;
+            saveActiveTest(testName);
+            tabs[0].click(); // Savollar yaratish oynasiga o'tish
+            showMessage(`"${testName}" testiga savollar qo'shishni davom ettirasiz`, 'success');
+          });
+        } else {
+          btn.addEventListener('click', function() {
+            const id = parseInt(this.dataset.id);
+            const question = quizItems.find(item => item.id === id);
+            if (!question) return;
+            
+            populateFormWithQuestion(question);
+            tabs[0].click(); // Savollar yaratish oynasiga o'tish
+          });
+        }
+      });
+      
+      // O'chirish tugmalari
+      document.querySelectorAll('.remove-btn').forEach(btn => {
+        if (btn.dataset.test) {
+          // Test guruhini o'chirish
+          btn.addEventListener('click', function() {
+            const testName = this.dataset.test;
+            if (confirm(`"${testName}" testini o'chirishni xohlaysizmi?`)) {
+              deleteTestGroup(testName);
+            }
+          });
+        } else {
+          // Alohida savolni o'chirish
+          btn.addEventListener('click', function() {
+            const id = parseInt(this.dataset.id);
+            if (confirm('Savolni o\'chirishni xohlaysizmi?')) {
+              deleteQuestion(id);
+            }
+          });
+        }
+      });
+      
+      // Yuklab olish tugmalari
+      document.querySelectorAll('.download-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const testName = this.dataset.test;
+          downloadTest(testName);
+        });
+      });
+    }
+
+    // Formani savol ma'lumotlari bilan to'ldirish
+    function populateFormWithQuestion(question) {
+      quizForm.dataset.editId = question.id;
+      
+      // Savol ma'lumotlarini to'ldirish
+      testNameInput.value = question.testName;
+      questionInput.value = question.question;
+      
+      // Variantlarni to'g'rilash
+      adjustOptions(question.options.length);
+      
+      // Variantlar qiymatlarini o'rnatish
+      const optionInputs = document.querySelectorAll('.option input[type="text"]');
+      question.options.forEach((option, index) => {
+        optionInputs[index].value = option;
+      });
+      
+      // To'g'ri javobni belgilash
+      document.querySelectorAll('input[name="correctAnswer"]')[question.correctIndex].checked = true;
+      
+      submitBtn.textContent = 'Yangilash';
+      updatePreview();
+      
+      // Forma qismiga scroll qilish
+      quizForm.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Savolni o'chirish
+    function deleteQuestion(id) {
+      const questionIndex = quizItems.findIndex(item => item.id === id);
+      if (questionIndex === -1) return;
+      
+      const question = quizItems[questionIndex];
+      
+      // Animatsiya effekti bilan o'chirish
+      const questionElement = document.querySelector(`li[data-id="${id}"]`);
+      if (questionElement) {
+        questionElement.classList.add('removing');
         setTimeout(() => {
-          salute.remove();
-        }, 2000);
-      }, Math.random() * 3000);
+          // Ma'lumotlarni o'chirish
+          quizItems.splice(questionIndex, 1);
+          saveQuizItems();
+          
+          // Agar joriy test savoli bo'lsa, preview ro'yxatidan ham o'chirish
+          if (question.testName === activeTest) {
+            updatePreviewQuestions();
+          }
+          
+          updateTestGroupList();
+          showMessage('Savol muvaffaqiyatli o\'chirildi', 'success');
+        }, 500);
+      } else {
+        // Element topilmagan bo'lsa, shunchaki o'chiramiz
+        quizItems.splice(questionIndex, 1);
+        saveQuizItems();
+        updateTestGroupList();
+        if (question.testName === activeTest) {
+          updatePreviewQuestions();
+        }
+        showMessage('Savol muvaffaqiyatli o\'chirildi', 'success');
+      }
+    }
+
+    // Test guruhini o'chirish
+    function deleteTestGroup(testName) {
+      // Test guruhidagi barcha savollarni filtrlash
+      quizItems = quizItems.filter(item => item.testName !== testName);
+      saveQuizItems();
+      
+      // Agar joriy test bo'lsa, uni ham o'chiramiz
+      if (activeTest === testName) {
+        finishTestBtn.click();
+      }
+      
+      updateTestGroupList();
+      showMessage(`"${testName}" testi muvaffaqiyatli o'chirildi`, 'success');
+    }
+
+        // Testni yuklab olish
+    function downloadTest(testName) {
+      const testQuestions = quizItems.filter(item => item.testName === testName);
+      if (testQuestions.length === 0) return;
+      
+      // Test ma'lumotlarni formatlash - test nomini olib tashlaymiz
+      let content = '';
+      
+      testQuestions.forEach((question) => {
+        // Tartib raqami olib tashlandi
+        content += `${question.question}\n`;
+        
+        // Variantlarni qo'shish
+        const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
+        question.options.forEach((option, optIndex) => {
+          content += `${letters[optIndex]}. ${option}\n`;
+        });
+        
+        // To'g'ri javobni ko'rsatish
+        content += `ANSWER: ${letters[question.correctIndex]}\n\n`;
+      });
+      
+      // Yuklab olish mexanizmi
+      const blob = new Blob([content], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${testName}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      
+      showMessage(`"${testName}" testi muvaffaqiyatli yuklab olindi`, 'success');
+    }
+    // Xabarlarni ko'rsatish
+    function showMessage(message, type = 'info') {
+      const messageElement = document.createElement('div');
+      messageElement.className = `${type}-message`;
+      messageElement.textContent = message;
+      messageContainer.appendChild(messageElement);
+      
+      // 3 soniyadan keyin xabarni o'chirish
+      setTimeout(() => {
+        messageElement.style.opacity = '0';
+        setTimeout(() => {
+          messageContainer.removeChild(messageElement);
+        }, 300);
+      }, 3000);
+    }
+    // Keyboard Shortcuts - bu kodni </script> tegidan oldin qo'shing
+document.addEventListener('keydown', (e) => {
+  // Agar input yoki textarea ichida bo'lsa va matn kiritish shortcut'lari bo'lsa, o'tkazib yuborish
+  const isTyping = document.activeElement.tagName === 'INPUT' || 
+                   document.activeElement.tagName === 'TEXTAREA';
+  
+  // Maydonlar orasida harakatlanish - Alt + harflar/raqamlar
+  if (e.altKey && !e.shiftKey && !e.ctrlKey) {
+    // Alt + N - Test nomi
+    if (e.key === 'n' || e.key === 'N') {
+      e.preventDefault();
+      if (!activeTest) {
+        testNameInput.focus();
+      }
+    }
+    
+    // Alt + Q - Savol
+    if (e.key === 'q' || e.key === 'Q') {
+      e.preventDefault();
+      questionInput.focus();
+    }
+    
+    // Alt + 1,2,3,4 - Variantlar
+    if (['1', '2', '3', '4'].includes(e.key)) {
+      e.preventDefault();
+      const optionIndex = parseInt(e.key) - 1;
+      const options = optionsContainer.querySelectorAll('.option input[type="text"]');
+      if (options[optionIndex]) {
+        options[optionIndex].focus();
+      }
     }
   }
-</script>
+  
+  // To'g'ri javobni belgilash - Shift + 1,2,3,4
+  if (e.shiftKey && !e.altKey && !e.ctrlKey) {
+    if (['1', '2', '3', '4'].includes(e.key)) {
+      e.preventDefault();
+      const optionIndex = parseInt(e.key) - 1;
+      const radios = optionsContainer.querySelectorAll('.option input[type="radio"]');
+      if (radios[optionIndex]) {
+        radios[optionIndex].checked = true;
+        updatePreview();
+        
+        // Visual feedback
+        showShortcutFeedback(`Variant ${e.key} to'g'ri javob sifatida belgilandi`);
+      }
+    }
+  }
+  
+  // Alt + S - Saqlash
+  if (e.altKey && (e.key === 's' || e.key === 'S')) {
+    e.preventDefault();
+    quizForm.dispatchEvent(new Event('submit'));
+  }
+});
+
+// Shortcut feedback ko'rsatish funksiyasi
+function showShortcutFeedback(message) {
+  const feedback = document.createElement('div');
+  feedback.style.cssText = `
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(69, 96, 229, 0.9);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    z-index: 1000;
+    animation: fadeInOut 2s ease-out;
+  `;
+  feedback.textContent = message;
+  document.body.appendChild(feedback);
+  
+  setTimeout(() => {
+    feedback.remove();
+  }, 2000);
+}
+
+// Animatsiya uchun CSS qo'shish
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes fadeInOut {
+    0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
+    10% { opacity: 1; transform: translateX(-50%) translateY(0); }
+    90% { opacity: 1; transform: translateX(-50%) translateY(0); }
+    100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+  }
+`;
+document.head.appendChild(style);
+
+// Shortcut ko'rsatuvchi tooltip (ixtiyoriy - foydalanuvchiga yordam)
+function addShortcutHints() {
+  const hints = {
+    'testName': 'Alt + N',
+    'question': 'Alt + Q'
+  };
+  
+  Object.entries(hints).forEach(([id, hint]) => {
+    const element = document.getElementById(id);
+    if (element) {
+      const label = element.previousElementSibling;
+      if (label && label.tagName === 'LABEL') {
+        const hintSpan = document.createElement('span');
+        hintSpan.style.cssText = `
+          color: #999;
+          font-size: 12px;
+          font-weight: normal;
+          margin-left: 8px;
+        `;
+        hintSpan.textContent = `(${hint})`;
+        label.appendChild(hintSpan);
+      }
+    }
+  });
+  
+  // Variantlar uchun hint
+  const optionsLabel = document.querySelector('.options-container').previousElementSibling;
+  if (optionsLabel && optionsLabel.tagName === 'LABEL') {
+    const hintSpan = document.createElement('span');
+    hintSpan.style.cssText = `
+      color: #999;
+      font-size: 12px;
+      font-weight: normal;
+      margin-left: 8px;
+    `;
+    hintSpan.textContent = '(Alt + 1-4: fokus, Shift + 1-4: to\'g\'ri javob)';
+    optionsLabel.appendChild(hintSpan);
+  }
+}
+
+// Sahifa yuklanganda hint'larni qo'shish
+document.addEventListener('DOMContentLoaded', () => {
+  addShortcutHints();
+});
+  </script>
 </body>
 </html>
