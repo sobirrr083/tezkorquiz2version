@@ -1313,142 +1313,142 @@
         }, 300);
       }, 3000);
     }
-    // Keyboard Shortcuts - bu kodni </script> tegidan oldin qo'shing
-document.addEventListener('keydown', (e) => {
-  // Agar input yoki textarea ichida bo'lsa va matn kiritish shortcut'lari bo'lsa, o'tkazib yuborish
-  const isTyping = document.activeElement.tagName === 'INPUT' || 
-                   document.activeElement.tagName === 'TEXTAREA';
-  
-  // Maydonlar orasida harakatlanish - Alt + harflar/raqamlar
-  if (e.altKey && !e.shiftKey && !e.ctrlKey) {
-    // Alt + N - Test nomi
-    if (e.key === 'n' || e.key === 'N') {
-      e.preventDefault();
-      if (!activeTest) {
-        testNameInput.focus();
+    //shortcutlar kodlari
+  document.addEventListener('keydown', (e) => {
+    // Agar input yoki textarea ichida bo'lsa va matn kiritish shortcut'lari bo'lsa, o'tkazib yuborish
+    const isTyping = document.activeElement.tagName === 'INPUT' || 
+                     document.activeElement.tagName === 'TEXTAREA';
+    
+    // Maydonlar orasida harakatlanish - Alt + harflar/raqamlar
+    if (e.altKey && !e.shiftKey && !e.ctrlKey) {
+      // Alt + N - Test nomi
+      if (e.key === 'n' || e.key === 'N') {
+        e.preventDefault();
+        if (!activeTest) {
+          testNameInput.focus();
+        }
+      }
+      
+      // Alt + Q - Savol
+      if (e.key === 'q' || e.key === 'Q') {
+        e.preventDefault();
+        questionInput.focus();
+      }
+      
+      // Alt + 1,2,3,4 - Variantlar
+      if (['1', '2', '3', '4'].includes(e.key)) {
+        e.preventDefault();
+        const optionIndex = parseInt(e.key) - 1;
+        const options = optionsContainer.querySelectorAll('.option input[type="text"]');
+        if (options[optionIndex]) {
+          options[optionIndex].focus();
+        }
       }
     }
     
-    // Alt + Q - Savol
-    if (e.key === 'q' || e.key === 'Q') {
-      e.preventDefault();
-      questionInput.focus();
+    // To'g'ri javobni belgilash - Shift + 1,2,3,4
+    if (e.shiftKey && !e.altKey && !e.ctrlKey) {
+      if (['1', '2', '3', '4'].includes(e.key)) {
+        e.preventDefault();
+        const optionIndex = parseInt(e.key) - 1;
+        const radios = optionsContainer.querySelectorAll('.option input[type="radio"]');
+        if (radios[optionIndex]) {
+          radios[optionIndex].checked = true;
+          updatePreview();
+          
+          // Visual feedback
+          showShortcutFeedback(`Variant ${e.key} to'g'ri javob sifatida belgilandi`);
+        }
+      }
     }
     
-    // Alt + 1,2,3,4 - Variantlar
-    if (['1', '2', '3', '4'].includes(e.key)) {
+    // Alt + S - Saqlash
+    if (e.altKey && (e.key === 's' || e.key === 'S')) {
       e.preventDefault();
-      const optionIndex = parseInt(e.key) - 1;
-      const options = optionsContainer.querySelectorAll('.option input[type="text"]');
-      if (options[optionIndex]) {
-        options[optionIndex].focus();
-      }
-    }
-  }
-  
-  // To'g'ri javobni belgilash - Shift + 1,2,3,4
-  if (e.shiftKey && !e.altKey && !e.ctrlKey) {
-    if (['1', '2', '3', '4'].includes(e.key)) {
-      e.preventDefault();
-      const optionIndex = parseInt(e.key) - 1;
-      const radios = optionsContainer.querySelectorAll('.option input[type="radio"]');
-      if (radios[optionIndex]) {
-        radios[optionIndex].checked = true;
-        updatePreview();
-        
-        // Visual feedback
-        showShortcutFeedback(`Variant ${e.key} to'g'ri javob sifatida belgilandi`);
-      }
-    }
-  }
-  
-  // Alt + S - Saqlash
-  if (e.altKey && (e.key === 's' || e.key === 'S')) {
-    e.preventDefault();
-    quizForm.dispatchEvent(new Event('submit'));
-  }
-});
-
-// Shortcut feedback ko'rsatish funksiyasi
-function showShortcutFeedback(message) {
-  const feedback = document.createElement('div');
-  feedback.style.cssText = `
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: rgba(69, 96, 229, 0.9);
-    color: white;
-    padding: 10px 20px;
-    border-radius: 6px;
-    font-size: 14px;
-    z-index: 1000;
-    animation: fadeInOut 2s ease-out;
-  `;
-  feedback.textContent = message;
-  document.body.appendChild(feedback);
-  
-  setTimeout(() => {
-    feedback.remove();
-  }, 2000);
-}
-
-// Animatsiya uchun CSS qo'shish
-const style = document.createElement('style');
-style.textContent = `
-  @keyframes fadeInOut {
-    0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
-    10% { opacity: 1; transform: translateX(-50%) translateY(0); }
-    90% { opacity: 1; transform: translateX(-50%) translateY(0); }
-    100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
-  }
-`;
-document.head.appendChild(style);
-
-// Shortcut ko'rsatuvchi tooltip (ixtiyoriy - foydalanuvchiga yordam)
-function addShortcutHints() {
-  const hints = {
-    'testName': 'Alt + N',
-    'question': 'Alt + Q'
-  };
-  
-  Object.entries(hints).forEach(([id, hint]) => {
-    const element = document.getElementById(id);
-    if (element) {
-      const label = element.previousElementSibling;
-      if (label && label.tagName === 'LABEL') {
-        const hintSpan = document.createElement('span');
-        hintSpan.style.cssText = `
-          color: #999;
-          font-size: 12px;
-          font-weight: normal;
-          margin-left: 8px;
-        `;
-        hintSpan.textContent = `(${hint})`;
-        label.appendChild(hintSpan);
-      }
+      quizForm.dispatchEvent(new Event('submit'));
     }
   });
   
-  // Variantlar uchun hint
-  const optionsLabel = document.querySelector('.options-container').previousElementSibling;
-  if (optionsLabel && optionsLabel.tagName === 'LABEL') {
-    const hintSpan = document.createElement('span');
-    hintSpan.style.cssText = `
-      color: #999;
-      font-size: 12px;
-      font-weight: normal;
-      margin-left: 8px;
+  // Shortcut feedback ko'rsatish funksiyasi
+  function showShortcutFeedback(message) {
+    const feedback = document.createElement('div');
+    feedback.style.cssText = `
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: rgba(69, 96, 229, 0.9);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 14px;
+      z-index: 1000;
+      animation: fadeInOut 2s ease-out;
     `;
-    hintSpan.textContent = '(Alt + 1-4: fokus, Shift + 1-4: to\'g\'ri javob)';
-    optionsLabel.appendChild(hintSpan);
+    feedback.textContent = message;
+    document.body.appendChild(feedback);
+    
+    setTimeout(() => {
+      feedback.remove();
+    }, 2000);
   }
-}
-
-// Sahifa yuklanganda hint'larni qo'shish
-document.addEventListener('DOMContentLoaded', () => {
-  addShortcutHints();
-});
+  
+  // Animatsiya uchun CSS qo'shish
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes fadeInOut {
+      0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
+      10% { opacity: 1; transform: translateX(-50%) translateY(0); }
+      90% { opacity: 1; transform: translateX(-50%) translateY(0); }
+      100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+    }
+  `;
+  document.head.appendChild(style);
+  
+  // Shortcut ko'rsatuvchi tooltip (ixtiyoriy - foydalanuvchiga yordam)
+  function addShortcutHints() {
+    const hints = {
+      'testName': 'Alt + N',
+      'question': 'Alt + Q'
+    };
+    
+    Object.entries(hints).forEach(([id, hint]) => {
+      const element = document.getElementById(id);
+      if (element) {
+        const label = element.previousElementSibling;
+        if (label && label.tagName === 'LABEL') {
+          const hintSpan = document.createElement('span');
+          hintSpan.style.cssText = `
+            color: #999;
+            font-size: 12px;
+            font-weight: normal;
+            margin-left: 8px;
+          `;
+          hintSpan.textContent = `(${hint})`;
+          label.appendChild(hintSpan);
+        }
+      }
+    });
+    
+    // Variantlar uchun hint
+    const optionsLabel = document.querySelector('.options-container').previousElementSibling;
+    if (optionsLabel && optionsLabel.tagName === 'LABEL') {
+      const hintSpan = document.createElement('span');
+      hintSpan.style.cssText = `
+        color: #999;
+        font-size: 12px;
+        font-weight: normal;
+        margin-left: 8px;
+      `;
+      hintSpan.textContent = '(Alt + 1-4: fokus, Shift + 1-4: to\'g\'ri javob)';
+      optionsLabel.appendChild(hintSpan);
+    }
+  }
+  
+  // Sahifa yuklanganda hint'larni qo'shish
+  document.addEventListener('DOMContentLoaded', () => {
+    addShortcutHints();
+  });
   </script>
 </body>
 </html>
