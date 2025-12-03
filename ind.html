@@ -1326,6 +1326,24 @@ ANSWER: C
         }, 300);
       }, 50);
       
+      // 3 soniyadan keyin tugma ko'rinishini tekshirish
+      setTimeout(() => {
+        const btnVisible = startExamBtn.offsetParent !== null;
+        console.log("Button visibility check:", btnVisible);
+        
+        if (!btnVisible) {
+          uploadStatus.textContent = "⚠️ Xatolik yuz berdi. Iltimos, qayta faylni yuklang!";
+          uploadStatus.style.color = "#ff6b6b";
+          uploadStatus.style.fontWeight = "bold";
+          
+          // Faylni qayta yuklash imkonini berish
+          fileInput.disabled = false;
+          fileInput.value = "";
+          successMessage.style.display = 'none';
+          successMessage.classList.remove("show");
+        }
+      }, 3000);
+      
     } else {
       uploadStatus.textContent = "Xatolik: Test ma'lumotlari topilmadi yoki noto'g'ri format!";
       uploadStatus.style.color = "#e74c3c";
