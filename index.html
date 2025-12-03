@@ -1398,6 +1398,12 @@
                 margin-bottom: 50px;
             }
         }
+            /* Faqat yuqoridagi iconkani desktopda yashirish */
+        @media (min-width: 992px) {
+            #quizDropdown svg {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1464,8 +1470,10 @@
                                     <line x1="10" y1="12" x2="19" y2="12"/>
                                     <line x1="10" y1="17" x2="19" y2="17"/>
                                 </svg>
+                        
                                 <span>Testni boshlash</span>
                             </a>
+                        
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="quizDropdown">
                                 <li>
                                     <a class="dropdown-item" href="testni_boshlash/tezkorquiz">
@@ -1475,6 +1483,7 @@
                                         <span>Tezkor Quiz</span>
                                     </a>
                                 </li>
+                        
                                 <li>
                                     <a class="dropdown-item" href="testni_boshlash/bilim">
                                         <svg class="dropdown-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -1484,7 +1493,8 @@
                                         <span>Bilim Quiz</span>
                                     </a>
                                 </li>
-                                   <li>
+                        
+                                <li>
                                     <a class="dropdown-item" href="testni_boshlash/smart.html">
                                         <svg class="dropdown-icon" viewBox="0 0 24 24">
                                             <path d="M9,21C9,22.1 9.9,23 11,23H13C14.1,23 15,22.1 15,21V20H9V21M12,2A7,7 0 0,0 5,9C5,11.38 6.19,13.47 8,14.74V17A1,1 0 0,0 9,18H15A1,1 0 0,0 16,17V14.74C17.81,13.47 19,11.38 19,9A7,7 0 0,0 12,2Z"/>
@@ -1492,6 +1502,7 @@
                                         <span>Smart Quiz</span>
                                     </a>
                                 </li>
+                        
                                 <li>
                                     <a class="dropdown-item" href="testni_boshlash/pro.html">
                                         <svg class="dropdown-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -1500,6 +1511,7 @@
                                         <span>Pro Quiz</span>
                                     </a>
                                 </li>
+                        
                                 <li>
                                     <a class="dropdown-item" href="testni_boshlash/imtihon.html">
                                         <svg class="dropdown-icon" viewBox="0 0 24 24">
@@ -1509,8 +1521,7 @@
                                     </a>
                                 </li>
                             </ul>
-                        </li>
-                    </ul>
+                        </li>                                         
 
                     <!-- DESKTOP PROFIL -->
                     <div class="desktop-profile">
@@ -2122,6 +2133,7 @@
     </script>
 </body>
 </html>
+
 
 
 
