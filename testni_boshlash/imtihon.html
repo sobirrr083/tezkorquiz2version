@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-
   <!-- himoyalangan sahifa: protected.html -->
 <script type="module">
   // Firebase SDK import qilingan deb faraz qilamiz
@@ -41,7 +40,7 @@
       --primary-color: #4361ee;
       --primary-hover: #7b8fff;
       --primary-light: #e8ebff;
-      --border-radius: 8px;
+      --border-radius: 12px;
     }
     
     body {
@@ -189,33 +188,180 @@
       50% { opacity: 0.7; }
     }
     
-    @keyframes fadeIn {
-      to { opacity: 1; }
+    .countdown-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(67, 97, 238, 0.95), rgba(123, 143, 255, 0.95));
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 3000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.5s ease;
+    }
+
+    .countdown-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .countdown-content {
+      text-align: center;
+      color: white;
+    }
+
+    .countdown-number {
+      font-size: 120px;
+      font-weight: bold;
+      margin: 20px 0;
+      animation: countdownPulse 1s ease-in-out;
+    }
+
+    .countdown-text {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+    }
+
+    .countdown-message {
+      font-size: 20px;
+      margin-top: 20px;
+      opacity: 0.9;
+    }
+
+    @keyframes countdownPulse {
+      0% {
+        transform: scale(0.5);
+        opacity: 0;
+      }
+      50% {
+        transform: scale(1.2);
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .success-message {
+      background-color: #e8ebff;
+      border: 2px solid var(--primary-color);
+      border-radius: var(--border-radius);
+      padding: 20px;
+      margin: 20px 0;
+      text-align: center;
+      display: none;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .success-message.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .success-message h4 {
+      color: var(--primary-color);
+      margin-bottom: 10px;
+      font-size: 1.3rem;
+    }
+
+    .success-message p {
+      color: #333;
+      margin: 5px 0;
+      font-size: 1rem;
+    }
+
+    .start-exam-btn {
+      background-color: var(--primary-color);
+      border: none;
+      color: white;
+      padding: 15px 40px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 15px;
+      box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .start-exam-btn:hover {
+      background-color: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
+    }
+
+    .start-exam-btn:active {
+      transform: translateY(0);
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
     
     .time-settings {
       margin: 15px 0;
-      padding: 15px;
+      padding: 20px;
       border: 1px solid #ddd;
       border-radius: var(--border-radius);
       background-color: #f8f9fa;
+    }
+
+    .settings-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 15px;
+      color: var(--primary-color);
+    }
+
+    .settings-header i {
+      font-size: 1.5rem;
+    }
+
+    .settings-header h5 {
+      margin: 0;
+      font-weight: 600;
     }
     
     .btn-group {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 10px;
       justify-content: flex-start;
     }
     
     .btn-group button {
-      flex: 1 1 45%;
-      max-width: 150px;
+      flex: 1 1 auto;
+      min-width: 90px;
+      max-width: 120px;
       white-space: nowrap;
-      border: 1.5px solid var(--primary-color);
+      border: 2px solid var(--primary-color);
       color: var(--primary-color);
       background-color: white;
       transition: all 0.2s ease;
+      border-radius: 25px;
+      padding: 8px 16px;
+      font-weight: 500;
     }
     
     .btn-group button:hover {
@@ -223,12 +369,30 @@
       color: white;
       border-color: var(--primary-color);
       transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(67, 97, 238, 0.3);
     }
     
     .btn-group button.active {
       background-color: var(--primary-color);
       color: white;
       border-color: var(--primary-color);
+      box-shadow: 0 4px 8px rgba(67, 97, 238, 0.3);
+    }
+
+    .custom-option {
+      margin-top: 12px;
+      padding: 12px;
+      background-color: transparent;
+      border-radius: var(--border-radius);
+    }
+
+    .custom-option-content {
+      display: none;
+      margin-top: 10px;
+    }
+
+    .custom-option-content.show {
+      display: block;
     }
     
     .confetti-container {
@@ -364,11 +528,20 @@
     .gif-container {
       margin: 20px auto;
       text-align: center;
-      max-width: 300px;
-      height: 200px;
+      max-width: 350px;
+      height: 250px;
       overflow: hidden;
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .gif-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
     
     .salute {
@@ -617,8 +790,9 @@
       }
       
       .btn-group button {
-        flex: 1 1 48%;
-        max-width: 130px;
+        flex: 1 1 45%;
+        min-width: 80px;
+        max-width: 110px;
         font-size: 0.85rem;
       }
       
@@ -631,6 +805,64 @@
       #finishBtn {
         max-width: 200px;
         padding: 10px 20px;
+      }
+
+      .gif-container {
+        max-width: 300px;
+        height: 200px;
+      }
+
+      .start-exam-btn {
+        padding: 12px 30px;
+        font-size: 1rem;
+        width: 100%;
+        max-width: 300px;
+      }
+
+      .countdown-number {
+        font-size: 80px;
+      }
+
+      .countdown-text {
+        font-size: 20px;
+      }
+
+      .countdown-message {
+        font-size: 16px;
+      }
+
+      .success-message h4 {
+        font-size: 1.1rem;
+      }
+
+      .success-message p {
+        font-size: 0.9rem;
+      }
+    }
+
+    @media (min-width: 577px) and (max-width: 768px) {
+      .start-exam-btn {
+        padding: 14px 35px;
+        font-size: 1.1rem;
+        max-width: 350px;
+      }
+
+      .countdown-number {
+        font-size: 100px;
+      }
+
+      .countdown-text {
+        font-size: 24px;
+      }
+
+      .countdown-message {
+        font-size: 18px;
+      }
+    }
+
+    @media (min-width: 769px) {
+      .start-exam-btn {
+        max-width: 400px;
       }
     }
   </style>
@@ -647,22 +879,46 @@
   </div>
 
   <div id="timeSettings" class="time-settings">
-    <h5>Imtihon vaqtini tanlang:</h5>
-    <div class="btn-group mb-3" role="group">
-      <button type="button" class="btn btn-outline-primary" data-time="5">5 daqiqa</button>
-      <button type="button" class="btn btn-outline-primary" data-time="10">10 daqiqa</button>
-      <button type="button" class="btn btn-outline-primary" data-time="20">20 daqiqa</button>
-      <button type="button" class="btn btn-outline-primary active" data-time="25">25 daqiqa</button>
-      <button type="button" class="btn btn-outline-primary" data-time="30">30 daqiqa</button>
+    <div class="settings-header">
+      <i class="fas fa-clock"></i>
+      <h5>Imtihon sozlamalari</h5>
     </div>
-    <div class="form-check">
-      <input class="form-check-input" type="checkbox" id="customTimeCheck">
-      <label class="form-check-label" for="customTimeCheck">Boshqa vaqt kiritish</label>
+
+    <h6 class="mb-2">Imtihon vaqti:</h6>
+    <div class="btn-group mb-3" role="group" id="timeButtonGroup">
+      <button type="button" class="btn btn-outline-primary" data-time="10">10 daq</button>
+      <button type="button" class="btn btn-outline-primary" data-time="15">15 daq</button>
+      <button type="button" class="btn btn-outline-primary" data-time="20">20 daq</button>
+      <button type="button" class="btn btn-outline-primary active" data-time="25">25 daq</button>
+      <button type="button" class="btn btn-outline-primary" data-time="30">30 daq</button>
     </div>
-    <div id="customTimeInput" class="mt-2" style="display: none;">
-      <div class="input-group" style="max-width: 200px;">
-        <input type="number" class="form-control" id="minutesInput" min="1" max="180" value="25">
-        <span class="input-group-text">daqiqa</span>
+
+    <div class="custom-option">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="customTimeCheck">
+        <label class="form-check-label" for="customTimeCheck">Boshqa vaqt</label>
+      </div>
+      <div id="customTimeInput" class="custom-option-content">
+        <div class="input-group" style="max-width: 200px;">
+          <input type="number" class="form-control" id="minutesInput" min="1" max="180" value="25">
+          <span class="input-group-text">daqiqa</span>
+        </div>
+      </div>
+    </div>
+
+    <h6 class="mb-2 mt-3">Testlar soni:</h6>
+    <div class="btn-group mb-3" role="group" id="testCountButtonGroup">
+      <button type="button" class="btn btn-outline-primary" data-count="10">10 ta</button>
+      <button type="button" class="btn btn-outline-primary" data-count="15">15 ta</button>
+      <button type="button" class="btn btn-outline-primary" data-count="20">20 ta</button>
+      <button type="button" class="btn btn-outline-primary active" data-count="25">25 ta</button>
+      <button type="button" class="btn btn-outline-primary" data-count="30">30 ta</button>
+    </div>
+
+    <div class="custom-option">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="allTestsCheck">
+        <label class="form-check-label" for="allTestsCheck">Barcha testlarni ko'rsatish</label>
       </div>
     </div>
   </div>
@@ -679,6 +935,14 @@
     <label for="fileInput" class="form-label file-label">Iltimos umumiy test faylini tanlang!</label>
     <input type="file" class="form-control" id="fileInput" accept=".txt" />
     <div id="uploadStatus"></div>
+    
+    <div id="successMessage" class="success-message">
+      <h4>✅ Fayl muvaffaqiyatli yuklandi!</h4>
+      <p id="loadedTestsInfo"></p>
+      <button id="startExamBtn" class="start-exam-btn">
+        <i class="fas fa-play-circle me-2"></i>Imtihonni boshlash
+      </button>
+    </div>
   </div>
 
   <div id="quizList" style="display: none;">
@@ -736,6 +1000,14 @@
 
   <div id="confettiContainer" class="confetti-container"></div>
   <div id="saluteContainer"></div>
+  
+  <div id="countdownOverlay" class="countdown-overlay">
+    <div class="countdown-content">
+      <div class="countdown-text">Imtihon boshlanmoqda...</div>
+      <div id="countdownNumber" class="countdown-number">3</div>
+      <div class="countdown-message">Omad tilaymiz! 🍀</div>
+    </div>
+  </div>
   
   <div id="confirmModal" class="modal-overlay">
     <div class="confirm-modal">
@@ -801,6 +1073,7 @@ ANSWER: C
   let timerInterval;
   let totalSeconds = 25 * 60;
   let examStarted = false;
+  let selectedTestCount = 25;
 
   const gifGroups = {
     veryLow: [
@@ -852,7 +1125,9 @@ ANSWER: C
   const customTimeCheck = document.getElementById("customTimeCheck");
   const customTimeInput = document.getElementById("customTimeInput");
   const minutesInput = document.getElementById("minutesInput");
-  const timeButtons = document.querySelectorAll(".btn-group button");
+  const timeButtons = document.querySelectorAll("#timeButtonGroup button");
+  const testCountButtons = document.querySelectorAll("#testCountButtonGroup button");
+  const allTestsCheck = document.getElementById("allTestsCheck");
   const confirmModal = document.getElementById("confirmModal");
   const confirmMessage = document.getElementById("confirmMessage");
   const cancelFinish = document.getElementById("cancelFinish");
@@ -873,6 +1148,11 @@ ANSWER: C
   const newTestModal = document.getElementById("newTestModal");
   const cancelNewTest = document.getElementById("cancelNewTest");
   const confirmNewTest = document.getElementById("confirmNewTest");
+  const successMessage = document.getElementById("successMessage");
+  const startExamBtn = document.getElementById("startExamBtn");
+  const loadedTestsInfo = document.getElementById("loadedTestsInfo");
+  const countdownOverlay = document.getElementById("countdownOverlay");
+  const countdownNumber = document.getElementById("countdownNumber");
 
   // Info modal
   infoBtn.addEventListener("click", () => {
@@ -897,6 +1177,7 @@ ANSWER: C
     }
   });
 
+  // Time buttons
   timeButtons.forEach(button => {
     button.addEventListener("click", () => {
       timeButtons.forEach(btn => btn.classList.remove("active"));
@@ -904,23 +1185,50 @@ ANSWER: C
       const minutes = parseInt(button.getAttribute("data-time"));
       totalSeconds = minutes * 60;
       customTimeCheck.checked = false;
-      customTimeInput.style.display = "none";
+      customTimeInput.classList.remove("show");
     });
   });
 
+  // Custom time checkbox
   customTimeCheck.addEventListener("change", () => {
     if (customTimeCheck.checked) {
-      customTimeInput.style.display = "block";
+      customTimeInput.classList.add("show");
       timeButtons.forEach(btn => btn.classList.remove("active"));
       totalSeconds = parseInt(minutesInput.value) * 60;
     } else {
-      customTimeInput.style.display = "none";
+      customTimeInput.classList.remove("show");
     }
   });
 
   minutesInput.addEventListener("change", () => {
     if (customTimeCheck.checked) {
       totalSeconds = parseInt(minutesInput.value) * 60;
+    }
+  });
+
+  // Test count buttons
+  testCountButtons.forEach(button => {
+    button.addEventListener("click", () => {
+      testCountButtons.forEach(btn => btn.classList.remove("active"));
+      button.classList.add("active");
+      selectedTestCount = parseInt(button.getAttribute("data-count"));
+      allTestsCheck.checked = false;
+    });
+  });
+
+  // All tests checkbox
+  allTestsCheck.addEventListener("change", () => {
+    if (allTestsCheck.checked) {
+      testCountButtons.forEach(btn => btn.classList.remove("active"));
+      selectedTestCount = -1; // -1 means all tests
+    } else {
+      // Reset to default
+      testCountButtons.forEach(btn => {
+        if (btn.getAttribute("data-count") === "25") {
+          btn.classList.add("active");
+        }
+      });
+      selectedTestCount = 25;
     }
   });
 
@@ -981,19 +1289,203 @@ ANSWER: C
     }
 
     if (originalTests.length > 0) {
-      uploadStatus.textContent = "Fayl yuklandi!";
-      fileSection.style.display = "none";
+      console.log("✅ Tests loaded:", originalTests.length);
+      
+      uploadStatus.textContent = "Fayl muvaffaqiyatli yuklandi!";
+      uploadStatus.style.color = "#4361ee";
+      uploadStatus.style.fontWeight = "bold";
+      
+      // File input ni disable qilish
+      fileInput.disabled = true;
+      
+      // Testlarni darhol tayyorlash
       randomizeTests();
-      startExam();
+      console.log("✅ Tests randomized:", randomizedTests.length);
+      
+      // Success message ma'lumotlarini yangilash
+      let testsCount = randomizedTests.length;
+      if (selectedTestCount === -1 || selectedTestCount >= originalTests.length) {
+        loadedTestsInfo.textContent = `${testsCount} ta test yuklandi (Barcha testlar)`;
+      } else {
+        loadedTestsInfo.textContent = `${testsCount} ta test ${originalTests.length} tadan tasodifiy tanlandi`;
+      }
+      
+      // Success message ni darhol ko'rsatish
+      successMessage.style.display = 'block';
+      console.log("✅ Success message display set to block");
+      
+      // Animatsiyani qo'shish
+      setTimeout(() => {
+        successMessage.classList.add("show");
+        console.log("✅ Success message class 'show' added");
+        
+        // Success message ga scroll qilish
+        setTimeout(() => {
+          successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          console.log("✅ Scrolled to success message");
+        }, 300);
+      }, 50);
+      
+      // 3 soniyadan keyin tugma ko'rinishini tekshirish
+      setTimeout(() => {
+        const btnVisible = startExamBtn.offsetParent !== null;
+        console.log("Button visibility check:", btnVisible);
+        
+        if (!btnVisible) {
+          uploadStatus.textContent = "⚠️ Xatolik yuz berdi. Iltimos, qayta faylni yuklang!";
+          uploadStatus.style.color = "#ff6b6b";
+          uploadStatus.style.fontWeight = "bold";
+          
+          // Faylni qayta yuklash imkonini berish
+          fileInput.disabled = false;
+          fileInput.value = "";
+          successMessage.style.display = 'none';
+          successMessage.classList.remove("show");
+        }
+      }, 3000);
+      
     } else {
       uploadStatus.textContent = "Xatolik: Test ma'lumotlari topilmadi yoki noto'g'ri format!";
+      uploadStatus.style.color = "#e74c3c";
+      uploadStatus.style.fontWeight = "bold";
       fileInput.value = "";
+      fileInput.disabled = false;
+      successMessage.style.display = 'none';
+      successMessage.classList.remove("show");
     }
   }
 
+  // Start exam button click
+  startExamBtn.addEventListener("click", () => {
+    console.log("Start exam button clicked");
+    console.log("Randomized tests count:", randomizedTests.length);
+    
+    // Testlarni qayta tayyorlash (agar sozlamalar o'zgargan bo'lsa)
+    if (randomizedTests.length === 0) {
+      randomizeTests();
+    }
+    
+    // Orqa fonda testlarni tayyorlash
+    prepareTestsInBackground();
+    
+    // Yuqoriga scroll qilish
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    // Teskari sanoqni boshlash
+    setTimeout(() => {
+      startCountdown();
+    }, 300);
+  });
+
+  function prepareTestsInBackground() {
+    console.log("Preparing tests in background...");
+    
+    // Agar testlar bo'sh bo'lsa, qayta tayyorlash
+    if (randomizedTests.length === 0) {
+      console.log("No tests found, randomizing...");
+      randomizeTests();
+    }
+    
+    // Testlarni oldindan render qilish (ko'rinmaydi)
+    quizList.style.display = "block";
+    quizList.style.visibility = "hidden";
+    quizList.style.position = "absolute";
+    quizList.style.top = "0";
+    quizList.style.left = "0";
+    quizList.style.width = "100%";
+    
+    if (selectedTestCount === -1 || selectedTestCount >= originalTests.length) {
+      testCount.textContent = `${randomizedTests.length} ta test (Barcha testlar)`;
+    } else if (originalTests.length > selectedTestCount) {
+      testCount.textContent = `${selectedTestCount} ta test ${originalTests.length} tadan tasodifiy tanlandi!`;
+    } else {
+      testCount.textContent = `${randomizedTests.length} ta test yuklandi!`;
+    }
+    
+    questionsContainer.innerHTML = "";
+    randomizedTests.forEach((test, index) => {
+      const questionDiv = document.createElement("div");
+      questionDiv.className = "question-container";
+      questionDiv.dataset.correctOptionIndex = test.correctOptionIndex;
+
+      const qText = document.createElement("div");
+      qText.className = "question-text";
+      qText.textContent = (index + 1) + ". " + test.question;
+      questionDiv.appendChild(qText);
+
+      const optionsDiv = document.createElement("div");
+      optionsDiv.className = "options-container";
+      test.options.forEach((opt, optIndex) => {
+        const formCheck = document.createElement("div");
+        formCheck.className = "form-check";
+        const input = document.createElement("input");
+        input.className = "form-check-input";
+        input.type = "radio";
+        input.name = "question_" + index;
+        input.id = "question_" + index + "_option_" + optIndex;
+        input.dataset.originalLetter = opt.letter;
+        const label = document.createElement("label");
+        label.className = "form-check-label";
+        label.setAttribute("for", input.id);
+        label.textContent = opt.text;
+        formCheck.appendChild(input);
+        formCheck.appendChild(label);
+        optionsDiv.appendChild(formCheck);
+      });
+      questionDiv.appendChild(optionsDiv);
+      questionsContainer.appendChild(questionDiv);
+    });
+    
+    console.log("Tests prepared:", randomizedTests.length);
+  }
+
+  function startCountdown() {
+    let count = 3;
+    countdownOverlay.classList.add("show");
+    countdownNumber.textContent = count;
+    
+    const countInterval = setInterval(() => {
+      count--;
+      if (count > 0) {
+        countdownNumber.textContent = count;
+        // Reset animation
+        countdownNumber.style.animation = 'none';
+        setTimeout(() => {
+          countdownNumber.style.animation = 'countdownPulse 1s ease-in-out';
+        }, 10);
+      } else {
+        clearInterval(countInterval);
+        countdownNumber.textContent = "Boshlandi!";
+        setTimeout(() => {
+          countdownOverlay.classList.remove("show");
+          // Testlarni ko'rinadigan qilish
+          showPreparedTests();
+        }, 1000);
+      }
+    }, 1000);
+  }
+
+  function showPreparedTests() {
+    console.log("Showing prepared tests...");
+    // Oldindan tayyorlangan testlarni ko'rsatish
+    quizList.style.visibility = "visible";
+    quizList.style.position = "relative";
+    quizList.style.top = "auto";
+    quizList.style.left = "auto";
+    startExam();
+  }
+
   function randomizeTests() {
-    const shuffledTests = shuffleArray(originalTests).slice(0, 25);
-    randomizedTests = shuffledTests.map(test => {
+    let testsToUse;
+    if (selectedTestCount === -1 || selectedTestCount >= originalTests.length) {
+      // Show all tests
+      testsToUse = shuffleArray(originalTests);
+    } else {
+      // Show selected number of tests
+      testsToUse = shuffleArray(originalTests).slice(0, selectedTestCount);
+    }
+    
+    randomizedTests = testsToUse.map(test => {
       const shuffledOptions = shuffleArray(test.options);
       const correctOptionIndex = shuffledOptions.findIndex(option => option.letter === test.answer);
       return { question: test.question, options: shuffledOptions, correctOptionIndex };
@@ -1003,18 +1495,20 @@ ANSWER: C
   function startExam() {
     examStarted = true;
     timeSettings.style.display = "none";
+    successMessage.style.display = "none";
+    fileSection.style.display = "none";
     infoBtn.style.display = "none";
     fileInput.disabled = true;
     timerContainer.style.display = "flex";
     updateTimerDisplay();
     startTimer();
-    showTests();
   }
 
   function showTests() {
-    quizList.style.display = "block";
-    if (originalTests.length > 25) {
-      testCount.textContent = `25 ta test ${originalTests.length} tadan tasodifiy tanlandi!`;
+    if (selectedTestCount === -1 || selectedTestCount >= originalTests.length) {
+      testCount.textContent = `${randomizedTests.length} ta test (Barcha testlar)`;
+    } else if (originalTests.length > selectedTestCount) {
+      testCount.textContent = `${selectedTestCount} ta test ${originalTests.length} tadan tasodifiy tanlandi!`;
     } else {
       testCount.textContent = `${randomizedTests.length} ta test yuklandi!`;
     }
@@ -1260,7 +1754,13 @@ ANSWER: C
     fileInput.disabled = false;
     fileInput.value = "";
     uploadStatus.textContent = "";
+    uploadStatus.style.fontWeight = "normal";
+    successMessage.classList.remove("show");
     quizList.style.display = "none";
+    quizList.style.visibility = "visible";
+    quizList.style.position = "relative";
+    quizList.style.top = "auto";
+    quizList.style.left = "auto";
     scoreContainer.style.opacity = "0";
     scoreContainer.classList.remove("show-feedback");
     timerElement.classList.remove("warning");
@@ -1271,12 +1771,25 @@ ANSWER: C
     timeSettings.style.display = "block";
     fileSection.style.display = "block";
     infoBtn.style.display = "block";
+    
+    // Time buttons reset
     timeButtons.forEach(btn => btn.classList.remove("active"));
-    document.querySelector('button[data-time="25"]').classList.add("active");
+    document.querySelector('#timeButtonGroup button[data-time="25"]').classList.add("active");
     customTimeCheck.checked = false;
-    customTimeInput.style.display = "none";
+    customTimeInput.classList.remove("show");
     totalSeconds = 25 * 60;
     minutesInput.value = "25";
+    
+    // Test count buttons reset
+    testCountButtons.forEach(btn => btn.classList.remove("active"));
+    document.querySelector('#testCountButtonGroup button[data-count="25"]').classList.add("active");
+    allTestsCheck.checked = false;
+    selectedTestCount = 25;
+    
+    // Reset tests array
+    originalTests = [];
+    randomizedTests = [];
+    
     emojiPlaceholder.textContent = "";
     
     // Statistikalarni reset qilish
@@ -1336,7 +1849,3 @@ ANSWER: C
 </script>
 </body>
 </html>
-
-
-
-
