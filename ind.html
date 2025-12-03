@@ -256,16 +256,14 @@
       padding: 20px;
       margin: 20px 0;
       text-align: center;
+      display: none;
       opacity: 0;
-      max-height: 0;
-      overflow: hidden;
       transform: translateY(-20px);
-      transition: all 0.5s ease;
+      transition: opacity 0.5s ease, transform 0.5s ease;
     }
 
     .success-message.show {
       opacity: 1;
-      max-height: 500px;
       transform: translateY(0);
     }
 
@@ -1312,16 +1310,21 @@ ANSWER: C
         loadedTestsInfo.textContent = `${testsCount} ta test ${originalTests.length} tadan tasodifiy tanlandi`;
       }
       
-      // Success message ni ko'rsatish - max-height transition bilan
+      // Success message ni darhol ko'rsatish
+      successMessage.style.display = 'block';
+      console.log("✅ Success message display set to block");
+      
+      // Animatsiyani qo'shish
       setTimeout(() => {
         successMessage.classList.add("show");
-        console.log("✅ Success message shown");
+        console.log("✅ Success message class 'show' added");
         
         // Success message ga scroll qilish
         setTimeout(() => {
           successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          console.log("✅ Scrolled to success message");
         }, 300);
-      }, 100);
+      }, 50);
       
     } else {
       uploadStatus.textContent = "Xatolik: Test ma'lumotlari topilmadi yoki noto'g'ri format!";
@@ -1329,6 +1332,8 @@ ANSWER: C
       uploadStatus.style.fontWeight = "bold";
       fileInput.value = "";
       fileInput.disabled = false;
+      successMessage.style.display = 'none';
+      successMessage.classList.remove("show");
     }
   }
 
