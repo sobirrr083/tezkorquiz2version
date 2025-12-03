@@ -256,15 +256,16 @@
       padding: 20px;
       margin: 20px 0;
       text-align: center;
-      display: none;
       opacity: 0;
-      transform: translateY(-10px);
+      max-height: 0;
+      overflow: hidden;
+      transform: translateY(-20px);
       transition: all 0.5s ease;
     }
 
     .success-message.show {
-      display: block;
       opacity: 1;
+      max-height: 500px;
       transform: translateY(0);
     }
 
@@ -1290,12 +1291,18 @@ ANSWER: C
     }
 
     if (originalTests.length > 0) {
+      console.log("✅ Tests loaded:", originalTests.length);
+      
       uploadStatus.textContent = "Fayl muvaffaqiyatli yuklandi!";
       uploadStatus.style.color = "#4361ee";
       uploadStatus.style.fontWeight = "bold";
       
-      // Testlarni tayyorlash
+      // File input ni disable qilish
+      fileInput.disabled = true;
+      
+      // Testlarni darhol tayyorlash
       randomizeTests();
+      console.log("✅ Tests randomized:", randomizedTests.length);
       
       // Success message ma'lumotlarini yangilash
       let testsCount = randomizedTests.length;
@@ -1305,25 +1312,23 @@ ANSWER: C
         loadedTestsInfo.textContent = `${testsCount} ta test ${originalTests.length} tadan tasodifiy tanlandi`;
       }
       
-      // Success message ko'rsatish
-      fileInput.disabled = true;
-      
-      // Display block qilib, keyin opacity bilan ko'rsatish
-      successMessage.style.display = "block";
+      // Success message ni ko'rsatish - max-height transition bilan
       setTimeout(() => {
         successMessage.classList.add("show");
+        console.log("✅ Success message shown");
         
-        // Success message ga scroll qilish (pastga)
+        // Success message ga scroll qilish
         setTimeout(() => {
           successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 200);
-      }, 50);
+        }, 300);
+      }, 100);
       
     } else {
       uploadStatus.textContent = "Xatolik: Test ma'lumotlari topilmadi yoki noto'g'ri format!";
       uploadStatus.style.color = "#e74c3c";
       uploadStatus.style.fontWeight = "bold";
       fileInput.value = "";
+      fileInput.disabled = false;
     }
   }
 
@@ -1728,9 +1733,6 @@ ANSWER: C
     uploadStatus.textContent = "";
     uploadStatus.style.fontWeight = "normal";
     successMessage.classList.remove("show");
-    successMessage.style.display = "none";
-    successMessage.style.opacity = "0";
-    successMessage.style.transform = "translateY(-10px)";
     quizList.style.display = "none";
     quizList.style.visibility = "visible";
     quizList.style.position = "relative";
