@@ -468,7 +468,10 @@ document.getElementById('loginForm').addEventListener('submit',async e=>{
     await signInWithEmailAndPassword(auth,em,pw);
     showAlert('loginAlert','Muvaffaqiyatli kirildi!','success');
     clearForm('loginForm');
-    setTimeout(()=>location.href='index.html',1500)
+    const params = new URLSearchParams(window.location.search);
+    const returnUrl = params.get('returnUrl') || 'index.html';
+    setTimeout(()=>location.href=returnUrl,1500)
+  
   }catch(err){
     showAlert('loginAlert',getErrorMessage(err.code),'error');
     setLoading(b,false)
@@ -498,8 +501,11 @@ document.getElementById('signupForm').addEventListener('submit',async e=>{
     await updateProfile(uc.user,{displayName:name});
     showAlert('signupAlert','Muvaffaqiyatli ro\'yxatdan o\'tdingiz!','success');
     clearForm('signupForm');
-    setTimeout(()=>location.href='index.html',1500)
-  }catch(err){
+    const params = new URLSearchParams(window.location.search);
+    const returnUrl = params.get('returnUrl') || 'index.html';
+    setTimeout(()=>location.href=returnUrl,1500)
+  }
+  catch(err){
     showAlert('signupAlert',getErrorMessage(err.code),'error');
     setLoading(b,false)
   }
@@ -537,9 +543,10 @@ async function signInWithGoogle(buttonId, alertId) {
     
     showAlert(alertId, 'Google orqali muvaffaqiyatli kirildi!', 'success');
     console.log('Google user:', user.displayName, user.email);
-    
+    const params = new URLSearchParams(window.location.search);
+    const returnUrl = params.get('returnUrl') || 'index.html';
     setTimeout(() => {
-      location.href = 'index.html';
+      location.href = returnUrl;
     }, 1500);
     
   } catch (error) {
