@@ -394,7 +394,7 @@
     <div class="container">
         <div class="header">
             <div class="logo-container">
-            <img src="aga/milliylogo.webp" alt="Tezkor Quiz Logo">
+           <img src="aga/milliylogo.webp" alt="Tezkor Quiz Logo">    
             </div>
             <h1 class="app-title">Tezkor Quiz</h1>
             <p class="app-subtitle">Ilovani yuklab oling va foydalanishni boshlang</p>
@@ -649,7 +649,7 @@
         }
 
         // Android yuklab olish
-        document.getElementById('androidBtn').addEventListener('click', function(e) {
+        document.getElementById('androidBtn').addEventListener('click', async function(e) {
             e.stopPropagation();
             
             if (isDownloading) return;
@@ -666,39 +666,92 @@
             btnText.textContent = 'Yuklanmoqda...';
             progressContainer.classList.add('active');
             
-            // Progress animatsiyasi
-            let progress = 0;
-            const interval = setInterval(() => {
-                progress += Math.random() * 15;
-                if (progress > 100) progress = 100;
-                
-                progressFill.style.width = progress + '%';
-                progressText.textContent = `Yuklanmoqda... ${Math.round(progress)}%`;
-                
-                if (progress >= 100) {
-                    clearInterval(interval);
-                    setTimeout(() => {
-                        progressText.textContent = 'Yuklab olindi! ✓';
-                        setTimeout(() => {
-                            btn.classList.remove('downloading');
-                            btnText.textContent = 'Yuklab olish';
-                            progressContainer.classList.remove('active');
-                            progressFill.style.width = '0%';
-                            isDownloading = false;
-                        }, 2000);
-                    }, 500);
-                }
-            }, 200);
-            
-            // APK yuklab olish
             const apkUrl = 'tezkorquiz.apk';
             
-            const link = document.createElement('a');
-            link.href = apkUrl;
-            link.download = 'TezkorQuiz.apk';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            try {
+                // Fetch API bilan yuklab olish va haqiqiy progress ko'rsatish
+                const response = await fetch(apkUrl);
+                const contentLength = response.headers.get('content-length');
+                
+                if (!contentLength) {
+                    // Agar fayl hajmi ma'lum bo'lmasa, oddiy yuklab olish
+                    const blob = await response.blob();
+                    downloadBlob(blob, 'TezkorQuiz.apk');
+                    showSuccess();
+                    return;
+                }
+                
+                const total = parseInt(contentLength, 10);
+                let loaded = 0;
+                
+                const reader = response.body.getReader();
+                const chunks = [];
+                
+                while (true) {
+                    const {done, value} = await reader.read();
+                    
+                    if (done) break;
+                    
+                    chunks.push(value);
+                    loaded += value.length;
+                    
+                    const progress = (loaded / total) * 100;
+                    progressFill.style.width = progress + '%';
+                    progressText.textContent = `Yuklanmoqda... ${Math.round(progress)}%`;
+                }
+                
+                // Barcha qismlarni birlashtirish
+                const blob = new Blob(chunks);
+                downloadBlob(blob, 'TezkorQuiz.apk');
+                showSuccess();
+                
+            } catch (error) {
+                console.error('Yuklab olishda xatolik:', error);
+                // Xatolik bo'lsa oddiy usul bilan yuklab olish
+                const link = document.createElement('a');
+                link.href = apkUrl;
+                link.download = 'TezkorQuiz.apk';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                // Progressni to'ldirish
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += 10;
+                    if (progress > 100) progress = 100;
+                    
+                    progressFill.style.width = progress + '%';
+                    progressText.textContent = `Yuklanmoqda... ${Math.round(progress)}%`;
+                    
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                        showSuccess();
+                    }
+                }, 300);
+            }
+            
+            function downloadBlob(blob, filename) {
+                const url = window.URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(url);
+            }
+            
+            function showSuccess() {
+                progressText.textContent = 'Yuklab olindi! ✓';
+                setTimeout(() => {
+                    btn.classList.remove('downloading');
+                    btnText.textContent = 'Yuklab olish';
+                    progressContainer.classList.remove('active');
+                    progressFill.style.width = '0%';
+                    isDownloading = false;
+                }, 2000);
+            }
         });
 
         // Modal ochish
