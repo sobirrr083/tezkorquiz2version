@@ -1407,21 +1407,27 @@
 
 
       /* yangi css kodlari ilovani yuklab olish cardsi */
-      .app-download-card {
+/* ============================================
+   SECTION THREE - ILOVA YUKLAB OLISH CARD
+   ============================================ */
+
+.section-three .app-download-card {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border-radius: 24px;
     padding: 40px 30px;
     box-shadow: 0 20px 60px rgba(102, 126, 234, 0.4);
-    cursor: pointer;
-    transition: all 0.4s ease;
     position: relative;
     overflow: hidden;
-    }
-    
-    .app-download-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 30px 80px rgba(102, 126, 234, 0.5);
-    }
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.section-three .app-download-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 30px 80px rgba(102, 126, 234, 0.5);
+}
+
+/* ... artifactdagi qolgan barcha CSS kodlarni nusxalang ... */
     </style>
 </head>
 <body>
@@ -1712,28 +1718,69 @@
 
 
       <!-- Ilova yuklab olish Card -->
-      <div class="col-12 col-md-6">
-          <div class="card-container">
-              <div class="app-download-card" onclick="window.location.href='appdownloads.html'">
-                  <div class="card-content">
-                      <div class="card-header">
-                          <div class="app-icon">
-                              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                  <path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"/>
-                              </svg>
-                          </div>
-                          <div class="app-info">
-                              <h2>Mobil Ilova</h2>
-                              <p>TezkorQuiz Android</p>
-                          </div>
-                      </div>
-                      <div class="card-body">
-                          <p>Testlarni telefonda ishlating! Istalgan joyda, istalgan vaqtda bilimingizni sinab ko'ring.</p>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
+     <!-- Ilova yuklab olish Card -->
+<div class="col-12 col-md-6">
+    <div class="section-three">
+        <div class="app-download-card" onclick="window.location.href='ilova_yuklab_olish.html'">
+            <div class="card-content">
+                <div class="card-header">
+                    <div class="app-icon">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"/>
+                        </svg>
+                    </div>
+                    <div class="app-info">
+                        <h2>Mobil Ilova</h2>
+                        <p>TezkorQuiz Android</p>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <p>Testlarni telefonda ishlating! Istalgan joyda, istalgan vaqtda bilimingizni sinab ko'ring.</p>
+
+                    <div class="features">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                </svg>
+                            </div>
+                            <span>Offline rejimda ishlash</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                </svg>
+                            </div>
+                            <span>Tez va qulay interfeys</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                </svg>
+                            </div>
+                            <span>Natijalarni saqlash va tahlil</span>
+                        </div>
+                    </div>
+
+                    <div class="badge">
+                        <div class="pulse-dot"></div>
+                        <span>Bepul yuklab oling</span>
+                    </div>
+                </div>
+
+                <button class="download-button">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                    </svg>
+                    <span>Ilovani yuklab olish</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
         <!-- Footer -->
         <footer class="footer">
             <div class="container">
