@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tezkor Quiz - Ilovani Yuklab Olish</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #e5e7eb;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 24px;
+            padding: 48px 40px;
+            max-width: 520px;
+            width: 100%;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo-container {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #4460ef 0%, #5a7bff 100%);
+            border-radius: 24px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 24px rgba(68, 96, 239, 0.25);
+        }
+
+        .logo-container img {
+            width: 70px;
+            height: 70px;
+            object-fit: contain;
+        }
+
+        .app-title {
+            color: #1f2937;
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .app-subtitle {
+            color: #6b7280;
+            font-size: 15px;
+        }
+
+        .download-section {
+            margin-bottom: 20px;
+        }
+
+        .download-option {
+            background: #f9fafb;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .download-option:hover {
+            background: #f3f4f6;
+            border-color: #e5e7eb;
+        }
+
+        .option-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 12px;
+        }
+
+        .platform-icon {
+            width: 44px;
+            height: 44px;
+            background: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .platform-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .option-content {
+            flex: 1;
+        }
+
+        .platform-name {
+            color: #1f2937;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .platform-desc {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .download-btn {
+            width: 100%;
+            padding: 14px 24px;
+            background: #4460ef;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .download-btn:hover {
+            background: #3651d9;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(68, 96, 239, 0.3);
+        }
+
+        .download-btn:active {
+            transform: translateY(0);
+        }
+
+        .download-btn.downloading {
+            background: #6b7280;
+            cursor: not-allowed;
+        }
+
+        .progress-container {
+            margin-top: 12px;
+            display: none;
+        }
+
+        .progress-container.active {
+            display: block;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4460ef 0%, #5a7bff 100%);
+            border-radius: 10px;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            text-align: center;
+            color: #6b7280;
+            font-size: 13px;
+            margin-top: 8px;
+            font-weight: 500;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 24px;
+            padding: 32px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: #f3f4f6;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            font-size: 20px;
+            color: #6b7280;
+        }
+
+        .close-btn:hover {
+            background: #e5e7eb;
+            color: #1f2937;
+        }
+
+        .modal-title {
+            color: #1f2937;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            padding-right: 40px;
+        }
+
+        .instruction-step {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            background: #4460ef;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .step-text {
+            color: #374151;
+            line-height: 1.6;
+            font-size: 15px;
+            padding-top: 6px;
+        }
+
+        .step-text strong {
+            color: #1f2937;
+            font-weight: 600;
+        }
+
+        .note {
+            background: #eff6ff;
+            border-left: 4px solid #4460ef;
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .note-text {
+            color: #1e40af;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .btn-icon {
+            width: 18px;
+            height: 18px;
+        }
+
+        .language-selector {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 20px;
+            padding: 6px;
+            background: #f9fafb;
+            border-radius: 12px;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .lang-btn {
+            padding: 8px 16px;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: #6b7280;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .lang-btn:hover {
+            background: #e5e7eb;
+            color: #1f2937;
+        }
+
+        .lang-btn.active {
+            background: #4460ef;
+            color: white;
+        }
+
+        .lang-flag {
+            font-size: 16px;
+        }
+
+        .modal-language-selector {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 24px;
+            padding: 6px;
+            background: #f9fafb;
+            border-radius: 12px;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 32px 24px;
+            }
+
+            .app-title {
+                font-size: 22px;
+            }
+
+            .platform-name {
+                font-size: 16px;
+            }
+
+            .download-option {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-container">
+                <img src="aga/iconcha.png" alt="Tezkor Quiz Logo">
+            </div>
+            <h1 class="app-title">Tezkor Quiz</h1>
+            <p class="app-subtitle">Ilovani yuklab oling va foydalanishni boshlang</p>
+        </div>
+
+        <div class="download-section">
+            <!-- Android -->
+            <div class="download-option">
+                <div class="option-header">
+                    <div class="platform-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 18C6 18.55 6.45 19 7 19H8V22.5C8 23.33 8.67 24 9.5 24C10.33 24 11 23.33 11 22.5V19H13V22.5C13 23.33 13.67 24 14.5 24C15.33 24 16 23.33 16 22.5V19H17C17.55 19 18 18.55 18 18V8H6V18Z" fill="#4460ef"/>
+                            <path d="M3.5 8C2.67 8 2 8.67 2 9.5V16.5C2 17.33 2.67 18 3.5 18C4.33 18 5 17.33 5 16.5V9.5C5 8.67 4.33 8 3.5 8Z" fill="#4460ef"/>
+                            <path d="M20.5 8C19.67 8 19 8.67 19 9.5V16.5C19 17.33 19.67 18 20.5 18C21.33 18 22 17.33 22 16.5V9.5C22 8.67 21.33 8 20.5 8Z" fill="#4460ef"/>
+                            <path d="M15.53 2.16L16.83 0.86C17.03 0.66 17.03 0.35 16.83 0.15C16.63 -0.05 16.32 -0.05 16.12 0.15L14.64 1.63C13.85 1.23 12.95 1 12 1C11.04 1 10.14 1.23 9.34 1.63L7.85 0.15C7.65 -0.05 7.34 -0.05 7.14 0.15C6.94 0.35 6.94 0.66 7.14 0.86L8.45 2.17C6.97 3.26 6 5.01 6 7H18C18 5.01 17.03 3.25 15.53 2.16ZM10 5H9V4H10V5ZM15 5H14V4H15V5Z" fill="#4460ef"/>
+                        </svg>
+                    </div>
+                    <div class="option-content">
+                        <div class="platform-name">Android</div>
+                        <div class="platform-desc">APK fayl - Android 5.0 va yuqori</div>
+                    </div>
+                </div>
+                <button class="download-btn" id="androidBtn">
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 15L7 10H10V3H14V10H17L12 15Z" fill="white"/>
+                        <path d="M20 18H4V11H2V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V11H20V18Z" fill="white"/>
+                    </svg>
+                    <span id="androidBtnText">Yuklab olish</span>
+                </button>
+                <div class="progress-container" id="androidProgress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="androidProgressFill"></div>
+                    </div>
+                    <div class="progress-text" id="androidProgressText">Yuklanmoqda... 0%</div>
+                </div>
+            </div>
+
+            <!-- iOS -->
+            <div class="download-option" onclick="showModal('iosModal')">
+                <div class="option-header">
+                    <div class="platform-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M17.05 20.28C16.05 21.23 14.96 21.17 13.89 20.66C12.76 20.15 11.72 20.13 10.53 20.66C9.03998 21.32 8.24998 21.23 7.39998 20.28C2.92998 15.69 3.55998 8.59 8.59998 8.32C9.82998 8.38 10.69 9.03 11.41 9.08C12.58 8.83 13.69 8.16 14.93 8.24C16.42 8.34 17.55 8.91 18.28 10.04C15.36 11.79 16.06 15.67 18.72 16.78C18.21 18.14 17.56 19.49 17.04 20.29L17.05 20.28ZM11.35 8.26C11.2 6.09 12.97 4.35 15 4.11C15.29 6.64 12.86 8.45 11.35 8.26Z" fill="#4460ef"/>
+                        </svg>
+                    </div>
+                    <div class="option-content">
+                        <div class="platform-name">iOS</div>
+                        <div class="platform-desc">iPhone va iPad uchun</div>
+                    </div>
+                </div>
+                <button class="download-btn">
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" stroke="white" stroke-width="2" fill="none"/>
+                        <path d="M12 7V13" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                        <circle cx="12" cy="16" r="1" fill="white"/>
+                    </svg>
+                    O'rnatish ko'rsatmasi
+                </button>
+            </div>
+
+            <!-- Windows -->
+            <div class="download-option" onclick="showModal('windowsModal')">
+                <div class="option-header">
+                    <div class="platform-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 5.45V10.95H10V4.5L3 5.45ZM10 11.45H3V16.95L10 17.9V11.45ZM11 17.95L21 19.5V11.45H11V17.95ZM21 4.5L11 6.05V10.95H21V4.5Z" fill="#4460ef"/>
+                        </svg>
+                    </div>
+                    <div class="option-content">
+                        <div class="platform-name">Windows</div>
+                        <div class="platform-desc">Desktop kompyuter uchun</div>
+                    </div>
+                </div>
+                <button class="download-btn">
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" stroke="white" stroke-width="2" fill="none"/>
+                        <path d="M12 7V13" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                        <circle cx="12" cy="16" r="1" fill="white"/>
+                    </svg>
+                    O'rnatish ko'rsatmasi
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- iOS Modal -->
+    <div class="modal" id="iosModal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('iosModal')">✕</button>
+            <h2 class="modal-title">iOS uchun o'rnatish</h2>
+            
+            <div class="modal-language-selector">
+                <button class="lang-btn active" onclick="changeLanguage('ios', 'uz')">
+                    <span class="lang-flag">🇺🇿</span>
+                    <span>O'zbek</span>
+                </button>
+                <button class="lang-btn" onclick="changeLanguage('ios', 'ru')">
+                    <span class="lang-flag">🇷🇺</span>
+                    <span>Русский</span>
+                </button>
+                <button class="lang-btn" onclick="changeLanguage('ios', 'en')">
+                    <span class="lang-flag">🇬🇧</span>
+                    <span>English</span>
+                </button>
+            </div>
+            
+            <div class="instruction-step">
+                <div class="step-number">1</div>
+                <div class="step-text">Safari brauzerida ushbu saytni oching</div>
+            </div>
+
+            <div class="instruction-step">
+                <div class="step-number">2</div>
+                <div class="step-text">Pastki menyudagi <strong class="ios-share-text">"Ulashish"</strong> tugmasini bosing (kvadrat ichida yuqoriga yo'nalgan strelka belgisi)</div>
+            </div>
+
+            <div class="instruction-step">
+                <div class="step-number">3</div>
+                <div class="step-text">Roʻyxatdan <strong class="ios-add-text">"Bosh ekranga qo'shish"</strong> tugmasini toping va ustiga bosing</div>
+            </div>
+
+            <div class="instruction-step">
+                <div class="step-number">4</div>
+                <div class="step-text">Ilova nomini tasdiqlang va oʻng yuqori burchakdagi <strong class="ios-confirm-text">"Qo'shish"</strong> tugmasini bosing</div>
+            </div>
+
+            <div class="note">
+                <p class="note-text">✨ Tayyor! Ilova bosh ekraningizda paydo bo'ladi va oddiy iOS ilovasi kabi ishlatishingiz mumkin bo'ladi. Siz uni istalgan vaqt ochishingiz va foydalanishingiz mumkin!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Windows Modal -->
+    <div class="modal" id="windowsModal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('windowsModal')">✕</button>
+            <h2 class="modal-title">Windows uchun o'rnatish</h2>
+            
+            <div class="modal-language-selector">
+                <button class="lang-btn active" onclick="changeLanguage('windows', 'uz')">
+                    <span class="lang-flag">🇺🇿</span>
+                    <span>O'zbek</span>
+                </button>
+                <button class="lang-btn" onclick="changeLanguage('windows', 'ru')">
+                    <span class="lang-flag">🇷🇺</span>
+                    <span>Русский</span>
+                </button>
+                <button class="lang-btn" onclick="changeLanguage('windows', 'en')">
+                    <span class="lang-flag">🇬🇧</span>
+                    <span>English</span>
+                </button>
+            </div>
+            
+            <div class="instruction-step">
+                <div class="step-number">1</div>
+                <div class="step-text">Google Chrome brauzerida ushbu saytni oching</div>
+            </div>
+
+            <div class="instruction-step">
+                <div class="step-number">2</div>
+                <div class="step-text">Yuqori oʻng burchakdagi <strong>"⋮"</strong> (uchta nuqta) belgisiga bosing</div>
+            </div>
+
+            <div class="instruction-step">
+                <div class="step-number">3</div>
+                <div class="step-text">Ochilgan menyudan <strong class="win-apps-text">"Ilovalar"</strong> boʻlimiga oʻting</div>
+            </div>
+
+            <div class="instruction-step">
+                <div class="step-number">4</div>
+                <div class="step-text"><strong class="win-install-site-text">"Saytni ilova sifatida o'rnatish"</strong> tugmasini bosing</div>
+            </div>
+
+            <div class="instruction-step">
+                <div class="step-number">5</div>
+                <div class="step-text">Ochilgan dialog oynasida <strong class="win-install-text">"O'rnatish"</strong> tugmasini bosing</div>
+            </div>
+
+            <div class="note">
+                <p class="note-text">✨ A'lo! Ilova Windows start menyusiga qo'shiladi va mustaqil oynada ochiladi. Siz uni kompyuteringizdagi oddiy dastur kabi ishlatishingiz mumkin!</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isDownloading = false;
+
+        // Tarjima matnlari
+        const translations = {
+            ios: {
+                uz: {
+                    share: 'Ulashish',
+                    addToHome: 'Bosh ekranga qo\'shish',
+                    add: 'Qo\'shish'
+                },
+                ru: {
+                    share: 'Поделиться',
+                    addToHome: 'На экран "Домой"',
+                    add: 'Добавить'
+                },
+                en: {
+                    share: 'Share',
+                    addToHome: 'Add to Home Screen',
+                    add: 'Add'
+                }
+            },
+            windows: {
+                uz: {
+                    apps: 'Ilovalar',
+                    installSite: 'Saytni ilova sifatida o\'rnatish',
+                    install: 'O\'rnatish'
+                },
+                ru: {
+                    apps: 'Приложения',
+                    installSite: 'Установить сайт как приложение',
+                    install: 'Установить'
+                },
+                en: {
+                    apps: 'Apps',
+                    installSite: 'Install this site as an app',
+                    install: 'Install'
+                }
+            }
+        };
+
+        // Til o'zgartirish funksiyasi
+        function changeLanguage(platform, lang) {
+            // Aktiv tugmani o'zgartirish
+            const modal = document.getElementById(platform + 'Modal');
+            const langButtons = modal.querySelectorAll('.lang-btn');
+            langButtons.forEach(btn => btn.classList.remove('active'));
+            event.target.closest('.lang-btn').classList.add('active');
+
+            // Matnlarni yangilash
+            if (platform === 'ios') {
+                const shareText = modal.querySelector('.ios-share-text');
+                const addText = modal.querySelector('.ios-add-text');
+                const confirmText = modal.querySelector('.ios-confirm-text');
+                
+                shareText.textContent = `"${translations.ios[lang].share}"`;
+                addText.textContent = `"${translations.ios[lang].addToHome}"`;
+                confirmText.textContent = `"${translations.ios[lang].add}"`;
+            } else if (platform === 'windows') {
+                const appsText = modal.querySelector('.win-apps-text');
+                const installSiteText = modal.querySelector('.win-install-site-text');
+                const installText = modal.querySelector('.win-install-text');
+                
+                appsText.textContent = `"${translations.windows[lang].apps}"`;
+                installSiteText.textContent = `"${translations.windows[lang].installSite}"`;
+                installText.textContent = `"${translations.windows[lang].install}"`;
+            }
+        }
+
+        // Android yuklab olish
+        document.getElementById('androidBtn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            
+            if (isDownloading) return;
+            
+            isDownloading = true;
+            const btn = this;
+            const btnText = document.getElementById('androidBtnText');
+            const progressContainer = document.getElementById('androidProgress');
+            const progressFill = document.getElementById('androidProgressFill');
+            const progressText = document.getElementById('androidProgressText');
+            
+            // Tugmani o'zgartirish
+            btn.classList.add('downloading');
+            btnText.textContent = 'Yuklanmoqda...';
+            progressContainer.classList.add('active');
+            
+            // Progress animatsiyasi
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress > 100) progress = 100;
+                
+                progressFill.style.width = progress + '%';
+                progressText.textContent = `Yuklanmoqda... ${Math.round(progress)}%`;
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        progressText.textContent = 'Yuklab olindi! ✓';
+                        setTimeout(() => {
+                            btn.classList.remove('downloading');
+                            btnText.textContent = 'Yuklab olish';
+                            progressContainer.classList.remove('active');
+                            progressFill.style.width = '0%';
+                            isDownloading = false;
+                        }, 2000);
+                    }, 500);
+                }
+            }, 200);
+            
+            // Haqiqiy APK yuklab olish
+            // Bu yerda o'z APK fayl URL manzilingizni kiriting
+            const apkUrl = 'https://your-domain.com/your-app.apk';
+            
+            const link = document.createElement('a');
+            link.href = apkUrl;
+            link.download = 'TezkorQuiz.apk';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+
+        // Modal ochish
+        function showModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        // Modal yopish
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Modal tashqarisiga bosilganda yopish
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                }
+            });
+        });
+
+        // ESC tugmasi bilan yopish
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal').forEach(modal => {
+                    modal.classList.remove('active');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
