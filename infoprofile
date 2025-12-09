@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil - TezkorQuiz</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3a0ca3;
+            --gradient-1: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', 'Roboto', sans-serif;
+            background: rgba(0, 0, 0, 0.5);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .profile-modal {
+            background: white;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 700px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .profile-header {
+            background: var(--gradient-1);
+            padding: 30px;
+            border-radius: 24px 24px 0 0;
+            position: relative;
+            text-align: center;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .avatar-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 5px solid white;
+            object-fit: cover;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .avatar svg {
+            width: 60px;
+            height: 60px;
+            fill: white;
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .change-avatar-btn {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            color: var(--primary-color);
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .change-avatar-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .profile-name {
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .profile-email {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+        }
+
+        .profile-body {
+            padding: 30px;
+        }
+
+        .mode-switch {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            background: #f1f3f5;
+            padding: 5px;
+            border-radius: 12px;
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: transparent;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #666;
+        }
+
+        .mode-btn.active {
+            background: white;
+            color: var(--primary-color);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-section {
+            display: none;
+        }
+
+        .profile-section.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.1);
+        }
+
+        .form-control:disabled {
+            background: #f8f9fa;
+            cursor: not-allowed;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 16px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            margin-bottom: 12px;
+        }
+
+        .info-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .info-icon i {
+            color: white;
+            font-size: 18px;
+        }
+
+        .info-content {
+            flex: 1;
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            font-size: 15px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .save-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--gradient-1);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.4);
+        }
+
+        .save-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .alert {
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-danger {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        /* Responsive */
+        @media (max-width: 576px) {
+            .profile-modal {
+                max-height: 100vh;
+                border-radius: 0;
+            }
+
+            .profile-header {
+                padding: 25px 20px;
+                border-radius: 0;
+            }
+
+            .profile-body {
+                padding: 20px;
+            }
+
+            .avatar-container {
+                width: 100px;
+                height: 100px;
+            }
+
+            .avatar {
+                width: 100px;
+                height: 100px;
+            }
+
+            .profile-name {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-modal">
+        <!-- Header -->
+        <div class="profile-header">
+            <button class="close-btn" onclick="closeProfile()">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="avatar-container">
+                <div class="avatar" id="headerAvatar">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                    </svg>
+                </div>
+                <button class="change-avatar-btn" onclick="document.getElementById('avatarInput').click()">
+                    <i class="fas fa-camera"></i>
+                </button>
+                <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+            </div>
+
+            <div class="profile-name" id="headerName">Foydalanuvchi</div>
+            <div class="profile-email" id="headerEmail">email@example.com</div>
+        </div>
+
+        <!-- Body -->
+        <div class="profile-body">
+            <!-- Mode Switch -->
+            <div class="mode-switch">
+                <button class="mode-btn active" onclick="switchMode('view')">
+                    <i class="fas fa-eye me-2"></i>Ko'rish
+                </button>
+                <button class="mode-btn" onclick="switchMode('edit')">
+                    <i class="fas fa-edit me-2"></i>Tahrirlash
+                </button>
+            </div>
+
+            <!-- Alert Container -->
+            <div id="alertContainer"></div>
+
+            <!-- View Mode -->
+            <div class="profile-section active" id="viewSection">
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="info-content">
+                        <div class="info-label">To'liq ism</div>
+                        <div class="info-value" id="viewName">-</div>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="info-content">
+                        <div class="info-label">Email</div>
+                        <div class="info-value" id="viewEmail">-</div>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="info-content">
+                        <div class="info-label">Manzil</div>
+                        <div class="info-value" id="viewLocation">-</div>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="info-content">
+                        <div class="info-label">O'qish joyi</div>
+                        <div class="info-value" id="viewEducation">-</div>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <div class="info-content">
+                        <div class="info-label">Bio</div>
+                        <div class="info-value" id="viewBio">-</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Edit Mode -->
+            <div class="profile-section" id="editSection">
+                <form id="profileForm">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-user me-2"></i>To'liq ism *
+                        </label>
+                        <input type="text" class="form-control" id="editName" required placeholder="Ismingizni kiriting">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-envelope me-2"></i>Email
+                        </label>
+                        <input type="email" class="form-control" id="editEmail" disabled>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-map-marker-alt me-2"></i>Manzil
+                        </label>
+                        <input type="text" class="form-control" id="editLocation" placeholder="Shahar, viloyat">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-graduation-cap me-2"></i>O'qish joyi
+                        </label>
+                        <input type="text" class="form-control" id="editEducation" placeholder="Universitet yoki maktab nomi">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-info-circle me-2"></i>Bio
+                        </label>
+                        <textarea class="form-control" id="editBio" placeholder="O'zingiz haqingizda qisqacha ma'lumot..."></textarea>
+                    </div>
+
+                    <button type="submit" class="save-btn" id="saveBtn">
+                        <i class="fas fa-save"></i>
+                        <span>Saqlash</span>
+                        <div class="spinner hidden"></div>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+        import { getFirestore, doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+        import { getStorage, ref, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js';
+
+        // Firebase config
+        const firebaseConfig = {
+            apiKey: "AIzaSyBxIpLY5WasiSIlDL4japBLnnXRwOLUKEQ",
+            authDomain: "tezkor-quiz-bbe3c.firebaseapp.com",
+            projectId: "tezkor-quiz-bbe3c",
+            storageBucket: "tezkor-quiz-bbe3c.firebasestorage.app",
+            messagingSenderId: "143161522496",
+            appId: "1:143161522496:web:252108ace3a4c19f35e2a5"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+
+        let currentUser = null;
+        let currentMode = 'view';
+
+        // DOM elements
+        const headerAvatar = document.getElementById('headerAvatar');
+        const headerName = document.getElementById('headerName');
+        const headerEmail = document.getElementById('headerEmail');
+        const avatarInput = document.getElementById('avatarInput');
+        const profileForm = document.getElementById('profileForm');
+        const saveBtn = document.getElementById('saveBtn');
+        const alertContainer = document.getElementById('alertContainer');
+
+        // Close profile
+        window.closeProfile = function() {
+            if (window.opener) {
+                window.close();
+            } else {
+                window.history.back();
+            }
+        };
+
+        // Switch mode
+        window.switchMode = function(mode) {
+            currentMode = mode;
+            document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.profile-section').forEach(section => section.classList.remove('active'));
+            
+            if (mode === 'view') {
+                document.querySelector('.mode-btn:first-child').classList.add('active');
+                document.getElementById('viewSection').classList.add('active');
+            } else {
+                document.querySelector('.mode-btn:last-child').classList.add('active');
+                document.getElementById('editSection').classList.add('active');
+            }
+        };
+
+        // Show alert
+        function showAlert(message, type = 'success') {
+            alertContainer.innerHTML = `
+                <div class="alert alert-${type}">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            setTimeout(() => alertContainer.innerHTML = '', 5000);
+        }
+
+        // Load user data
+        async function loadUserData(user) {
+            try {
+                const userDoc = await getDoc(doc(db, 'users', user.uid));
+                const userData = userDoc.exists() ? userDoc.data() : {};
+
+                // Header
+                headerName.textContent = userData.displayName || user.displayName || 'Foydalanuvchi';
+                headerEmail.textContent = user.email;
+
+                // Avatar
+                if (userData.photoURL || user.photoURL) {
+                    headerAvatar.innerHTML = `<img src="${userData.photoURL || user.photoURL}" alt="Avatar">`;
+                }
+
+                // View mode
+                document.getElementById('viewName').textContent = userData.displayName || user.displayName || '-';
+                document.getElementById('viewEmail').textContent = user.email;
+                document.getElementById('viewLocation').textContent = userData.location || '-';
+                document.getElementById('viewEducation').textContent = userData.education || '-';
+                document.getElementById('viewBio').textContent = userData.bio || '-';
+
+                // Edit mode
+                document.getElementById('editName').value = userData.displayName || user.displayName || '';
+                document.getElementById('editEmail').value = user.email;
+                document.getElementById('editLocation').value = userData.location || '';
+                document.getElementById('editEducation').value = userData.education || '';
+                document.getElementById('editBio').value = userData.bio || '';
+            } catch (error) {
+                console.error('Error loading user data:', error);
+                showAlert('Ma\'lumotlarni yuklashda xatolik', 'danger');
+            }
+        }
+
+        // Upload avatar
+        avatarInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            // Check file size (max 2MB)
+            if (file.size > 2 * 1024 * 1024) {
+                showAlert('Rasm hajmi 2MB dan oshmasligi kerak', 'danger');
+                return;
+            }
+
+            // Check file type
+            if (!file.type.startsWith('image/')) {
+                showAlert('Faqat rasm yuklash mumkin', 'danger');
+                return;
+            }
+
+            try {
+                // Show loading
+                const btn = document.querySelector('.change-avatar-btn');
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = '<div class="spinner" style="width: 16px; height: 16px; border-width: 2px;"></div>';
+                btn.disabled = true;
+
+                // Upload to Firebase Storage
+                const storageRef = ref(storage, `avatars/${currentUser.uid}`);
+                await uploadBytes(storageRef, file);
+                const photoURL = await getDownloadURL(storageRef);
+
+                // Update Firestore
+                await setDoc(doc(db, 'users', currentUser.uid), {
+                    photoURL: photoURL
+                }, { merge: true });
+
+                // Update UI
+                headerAvatar.innerHTML = `<img src="${photoURL}" alt="Avatar">`;
+                showAlert('Profil rasmi o\'zgartirildi', 'success');
+
+                btn.innerHTML = originalHTML;
+                btn.disabled = false;
+            } catch (error) {
+                console.error('Error uploading avatar:', error);
+                showAlert('Rasmni yuklashda xatolik', 'danger');
+                const btn = document.querySelector('.change-avatar-btn');
+                btn.innerHTML = '<i class="fas fa-camera"></i>';
+                btn.disabled = false;
+            }
+        });
+
+        // Save profile
+        profileForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('editName').value.trim();
+            const location = document.getElementById('editLocation').value.trim();
+            const education = document.getElementById('editEducation').value.trim();
+            const bio = document.getElementById('editBio').value.trim();
+
+            if (!name) {
+                showAlert('Iltimos, ismingizni kiriting', 'danger');
+                return;
+            }
+
+            try {
+                // Show loading
+                saveBtn.disabled = true;
+                saveBtn.querySelector('span').classList.add('hidden');
+                saveBtn.querySelector('.spinner').classList.remove('hidden');
+
+                // Save to Firestore
+                await setDoc(doc(db, 'users', currentUser.uid), {
+                    displayName: name,
+                    location: location,
+                    education: education,
+                    bio: bio,
+                    updatedAt: new Date().toISOString()
+                }, { merge: true });
+
+                // Update UI
+                await loadUserData(currentUser);
+                showAlert('Ma\'lumotlar saqlandi', 'success');
+                
+                // Switch to view mode
+                setTimeout(() => switchMode('view'), 1000);
+
+            } catch (error) {
+                console.error('Error saving profile:', error);
+                showAlert('Saqlashda xatolik', 'danger');
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.querySelector('span').classList.remove('hidden');
+                saveBtn.querySelector('.spinner').classList.add('hidden');
+            }
+        });
+
+        // Auth state listener
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                loadUserData(user);
+            } else {
+                window.location.href = 'kirish.html';
+            }
+        });
+    </script>
+</body>
+</html>
