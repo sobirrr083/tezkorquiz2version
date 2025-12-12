@@ -107,17 +107,16 @@
         }
         
         .content {
-            height: 1500px; /* Sahifa uzun bo'lishi uchun */
+            height: 1500px;
             padding: 20px;
             background-color: #f8f9fa;
         }
-
 
         /* bu yerdan yuqorga chiqish knopkasi*/
         body {
             margin: 0;
             padding: 0;
-            min-height: 200vh; /* To create scrollable content */
+            min-height: 200vh;
             font-family: Arial, sans-serif;
         }
 
@@ -204,14 +203,14 @@
                 width: 45px;
                 height: 45px;
             }
-        }   /* bu yerdan yuqorga chiqish knopkasi tugadi*/     
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <a href="index.html">
-        <button class="btn btn-danger mb-3">⬅ Bosh sahifa</button>
+        <button class="btn btn-danger mb-3">← Bosh sahifa</button>
     </a>
 
     <h1>Segment Umumiy</h1>
@@ -232,7 +231,7 @@
         <br>ANSWER: A  
         </p>
      
-        <label  for="fileInput" class="file-label">📁 Fayl tanlash</label>
+        <label for="fileInput" class="file-label">📁 Fayl tanlash</label>
         <input type="file" id="fileInput" accept=".txt" hidden>
         <div id="uploadStatus"></div>
     </div>
@@ -244,42 +243,34 @@
 </div>
 
 <button class="back-to-top" id="backToTopBtn">
-        <svg class="svgIcon" viewBox="0 0 384 512">
-            <path d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"></path>
-        </svg>
-    </button>
+    <svg class="svgIcon" viewBox="0 0 384 512">
+        <path d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"></path>
+    </svg>
+</button>
 
-<!-- himoyalangan sahifa: protected.html -->
 <script type="module">
-  // Firebase SDK import qilingan deb faraz qilamiz
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
   import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
   const firebaseConfig = {
    apiKey: "AIzaSyBxIpLY5WasiSIlDL4japBLnnXRwOLUKEQ",
       authDomain: "tezkor-quiz-bbe3c.firebaseapp.com",
-    // ... boshqa sozlamalar
   };
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
 
-  // Current page URL (return uchun)
   const returnUrl = encodeURIComponent(window.location.pathname + window.location.search);
 
   onAuthStateChanged(auth, (user) => {
     if (!user) {
-      // foydalanuvchi kirmagan — login sahifasiga yo'naltirish
       window.location.replace(`/kirish.html?returnUrl=${returnUrl}`);
     } else {
-      // foydalanuvchi kirdi — sahifa davom ettirilsin
       console.log("User logged in:", user.uid);
     }
   });
 </script>
 
-
-    
 <script>
     let tests = [];
     
@@ -292,6 +283,12 @@
     // Variantlarni formatlash funksiyasi
     function formatOption(option) {
         return option.replace(/^([A-D])\)/, '$1.');
+    }
+
+    // Tartib raqamlarni olib tashlash funksiyasi
+    function removeQuestionNumber(text) {
+        // 1. 2. 10. 999. kabi raqamlarni olib tashlaydi
+        return text.replace(/^\d+\.\s*/, '');
     }
 
     // Fayl yuklash
@@ -331,8 +328,10 @@
             }
             // Yangi savol
             else if (!currentTest) {
+                // Tartib raqamni olib tashlaymiz
+                let cleanQuestion = removeQuestionNumber(line);
                 currentTest = {
-                    question: `${questionNumber}. ${line}`,
+                    question: cleanQuestion,
                     options: [],
                     answer: ''
                 };
@@ -345,7 +344,7 @@
 
         if (tests.length > 0) {
             uploadStatus.innerHTML = `<span style='color: lightgreen;'>✅ ${tests.length} ta test yuklandi!</span>`;
-            displayAllTests(); // Display all tests instead of paginated
+            displayAllTests();
             testResults.style.display = 'block';
         } else {
             uploadStatus.innerHTML = "<span style='color: red;'>❌ Xatolik: Test ma'lumotlari topilmadi!</span>";
@@ -355,7 +354,7 @@
     // Barcha testlarni ko'rsatish
     function displayAllTests() {
         testContainer.innerHTML = '';
-        let maxDisplayTests = 5; // Only show first 5 tests as preview
+        let maxDisplayTests = 5;
         
         for (let i = 0; i < Math.min(maxDisplayTests, tests.length); i++) {
             const test = tests[i];
@@ -396,8 +395,7 @@
     exportBtn.addEventListener('click', function() {
         let content = '';
         tests.forEach(test => {
-            const questionText = test.question.replace(/^\d+\.\s*/, '');
-            content += questionText + '\n';
+            content += test.question + '\n';
             test.options.forEach(option => {
                 content += option + '\n';
             });
@@ -414,27 +412,24 @@
         document.body.removeChild(a);
     });
 </script>
- <script>
-        const backToTopBtn = document.getElementById('backToTopBtn');
-        
-        // Show button when user scrolls down 100px from the top
-        window.onscroll = function() {
-            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-                backToTopBtn.classList.add('visible');
-            } else {
-                backToTopBtn.classList.remove('visible');
-            }
-        };
-        
-        // Scroll to top when button is clicked
-        backToTopBtn.addEventListener('click', function() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+
+<script>
+    const backToTopBtn = document.getElementById('backToTopBtn');
+    
+    window.onscroll = function() {
+        if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+            backToTopBtn.classList.add('visible');
+        } else {
+            backToTopBtn.classList.remove('visible');
+        }
+    };
+    
+    backToTopBtn.addEventListener('click', function() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
         });
-    </script>
+    });
+</script>
 </body>
 </html>
-
-
