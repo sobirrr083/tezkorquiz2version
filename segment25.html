@@ -42,7 +42,7 @@
             padding: 25px;
             border: 2px dashed rgba(255, 255, 255, 0.5);
             border-radius: 10px;
-          text-align: center;
+            text-align: center;
             transition: all 0.3s;
         }
 
@@ -60,7 +60,7 @@
             cursor: pointer;
             font-weight: bold;
             transition: 0.3s;
-             }
+        }
 
         .file-label:hover {
             background: #feb47b;
@@ -105,19 +105,18 @@
             from { opacity: 0; transform: translateX(-30px); }
             to { opacity: 1; transform: translateX(0); }
         }
-  /*!*new */
-.content {
-    height: 1500px; /* Sahifa uzun bo‘lishi uchun */
-    padding: 20px;
-    background-color: #f8f9fa;
-}
 
+        .content {
+            height: 1500px;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
 
-/* bu yerdan yuqorga chiqish knopkasi*/
-    body {
+        /* bu yerdan yuqorga chiqish knopkasi*/
+        body {
             margin: 0;
             padding: 0;
-            min-height: 200vh; /* To create scrollable content */
+            min-height: 200vh;
             font-family: Arial, sans-serif;
         }
 
@@ -204,7 +203,7 @@
                 width: 45px;
                 height: 45px;
             }
-        }   /* bu yerdan yuqorga chiqish knopkasi tugadi*/     
+        }
     </style>
 </head>
 <body>
@@ -214,7 +213,7 @@
         <button class="btn btn-danger mb-3">⬅ Bosh sahifa</button>
     </a>
 
-    <h1>Segmaent 25</h1>
+    <h1>Segment 25</h1>
 
     <div class="upload-container">
         <h2 style="text-align: center;">Test faylini yuklang</h2>
@@ -232,7 +231,7 @@
         <br>ANSWER: A  
         </p>
      
-        <label  for="fileInput" class="file-label">📁 Fayl tanlash</label>
+        <label for="fileInput" class="file-label">📁 Fayl tanlash</label>
         <input type="file" id="fileInput" accept=".txt" hidden>
         <div id="uploadStatus"></div>
     </div>
@@ -249,43 +248,39 @@
 </div>
 
 <button class="back-to-top" id="backToTopBtn">
-        <svg class="svgIcon" viewBox="0 0 384 512">
-            <path d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"></path>
-        </svg>
-    </button>
-    <!-- himoyalangan sahifa: protected.html -->
+    <svg class="svgIcon" viewBox="0 0 384 512">
+        <path d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"></path>
+    </svg>
+</button>
+
 <script type="module">
-  // Firebase SDK import qilingan deb faraz qilamiz
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
   import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
   const firebaseConfig = {
    apiKey: "AIzaSyBxIpLY5WasiSIlDL4japBLnnXRwOLUKEQ",
       authDomain: "tezkor-quiz-bbe3c.firebaseapp.com",
-    // ... boshqa sozlamalar
   };
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
 
-  // Current page URL (return uchun)
   const returnUrl = encodeURIComponent(window.location.pathname + window.location.search);
 
   onAuthStateChanged(auth, (user) => {
     if (!user) {
-      // foydalanuvchi kirmagan — login sahifasiga yo'naltirish
       window.location.replace(`/kirish.html?returnUrl=${returnUrl}`);
     } else {
-      // foydalanuvchi kirdi — sahifa davom ettirilsin
       console.log("User logged in:", user.uid);
     }
   });
 </script>
+
 <script>
     let tests = [];
-    let currentPage = 1;           // Joriy sahifa (boshlang‘ich qiymati 1)
-    const testsPerPage = 25;       // Har bir sahifadagi testlar soni
-    let totalPages = 0;            // Umumiy sahifalar soni (keyinchalik hisoblanadi)
+    let currentPage = 1;
+    const testsPerPage = 25;
+    let totalPages = 0;
 
     const fileInput = document.getElementById('fileInput');
     const uploadStatus = document.getElementById('uploadStatus');
@@ -299,6 +294,12 @@
     // Variantlarni formatlash funksiyasi
     function formatOption(option) {
         return option.replace(/^([A-D])\)/, '$1.');
+    }
+
+    // Tartib raqamlarni olib tashlash funksiyasi
+    function removeQuestionNumber(text) {
+        // 1. 2. 10. 999. kabi raqamlarni olib tashlaydi
+        return text.replace(/^\d+\.\s*/, '');
     }
 
     // Fayl yuklash
@@ -338,13 +339,15 @@
             }
             // Yangi savol
             else if (!currentTest) {
+                // Tartib raqamni olib tashlaymiz
+                let cleanQuestion = removeQuestionNumber(line);
                 currentTest = {
-                    question: `${questionNumber}. ${line}`,
+                    question: cleanQuestion,
                     options: [],
                     answer: ''
                 };
             }
-            // Variantlarni qo‘shish
+            // Variantlarni qo'shish
             else if (currentTest && !/^(ANSWER:|JAVOB:)/i.test(line)) {
                 currentTest.options.push(formatOption(line));
             }
@@ -352,8 +355,8 @@
 
         if (tests.length > 0) {
             uploadStatus.innerHTML = `<span style='color: lightgreen;'>✅ ${tests.length} ta test yuklandi!</span>`;
-            totalPages = Math.ceil(tests.length / testsPerPage); // Umumiy sahifalar soni
-            currentPage = 1;                                     // Birinchi sahifadan boshlash
+            totalPages = Math.ceil(tests.length / testsPerPage);
+            currentPage = 1;
             displayTests();
             updatePageInfo();
             testResults.style.display = 'block';
@@ -362,11 +365,11 @@
         }
     }
 
-    // Testlarni ko‘rsatish
+    // Testlarni ko'rsatish
     function displayTests() {
-        const startIndex = (currentPage - 1) * testsPerPage; // Boshlang‘ich indeks
-        const endIndex = startIndex + testsPerPage;          // Yakuniy indeks
-        const testsToDisplay = tests.slice(startIndex, endIndex); // Joriy sahifa testlari
+        const startIndex = (currentPage - 1) * testsPerPage;
+        const endIndex = startIndex + testsPerPage;
+        const testsToDisplay = tests.slice(startIndex, endIndex);
         testContainer.innerHTML = '';
         testsToDisplay.forEach(test => {
             const testElement = document.createElement('div');
@@ -395,11 +398,11 @@
         });
     }
 
-    // Sahifa ma’lumotlarini yangilash
+    // Sahifa ma'lumotlarini yangilash
     function updatePageInfo() {
         pageInfo.textContent = `Sahifa ${currentPage} / ${totalPages}`;
-        prevBtn.disabled = currentPage === 1;         // Birinchi sahifada "Oldingi" o‘chiriladi
-        nextBtn.disabled = currentPage === totalPages; // Oxirgi sahifada "Keyingi" o‘chiriladi
+        prevBtn.disabled = currentPage === 1;
+        nextBtn.disabled = currentPage === totalPages;
     }
 
     // Navigatsiya knopkalari uchun hodisalar
@@ -426,8 +429,8 @@
         const testsToExport = tests.slice(startIndex, endIndex);
         let content = '';
         testsToExport.forEach(test => {
-            const questionText = test.question.replace(/^\d+\.\s*/, '');
-            content += questionText + '\n';
+            // Tartib raqam olmaydi, chunki test.question allaqachon toza
+            content += test.question + '\n';
             test.options.forEach(option => {
                 content += option + '\n';
             });
@@ -437,39 +440,31 @@
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `Tezkor_Quiz ${currentPage}.txt`; // Fayl nomiga sahifa raqami qo‘shildi
+        a.download = `Tezkor_Quiz_${currentPage}.txt`;
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
         document.body.removeChild(a);
     });
 </script>
- <script>
-        const backToTopBtn = document.getElementById('backToTopBtn');
-        
-        // Show button when user scrolls down 100px from the top
-        window.onscroll = function() {
-            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-                backToTopBtn.classList.add('visible');
-            } else {
-                backToTopBtn.classList.remove('visible');
-            }
-        };
-        
-        // Scroll to top when button is clicked
-        backToTopBtn.addEventListener('click', function() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+
+<script>
+    const backToTopBtn = document.getElementById('backToTopBtn');
+    
+    window.onscroll = function() {
+        if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+            backToTopBtn.classList.add('visible');
+        } else {
+            backToTopBtn.classList.remove('visible');
+        }
+    };
+    
+    backToTopBtn.addEventListener('click', function() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
         });
-    </script>
+    });
+</script>
 </body>
 </html>
-
-
-
-
-
-
-
