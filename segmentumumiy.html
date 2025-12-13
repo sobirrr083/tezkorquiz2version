@@ -2,7 +2,6 @@
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" href="aga/logo01.png">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Segment umumiy</title>
     
@@ -34,23 +33,6 @@
             color: #4D6CFA;
             margin-bottom: 30px;
             font-size: 2.2rem;
-        }
-
-        /* Bosh sahifa tugmasi */
-        .btn-home {
-            background: #4D6CFA;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-
-        .btn-home:hover {
-            background: #3d5ce8;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(77, 108, 250, 0.3);
         }
 
         /* Funksiyalar bo'limi */
@@ -175,13 +157,13 @@
             margin-bottom: 16px;
             border-radius: 12px;
             border-left: 4px solid #4D6CFA;
-            transition: all 0.3s ease-in-out;
         }
 
-        .test-container:hover {
-            transform: translateX(5px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            background: white;
+        .test-number {
+            font-size: 14px;
+            color: #4D6CFA;
+            font-weight: 700;
+            margin-bottom: 8px;
         }
 
         .test-question {
@@ -210,8 +192,68 @@
             display: inline-block;
         }
 
-        /* Export button */
-        #exportBtn {
+        /* Corrections section */
+        .corrections-container {
+            background: #fffbeb;
+            border: 2px solid #fcd34d;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .corrections-title {
+            color: #d97706;
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .corrections-title svg {
+            width: 24px;
+            height: 24px;
+            stroke: #d97706;
+        }
+
+        .correction-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border-left: 3px solid #fbbf24;
+        }
+
+        .correction-label {
+            font-weight: 600;
+            color: #92400e;
+            font-size: 14px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .correction-label::before {
+            content: "•";
+            color: #f59e0b;
+            font-size: 20px;
+        }
+
+        .correction-text {
+            color: #4a5568;
+            font-size: 13px;
+            line-height: 1.6;
+            padding-left: 16px;
+        }
+
+        .correction-text strong {
+            color: #1f2937;
+        }
+
+        /* Export buttons */
+        .btn-export {
             background: #4D6CFA;
             color: white;
             border: none;
@@ -219,28 +261,135 @@
             border-radius: 8px;
             font-weight: 600;
             transition: all 0.3s;
-            display: block;
-            margin: 20px auto;
+            margin: 10px;
+            min-width: 280px;
+            white-space: nowrap;
         }
 
-        #exportBtn:hover {
+        .btn-export:hover {
             background: #3d5ce8;
             transform: translateY(-2px);
             box-shadow: 0 6px 16px rgba(77, 108, 250, 0.3);
         }
 
+        .btn-corrections {
+            background: #f59e0b;
+            color: white;
+            min-width: 280px;
+        }
+
+        .btn-corrections:hover {
+            background: #d97706;
+        }
+
+        .buttons-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+
         /* Upload status */
         #uploadStatus {
+            margin-top: 15px;
+        }
+
+        #uploadStatus > div {
+            margin-bottom: 8px;
+        }
+
+        #uploadStatus > div:last-child {
+            margin-bottom: 0;
+        }
+
+        .alert-info {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #93c5fd;
+            padding: 12px 16px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .alert-info svg {
+            width: 20px;
+            height: 20px;
+            stroke: #1e40af;
+            flex-shrink: 0;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #6ee7b7;
+            padding: 12px 16px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .alert-success svg {
+            width: 20px;
+            height: 20px;
+            stroke: #065f46;
+            flex-shrink: 0;
+        }
+
+        .alert-warning {
+            background: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fcd34d;
+            padding: 12px 16px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .alert-warning svg {
+            width: 20px;
+            height: 20px;
+            stroke: #92400e;
+            flex-shrink: 0;
+        }
+
+        .alert-danger {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+            padding: 12px 16px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .alert-danger svg {
+            width: 20px;
+            height: 20px;
+            stroke: #991b1b;
+            flex-shrink: 0;
+        }
+
+        .telegram-warning {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+            padding: 12px 16px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
             margin-top: 15px;
             font-weight: 600;
         }
 
-        .alert-info {
-            background: #e0e7ff;
-            color: #4D6CFA;
-            border: 1px solid #c7d2fe;
-            padding: 12px;
-            border-radius: 8px;
+        .telegram-warning svg {
+            width: 20px;
+            height: 20px;
+            stroke: #991b1b;
+            flex-shrink: 0;
         }
 
         /* Back to top button */
@@ -337,11 +486,7 @@
 <body>
 
 <div class="container">
-    <a href="index.html">
-        <button class="btn-home">← Bosh sahifa</button>
-    </a>
-
-    <h1>Segment Umumiy</h1>
+    <h1>Test Formatlash Tizimi</h1>
 
     <!-- Funksiyalar haqida ma'lumot -->
     <div class="features-container">
@@ -366,7 +511,19 @@
             </div>
             <div class="feature-text">
                 <strong>Format tuzatish</strong>
-                <p>A) dan A. ga, variantlarni standart formatga o'zgartiradi</p>
+                <p>A) dan A. ga, ANSWER: formatini standartlashtiradi</p>
+            </div>
+        </div>
+        <div class="feature-item">
+            <div class="feature-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 11l3 3L22 4"/>
+                    <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+                </svg>
+            </div>
+            <div class="feature-text">
+                <strong>Xatoliklarni aniqlash</strong>
+                <p>Fayl formatidagi muammolarni topib, ularni tuzatadi</p>
             </div>
         </div>
         <div class="feature-item">
@@ -378,7 +535,7 @@
             </div>
             <div class="feature-text">
                 <strong>Namuna ko'rsatish</strong>
-                <p>Faqat dastlabki 5 ta test namuna sifatida ekranda ko'rsatiladi</p>
+                <p>Dastlabki 5 ta test namuna sifatida ekranda ko'rsatiladi</p>
             </div>
         </div>
         <div class="feature-item">
@@ -391,19 +548,7 @@
             </div>
             <div class="feature-text">
                 <strong>Barcha testlarni yuklab olish</strong>
-                <p>Bir tugma bosish bilan barcha testlarni bitta faylda yuklab olish</p>
-            </div>
-        </div>
-        <div class="feature-item">
-            <div class="feature-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M9 11l3 3L22 4"/>
-                    <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
-                </svg>
-            </div>
-            <div class="feature-text">
-                <strong>Quiz uchun tayyor</strong>
-                <p>Yuklangan fayllar Quiz Test dasturida to'g'ridan-to'g'ri ishlatish uchun tayyor</p>
+                <p>Bir tugma bosish bilan barcha testlarni standart formatda yuklab olish</p>
             </div>
         </div>
         <div class="feature-item">
@@ -421,8 +566,15 @@
 
     <div class="upload-container">
         <h2>Test faylini yuklang</h2>
-        <p>Testlarni standart formatga to'g'irlayman va to'liq testni yuklab olish imkoniyatini taklif qilaman.<br>
-        Agar telegramdan kirsangiz Yuklab olish uchun Chromedan oching!</p>
+        
+        <div class="telegram-warning">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="8" x2="12" y2="12"/>
+                <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            <span>Agar Telegramdan kirsangiz, yuklab olish uchun Chrome brauzeridan foydalaning!</span>
+        </div>
         
         <div class="format-example">
             <b>STANDART FORMAT</b>
@@ -441,7 +593,12 @@
 
     <div id="testResults" style="display: none;">
         <div id="testContainer"></div>
-        <button id="exportBtn">Barcha testlarni yuklab olish</button>
+        <div id="moreTestsInfo" class="alert alert-info mt-3" style="display: none;"></div>
+        <div id="correctionsSection" style="display: none;"></div>
+        <div class="buttons-container">
+            <button id="showCorrectionsBtn" class="btn-export btn-corrections" style="display: none;">📋 Tuzatishlarni ko'rsatish</button>
+            <button id="exportBtn" class="btn-export">📥 Barcha testlarni yuklab olish</button>
+        </div>
     </div>
 </div>
 
@@ -451,37 +608,18 @@
     </svg>
 </button>
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-
-  const firebaseConfig = {
-   apiKey: "AIzaSyBxIpLY5WasiSIlDL4japBLnnXRwOLUKEQ",
-      authDomain: "tezkor-quiz-bbe3c.firebaseapp.com",
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-
-  const returnUrl = encodeURIComponent(window.location.pathname + window.location.search);
-
-  onAuthStateChanged(auth, (user) => {
-    if (!user) {
-      window.location.replace(`/kirish.html?returnUrl=${returnUrl}`);
-    } else {
-      console.log("User logged in:", user.uid);
-    }
-  });
-</script>
-
 <script>
     let tests = [];
+    let corrections = [];
     
     const fileInput = document.getElementById('fileInput');
     const uploadStatus = document.getElementById('uploadStatus');
     const testResults = document.getElementById('testResults');
     const testContainer = document.getElementById('testContainer');
     const exportBtn = document.getElementById('exportBtn');
+    const showCorrectionsBtn = document.getElementById('showCorrectionsBtn');
+    const correctionsSection = document.getElementById('correctionsSection');
+    const moreTestsInfo = document.getElementById('moreTestsInfo');
 
     // Variantlarni formatlash funksiyasi
     function formatOption(option) {
@@ -493,12 +631,29 @@
         return text.replace(/^\d+\.\s*/, '');
     }
 
+    // ANSWER formatini standartlashtirish
+    function normalizeAnswer(answerLine) {
+        // ANSWER, JAVOB va boshqa variantlarni aniqlash
+        const match = answerLine.match(/(ANSWER|JAVOB|answer|javob)[:\.\s]*([A-Da-d])/i);
+        if (match) {
+            return 'ANSWER: ' + match[2].toUpperCase();
+        }
+        return answerLine;
+    }
+
     // Fayl yuklash
     fileInput.addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (!file) return;
 
-        uploadStatus.innerHTML = "<span style='color: #f59e0b;'>⏳ Yuklanmoqda...</span>";
+        uploadStatus.innerHTML = `
+            <div class="alert-warning">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/>
+                </svg>
+                <span>Yuklanmoqda...</span>
+            </div>
+        `;
 
         const reader = new FileReader();
         reader.onload = function(e) {
@@ -510,27 +665,61 @@
     // Test faylini tahlil qilish
     function parseTestFile(content) {
         tests = [];
+        corrections = [];
         let lines = content.split('\n');
         let currentTest = null;
         let questionNumber = 1;
+        let lineBuffer = '';
 
         for (let i = 0; i < lines.length; i++) {
             let line = lines[i].trim();
-            if (line === '') continue;
+            
+            // Bo'sh qatorlarni o'tkazib yuborish
+            if (line === '') {
+                // Agar avvalgi test tugagan bo'lsa, yangi testga o'tish
+                if (currentTest && currentTest.answer) {
+                    tests.push(currentTest);
+                    currentTest = null;
+                    questionNumber++;
+                }
+                continue;
+            }
 
-            // Javob qatorini aniqlash
-            if (/^(ANSWER:|JAVOB:)/i.test(line)) {
+            // Javob qatorini aniqlash (har xil formatlar)
+            if (/^(ANSWER|JAVOB|answer|javob)[:\.\s]/i.test(line)) {
                 if (currentTest) {
-                    let answerPart = line.split(':')[1].trim();
-                    currentTest.answer = `ANSWER: ${answerPart}`;
+                    const originalAnswer = line;
+                    const normalizedAnswer = normalizeAnswer(line);
+                    
+                    if (originalAnswer !== normalizedAnswer) {
+                        corrections.push({
+                            testNumber: questionNumber,
+                            type: 'Javob formati',
+                            original: originalAnswer,
+                            corrected: normalizedAnswer
+                        });
+                    }
+                    
+                    currentTest.answer = normalizedAnswer;
                     tests.push(currentTest);
                     currentTest = null;
                     questionNumber++;
                 }
             }
-            // Yangi savol
-            else if (!currentTest) {
-                let cleanQuestion = removeQuestionNumber(line);
+            // Yangi savol (agar bu variant emas)
+            else if (!currentTest && !/^[A-D][\.\)]/i.test(line)) {
+                const originalQuestion = line;
+                const cleanQuestion = removeQuestionNumber(line);
+                
+                if (originalQuestion !== cleanQuestion) {
+                    corrections.push({
+                        testNumber: questionNumber,
+                        type: 'Savol raqami',
+                        original: originalQuestion.substring(0, 50) + '...',
+                        corrected: cleanQuestion.substring(0, 50) + '...'
+                    });
+                }
+                
                 currentTest = {
                     question: cleanQuestion,
                     options: [],
@@ -538,17 +727,76 @@
                 };
             }
             // Variantlarni qo'shish
-            else if (currentTest && !/^(ANSWER:|JAVOB:)/i.test(line)) {
-                currentTest.options.push(formatOption(line));
+            else if (currentTest && /^[A-D][\.\)]/i.test(line)) {
+                const originalOption = line;
+                const formattedOption = formatOption(line);
+                
+                if (originalOption !== formattedOption) {
+                    corrections.push({
+                        testNumber: questionNumber,
+                        type: 'Variant formati',
+                        original: originalOption,
+                        corrected: formattedOption
+                    });
+                }
+                
+                currentTest.options.push(formattedOption);
             }
         }
 
+        // Oxirgi testni qo'shish
+        if (currentTest && currentTest.answer) {
+            tests.push(currentTest);
+        }
+
         if (tests.length > 0) {
-            uploadStatus.innerHTML = `<span style='color: #10b981;'>✅ ${tests.length} ta test yuklandi!</span>`;
+            let statusMessage = `
+                <div class="alert-success">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 11l3 3L22 4"/>
+                        <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+                    </svg>
+                    <span>${tests.length} ta test muvaffaqiyatli yuklandi!</span>
+                </div>
+            `;
+            
+            if (corrections.length > 0) {
+                statusMessage += `
+                    <div class="alert-warning">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                        </svg>
+                        <span>${corrections.length} ta o'zgartirish amalga oshirildi.</span>
+                    </div>
+                `;
+                showCorrectionsBtn.style.display = 'inline-block';
+            }
+            
+            statusMessage += `
+                <div class="alert-info">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="16" x2="12" y2="12"/>
+                        <line x1="12" y1="8" x2="12.01" y2="8"/>
+                    </svg>
+                    <span>Iltimos, testlarni tekshirib ko'ring - xatoliklar bo'lishi mumkin.</span>
+                </div>
+            `;
+            
+            uploadStatus.innerHTML = statusMessage;
             displayAllTests();
             testResults.style.display = 'block';
         } else {
-            uploadStatus.innerHTML = "<span style='color: #ef4444;'>❌ Xatolik: Test ma'lumotlari topilmadi!</span>";
+            uploadStatus.innerHTML = `
+                <div class="alert-danger">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="15" y1="9" x2="9" y2="15"/>
+                        <line x1="9" y1="9" x2="15" y2="15"/>
+                    </svg>
+                    <span>Xatolik: Test ma'lumotlari topilmadi! Iltimos, fayl formatini tekshiring.</span>
+                </div>
+            `;
         }
     }
 
@@ -561,6 +809,11 @@
             const test = tests[i];
             const testElement = document.createElement('div');
             testElement.className = 'test-container';
+
+            const numberElement = document.createElement('div');
+            numberElement.className = 'test-number';
+            numberElement.textContent = `Test ${i + 1}`;
+            testElement.appendChild(numberElement);
 
             const questionElement = document.createElement('div');
             questionElement.className = 'test-question';
@@ -592,21 +845,71 @@
         }
     }
 
-    // Testlarni eksport qilish - to'liq fayl
+    // Tuzatishlarni ko'rsatish
+    showCorrectionsBtn.addEventListener('click', function() {
+        if (correctionsSection.style.display === 'none') {
+            displayCorrections();
+            correctionsSection.style.display = 'block';
+            showCorrectionsBtn.textContent = '🔼 Tuzatishlarni yashirish';
+        } else {
+            correctionsSection.style.display = 'none';
+            showCorrectionsBtn.textContent = '📋 Tuzatishlarni ko\'rsatish';
+        }
+    });
+
+    function displayCorrections() {
+        correctionsSection.innerHTML = '';
+        
+        const container = document.createElement('div');
+        container.className = 'corrections-container';
+        
+        const title = document.createElement('div');
+        title.className = 'corrections-title';
+        title.innerHTML = `
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+            </svg>
+            <span>Amalga oshirilgan tuzatishlar (${corrections.length} ta)</span>
+        `;
+        container.appendChild(title);
+        
+        corrections.forEach(correction => {
+            const item = document.createElement('div');
+            item.className = 'correction-item';
+            
+            item.innerHTML = `
+                <div class="correction-label">Test ${correction.testNumber} - ${correction.type}</div>
+                <div class="correction-text"><strong>Asl:</strong> ${correction.original}</div>
+                <div class="correction-text"><strong>Tuzatilgan:</strong> ${correction.corrected}</div>
+            `;
+            
+            container.appendChild(item);
+        });
+        
+        correctionsSection.appendChild(container);
+    }
+
+    // Testlarni eksport qilish - standart format
     exportBtn.addEventListener('click', function() {
         let content = '';
-        tests.forEach(test => {
+        tests.forEach((test, index) => {
             content += test.question + '\n';
             test.options.forEach(option => {
                 content += option + '\n';
             });
-            content += test.answer + '\n\n';
+            content += test.answer + '\n';
+            
+            // Har bir testdan keyin bo'sh qator
+            if (index < tests.length - 1) {
+                content += '\n';
+            }
         });
-        const blob = new Blob([content], { type: 'text/plain' });
+        
+        const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `Tezkor_Quiz_Barcha_Testlar.txt`;
+        a.download = `Tuzatilgan_Testlar_${tests.length}ta.txt`;
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
