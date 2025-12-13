@@ -12,11 +12,15 @@
     <style>
         /* Global stil */
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
             background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
             color: #2c3e50;
             padding: 20px;
             min-height: 100vh;
+            line-height: 1.6;
+            letter-spacing: -0.01em;
         }
 
         .container {
@@ -29,10 +33,12 @@
 
         h1 {
             text-align: center;
-            font-weight: bold;
+            font-weight: 700;
             color: #4D6CFA;
             margin-bottom: 30px;
             font-size: 2.2rem;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
         }
 
         /* Funksiyalar bo'limi */
@@ -83,13 +89,16 @@
             margin-bottom: 6px;
             font-size: 15px;
             font-weight: 600;
+            letter-spacing: -0.01em;
+            line-height: 1.4;
         }
 
         .feature-text p {
             margin: 0;
-            font-size: 13px;
-            color: #7f8c9a;
-            line-height: 1.5;
+            font-size: 14px;
+            color: #64748b;
+            line-height: 1.6;
+            letter-spacing: 0;
         }
 
         /* Fayl yuklash */
@@ -101,6 +110,14 @@
             text-align: center;
             background: #f8f9fb;
             transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .upload-container.drag-over {
+            background: #e0e7ff;
+            border-color: #4D6CFA;
+            transform: scale(1.01);
         }
 
         .upload-container:hover {
@@ -113,10 +130,14 @@
             color: #2c3e50;
             font-size: 1.5rem;
             margin-bottom: 15px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
         }
 
         .upload-container p {
-            color: #7f8c9a;
+            color: #64748b;
+            font-size: 15px;
+            line-height: 1.6;
         }
 
         .format-example {
@@ -133,7 +154,9 @@
         }
 
         .file-label {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
             padding: 14px 32px;
             background: #4D6CFA;
             color: white;
@@ -148,6 +171,14 @@
             background: #3d5ce8;
             transform: translateY(-2px);
             box-shadow: 0 6px 16px rgba(77, 108, 250, 0.3);
+        }
+
+        .file-label svg {
+            width: 20px;
+            height: 20px;
+            stroke: white;
+            fill: none;
+            flex-shrink: 0;
         }
 
         /* Test qutisi */
@@ -171,11 +202,15 @@
             margin-bottom: 12px;
             color: #2c3e50;
             font-size: 15px;
+            line-height: 1.6;
+            letter-spacing: -0.01em;
         }
 
         .test-options {
             margin-left: 20px;
-            color: #4a5568;
+            color: #475569;
+            font-size: 14px;
+            line-height: 1.7;
         }
 
         .test-options div {
@@ -242,18 +277,22 @@
         }
 
         .correction-text {
-            color: #4a5568;
-            font-size: 13px;
-            line-height: 1.6;
+            color: #475569;
+            font-size: 14px;
+            line-height: 1.7;
             padding-left: 16px;
         }
 
         .correction-text strong {
             color: #1f2937;
+            font-weight: 600;
         }
 
         /* Export buttons */
         .btn-export {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
             background: #4D6CFA;
             color: white;
             border: none;
@@ -264,12 +303,22 @@
             margin: 10px;
             min-width: 280px;
             white-space: nowrap;
+            justify-content: center;
+            cursor: pointer;
         }
 
         .btn-export:hover {
             background: #3d5ce8;
             transform: translateY(-2px);
             box-shadow: 0 6px 16px rgba(77, 108, 250, 0.3);
+        }
+
+        .btn-export svg {
+            width: 20px;
+            height: 20px;
+            stroke: white;
+            fill: none;
+            flex-shrink: 0;
         }
 
         .btn-corrections {
@@ -307,8 +356,11 @@
             padding: 12px 16px;
             border-radius: 8px;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 12px;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-top: 8px;
         }
 
         .alert-info svg {
@@ -325,8 +377,10 @@
             padding: 12px 16px;
             border-radius: 8px;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 12px;
+            font-size: 14px;
+            line-height: 1.6;
         }
 
         .alert-success svg {
@@ -334,6 +388,7 @@
             height: 20px;
             stroke: #065f46;
             flex-shrink: 0;
+            margin-top: 2px;
         }
 
         .alert-warning {
@@ -343,8 +398,11 @@
             padding: 12px 16px;
             border-radius: 8px;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 12px;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-top: 8px;
         }
 
         .alert-warning svg {
@@ -352,6 +410,7 @@
             height: 20px;
             stroke: #92400e;
             flex-shrink: 0;
+            margin-top: 2px;
         }
 
         .alert-danger {
@@ -363,6 +422,8 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            font-size: 14px;
+            line-height: 1.6;
         }
 
         .alert-danger svg {
@@ -379,10 +440,12 @@
             padding: 12px 16px;
             border-radius: 8px;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 12px;
             margin-top: 15px;
             font-weight: 600;
+            font-size: 14px;
+            line-height: 1.6;
         }
 
         .telegram-warning svg {
@@ -390,6 +453,7 @@
             height: 20px;
             stroke: #991b1b;
             flex-shrink: 0;
+            margin-top: 2px;
         }
 
         /* Back to top button */
@@ -467,6 +531,17 @@
             h1 {
                 font-size: 1.8rem;
             }
+
+            .btn-export {
+                min-width: 240px;
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+
+            .file-label {
+                padding: 12px 24px;
+                font-size: 14px;
+            }
         }
 
         @media screen and (max-width: 480px) {
@@ -479,6 +554,16 @@
             
             .container {
                 padding: 20px;
+            }
+
+            .btn-export {
+                min-width: 100%;
+                margin: 8px 0;
+            }
+
+            .file-label {
+                width: 100%;
+                justify-content: center;
             }
         }
     </style>
@@ -564,7 +649,7 @@
         </div>
     </div>
 
-    <div class="upload-container">
+    <div class="upload-container" id="uploadContainer">
         <h2>Test faylini yuklang</h2>
         
         <div class="telegram-warning">
@@ -586,7 +671,14 @@
             <br>ANSWER: A  
         </div>
      
-        <label for="fileInput" class="file-label">📁 Fayl tanlash</label>
+        <label for="fileInput" class="file-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                <polyline points="17 8 12 3 7 8"/>
+                <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+            <span>Fayl tanlash</span>
+        </label>
         <input type="file" id="fileInput" accept=".txt" hidden>
         <div id="uploadStatus"></div>
     </div>
@@ -596,8 +688,20 @@
         <div id="moreTestsInfo" class="alert alert-info mt-3" style="display: none;"></div>
         <div id="correctionsSection" style="display: none;"></div>
         <div class="buttons-container">
-            <button id="showCorrectionsBtn" class="btn-export btn-corrections" style="display: none;">📋 Tuzatishlarni ko'rsatish</button>
-            <button id="exportBtn" class="btn-export">📥 Barcha testlarni yuklab olish</button>
+            <button id="showCorrectionsBtn" class="btn-export btn-corrections" style="display: none;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+                </svg>
+                <span>Tuzatishlarni ko'rsatish</span>
+            </button>
+            <button id="exportBtn" class="btn-export">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                <span>Barcha testlarni yuklab olish</span>
+            </button>
         </div>
     </div>
 </div>
@@ -620,6 +724,54 @@
     const showCorrectionsBtn = document.getElementById('showCorrectionsBtn');
     const correctionsSection = document.getElementById('correctionsSection');
     const moreTestsInfo = document.getElementById('moreTestsInfo');
+    const uploadContainer = document.getElementById('uploadContainer');
+
+    // Drag and Drop functionality
+    uploadContainer.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        uploadContainer.classList.add('drag-over');
+    });
+
+    uploadContainer.addEventListener('dragleave', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        uploadContainer.classList.remove('drag-over');
+    });
+
+    uploadContainer.addEventListener('drop', async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        uploadContainer.classList.remove('drag-over');
+        
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            if (files[0].name.endsWith('.txt')) {
+                await handleFile(files[0]);
+            } else {
+                uploadStatus.innerHTML = `
+                    <div class="alert-danger">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="15" y1="9" x2="9" y2="15"/>
+                            <line x1="9" y1="9" x2="15" y2="15"/>
+                        </svg>
+                        <span>Iltimos, faqat .txt fayllarni yuklang!</span>
+                    </div>
+                `;
+            }
+        }
+    });
+
+    uploadContainer.addEventListener('click', (e) => {
+        // Agar ichki elementlarga bosilgan bo'lsa, hech nima qilmasin
+        if (e.target.closest('.alert-danger, .alert-success, .alert-warning, .alert-info, .telegram-warning, .format-example, .file-label')) {
+            return;
+        }
+        
+        // Aks holda fayl tanlash oynasini ochsin
+        fileInput.click();
+    });
 
     // Variantlarni formatlash funksiyasi
     function formatOption(option) {
@@ -641,152 +793,46 @@
         return answerLine;
     }
 
-    // Fayl yuklash
-    fileInput.addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (!file) return;
+    // Faylni qayta ishlash funksiyasi
+    async function handleFile(file) {
+        try {
+            // Avvalgi natijalarni tozalash
+            testResults.style.display = 'none';
+            testContainer.innerHTML = '';
+            correctionsSection.style.display = 'none';
+            showCorrectionsBtn.style.display = 'none';
+            tests = [];
+            corrections = [];
 
-        uploadStatus.innerHTML = `
-            <div class="alert-warning">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/>
-                </svg>
-                <span>Yuklanmoqda...</span>
-            </div>
-        `;
-
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            parseTestFile(e.target.result);
-        };
-        reader.readAsText(file);
-    });
-
-    // Test faylini tahlil qilish
-    function parseTestFile(content) {
-        tests = [];
-        corrections = [];
-        let lines = content.split('\n');
-        let currentTest = null;
-        let questionNumber = 1;
-        let lineBuffer = '';
-
-        for (let i = 0; i < lines.length; i++) {
-            let line = lines[i].trim();
-            
-            // Bo'sh qatorlarni o'tkazib yuborish
-            if (line === '') {
-                // Agar avvalgi test tugagan bo'lsa, yangi testga o'tish
-                if (currentTest && currentTest.answer) {
-                    tests.push(currentTest);
-                    currentTest = null;
-                    questionNumber++;
-                }
-                continue;
-            }
-
-            // Javob qatorini aniqlash (har xil formatlar)
-            if (/^(ANSWER|JAVOB|answer|javob)[:\.\s]/i.test(line)) {
-                if (currentTest) {
-                    const originalAnswer = line;
-                    const normalizedAnswer = normalizeAnswer(line);
-                    
-                    if (originalAnswer !== normalizedAnswer) {
-                        corrections.push({
-                            testNumber: questionNumber,
-                            type: 'Javob formati',
-                            original: originalAnswer,
-                            corrected: normalizedAnswer
-                        });
-                    }
-                    
-                    currentTest.answer = normalizedAnswer;
-                    tests.push(currentTest);
-                    currentTest = null;
-                    questionNumber++;
-                }
-            }
-            // Yangi savol (agar bu variant emas)
-            else if (!currentTest && !/^[A-D][\.\)]/i.test(line)) {
-                const originalQuestion = line;
-                const cleanQuestion = removeQuestionNumber(line);
-                
-                if (originalQuestion !== cleanQuestion) {
-                    corrections.push({
-                        testNumber: questionNumber,
-                        type: 'Savol raqami',
-                        original: originalQuestion.substring(0, 50) + '...',
-                        corrected: cleanQuestion.substring(0, 50) + '...'
-                    });
-                }
-                
-                currentTest = {
-                    question: cleanQuestion,
-                    options: [],
-                    answer: ''
-                };
-            }
-            // Variantlarni qo'shish
-            else if (currentTest && /^[A-D][\.\)]/i.test(line)) {
-                const originalOption = line;
-                const formattedOption = formatOption(line);
-                
-                if (originalOption !== formattedOption) {
-                    corrections.push({
-                        testNumber: questionNumber,
-                        type: 'Variant formati',
-                        original: originalOption,
-                        corrected: formattedOption
-                    });
-                }
-                
-                currentTest.options.push(formattedOption);
-            }
-        }
-
-        // Oxirgi testni qo'shish
-        if (currentTest && currentTest.answer) {
-            tests.push(currentTest);
-        }
-
-        if (tests.length > 0) {
-            let statusMessage = `
-                <div class="alert-success">
+            uploadStatus.innerHTML = `
+                <div class="alert-warning">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M9 11l3 3L22 4"/>
-                        <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+                        <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/>
                     </svg>
-                    <span>${tests.length} ta test muvaffaqiyatli yuklandi!</span>
+                    <span>Fayl o'qilmoqda...</span>
                 </div>
             `;
+
+            // Faylni o'qish
+            const fileContent = await readFileAsync(file);
             
-            if (corrections.length > 0) {
-                statusMessage += `
-                    <div class="alert-warning">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-                        </svg>
-                        <span>${corrections.length} ta o'zgartirish amalga oshirildi.</span>
-                    </div>
-                `;
-                showCorrectionsBtn.style.display = 'inline-block';
-            }
-            
-            statusMessage += `
-                <div class="alert-info">
+            // UI yangilanishini kutish
+            await new Promise(resolve => setTimeout(resolve, 100));
+
+            uploadStatus.innerHTML = `
+                <div class="alert-warning">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="10"/>
-                        <line x1="12" y1="16" x2="12" y2="12"/>
-                        <line x1="12" y1="8" x2="12.01" y2="8"/>
+                        <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/>
                     </svg>
-                    <span>Iltimos, testlarni tekshirib ko'ring - xatoliklar bo'lishi mumkin.</span>
+                    <span>Testlar tahlil qilinmoqda...</span>
                 </div>
             `;
-            
-            uploadStatus.innerHTML = statusMessage;
-            displayAllTests();
-            testResults.style.display = 'block';
-        } else {
+
+            // Testlarni parsing qilish
+            await parseTestFile(fileContent);
+
+        } catch (error) {
+            console.error('Fayl yuklashda xatolik:', error);
             uploadStatus.innerHTML = `
                 <div class="alert-danger">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -794,14 +840,220 @@
                         <line x1="15" y1="9" x2="9" y2="15"/>
                         <line x1="9" y1="9" x2="15" y2="15"/>
                     </svg>
-                    <span>Xatolik: Test ma'lumotlari topilmadi! Iltimos, fayl formatini tekshiring.</span>
+                    <span>Xatolik yuz berdi! Iltimos, faylni qayta yuklang.</span>
+                </div>
+            `;
+        }
+    }
+
+    // Faylni o'qish uchun async funksiya
+    function readFileAsync(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                resolve(e.target.result);
+            };
+            
+            reader.onerror = function(e) {
+                reject(new Error('Faylni o\'qishda xatolik'));
+            };
+            
+            reader.readAsText(file, 'UTF-8');
+        });
+    }
+
+    // Fayl yuklash
+    fileInput.addEventListener('change', async function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        
+        if (!file.name.endsWith('.txt')) {
+            uploadStatus.innerHTML = `
+                <div class="alert-danger">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="15" y1="9" x2="9" y2="15"/>
+                        <line x1="9" y1="9" x2="15" y2="15"/>
+                    </svg>
+                    <span>Iltimos, faqat .txt fayllarni yuklang!</span>
+                </div>
+            `;
+            return;
+        }
+        
+        await handleFile(file);
+        // fileInput.value = ''; qatorini olib tashladik!
+    });
+
+    // Test faylini tahlil qilish
+    async function parseTestFile(content) {
+        try {
+            tests = [];
+            corrections = [];
+            let lines = content.split('\n');
+            let currentTest = null;
+            let questionNumber = 1;
+
+            // Har bir qatorni qayta ishlash
+            for (let i = 0; i < lines.length; i++) {
+                let line = lines[i].trim();
+                
+                // Bo'sh qatorlarni o'tkazib yuborish
+                if (line === '') {
+                    // Agar avvalgi test tugagan bo'lsa, yangi testga o'tish
+                    if (currentTest && currentTest.answer) {
+                        tests.push(currentTest);
+                        currentTest = null;
+                        questionNumber++;
+                    }
+                    continue;
+                }
+
+                // Javob qatorini aniqlash (har xil formatlar)
+                if (/^(ANSWER|JAVOB|answer|javob)[:\.\s]/i.test(line)) {
+                    if (currentTest) {
+                        const originalAnswer = line;
+                        const normalizedAnswer = normalizeAnswer(line);
+                        
+                        if (originalAnswer !== normalizedAnswer) {
+                            corrections.push({
+                                testNumber: questionNumber,
+                                type: 'Javob formati',
+                                original: originalAnswer,
+                                corrected: normalizedAnswer
+                            });
+                        }
+                        
+                        currentTest.answer = normalizedAnswer;
+                        tests.push(currentTest);
+                        currentTest = null;
+                        questionNumber++;
+                    }
+                }
+                // Yangi savol (agar bu variant emas)
+                else if (!currentTest && !/^[A-D][\.\)]/i.test(line)) {
+                    const originalQuestion = line;
+                    const cleanQuestion = removeQuestionNumber(line);
+                    
+                    if (originalQuestion !== cleanQuestion) {
+                        corrections.push({
+                            testNumber: questionNumber,
+                            type: 'Savol raqami',
+                            original: originalQuestion.substring(0, 50) + '...',
+                            corrected: cleanQuestion.substring(0, 50) + '...'
+                        });
+                    }
+                    
+                    currentTest = {
+                        question: cleanQuestion,
+                        options: [],
+                        answer: ''
+                    };
+                }
+                // Variantlarni qo'shish
+                else if (currentTest && /^[A-D][\.\)]/i.test(line)) {
+                    const originalOption = line;
+                    const formattedOption = formatOption(line);
+                    
+                    if (originalOption !== formattedOption) {
+                        corrections.push({
+                            testNumber: questionNumber,
+                            type: 'Variant formati',
+                            original: originalOption,
+                            corrected: formattedOption
+                        });
+                    }
+                    
+                    currentTest.options.push(formattedOption);
+                }
+            }
+
+            // Oxirgi testni qo'shish
+            if (currentTest && currentTest.answer) {
+                tests.push(currentTest);
+            }
+
+            // UI yangilanishini kutish
+            await new Promise(resolve => setTimeout(resolve, 100));
+
+            if (tests.length > 0) {
+                uploadStatus.innerHTML = `
+                    <div class="alert-success">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 11l3 3L22 4"/>
+                            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+                        </svg>
+                        <span>${tests.length} ta test muvaffaqiyatli yuklandi!</span>
+                    </div>
+                `;
+                
+                if (corrections.length > 0) {
+                    const correctionAlert = document.createElement('div');
+                    correctionAlert.className = 'alert-warning';
+                    correctionAlert.innerHTML = `
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                        </svg>
+                        <span>${corrections.length} ta o'zgartirish amalga oshirildi.</span>
+                    `;
+                    uploadStatus.appendChild(correctionAlert);
+                    showCorrectionsBtn.style.display = 'inline-flex';
+                }
+                
+                const infoAlert = document.createElement('div');
+                infoAlert.className = 'alert-info';
+                infoAlert.innerHTML = `
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="16" x2="12" y2="12"/>
+                        <line x1="12" y1="8" x2="12.01" y2="8"/>
+                    </svg>
+                    <span>Iltimos, testlarni tekshirib ko'ring - xatoliklar bo'lishi mumkin.</span>
+                `;
+                uploadStatus.appendChild(infoAlert);
+                
+                // Testlarni ko'rsatish
+                await displayAllTests();
+                
+                // UI yangilanishini kutish
+                await new Promise(resolve => setTimeout(resolve, 50));
+                
+                testResults.style.display = 'block';
+
+                // Scroll to results
+                setTimeout(() => {
+                    testResults.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 200);
+            } else {
+                uploadStatus.innerHTML = `
+                    <div class="alert-danger">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="15" y1="9" x2="9" y2="15"/>
+                            <line x1="9" y1="9" x2="15" y2="15"/>
+                        </svg>
+                        <span>Xatolik: Test ma'lumotlari topilmadi! Iltimos, fayl formatini tekshiring.</span>
+                    </div>
+                `;
+            }
+        } catch (error) {
+            console.error('Parsing xatolik:', error);
+            uploadStatus.innerHTML = `
+                <div class="alert-danger">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="15" y1="9" x2="9" y2="15"/>
+                        <line x1="9" y1="9" x2="15" y2="15"/>
+                    </svg>
+                    <span>Faylni tahlil qilishda xatolik! Iltimos, qayta yuklang.</span>
                 </div>
             `;
         }
     }
 
     // Barcha testlarni ko'rsatish
-    function displayAllTests() {
+    async function displayAllTests() {
         testContainer.innerHTML = '';
         let maxDisplayTests = 5;
         
@@ -835,12 +1087,24 @@
             testElement.appendChild(answerElement);
 
             testContainer.appendChild(testElement);
+            
+            // Har bir testdan keyin kichik pauza - UI yangilanishi uchun
+            if (i < Math.min(maxDisplayTests, tests.length) - 1) {
+                await new Promise(resolve => setTimeout(resolve, 10));
+            }
         }
         
         if (tests.length > maxDisplayTests) {
             const moreInfo = document.createElement('div');
             moreInfo.className = 'alert alert-info mt-3';
-            moreInfo.textContent = `Faqat dastlabki ${maxDisplayTests} ta test ko'rsatilmoqda. Barcha ${tests.length} ta testni yuklab olish uchun quyidagi tugmani bosing.`;
+            moreInfo.innerHTML = `
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="16" x2="12" y2="12"/>
+                    <line x1="12" y1="8" x2="12.01" y2="8"/>
+                </svg>
+                <span>Faqat dastlabki ${maxDisplayTests} ta test ko'rsatilmoqda. Barcha ${tests.length} ta testni yuklab olish uchun quyidagi tugmani bosing.</span>
+            `;
             testContainer.appendChild(moreInfo);
         }
     }
@@ -850,10 +1114,20 @@
         if (correctionsSection.style.display === 'none') {
             displayCorrections();
             correctionsSection.style.display = 'block';
-            showCorrectionsBtn.textContent = '🔼 Tuzatishlarni yashirish';
+            showCorrectionsBtn.innerHTML = `
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="18 15 12 9 6 15"/>
+                </svg>
+                <span>Tuzatishlarni yashirish</span>
+            `;
         } else {
             correctionsSection.style.display = 'none';
-            showCorrectionsBtn.textContent = '📋 Tuzatishlarni ko\'rsatish';
+            showCorrectionsBtn.innerHTML = `
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+                </svg>
+                <span>Tuzatishlarni ko'rsatish</span>
+            `;
         }
     });
 
