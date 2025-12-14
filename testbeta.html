@@ -21,6 +21,10 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
     
+    html {
+      scroll-behavior: smooth;
+    }
+    
     body {
       background-color: #ededf7;
       color: var(--text-color);
@@ -408,6 +412,8 @@
     .shortcuts-content.active {
       max-height: 600px;
       padding: 20px;
+      overflow-y: auto;
+      scroll-behavior: smooth;
     }
     
     .shortcuts-grid {
@@ -507,6 +513,8 @@
       
       .shortcuts-content.active {
         max-height: 800px;
+        overflow-y: auto;
+        scroll-behavior: smooth;
       }
       
       .shortcut-item {
@@ -757,19 +765,19 @@
         <h2>Yangi test qo'shish</h2>
         <form class="quiz-form" id="quizForm">
           <div id="testNameGroup" class="form-group">
-            <label for="testName">Test nomi</label>
+            <label for="testName">Test nomi <span style="color: #999; font-size: 12px; font-weight: normal; margin-left: 8px;">(Alt + N)</span></label>
             <input type="text" id="testName" placeholder="Test nomini kiriting" required>
             <div id="testNameError" class="error"></div>
           </div>
 
           <div class="form-group">
-            <label for="question">Savol matni</label>
+            <label for="question">Savol matni <span style="color: #999; font-size: 12px; font-weight: normal; margin-left: 8px;">(Alt + Q)</span></label>
             <textarea id="question" rows="3" placeholder="Savolingizni kiriting" required></textarea>
             <div id="questionError" class="error"></div>
           </div>
 
           <div class="form-group">
-            <label>Javob variantlari</label>
+            <label>Javob variantlari <span style="color: #999; font-size: 12px; font-weight: normal; margin-left: 8px;">(Alt + 1-4: fokus, Ctrl + Alt + 1-4: to'g'ri javob)</span></label>
             <select id="optionCountSelect">
               <option value="2">2 ta variant</option>
               <option value="3">3 ta variant</option>
