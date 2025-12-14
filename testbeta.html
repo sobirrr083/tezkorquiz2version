@@ -358,6 +358,190 @@
       display: flex;
       gap: 10px;
     }
+    /* acardion kodlari bu yerdan boshlandi */
+    .shortcuts-info-container {
+      background-color: var(--bg-color);
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .shortcuts-header {
+      background: linear-gradient(135deg, var(--primary-color) 0%, #3a51c1 100%);
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.3s ease;
+    }
+    
+    .shortcuts-header:hover {
+      background: linear-gradient(135deg, #3a51c1 0%, #2d3f99 100%);
+    }
+    
+    .shortcuts-header span {
+      font-weight: 600;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .shortcuts-arrow {
+      transition: transform 0.3s ease;
+    }
+    
+    .shortcuts-header.active .shortcuts-arrow {
+      transform: rotate(180deg);
+    }
+    
+    .shortcuts-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.4s ease;
+      background-color: var(--bg-color);
+    }
+    
+    .shortcuts-content.active {
+      max-height: 600px;
+      padding: 20px;
+    }
+    
+    .shortcuts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+    
+    .shortcut-item {
+      background-color: var(--light-gray);
+      padding: 15px;
+      border-radius: 8px;
+      border-left: 3px solid var(--primary-color);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .shortcut-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(69, 96, 229, 0.15);
+    }
+    
+    .shortcut-keys {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+    
+    .shortcut-keys kbd {
+      background: linear-gradient(180deg, #ffffff 0%, #f5f5f5 100%);
+      border: 1px solid #d1d5db;
+      border-bottom: 3px solid #9ca3af;
+      border-radius: 4px;
+      padding: 4px 8px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      font-weight: 600;
+      color: #374151;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+      min-width: 28px;
+      text-align: center;
+    }
+    
+    .shortcut-desc {
+      color: var(--text-color);
+      font-size: 14px;
+      line-height: 1.4;
+    }
+    
+    .shortcuts-tip {
+      background-color: rgba(255, 193, 7, 0.1);
+      border-left: 3px solid #ffc107;
+      padding: 12px 15px;
+      border-radius: 6px;
+      font-size: 14px;
+      color: var(--text-color);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .shortcuts-tip strong {
+      color: #f59e0b;
+    }
+    
+    /* Mobil moslashtirish */
+    @media (max-width: 768px) {
+      .shortcuts-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .shortcuts-header span {
+        font-size: 14px;
+      }
+      
+      .shortcut-keys kbd {
+        font-size: 12px;
+        padding: 3px 6px;
+      }
+      
+      .shortcut-desc {
+        font-size: 13px;
+      }
+      
+      .shortcuts-tip {
+        font-size: 13px;
+      }
+    }
+    
+    /* Animatsiya effektlari */
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .shortcuts-content.active .shortcut-item {
+      animation: slideIn 0.4s ease forwards;
+    }
+    
+    .shortcuts-content.active .shortcut-item:nth-child(1) {
+      animation-delay: 0.05s;
+    }
+    
+    .shortcuts-content.active .shortcut-item:nth-child(2) {
+      animation-delay: 0.1s;
+    }
+    
+    .shortcuts-content.active .shortcut-item:nth-child(3) {
+      animation-delay: 0.15s;
+    }
+    
+    .shortcuts-content.active .shortcut-item:nth-child(4) {
+      animation-delay: 0.2s;
+    }
+    
+    .shortcuts-content.active .shortcut-item:nth-child(5) {
+      animation-delay: 0.25s;
+    }
+    
+    .shortcuts-content.active .shortcut-item:nth-child(6) {
+      animation-delay: 0.3s;
+    }
+
+    /* bu joydan acardion tugadi */
 
     .test-content {
       padding: 0;
@@ -505,7 +689,66 @@
     </header>
 
     <div class="message-container" id="messageContainer"></div>
-
+    
+    <!-- Tezkor klavishlar info paneli -->
+    <div class="shortcuts-info-container">
+      <div class="shortcuts-header" id="shortcutsHeader">
+        <span>Tezkor klavishlar</span>
+        <svg class="shortcuts-arrow" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/>
+        </svg>
+      </div>
+      
+      <div class="shortcuts-content" id="shortcutsContent">
+        <div class="shortcuts-grid">
+          <div class="shortcut-item">
+            <div class="shortcut-keys">
+              <kbd>Alt</kbd> + <kbd>N</kbd>
+            </div>
+            <div class="shortcut-desc">Test nomi maydoniga o'tish</div>
+          </div>
+          
+          <div class="shortcut-item">
+            <div class="shortcut-keys">
+              <kbd>Alt</kbd> + <kbd>Q</kbd>
+            </div>
+            <div class="shortcut-desc">Savol maydoniga o'tish</div>
+          </div>
+          
+          <div class="shortcut-item">
+            <div class="shortcut-keys">
+              <kbd>Alt</kbd> + <kbd>1</kbd>-<kbd>4</kbd>
+            </div>
+            <div class="shortcut-desc">Variant maydonlariga o'tish</div>
+          </div>
+          
+          <div class="shortcut-item">
+            <div class="shortcut-keys">
+              <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>1</kbd>-<kbd>4</kbd>
+            </div>
+            <div class="shortcut-desc">To'g'ri javobni belgilash</div>
+          </div>
+          
+          <div class="shortcut-item">
+            <div class="shortcut-keys">
+              <kbd>Alt</kbd> + <kbd>S</kbd>
+            </div>
+            <div class="shortcut-desc">Savolni saqlash</div>
+          </div>
+          
+          <div class="shortcut-item">
+            <div class="shortcut-keys">
+              <kbd>Tab</kbd>
+            </div>
+            <div class="shortcut-desc">Keyingi maydoniga o'tish</div>
+          </div>
+        </div>
+        
+        <div class="shortcuts-tip">
+          💡 <strong>Maslahat:</strong> Tez ishlash uchun klaviatura shortcut'laridan foydalaning
+        </div>
+      </div>
+    </div>
     <div class="tab-container">
       <div class="tabs">
         <div class="tab active" data-tab="create">Savol yaratish</div>
@@ -1450,5 +1693,21 @@
       addShortcutHints();
     });
   </script>
+
+
+  <script>
+// Tezkor klavishlar panelini boshqarish
+document.addEventListener('DOMContentLoaded', () => {
+  const shortcutsHeader = document.getElementById('shortcutsHeader');
+  const shortcutsContent = document.getElementById('shortcutsContent');
+  
+  if (shortcutsHeader && shortcutsContent) {
+    shortcutsHeader.addEventListener('click', () => {
+      shortcutsHeader.classList.toggle('active');
+      shortcutsContent.classList.toggle('active');
+    });
+  }
+});
+</script>
 </body>
 </html>
