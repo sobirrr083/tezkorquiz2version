@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <link rel="icon" href="aga/iconcha.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tezkor Quiz - Savol Qo'shish</title>
+  <title>Tezkor Quiz - Test yaratish</title>
   <style>
     :root {
       --primary-color: #4560e5;
@@ -20,12 +20,13 @@
       padding: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
-    body {
-            background-color: #ededf7; /* O'zingiz xohlagan rang, masalan, och kulrang */
-        }
+    
+    html {
+      scroll-behavior: smooth;
+    }
     
     body {
-      background-color: var(--bg-color);
+      background-color: #ededf7;
       color: var(--text-color);
       line-height: 1.6;
     }
@@ -359,6 +360,214 @@
       gap: 10px;
     }
 
+    /* Accordion kodlari bu yerdan boshlandi */
+    .shortcuts-info-container {
+      background-color: var(--bg-color);
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .shortcuts-header {
+      background: linear-gradient(135deg, var(--primary-color) 0%, #3a51c1 100%);
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.3s ease;
+    }
+    
+    .shortcuts-header:hover {
+      background: linear-gradient(135deg, #3a51c1 0%, #2d3f99 100%);
+    }
+    
+    .shortcuts-header span {
+      font-weight: 600;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .shortcuts-arrow {
+      transition: transform 0.3s ease;
+    }
+    
+    .shortcuts-header.active .shortcuts-arrow {
+      transform: rotate(180deg);
+    }
+    
+    .shortcuts-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.4s ease;
+      background-color: var(--bg-color);
+    }
+    
+    .shortcuts-content.active {
+      max-height: 600px;
+      padding: 20px;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+    }
+    
+    .shortcuts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+    
+    .shortcut-item {
+      background-color: var(--light-gray);
+      padding: 15px;
+      border-radius: 8px;
+      border-left: 3px solid var(--primary-color);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .shortcut-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(69, 96, 229, 0.15);
+    }
+    
+    .shortcut-keys {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+    
+    .shortcut-keys kbd {
+      background: linear-gradient(180deg, #ffffff 0%, #f5f5f5 100%);
+      border: 1px solid #d1d5db;
+      border-bottom: 3px solid #9ca3af;
+      border-radius: 4px;
+      padding: 4px 8px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      font-weight: 600;
+      color: #374151;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+      min-width: 28px;
+      text-align: center;
+    }
+    
+    .shortcut-desc {
+      color: var(--text-color);
+      font-size: 14px;
+      line-height: 1.4;
+    }
+    
+    .shortcuts-tip {
+      background-color: rgba(255, 193, 7, 0.1);
+      border-left: 3px solid #ffc107;
+      padding: 12px 15px;
+      border-radius: 6px;
+      font-size: 14px;
+      color: var(--text-color);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .shortcuts-tip strong {
+      color: #f59e0b;
+    }
+    
+    /* Mobil moslashtirish */
+    @media (max-width: 768px) {
+      .shortcuts-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .shortcuts-header span {
+        font-size: 14px;
+      }
+      
+      .shortcut-keys {
+        flex-wrap: wrap;
+      }
+      
+      .shortcut-keys kbd {
+        font-size: 11px;
+        padding: 2px 5px;
+        min-width: 24px;
+      }
+      
+      .shortcut-desc {
+        font-size: 12px;
+        word-wrap: break-word;
+      }
+      
+      .shortcuts-tip {
+        font-size: 12px;
+        padding: 10px 12px;
+      }
+      
+      .shortcuts-content.active {
+        max-height: 800px;
+        overflow-y: auto;
+        scroll-behavior: smooth;
+      }
+      
+      .shortcut-item {
+        padding: 12px;
+      }
+      
+      .option input[type="text"] {
+        font-size: 13px;
+      }
+    }
+    
+    /* Animatsiya effektlari */
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .shortcuts-content.active .shortcut-item {
+      animation: slideIn 0.4s ease forwards;
+    }
+    
+    .shortcuts-content.active .shortcut-item:nth-child(1) {
+      animation-delay: 0.05s;
+    }
+    
+    .shortcuts-content.active .shortcut-item:nth-child(2) {
+      animation-delay: 0.1s;
+    }
+    
+    .shortcuts-content.active .shortcut-item:nth-child(3) {
+      animation-delay: 0.15s;
+    }
+    
+    .shortcuts-content.active .shortcut-item:nth-child(4) {
+      animation-delay: 0.2s;
+    }
+    
+    .shortcuts-content.active .shortcut-item:nth-child(5) {
+      animation-delay: 0.25s;
+    }
+    
+    .shortcuts-content.active .shortcut-item:nth-child(6) {
+      animation-delay: 0.3s;
+    }
+
+    /* Bu joydan accordion tugadi */
+
     .test-content {
       padding: 0;
       max-height: 0;
@@ -458,53 +667,83 @@
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
       animation: fadeIn 0.5s ease-out;
     }
-    /* yuqordagi bildirishnoma uchun kod */
-        
-        .conicha {
-            width: 100%;
-            overflow: hidden;
-            background-color: #4660e5;
-            padding: 12px 0;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        
-        .moving-text {
-            color: white;
-            font-size: 18px;
-            font-weight: bold;
-            white-space: nowrap;
-            animation: moveLeftToRight 15s linear infinite;
-            padding: 5px;
-        }
-        
-        @keyframes moveLeftToRight {
-            0% {
-                transform: translateX(100%);
-            }
-            100% {
-                transform: translateX(-100%);
-            }
-        }
 
-
+    @keyframes fadeInOut {
+      0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
+      10% { opacity: 1; transform: translateX(-50%) translateY(0); }
+      90% { opacity: 1; transform: translateX(-50%) translateY(0); }
+      100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+    }
   </style>
 </head>
 <body>
-
-<!-- <div class="container conicha">
-    <div class="moving-text">
-        Bu sahifa sinov tariqasida ishlayapti. Tez orada to'liq versiya bilan qaytamiz!   
-    </div>
-</div> -->
-
-
-</br>
+<br>
   <div class="container">
     <header>
-      <h1>Tezkor Test Qo'shish</h1>
+      <h1>Tezkor test qo'shish</h1>
     </header>
 
     <div class="message-container" id="messageContainer"></div>
+    
+    <!-- Tezkor klavishlar info paneli -->
+    <div class="shortcuts-info-container">
+      <div class="shortcuts-header" id="shortcutsHeader">
+        <span>⌨️ Tezkor klavishlar</span>
+        <svg class="shortcuts-arrow" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/>
+        </svg>
+      </div>
+      
+      <div class="shortcuts-content" id="shortcutsContent">
+        <div class="shortcuts-grid">
+          <div class="shortcut-item">
+            <div class="shortcut-keys">
+              <kbd>Alt</kbd> + <kbd>N</kbd>
+            </div>
+            <div class="shortcut-desc">Test nomi maydoniga o'tish</div>
+          </div>
+          
+          <div class="shortcut-item">
+            <div class="shortcut-keys">
+              <kbd>Alt</kbd> + <kbd>Q</kbd>
+            </div>
+            <div class="shortcut-desc">Savol maydoniga o'tish</div>
+          </div>
+          
+          <div class="shortcut-item">
+            <div class="shortcut-keys">
+              <kbd>Alt</kbd> + <kbd>1</kbd>-<kbd>4</kbd>
+            </div>
+            <div class="shortcut-desc">Variant maydonlariga o'tish</div>
+          </div>
+          
+          <div class="shortcut-item">
+            <div class="shortcut-keys">
+              <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>1</kbd>-<kbd>4</kbd>
+            </div>
+            <div class="shortcut-desc">To'g'ri javobni belgilash</div>
+          </div>
+          
+          <div class="shortcut-item">
+            <div class="shortcut-keys">
+              <kbd>Alt</kbd> + <kbd>S</kbd>
+            </div>
+            <div class="shortcut-desc">Savolni saqlash</div>
+          </div>
+          
+          <div class="shortcut-item">
+            <div class="shortcut-keys">
+              <kbd>Tab</kbd>
+            </div>
+            <div class="shortcut-desc">Keyingi maydoniga o'tish</div>
+          </div>
+        </div>
+        
+        <div class="shortcuts-tip">
+          💡 <strong>Maslahat:</strong> Tez ishlash uchun tezkor tugmalardan foydalaning
+        </div>
+      </div>
+    </div>
 
     <div class="tab-container">
       <div class="tabs">
@@ -526,41 +765,40 @@
         <h2>Yangi test qo'shish</h2>
         <form class="quiz-form" id="quizForm">
           <div id="testNameGroup" class="form-group">
-            <label for="testName">Test nomi</label>
+            <label for="testName">Test nomi <span style="color: #999; font-size: 12px; font-weight: normal; margin-left: 8px;">(Alt + N)</span></label>
             <input type="text" id="testName" placeholder="Test nomini kiriting" required>
             <div id="testNameError" class="error"></div>
           </div>
 
           <div class="form-group">
-            <label for="question">Savol matni</label>
+            <label for="question">Savol matni <span style="color: #999; font-size: 12px; font-weight: normal; margin-left: 8px;">(Alt + Q)</span></label>
             <textarea id="question" rows="3" placeholder="Savolingizni kiriting" required></textarea>
             <div id="questionError" class="error"></div>
           </div>
 
           <div class="form-group">
-            <label>Javob variantlari</label>
+            <label>Javob variantlari <span style="color: #999; font-size: 12px; font-weight: normal; margin-left: 8px;">To'g'ri javob: Ctrl + Alt + 1-4</span></label>
             <select id="optionCountSelect">
               <option value="2">2 ta variant</option>
               <option value="3">3 ta variant</option>
               <option value="4" selected>4 ta variant</option>
-       
             </select>
             <div class="options-container" id="optionsContainer">
               <div class="option">
                 <input type="radio" name="correctAnswer" value="0" required>
-                <input type="text" placeholder="Variant 1" required>
+                <input type="text" placeholder="Variant 1 (Alt+1)" required>
               </div>
               <div class="option">
                 <input type="radio" name="correctAnswer" value="1">
-                <input type="text" placeholder="Variant 2" required>
+                <input type="text" placeholder="Variant 2 (Alt+2)" required>
               </div>
               <div class="option">
                 <input type="radio" name="correctAnswer" value="2">
-                <input type="text" placeholder="Variant 3" required>
+                <input type="text" placeholder="Variant 3 (Alt+3)" required>
               </div>
               <div class="option">
                 <input type="radio" name="correctAnswer" value="3">
-                <input type="text" placeholder="Variant 4" required>
+                <input type="text" placeholder="Variant 4 (Alt+4)" required>
               </div>
             </div>
             <div id="optionsError" class="error"></div>
@@ -615,34 +853,31 @@
       </div>
     </div>
   </div>
-<!-- himoyalangan sahifa: protected.html -->
-<script type="module">
-  // Firebase SDK import qilingan deb faraz qilamiz
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
-  const firebaseConfig = {
-   apiKey: "AIzaSyBxIpLY5WasiSIlDL4japBLnnXRwOLUKEQ",
+  <script type="module">
+    // Firebase SDK import
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBxIpLY5WasiSIlDL4japBLnnXRwOLUKEQ",
       authDomain: "tezkor-quiz-bbe3c.firebaseapp.com",
-    // ... boshqa sozlamalar
-  };
+    };
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
-  // Current page URL (return uchun)
-  const returnUrl = encodeURIComponent(window.location.pathname + window.location.search);
+    const returnUrl = encodeURIComponent(window.location.pathname + window.location.search);
 
-  onAuthStateChanged(auth, (user) => {
-    if (!user) {
-      // foydalanuvchi kirmagan — login sahifasiga yo'naltirish
-      window.location.replace(`/kirish.html?returnUrl=${returnUrl}`);
-    } else {
-      // foydalanuvchi kirdi — sahifa davom ettirilsin
-      console.log("User logged in:", user.uid);
-    }
-  });
-</script>
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.replace(`/kirish.html?returnUrl=${returnUrl}`);
+      } else {
+        console.log("User logged in:", user.uid);
+      }
+    });
+  </script>
+
   <script>
     const API_BASE_URL = 'http://localhost:3000/api/quizzes';
     const quizForm = document.getElementById('quizForm');
@@ -683,6 +918,17 @@
       });
       adjustOptions(4); // Default 4 ta variant
     });
+
+    // Tezkor klavishlar panelini boshqarish
+    const shortcutsHeader = document.getElementById('shortcutsHeader');
+    const shortcutsContent = document.getElementById('shortcutsContent');
+    
+    if (shortcutsHeader && shortcutsContent) {
+      shortcutsHeader.addEventListener('click', () => {
+        shortcutsHeader.classList.toggle('active');
+        shortcutsContent.classList.toggle('active');
+      });
+    }
 
     // Joriy testni saqlash
     function saveActiveTest(testName) {
@@ -751,7 +997,7 @@
         radioInput.value = optionIndex;
         const textInput = document.createElement('input');
         textInput.type = 'text';
-        textInput.placeholder = `Variant ${optionIndex + 1}`;
+        textInput.placeholder = `Variant ${optionIndex + 1} (Alt+${optionIndex + 1})`;
         textInput.required = true;
         optionDiv.appendChild(radioInput);
         optionDiv.appendChild(textInput);
@@ -768,7 +1014,7 @@
         const radio = option.querySelector('input[type="radio"]');
         radio.value = index;
         const textInput = option.querySelector('input[type="text"]');
-        textInput.placeholder = `Variant ${index + 1}`;
+        textInput.placeholder = `Variant ${index + 1} (Alt+${index + 1})`;
       });
     }
 
@@ -865,12 +1111,10 @@
       try {
         await createQuizItem(formData);
         
-        // Aktiv test yo'q bo'lsa, yangi saqlayapmiz
         if (!activeTest) {
           saveActiveTest(formData.testName);
         }
         
-        // Yangi qo'shilgan savolni ko'rsatish effekti
         const newQuestion = document.createElement('div');
         newQuestion.className = 'preview-question-item added-question';
         newQuestion.innerHTML = `
@@ -948,26 +1192,21 @@
     }
 
     function resetFormExceptTestName() {
-      // Test nomini saqlab qolish va faqat savol va variantlarni tozalash
       const testName = testNameInput.value;
       
-      // Forma tozalash
       questionInput.value = '';
       document.querySelectorAll('.option input[type="text"]').forEach(input => {
         input.value = '';
       });
       document.querySelectorAll('.option input[type="radio"]').forEach((radio, index) => {
-        radio.checked = index === 0; // Birinchi variantni tanlash
+        radio.checked = index === 0;
       });
       
-      // Test nomi inputni avvalgi qiymatini tiklash
       testNameInput.value = testName;
       
-      // Tahrirlash rejimidan chiqish
       delete quizForm.dataset.editId;
       submitBtn.textContent = 'Saqlash';
       
-      // Xatolik xabarlarini tozalash
       questionError.textContent = '';
       optionsError.textContent = '';
       
@@ -975,7 +1214,6 @@
     }
 
     function resetForm() {
-      // To'liq formani tozalash
       quizForm.reset();
       delete quizForm.dataset.editId;
       adjustOptions(parseInt(optionCountSelect.value));
@@ -986,10 +1224,8 @@
       updatePreview();
     }
 
-    // Savollarni API orqali yaratish
     async function createQuizItem(formData) {
       try {
-        // Local storageda saqlash
         quizItems.push(formData);
         saveQuizItems();
         return formData;
@@ -999,22 +1235,18 @@
       }
     }
 
-    // Quiz elementlarini saqlash
     function saveQuizItems() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(quizItems));
     }
 
-    // Quiz elementlarini yuklash
     function loadQuizItems() {
       const items = localStorage.getItem(STORAGE_KEY);
       quizItems = items ? JSON.parse(items) : [];
     }
 
-    // Savollarni fetch qilish
     async function fetchQuestions() {
       quizListLoader.style.display = 'flex';
       try {
-        // Mahalliy saqlangan ma'lumotlarni ishlatamiz
         await updateTestGroupList();
       } catch (error) {
         console.error('Error fetching questions:', error);
@@ -1024,11 +1256,9 @@
       }
     }
 
-    // Test guruhlar ro'yxatini yangilash
     async function updateTestGroupList() {
       testGroups.innerHTML = '';
       
-      // Testlar bo'yicha guruhlaymiz
       const groupedByTest = {};
       quizItems.forEach(item => {
         if (!groupedByTest[item.testName]) {
@@ -1037,7 +1267,6 @@
         groupedByTest[item.testName].push(item);
       });
 
-      // Agar test yo'q bo'lsa
       if (Object.keys(groupedByTest).length === 0) {
         const noTestsMessage = document.createElement('div');
         noTestsMessage.textContent = 'Hozircha testlar mavjud emas';
@@ -1047,7 +1276,6 @@
         return;
       }
 
-      // Har bir test uchun guruh yaratamiz
       Object.entries(groupedByTest).forEach(([testName, questions]) => {
         const testGroup = document.createElement('div');
         testGroup.className = 'test-group';
@@ -1066,7 +1294,6 @@
         const testContent = document.createElement('div');
         testContent.className = 'test-content';
         
-        // Savollar ro'yxatini yaratish
         const questionList = document.createElement('ol');
         questionList.className = 'question-list';
         
@@ -1081,7 +1308,6 @@
           const optionsContainer = document.createElement('div');
           optionsContainer.style.marginTop = '10px';
           
-          // Variantlarni ko'rsatish
           const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
           question.options.forEach((option, index) => {
             const optionElement = document.createElement('div');
@@ -1090,7 +1316,6 @@
             optionsContainer.appendChild(optionElement);
           });
           
-          // Amallar tugmalari
           const actions = document.createElement('div');
           actions.className = 'action-buttons';
           actions.style.marginTop = '10px';
@@ -1119,28 +1344,23 @@
         testGroup.appendChild(testContent);
         testGroups.appendChild(testGroup);
         
-        // Test header click harakatini qo'shish
         testHeader.addEventListener('click', (e) => {
-          // Tugmalarni bosgan holda ochilmasligi uchun
           if (e.target.tagName === 'BUTTON') return;
           
           testContent.classList.toggle('active');
         });
       });
       
-      // Yaratish va o'chirish tugmalariga hodisalar biriktirish
       attachEventListeners();
     }
 
-    // Tugmalar uchun hodisalar biriktirish
     function attachEventListeners() {
-      // Tahrirlash tugmalari
       document.querySelectorAll('.edit-btn').forEach(btn => {
         if (btn.classList.contains('continue-test')) {
           btn.addEventListener('click', function() {
             const testName = this.dataset.test;
             saveActiveTest(testName);
-            tabs[0].click(); // Savollar yaratish oynasiga o'tish
+            tabs[0].click();
             showMessage(`"${testName}" testiga savollar qo'shishni davom ettirasiz`, 'success');
           });
         } else {
@@ -1150,15 +1370,13 @@
             if (!question) return;
             
             populateFormWithQuestion(question);
-            tabs[0].click(); // Savollar yaratish oynasiga o'tish
+            tabs[0].click();
           });
         }
       });
       
-      // O'chirish tugmalari
       document.querySelectorAll('.remove-btn').forEach(btn => {
         if (btn.dataset.test) {
-          // Test guruhini o'chirish
           btn.addEventListener('click', function() {
             const testName = this.dataset.test;
             if (confirm(`"${testName}" testini o'chirishni xohlaysizmi?`)) {
@@ -1166,7 +1384,6 @@
             }
           });
         } else {
-          // Alohida savolni o'chirish
           btn.addEventListener('click', function() {
             const id = parseInt(this.dataset.id);
             if (confirm('Savolni o\'chirishni xohlaysizmi?')) {
@@ -1176,7 +1393,6 @@
         }
       });
       
-      // Yuklab olish tugmalari
       document.querySelectorAll('.download-btn').forEach(btn => {
         btn.addEventListener('click', function() {
           const testName = this.dataset.test;
@@ -1185,50 +1401,40 @@
       });
     }
 
-    // Formani savol ma'lumotlari bilan to'ldirish
     function populateFormWithQuestion(question) {
       quizForm.dataset.editId = question.id;
       
-      // Savol ma'lumotlarini to'ldirish
       testNameInput.value = question.testName;
       questionInput.value = question.question;
       
-      // Variantlarni to'g'rilash
       adjustOptions(question.options.length);
       
-      // Variantlar qiymatlarini o'rnatish
       const optionInputs = document.querySelectorAll('.option input[type="text"]');
       question.options.forEach((option, index) => {
         optionInputs[index].value = option;
       });
       
-      // To'g'ri javobni belgilash
       document.querySelectorAll('input[name="correctAnswer"]')[question.correctIndex].checked = true;
       
       submitBtn.textContent = 'Yangilash';
       updatePreview();
       
-      // Forma qismiga scroll qilish
       quizForm.scrollIntoView({ behavior: 'smooth' });
     }
 
-    // Savolni o'chirish
     function deleteQuestion(id) {
       const questionIndex = quizItems.findIndex(item => item.id === id);
       if (questionIndex === -1) return;
       
       const question = quizItems[questionIndex];
       
-      // Animatsiya effekti bilan o'chirish
       const questionElement = document.querySelector(`li[data-id="${id}"]`);
       if (questionElement) {
         questionElement.classList.add('removing');
         setTimeout(() => {
-          // Ma'lumotlarni o'chirish
           quizItems.splice(questionIndex, 1);
           saveQuizItems();
           
-          // Agar joriy test savoli bo'lsa, preview ro'yxatidan ham o'chirish
           if (question.testName === activeTest) {
             updatePreviewQuestions();
           }
@@ -1237,7 +1443,6 @@
           showMessage('Savol muvaffaqiyatli o\'chirildi', 'success');
         }, 500);
       } else {
-        // Element topilmagan bo'lsa, shunchaki o'chiramiz
         quizItems.splice(questionIndex, 1);
         saveQuizItems();
         updateTestGroupList();
@@ -1248,13 +1453,10 @@
       }
     }
 
-    // Test guruhini o'chirish
     function deleteTestGroup(testName) {
-      // Test guruhidagi barcha savollarni filtrlash
       quizItems = quizItems.filter(item => item.testName !== testName);
       saveQuizItems();
       
-      // Agar joriy test bo'lsa, uni ham o'chiramiz
       if (activeTest === testName) {
         finishTestBtn.click();
       }
@@ -1263,29 +1465,23 @@
       showMessage(`"${testName}" testi muvaffaqiyatli o'chirildi`, 'success');
     }
 
-        // Testni yuklab olish
     function downloadTest(testName) {
       const testQuestions = quizItems.filter(item => item.testName === testName);
       if (testQuestions.length === 0) return;
       
-      // Test ma'lumotlarni formatlash - test nomini olib tashlaymiz
       let content = '';
       
       testQuestions.forEach((question) => {
-        // Tartib raqami olib tashlandi
         content += `${question.question}\n`;
         
-        // Variantlarni qo'shish
         const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
         question.options.forEach((option, optIndex) => {
           content += `${letters[optIndex]}. ${option}\n`;
         });
         
-        // To'g'ri javobni ko'rsatish
         content += `ANSWER: ${letters[question.correctIndex]}\n\n`;
       });
       
-      // Yuklab olish mexanizmi
       const blob = new Blob([content], { type: 'text/plain' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -1298,20 +1494,89 @@
       
       showMessage(`"${testName}" testi muvaffaqiyatli yuklab olindi`, 'success');
     }
-    // Xabarlarni ko'rsatish
+
     function showMessage(message, type = 'info') {
       const messageElement = document.createElement('div');
       messageElement.className = `${type}-message`;
       messageElement.textContent = message;
       messageContainer.appendChild(messageElement);
       
-      // 3 soniyadan keyin xabarni o'chirish
       setTimeout(() => {
         messageElement.style.opacity = '0';
         setTimeout(() => {
           messageContainer.removeChild(messageElement);
         }, 300);
       }, 3000);
+    }
+
+    // Tezkor klavishlar
+    document.addEventListener('keydown', (e) => {
+      const isTyping = document.activeElement.tagName === 'INPUT' || 
+                       document.activeElement.tagName === 'TEXTAREA';
+      
+      if (e.altKey && !e.shiftKey && !e.ctrlKey) {
+        if (e.key === 'n' || e.key === 'N') {
+          e.preventDefault();
+          if (!activeTest) {
+            testNameInput.focus();
+          }
+        }
+        
+        if (e.key === 'q' || e.key === 'Q') {
+          e.preventDefault();
+          questionInput.focus();
+        }
+        
+        if (['1', '2', '3', '4'].includes(e.key)) {
+          e.preventDefault();
+          const optionIndex = parseInt(e.key) - 1;
+          const options = optionsContainer.querySelectorAll('.option input[type="text"]');
+          if (options[optionIndex]) {
+            options[optionIndex].focus();
+          }
+        }
+      }
+      
+      if (e.ctrlKey && e.altKey && !e.shiftKey) {
+        if (['1', '2', '3', '4'].includes(e.key)) {
+          e.preventDefault();
+          const optionIndex = parseInt(e.key) - 1;
+          const radios = optionsContainer.querySelectorAll('.option input[type="radio"]');
+          if (radios[optionIndex]) {
+            radios[optionIndex].checked = true;
+            updatePreview();
+            showShortcutFeedback(`Variant ${e.key} to'g'ri javob sifatida belgilandi`);
+          }
+        }
+      }
+      
+      if (e.altKey && (e.key === 's' || e.key === 'S')) {
+        e.preventDefault();
+        quizForm.dispatchEvent(new Event('submit'));
+      }
+    });
+    
+    function showShortcutFeedback(message) {
+      const feedback = document.createElement('div');
+      feedback.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: rgba(69, 96, 229, 0.9);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 6px;
+        font-size: 14px;
+        z-index: 1000;
+        animation: fadeInOut 2s ease-out;
+      `;
+      feedback.textContent = message;
+      document.body.appendChild(feedback);
+      
+      setTimeout(() => {
+        feedback.remove();
+      }, 2000);
     }
   </script>
 </body>
