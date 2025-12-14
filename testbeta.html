@@ -997,7 +997,7 @@
         radioInput.value = optionIndex;
         const textInput = document.createElement('input');
         textInput.type = 'text';
-        textInput.placeholder = `Variant ${optionIndex + 1} (Alt+${optionIndex + 1} - fokus, Ctrl+Alt+${optionIndex + 1} - to'g'ri)`;
+        textInput.placeholder = `Variant ${optionIndex + 1} (Alt+${optionIndex + 1})`;
         textInput.required = true;
         optionDiv.appendChild(radioInput);
         optionDiv.appendChild(textInput);
@@ -1014,7 +1014,7 @@
         const radio = option.querySelector('input[type="radio"]');
         radio.value = index;
         const textInput = option.querySelector('input[type="text"]');
-        textInput.placeholder = `Variant ${index + 1} (Alt+${index + 1} - fokus, Ctrl+Alt+${index + 1} - to'g'ri)`;
+        textInput.placeholder = `Variant ${index + 1} (Alt+${index + 1})`;
       });
     }
 
