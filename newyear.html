@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yangi Yil Qor Effekti</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: transparent;
+            min-height: 100vh;
+            overflow: hidden;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        /* Cursor trail effect */
+        .cursor-item {
+            position: fixed;
+            pointer-events: none;
+            font-size: 16px;
+            z-index: 9999;
+            animation: cursor-fall 2s ease-out forwards;
+        }
+
+        @keyframes cursor-fall {
+            0% {
+                opacity: 0;
+                transform: translateY(-5px) scale(0.5);
+            }
+            10% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(80px) translateX(var(--drift)) rotate(var(--rotation)) scale(0.3);
+            }
+        }
+
+        .snow-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
+            overflow: hidden;
+        }
+
+        .snowflake {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+            text-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(var(--fall-distance)) translateX(var(--drift)) rotate(var(--rotation));
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="snow-container" id="snowContainer"></div>
+
+    <script>
+        const snowContainer = document.getElementById('snowContainer');
+        const maxSnowflakes = 20;
+        let activeSnowflakes = 0;
+        
+        // Cursor trail - JUDA KAM
+        let lastCursorMove = 0;
+        let cursorItemCount = 0;
+        const maxCursorItems = 5; // Maksimal 5 ta
+        let mouseX = 0, mouseY = 0;
+        let lastX = 0, lastY = 0;
+        
+        // Faqat 3 xil element
+        const items = ['❄️', '🎁', '⭐'];
+        
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            const now = Date.now();
+            const distance = Math.sqrt(Math.pow(mouseX - lastX, 2) + Math.pow(mouseY - lastY, 2));
+            
+            // JUDA SEKIN - faqat tez harakatda chiqadi
+            if (distance < 50) return; // Sekin harakatda UMUMAN chiqmaydi
+            if (now - lastCursorMove < 400) return; // 400ms interval
+            if (cursorItemCount >= maxCursorItems) return;
+            if (Math.random() > 0.3) return; // 30% ehtimol
+            
+            lastCursorMove = now;
+            lastX = mouseX;
+            lastY = mouseY;
+            
+            const cursorItem = document.createElement('div');
+            cursorItem.className = 'cursor-item';
+            
+            // Random element
+            cursorItem.textContent = items[Math.floor(Math.random() * items.length)];
+            
+            // Pozitsiya
+            cursorItem.style.left = mouseX + 'px';
+            cursorItem.style.top = mouseY + 'px';
+            
+            // Random drift
+            const drift = (Math.random() - 0.5) * 40;
+            cursorItem.style.setProperty('--drift', drift + 'px');
+            
+            // Random aylanish
+            const rotation = Math.random() * 360 - 180;
+            cursorItem.style.setProperty('--rotation', rotation + 'deg');
+            
+            document.body.appendChild(cursorItem);
+            cursorItemCount++;
+            
+            setTimeout(() => {
+                if (cursorItem.parentNode) {
+                    cursorItem.remove();
+                    cursorItemCount--;
+                }
+            }, 2000);
+        });
+
+        function createSnowflake() {
+            if (activeSnowflakes >= maxSnowflakes) return;
+            
+            const snowflake = document.createElement('div');
+            snowflake.className = 'snowflake';
+            snowflake.textContent = '❄';
+            
+            const size = Math.random() * 6 + 10;
+            snowflake.style.fontSize = size + 'px';
+            
+            const startX = Math.random() * window.innerWidth;
+            snowflake.style.left = startX + 'px';
+            snowflake.style.top = '-20px';
+            
+            const driftDirection = Math.random() > 0.5 ? 1 : -1;
+            const driftAmount = (Math.random() * 60 + 30) * driftDirection;
+            snowflake.style.setProperty('--drift', driftAmount + 'px');
+            
+            const rotation = Math.random() * 360 + 180;
+            snowflake.style.setProperty('--rotation', rotation + 'deg');
+            
+            const meltPoint = Math.random() * 30 + 70;
+            const fallDistance = (window.innerHeight * meltPoint / 100) + 20;
+            snowflake.style.setProperty('--fall-distance', fallDistance + 'px');
+            
+            const duration = Math.random() * 8 + 12;
+            snowflake.style.animationDuration = duration + 's';
+            
+            const delay = Math.random() * 2;
+            snowflake.style.animationDelay = delay + 's';
+            
+            snowContainer.appendChild(snowflake);
+            activeSnowflakes++;
+            
+            setTimeout(() => {
+                if (snowflake.parentNode) {
+                    snowflake.remove();
+                    activeSnowflakes--;
+                }
+            }, (duration + delay) * 1000);
+        }
+
+        function snowLoop() {
+            if (activeSnowflakes < maxSnowflakes && Math.random() > 0.4) {
+                createSnowflake();
+            }
+        }
+
+        setInterval(snowLoop, 1000);
+
+        setTimeout(() => {
+            for (let i = 0; i < 6; i++) {
+                setTimeout(createSnowflake, i * 400);
+            }
+        }, 500);
+    </script>
+</body>
+</html>
