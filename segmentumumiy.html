@@ -955,13 +955,17 @@
     }
 
     // ANSWER formatini standartlashtirish
+    // ANSWER formatini standartlashtirish (ko'p turdagi variantlarni qo'llab-quvvatlash)
     function normalizeAnswer(answerLine) {
-        // ANSWER, JAVOB va boshqa variantlarni aniqlash
-        const match = answerLine.match(/(ANSWER|JAVOB|answer|javob)[:\.\s]*([A-Da-d])/i);
+        // Turli imlo va formatdagi javob iboralarini aniqlash
+        const match = answerLine.match(
+            /(ans|answer|ansver|javob|to['‘]?g['‘]?ri\s+javob|togri\s+javob|t['‘]?o['‘]?g['‘]?ri\s+javob)[\s:]*([A-Da-d])/i
+        );
+        
         if (match) {
             return 'ANSWER: ' + match[2].toUpperCase();
         }
-        return answerLine;
+        return answerLine; // Agar mos kelmasa, o'zgartirmasdan qaytaradi
     }
 
     // Faylni qayta ishlash funksiyasi
@@ -1382,3 +1386,4 @@
 </script>
 </body>
 </html>
+
