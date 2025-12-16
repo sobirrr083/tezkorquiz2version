@@ -1084,9 +1084,9 @@
                     }
                     continue;
                 }
-
-                // Javob qatorini aniqlash (har xil formatlar)
-                if (/^(ANSWER|JAVOB|answer|javob)[:\.\s]/i.test(line)) {
+                
+                // Javob qatorini aniqlash (barcha mumkin bo'lgan formatlar uchun kengaytirilgan)
+                if (/(ans|answer|ansver|javob|to['‘]?g['‘]?ri\s+javob|togri\s+javob|t['‘]?o['‘]?g['‘]?ri\s+javob)[\s:]*[A-Da-d]/i.test(line)) {
                     if (currentTest) {
                         const originalAnswer = line;
                         const normalizedAnswer = normalizeAnswer(line);
@@ -1386,4 +1386,5 @@
 </script>
 </body>
 </html>
+
 
