@@ -1421,15 +1421,15 @@
         }
 
         /* Qor parchalari */
-        .snowflake {
-            position: absolute;
-            color: rgba(255, 255, 255, 0.85);
-            font-size: 14px;
-            text-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
-            animation: fall linear forwards;
-            will-change: transform, opacity;
+        .cursor-snowflake {
+            position: fixed;
+            pointer-events: none;
+            font-size: 20px;
+            z-index: 9998;
+            animation: cursor-fall 2.5s ease-out forwards;
+            color: rgba(255, 255, 255, 0.95);  /* ← Yangi: oq rang */
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));  /* ← O'zgardi */
         }
-
         /* Qor tushish animatsiyasi */
         @keyframes fall {
             0% {
@@ -2346,6 +2346,7 @@
     </script>
 </body>
 </html>
+
 
 
 
