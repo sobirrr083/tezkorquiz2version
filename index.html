@@ -1405,8 +1405,85 @@
             }
         }
     </style>
+
+    <!-- qor effectlari kodlari -->
+    <style>
+        /* Qor konteyner */
+        .snow-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            overflow: hidden;
+        }
+
+        /* Qor parchalari */
+        .snowflake {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 14px;
+            text-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
+            animation: fall linear forwards;
+            will-change: transform, opacity;
+        }
+
+        /* Qor tushish animatsiyasi */
+        @keyframes fall {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            60% {
+                opacity: 0.9;
+            }
+            80% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(var(--fall-distance)) translateX(var(--drift)) rotate(var(--rotation));
+                opacity: 0;
+            }
+        }
+
+        /* Cursor qor effekti */
+        .cursor-snowflake {
+            position: fixed;
+            pointer-events: none;
+            font-size: 20px;
+            z-index: 9998;
+            animation: cursor-fall 2.5s ease-out forwards;
+            filter: drop-shadow(0 0 8px currentColor);
+        }
+
+        @keyframes cursor-fall {
+            0% {
+                opacity: 0;
+                transform: translateY(-10px) translateX(0) rotate(0deg) scale(0.3);
+            }
+            15% {
+                opacity: 1;
+                transform: translateY(0) translateX(0) rotate(45deg) scale(1.1);
+            }
+            85% {
+                opacity: 0.9;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(120px) translateX(var(--cursor-drift)) rotate(var(--rotation)) scale(0.2);
+            }
+        }
+    </style>
 </head>
 <body>
+    <!-- Qor konteyner -->
+    <div class="snow-container" id="snowContainer"></div>
+
     <!-- Ikkinchi HTML (Navbar) -->
     <div class="section-two">
         <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNavbar">
@@ -1735,6 +1812,142 @@
             </div>
         </footer>
     </div>
+<!-- qor effecti kodlari javascriptlar boshlandi-->
+     <script>
+        const snowContainer = document.getElementById('snowContainer');
+        const maxSnowflakes = 25;
+        let activeSnowflakes = 0;
+        
+        // Cursor qor effekti
+        let lastCursorMove = 0;
+        let cursorSnowCount = 0;
+        const maxCursorSnow = 20;
+        let mouseX = 0, mouseY = 0;
+        let lastX = 0, lastY = 0;
+        
+        // Qor shakllari
+        const snowShapes = ['❄', '❅', '❆', '✻'];
+        
+        // Cursor harakati
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            const now = Date.now();
+            const distance = Math.sqrt(Math.pow(mouseX - lastX, 2) + Math.pow(mouseY - lastY, 2));
+            
+            let minInterval = 60;
+            let spawnCount;
+            
+            if (distance > 80) {
+                spawnCount = 2;
+            } else if (distance > 40) {
+                spawnCount = Math.random() > 0.5 ? 2 : 1;
+            } else {
+                spawnCount = 1;
+            }
+            
+            if (now - lastCursorMove < minInterval) return;
+            if (cursorSnowCount >= maxCursorSnow) return;
+            
+            lastCursorMove = now;
+            lastX = mouseX;
+            lastY = mouseY;
+            
+            for (let i = 0; i < spawnCount; i++) {
+                if (cursorSnowCount >= maxCursorSnow) break;
+                
+                setTimeout(() => {
+                    const cursorSnow = document.createElement('div');
+                    cursorSnow.className = 'cursor-snowflake';
+                    cursorSnow.textContent = snowShapes[Math.floor(Math.random() * snowShapes.length)];
+                    
+                    const offsetX = (Math.random() - 0.5) * 20;
+                    const offsetY = (Math.random() - 0.5) * 20;
+                    cursorSnow.style.left = (mouseX + offsetX) + 'px';
+                    cursorSnow.style.top = (mouseY + offsetY) + 'px';
+                    cursorSnow.style.fontSize = (Math.random() * 8 + 16) + 'px';
+                    
+                    const drift = (Math.random() - 0.5) * 60;
+                    cursorSnow.style.setProperty('--cursor-drift', drift + 'px');
+                    
+                    const rotation = Math.random() * 720 - 360;
+                    cursorSnow.style.setProperty('--rotation', rotation + 'deg');
+                    
+                    document.body.appendChild(cursorSnow);
+                    cursorSnowCount++;
+                    
+                    setTimeout(() => {
+                        if (cursorSnow.parentNode) {
+                            cursorSnow.remove();
+                            cursorSnowCount--;
+                        }
+                    }, 2500);
+                }, i * 30);
+            }
+        });
+
+        // Qor yaratish funksiyasi
+        function createSnowflake() {
+            if (activeSnowflakes >= maxSnowflakes) return;
+            
+            const snowflake = document.createElement('div');
+            snowflake.className = 'snowflake';
+            snowflake.textContent = snowShapes[Math.floor(Math.random() * snowShapes.length)];
+            
+            const size = Math.random() * 6 + 10;
+            snowflake.style.fontSize = size + 'px';
+            
+            const startX = Math.random() * window.innerWidth;
+            snowflake.style.left = startX + 'px';
+            snowflake.style.top = '-20px';
+            
+            const driftDirection = Math.random() > 0.5 ? 1 : -1;
+            const driftAmount = (Math.random() * 80 + 40) * driftDirection;
+            snowflake.style.setProperty('--drift', driftAmount + 'px');
+            
+            const rotation = Math.random() * 360 + 180;
+            snowflake.style.setProperty('--rotation', rotation + 'deg');
+            
+            const meltPoint = Math.random() * 40 + 60;
+            const fallDistance = (window.innerHeight * meltPoint / 100) + 20;
+            snowflake.style.setProperty('--fall-distance', fallDistance + 'px');
+            
+            const duration = Math.random() * 8 + 12;
+            snowflake.style.animationDuration = duration + 's';
+            
+            const delay = Math.random() * 2;
+            snowflake.style.animationDelay = delay + 's';
+            
+            snowContainer.appendChild(snowflake);
+            activeSnowflakes++;
+            
+            setTimeout(() => {
+                if (snowflake.parentNode) {
+                    snowflake.remove();
+                    activeSnowflakes--;
+                }
+            }, (duration + delay) * 1000);
+        }
+
+        // Qorni muntazam yaratish
+        function snowLoop() {
+            if (activeSnowflakes < maxSnowflakes && Math.random() > 0.3) {
+                createSnowflake();
+            }
+        }
+
+        setInterval(snowLoop, 800);
+
+        // Dastlabki qorlar
+        setTimeout(() => {
+            for (let i = 0; i < 8; i++) {
+                setTimeout(createSnowflake, i * 300);
+            }
+        }, 500);
+    </script>
+
+<!-- qor effecti kodlari javascriptlar tugadi -->
 
     <!-- google analiz kodi -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-6HJZ457YMB"></script>
@@ -2133,6 +2346,7 @@
     </script>
 </body>
 </html>
+
 
 
 
