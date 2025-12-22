@@ -197,16 +197,15 @@
             font-size: 1.8rem;
         }
 
-        /* Sovg'a Tugmasi - Yangi Yildan Keyin */
+        /* Sovg'a Tugmasi */
         .gift-button-container {
-            display: none;
             text-align: center;
             margin: 50px 0;
             animation: fadeInUp 2s ease-out;
         }
 
         .gift-button {
-            background: linear-gradient(145deg, #ff4757, #e84118);
+            background: linear-gradient(145deg, #4460ef, #3651d9);
             border: none;
             padding: 25px 50px;
             font-size: 1.5rem;
@@ -214,7 +213,7 @@
             color: white;
             border-radius: 50px;
             cursor: pointer;
-            box-shadow: 0 20px 60px rgba(255, 71, 87, 0.4);
+            box-shadow: 0 20px 60px rgba(68, 96, 239, 0.4);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             overflow: hidden;
@@ -243,7 +242,7 @@
 
         .gift-button:hover {
             transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 30px 80px rgba(255, 71, 87, 0.6);
+            box-shadow: 0 30px 80px rgba(68, 96, 239, 0.6);
         }
 
         .gift-button:active {
@@ -598,116 +597,6 @@
             background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.1));
             filter: blur(10px);
         }
-
-        @media (max-width: 768px) {
-            .greeting h1 {
-                font-size: 2.5rem;
-            }
-
-            .greeting p {
-                font-size: 1.1rem;
-            }
-
-            .countdown-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
-            }
-
-            .countdown-item {
-                min-width: 70px;
-                padding: 15px 10px;
-            }
-
-            .countdown-number {
-                font-size: 2rem;
-            }
-
-            .countdown-label {
-                font-size: 0.8rem;
-            }
-
-            .gift-button {
-                padding: 20px 40px;
-                font-size: 1.2rem;
-            }
-
-            .gift-button-icon {
-                font-size: 1.5rem;
-            }
-
-            .modal-content {
-                padding: 45px 30px;
-            }
-
-            .modal-title {
-                font-size: 1.7rem;
-            }
-
-            .modal-text {
-                font-size: 1.1rem;
-                padding: 0 10px;
-            }
-
-            .modal-main-icon {
-                font-size: 4.5rem;
-            }
-
-            .trees-container {
-                height: 300px;
-                max-width: 300px;
-            }
-
-            .layer-1 {
-                border-width: 0 40px 60px 40px;
-            }
-
-            .layer-2 {
-                border-width: 0 60px 80px 60px;
-            }
-
-            .layer-3 {
-                border-width: 0 80px 100px 80px;
-            }
-
-            .audio-control {
-                width: 50px;
-                height: 50px;
-                bottom: 20px;
-                right: 20px;
-            }
-
-            .audio-icon {
-                font-size: 1.5rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .greeting h1 {
-                font-size: 2rem;
-            }
-
-            .greeting p {
-                font-size: 1rem;
-            }
-
-            .countdown-number {
-                font-size: 1.8rem;
-            }
-
-            .trees-container {
-                height: 250px;
-                max-width: 250px;
-            }
-
-            .gift-button {
-                padding: 18px 35px;
-                font-size: 1.1rem;
-            }
-
-            .modal-content {
-                padding: 40px 25px;
-            }
-        }
     </style>
 </head>
 <body>
@@ -757,7 +646,7 @@
             <p id="mainSubtitle">Bayram kuni yaqinlashmoqda...</p>
         </div>
 
-        <!-- Sovg'a Tugmasi (Yangi Yildan Keyin) -->
+        <!-- Sovg'a Tugmasi -->
         <div class="gift-button-container" id="giftButtonContainer">
             <button class="gift-button" id="openGiftBtn">
                 <span class="gift-button-icon">🎁</span>
@@ -776,44 +665,7 @@
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Modal -->
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal-content">
-            <button class="modal-close" id="modalClose">×</button>
-            
-            <div class="modal-decorations">
-                <div class="modal-icon" style="top: 10%; left: 5%;">🎄</div>
-                <div class="modal-icon" style="top: 20%; right: 5%;">⭐</div>
-                <div class="modal-icon" style="bottom: 15%; left: 10%;">🎁</div>
-                <div class="modal-icon" style="bottom: 20%; right: 8%;">❄️</div>
-                <div class="modal-icon" style="top: 50%; left: 3%;">✨</div>
-                <div class="modal-icon" style="top: 60%; right: 3%;">🎉</div>
-            </div>
-            
-            <div class="modal-header">
-                <div class="modal-main-icon" id="modalMainIcon">🎁</div>
-                <h2 class="modal-title">Yangi Yil Tabrigi</h2>
-                <p class="modal-subtitle">2026-yil Muborak Bo'lsin!</p>
-            </div>
-            
-            <div class="modal-body">
-                <p class="modal-text" id="modalText"></p>
-            </div>
-            
-            <div class="modal-sparkles">
-                <span class="sparkle">✨</span>
-                <span class="sparkle">🎊</span>
-                <span class="sparkle">💫</span>
-                <span class="sparkle">⭐</span>
-                <span class="sparkle">🌟</span>
-            </div>
-            
-            <div class="modal-footer">
-                <p class="modal-signature">Chin dildan samimiy tabriklar! 💝</p>
-            </div>
-        </div>
     </div>
 
     <script>
@@ -897,10 +749,20 @@
             
             const randomIndex = Math.floor(Math.random() * bgMusics.length);
             currentBgMusic = bgMusics[randomIndex];
-            currentBgMusic.play().catch(e => console.log('Audio play failed:', e));
-            isMusicPlaying = true;
-            audioControl.innerHTML = '<span class="audio-icon">🔊</span>';
-            audioControl.classList.add('playing');
+            
+            currentBgMusic.play().then(() => {
+                isMusicPlaying = true;
+                audioControl.innerHTML = '<span class="audio-icon">🔊</span>';
+                audioControl.classList.add('playing');
+            }).catch(e => {
+                console.log('Audio play failed:', e);
+                isMusicPlaying = false;
+            });
+        }
+
+        // Sahifa yuklanganda musiqani avtomatik boshlash
+        function startAutoMusic() {
+            playRandomMusic();
         }
 
         // Audio control
@@ -916,14 +778,6 @@
                 playRandomMusic();
             }
         });
-
-        // Auto-play music on first interaction
-        document.addEventListener('click', function playOnFirstClick() {
-            if (!isMusicPlaying) {
-                playRandomMusic();
-            }
-            document.removeEventListener('click', playOnFirstClick);
-        }, { once: true });
 
         // Musiqa tugaganda yangi random musiqa
         bgMusics.forEach(music => {
@@ -947,42 +801,10 @@
                 const randomGreeting = greetings[randomIndex];
                 const randomIcon = icons[Math.floor(Math.random() * icons.length)];
                 
-                openModal(randomGreeting, randomIcon);
+                // Alert orqali ko'rsatish
+                alert(`${randomIcon}\n\n${randomGreeting}\n\nChin dildan samimiy tabriklar! 💝`);
             });
         }
-
-        // Modalni ochish
-        function openModal(text, icon) {
-            const modal = document.getElementById('modalOverlay');
-            const modalText = document.getElementById('modalText');
-            const modalIcon = document.getElementById('modalMainIcon');
-            
-            modalText.textContent = text;
-            modalIcon.textContent = icon;
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        // Modalni yopish
-        function closeModal() {
-            const modal = document.getElementById('modalOverlay');
-            modal.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-
-        document.getElementById('modalClose').addEventListener('click', closeModal);
-        document.getElementById('modalOverlay').addEventListener('click', (e) => {
-            if (e.target.id === 'modalOverlay') {
-                closeModal();
-            }
-        });
-
-        // Escape tugmasi bilan yopish
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeModal();
-            }
-        });
 
         // Yulduzlarni yaratish
         function createStars() {
@@ -1156,8 +978,11 @@
                 document.getElementById('mainTitle').textContent = '🎉 Yangi Yil 2026 Muborak! 🎉';
                 document.getElementById('mainSubtitle').textContent = 'Baxtli va muvaffaqiyatli yil bo\'lsin!';
                 
-                // Sovg'a tugmasini ko'rsatish
-                document.getElementById('giftButtonContainer').style.display = 'block';
+                // Sovg'a tugmasi matnini o'zgartirish
+                document.getElementById('openGiftBtn').innerHTML = `
+                    <span class="gift-button-icon">🎁</span>
+                    <span class="gift-button-text">Tabrik Xatini Och</span>
+                `;
                 
                 // Yangi yil ovozini ijro etish
                 newyearSound.play().catch(e => console.log('Newyear sound failed:', e));
@@ -1227,6 +1052,11 @@
             
             // Boshlang'ich salyut
             fireworkInterval = setInterval(createFirework, 2000);
+            
+            // Musiqani avtomatik boshlash (3 soniyadan keyin)
+            setTimeout(() => {
+                startAutoMusic();
+            }, 1500);
         });
 
         window.addEventListener('resize', () => {
