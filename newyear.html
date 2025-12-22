@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yangi Yil Qor Effekti</title>
+    <title>Yangi Yil 2026 Muborak!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -12,192 +15,1227 @@
         }
 
         body {
-            background: transparent;
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            background: linear-gradient(180deg, #0a1628 0%, #1a2642 40%, #2d3561 100%);
             min-height: 100vh;
-            overflow: hidden;
-            font-family: 'Segoe UI', system-ui, sans-serif;
+            position: relative;
         }
 
-        /* Cursor trail effect */
-        .cursor-item {
+        .stars {
             position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70%;
+            z-index: 1;
             pointer-events: none;
-            font-size: 16px;
-            z-index: 9999;
-            animation: cursor-fall 2s ease-out forwards;
         }
 
-        @keyframes cursor-fall {
-            0% {
-                opacity: 0;
-                transform: translateY(-5px) scale(0.5);
-            }
-            10% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(80px) translateX(var(--drift)) rotate(var(--rotation)) scale(0.3);
-            }
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
         }
 
-        .snow-container {
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        #snowCanvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            z-index: 2;
             pointer-events: none;
-            z-index: 100;
+        }
+
+        #fireworksCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .container {
+            position: relative;
+            z-index: 4;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .countdown {
+            margin-bottom: 40px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .countdown-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .countdown-item {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 20px 15px;
+            text-align: center;
+            min-width: 80px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .countdown-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #fff;
+            display: block;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .countdown-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 5px;
+        }
+
+        .greeting {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeInUp 1.5s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .greeting h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5),
+                         0 0 40px rgba(255, 215, 0, 0.3);
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .greeting p {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        /* Audio Control */
+        .audio-control {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .audio-control:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 12px 48px rgba(255, 215, 0, 0.3);
+        }
+
+        .audio-control.playing {
+            animation: audioPulse 1.5s infinite;
+        }
+
+        @keyframes audioPulse {
+            0%, 100% { box-shadow: 0 8px 32px rgba(255, 215, 0, 0.3); }
+            50% { box-shadow: 0 8px 48px rgba(255, 215, 0, 0.6); }
+        }
+
+        .audio-icon {
+            font-size: 1.8rem;
+        }
+
+        /* Sovg'a Tugmasi - Yangi Yildan Keyin */
+        .gift-button-container {
+            display: none;
+            text-align: center;
+            margin: 50px 0;
+            animation: fadeInUp 2s ease-out;
+        }
+
+        .gift-button {
+            background: linear-gradient(145deg, #ff4757, #e84118);
+            border: none;
+            padding: 25px 50px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 20px 60px rgba(255, 71, 87, 0.4);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .gift-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .gift-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .gift-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 30px 80px rgba(255, 71, 87, 0.6);
+        }
+
+        .gift-button:active {
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        .gift-button-icon {
+            font-size: 2rem;
+            animation: giftBounce 2s infinite;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes giftBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .gift-button-text {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(15px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            position: relative;
+            background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
+            border-radius: 30px;
+            max-width: 650px;
+            width: 100%;
+            padding: 60px 50px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
+            animation: modalSlideIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             overflow: hidden;
         }
 
-        .snowflake {
-            position: absolute;
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 14px;
-            text-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
-            animation: fall linear forwards;
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.5) translateY(100px) rotate(-5deg);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0) rotate(0deg);
+            }
         }
 
-        @keyframes fall {
+        .modal-decorations {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .modal-icon {
+            position: absolute;
+            font-size: 2.5rem;
+            opacity: 0.08;
+            animation: floatIcon 4s infinite ease-in-out;
+        }
+
+        @keyframes floatIcon {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(15deg); }
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .modal-main-icon {
+            font-size: 6rem;
+            animation: rotateScale 1s ease-out;
+            display: inline-block;
+            margin-bottom: 25px;
+            filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.2));
+        }
+
+        @keyframes rotateScale {
             0% {
-                transform: translateY(0) translateX(0) rotate(0deg);
+                transform: scale(0) rotate(-180deg);
                 opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 0.3;
             }
             100% {
-                transform: translateY(var(--fall-distance)) translateX(var(--drift)) rotate(var(--rotation));
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        .modal-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #2d3561, #4a5f9d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            animation: slideInFromTop 0.6s ease-out;
+        }
+
+        @keyframes slideInFromTop {
+            from {
                 opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-subtitle {
+            font-size: 1.1rem;
+            color: #888;
+            font-weight: 600;
+            animation: slideInFromTop 0.8s ease-out;
+        }
+
+        .modal-body {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .modal-text {
+            font-size: 1.35rem;
+            line-height: 2;
+            color: #2d3561;
+            font-weight: 600;
+            animation: fadeInUp 1s ease-out;
+            padding: 0 20px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .modal-sparkles {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+
+        .sparkle {
+            font-size: 2.5rem;
+            animation: sparkle 1.5s infinite;
+            display: inline-block;
+            filter: drop-shadow(0 5px 15px rgba(255, 215, 0, 0.3));
+        }
+
+        .sparkle:nth-child(1) { animation-delay: 0s; }
+        .sparkle:nth-child(2) { animation-delay: 0.3s; }
+        .sparkle:nth-child(3) { animation-delay: 0.6s; }
+        .sparkle:nth-child(4) { animation-delay: 0.9s; }
+        .sparkle:nth-child(5) { animation-delay: 1.2s; }
+
+        @keyframes sparkle {
+            0%, 100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.5) rotate(180deg);
+                opacity: 0.6;
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: white;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.4);
+            z-index: 10;
+            font-weight: 300;
+        }
+
+        .modal-close:hover {
+            transform: rotate(90deg) scale(1.15);
+            box-shadow: 0 12px 35px rgba(255, 107, 107, 0.6);
+        }
+
+        .modal-footer {
+            text-align: center;
+            margin-top: 35px;
+            padding-top: 25px;
+            border-top: 2px solid rgba(0, 0, 0, 0.08);
+        }
+
+        .modal-signature {
+            font-size: 1.1rem;
+            color: #888;
+            font-style: italic;
+            font-weight: 500;
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        .trees-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            height: 400px;
+            margin-bottom: 50px;
+        }
+
+        .tree-main {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            animation: treeAppear 2s ease-out;
+        }
+
+        @keyframes treeAppear {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.5);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        .tree {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .tree-layer {
+            width: 0;
+            height: 0;
+            border-style: solid;
+            margin: -15px 0;
+        }
+
+        .layer-1 {
+            border-width: 0 60px 80px 60px;
+            border-color: transparent transparent #1a5f3f transparent;
+        }
+
+        .layer-2 {
+            border-width: 0 80px 100px 80px;
+            border-color: transparent transparent #237a50 transparent;
+        }
+
+        .layer-3 {
+            border-width: 0 100px 120px 100px;
+            border-color: transparent transparent #2d9561 transparent;
+        }
+
+        .trunk {
+            width: 30px;
+            height: 50px;
+            background: #5c4033;
+            border-radius: 5px;
+            margin-top: -10px;
+        }
+
+        .tree-star {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            color: #ffd700;
+            animation: starPulse 2s infinite;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+        }
+
+        @keyframes starPulse {
+            0%, 100% { transform: translateX(-50%) scale(1); opacity: 1; }
+            50% { transform: translateX(-50%) scale(1.3); opacity: 0.8; }
+        }
+
+        .tree-light {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            box-shadow: 0 0 10px currentColor;
+            animation: lightGlow 1.5s infinite alternate;
+        }
+
+        @keyframes lightGlow {
+            from { opacity: 0.6; }
+            to { opacity: 1; }
+        }
+
+        .light-red { color: #ff4444; background: #ff4444; }
+        .light-blue { color: #4444ff; background: #4444ff; animation-delay: 0.5s; }
+        .light-gold { color: #ffd700; background: #ffd700; animation-delay: 1s; }
+        .light-purple { color: #ff44ff; background: #ff44ff; animation-delay: 1.5s; }
+
+        .ground {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.3) 100%);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .ground::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.1));
+            filter: blur(10px);
+        }
+
+        @media (max-width: 768px) {
+            .greeting h1 {
+                font-size: 2.5rem;
+            }
+
+            .greeting p {
+                font-size: 1.1rem;
+            }
+
+            .countdown-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .countdown-item {
+                min-width: 70px;
+                padding: 15px 10px;
+            }
+
+            .countdown-number {
+                font-size: 2rem;
+            }
+
+            .countdown-label {
+                font-size: 0.8rem;
+            }
+
+            .gift-button {
+                padding: 20px 40px;
+                font-size: 1.2rem;
+            }
+
+            .gift-button-icon {
+                font-size: 1.5rem;
+            }
+
+            .modal-content {
+                padding: 45px 30px;
+            }
+
+            .modal-title {
+                font-size: 1.7rem;
+            }
+
+            .modal-text {
+                font-size: 1.1rem;
+                padding: 0 10px;
+            }
+
+            .modal-main-icon {
+                font-size: 4.5rem;
+            }
+
+            .trees-container {
+                height: 300px;
+                max-width: 300px;
+            }
+
+            .layer-1 {
+                border-width: 0 40px 60px 40px;
+            }
+
+            .layer-2 {
+                border-width: 0 60px 80px 60px;
+            }
+
+            .layer-3 {
+                border-width: 0 80px 100px 80px;
+            }
+
+            .audio-control {
+                width: 50px;
+                height: 50px;
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .audio-icon {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .greeting h1 {
+                font-size: 2rem;
+            }
+
+            .greeting p {
+                font-size: 1rem;
+            }
+
+            .countdown-number {
+                font-size: 1.8rem;
+            }
+
+            .trees-container {
+                height: 250px;
+                max-width: 250px;
+            }
+
+            .gift-button {
+                padding: 18px 35px;
+                font-size: 1.1rem;
+            }
+
+            .modal-content {
+                padding: 40px 25px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="snow-container" id="snowContainer"></div>
+    <div class="stars" id="starsContainer"></div>
+    <canvas id="snowCanvas"></canvas>
+    <canvas id="fireworksCanvas"></canvas>
+    <div class="ground"></div>
+
+    <!-- Audio Control -->
+    <div class="audio-control" id="audioControl">
+        <span class="audio-icon">🔊</span>
+    </div>
+
+    <!-- Audio Elements -->
+    <audio id="bgMusic1" loop><source src="newyearmusic/newy.mp3" type="audio/mpeg"></audio>
+    <audio id="bgMusic2" loop><source src="newyearmusic/newy2.mp3" type="audio/mpeg"></audio>
+    <audio id="bgMusic3" loop><source src="newyearmusic/newy3.mp3" type="audio/mpeg"></audio>
+    <audio id="bgMusic4" loop><source src="newyearmusic/newy4.mp3" type="audio/mpeg"></audio>
+    <audio id="bgMusic5" loop><source src="newyearmusic/newy5.mp3" type="audio/mpeg"></audio>
+    <audio id="giftSound"><source src="newyearmusic/newy2.mp3" type="audio/mpeg"></audio>
+    <audio id="newyearSound"><source src="newyearmusic/newy3.mp3" type="audio/mpeg"></audio>
+
+    <div class="container">
+        <div class="countdown" id="countdownContainer">
+            <div class="countdown-grid">
+                <div class="countdown-item">
+                    <span class="countdown-number" id="days">00</span>
+                    <span class="countdown-label">Kun</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="hours">00</span>
+                    <span class="countdown-label">Soat</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="minutes">00</span>
+                    <span class="countdown-label">Daqiqa</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="seconds">00</span>
+                    <span class="countdown-label">Soniya</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="greeting" id="greetingContainer">
+            <h1 id="mainTitle">Yangi Yilga Oz Qoldi!</h1>
+            <p id="mainSubtitle">Bayram kuni yaqinlashmoqda...</p>
+        </div>
+
+        <!-- Sovg'a Tugmasi (Yangi Yildan Keyin) -->
+        <div class="gift-button-container" id="giftButtonContainer">
+            <button class="gift-button" id="openGiftBtn">
+                <span class="gift-button-icon">🎁</span>
+                <span class="gift-button-text">Sovg'ani Och</span>
+            </button>
+        </div>
+
+        <div class="trees-container">
+            <div class="tree-main" id="mainTree">
+                <div class="tree">
+                    <div class="tree-star">⭐</div>
+                    <div class="tree-layer layer-1"></div>
+                    <div class="tree-layer layer-2"></div>
+                    <div class="tree-layer layer-3"></div>
+                    <div class="trunk"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">×</button>
+            
+            <div class="modal-decorations">
+                <div class="modal-icon" style="top: 10%; left: 5%;">🎄</div>
+                <div class="modal-icon" style="top: 20%; right: 5%;">⭐</div>
+                <div class="modal-icon" style="bottom: 15%; left: 10%;">🎁</div>
+                <div class="modal-icon" style="bottom: 20%; right: 8%;">❄️</div>
+                <div class="modal-icon" style="top: 50%; left: 3%;">✨</div>
+                <div class="modal-icon" style="top: 60%; right: 3%;">🎉</div>
+            </div>
+            
+            <div class="modal-header">
+                <div class="modal-main-icon" id="modalMainIcon">🎁</div>
+                <h2 class="modal-title">Yangi Yil Tabrigi</h2>
+                <p class="modal-subtitle">2026-yil Muborak Bo'lsin!</p>
+            </div>
+            
+            <div class="modal-body">
+                <p class="modal-text" id="modalText"></p>
+            </div>
+            
+            <div class="modal-sparkles">
+                <span class="sparkle">✨</span>
+                <span class="sparkle">🎊</span>
+                <span class="sparkle">💫</span>
+                <span class="sparkle">⭐</span>
+                <span class="sparkle">🌟</span>
+            </div>
+            
+            <div class="modal-footer">
+                <p class="modal-signature">Chin dildan samimiy tabriklar! 💝</p>
+            </div>
+        </div>
+    </div>
 
     <script>
-        const snowContainer = document.getElementById('snowContainer');
-        const maxSnowflakes = 20;
-        let activeSnowflakes = 0;
-        
-        // Cursor trail - JUDA KAM
-        let lastCursorMove = 0;
-        let cursorItemCount = 0;
-        const maxCursorItems = 5; // Maksimal 5 ta
-        let mouseX = 0, mouseY = 0;
-        let lastX = 0, lastY = 0;
-        
-        // Faqat 3 xil element
-        const items = ['❄️', '🎁', '⭐'];
-        
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
+        // 50 ta O'zbekcha tabriklar
+        const greetings = [
+            "Yangi yilingiz muborak bo'lsin! Barcha orzu-umidlaringiz ro'yobga chiqsin! 🌟",
+            "Yangi yilda sizga baxt, sog'lik va farovonlik tilayman! 💖",
+            "2026-yil sizning barcha rejalaringiz muvaffaqiyatli amalga oshsin! 🎯",
+            "Yangi yilda sizga yangi yo'llar va yangi manzillar ochilsin! 🚀",
+            "Yangi yil sizga doimo olg'a intilish va rivojlanish yo'lini ko'rsatsin! 📈",
+            "2026-yil sizning hayotingizga ajoyib o'zgarishlar keltirsin! ✨",
+            "Yangi yilda sizga katta yutuqlar va muvaffaqiyatlar nasib etsin! 🏆",
+            "Yangi yil sizga issiq uy, mehribon oila va sodiq do'stlar bersin! 🏡",
+            "2026-yil sizning eng go'zal orzularingizni amalga oshirsin! 💫",
+            "Yangi yilda sizga hamma narsa xohlaganingizdek bo'lsin! 🎁",
+            "Yangi yil sizga yangi bosqichlar va yangi yutuqlar olib kelsin! 🌈",
+            "2026-yil sizning hayotingizni nurga to'ldirsin! Baxtli bo'ling! ☀️",
+            "Yangi yilda sizga saxovatli tabiat va mehrli insonlar yo'liqsin! 🌺",
+            "Yangi yil sizga baxt-saodat, oilangizga tinchlik bersin! 🕊️",
+            "2026-yil hayotingizga yangi ranglar va tabassum keltirsin! 🎨",
+            "Yangi yilda muvaffaqiyatlaringiz ko'payib, orzularingiz amalga oshsin! 🌠",
+            "Yangi yil bayramingiz qutlug' bo'lsin! Omad har doim yoningizda! 🍀",
+            "2026-yil sizning yilingiz bo'lsin! Barcha istagan narsalaringizga erishing! 💪",
+            "Yangi yilda sizga sevgi, mehr va samimiylik hamroh bo'lsin! ❤️",
+            "Yangi yil sizga kuch-quvvat va mardlik bersin! Baxtli bo'ling! 💎",
+            "2026-yil oilangizga farovonlik va tinchlik olib kelsin! 🌸",
+            "Yangi yilda barcha qiyin kunlar ortda qolsin, faqat yaxshi kunlar bo'lsin! 🌞",
+            "Yangi yil sizga yangi do'stlar va ajoyib tajribalar sovg'a qilsin! 🎪",
+            "2026-yil sizning eng yaxshi yilingiz bo'lsin! Baraka topasiz! 🎊",
+            "Yangi yilda sizga sog'lom tan, toza qalb va baxtli hayot tilayman! 💚",
+            "Yangi yil sizga ilm-fan va bilim yo'lida muvaffaqiyatlar keltirsin! 📚",
+            "2026-yil hayotingizga go'zal voqealar va yoqimli xotiralar to'ldirsin! 📸",
+            "Yangi yilda sizga katta muvaffaqiyatlar va yuqori cho'qqilar nasib etsin! ⛰️",
+            "Yangi yil sizga erkin nafas olish va baxtli yasash imkonini bersin! 🦋",
+            "2026-yil sizning orzularingizni haqiqatga aylantirsin! 🎭",
+            "Yangi yilda sizga mehr-muhabbat va samimiy munosabatlar yo'ldosh bo'lsin! 💞",
+            "Yangi yil sizga yangi g'oyalar va ijodiy muvaffaqiyatlar olib kelsin! 🎨",
+            "2026-yil hayotingizga yorug'lik va umid nurlarini sochsin! 🕯️",
+            "Yangi yilda sizga muvaffaqiyat zinapoyasining har bir pog'onasi oson bo'lsin! 🪜",
+            "Yangi yil sizga chin do'stlar va ishonchli hamkorlar sovg'a qilsin! 🤝",
+            "2026-yil sizning eng yaxshi xotiralaringizdan biri bo'lsin! 📖",
+            "Yangi yilda sizga omad har qadamda hamroh bo'lsin! 🎲",
+            "Yangi yil sizga baxt va farovonlik olib kelsin! Doimo tabassum qiling! 😊",
+            "2026-yil sizning hayotingizga yangi imkoniyatlar eshigini ochsin! 🚪",
+            "Yangi yilda sizga sog'lik, baxt va boylik tilayman! 💰",
+            "Yangi yil sizga sevgi to'la yurak va baxtli kunlar bersin! 💕",
+            "2026-yil hayotingizga yangi imkoniyatlar va muvaffaqiyatlar olib kelsin! 🎯",
+            "Yangi yil sizga quvonch va baxt ulashsin! Chin dildan tabriklayman! 🎉",
+            "Yangi yilda sog'lig'ingiz mustahkam, ishlaringiz omad bilan bo'lsin! 🏥",
+            "Yangi yil bayramingiz muborak! Oilangizga tinchlik va farovonlik tilayman! 👨‍👩‍👧‍👦",
+            "2026-yil sizga yangi yutuqlar va muvaffaqiyatlar keltirsin! 🥇",
+            "Yangi yilda barcha orzularingiz amalga oshsin! Baxtli bo'ling! 🎈",
+            "Yangi yil sizga ilhom va g'ayrat bersin! Muvaffaqiyatlar tilayman! 🔥",
+            "Yangi yilingiz nur va yorug'lik bilan to'lsin! Baxt va saodat tilayman! 💡",
+            "2026-yil hayotingizga go'zallik va quvonch olib kelsin! 🌹"
+        ];
+
+        const icons = ['🎁', '💝', '🎉', '🎊', '✨', '⭐', '🌟', '💫', '🎈', '🎀', '🎄', '❄️', '🔔', '🕊️', '💖'];
+
+        // Audio elements
+        const bgMusics = [
+            document.getElementById('bgMusic1'),
+            document.getElementById('bgMusic2'),
+            document.getElementById('bgMusic3'),
+            document.getElementById('bgMusic4'),
+            document.getElementById('bgMusic5')
+        ];
+        let currentBgMusic = null;
+        const giftSound = document.getElementById('giftSound');
+        const newyearSound = document.getElementById('newyearSound');
+        const audioControl = document.getElementById('audioControl');
+        let isMusicPlaying = false;
+        let isNewYear = false;
+
+        // Random musiqa tanlash va ijro etish
+        function playRandomMusic() {
+            if (currentBgMusic) {
+                currentBgMusic.pause();
+                currentBgMusic.currentTime = 0;
+            }
             
-            const now = Date.now();
-            const distance = Math.sqrt(Math.pow(mouseX - lastX, 2) + Math.pow(mouseY - lastY, 2));
-            
-            // JUDA SEKIN - faqat tez harakatda chiqadi
-            if (distance < 50) return; // Sekin harakatda UMUMAN chiqmaydi
-            if (now - lastCursorMove < 400) return; // 400ms interval
-            if (cursorItemCount >= maxCursorItems) return;
-            if (Math.random() > 0.3) return; // 30% ehtimol
-            
-            lastCursorMove = now;
-            lastX = mouseX;
-            lastY = mouseY;
-            
-            const cursorItem = document.createElement('div');
-            cursorItem.className = 'cursor-item';
-            
-            // Random element
-            cursorItem.textContent = items[Math.floor(Math.random() * items.length)];
-            
-            // Pozitsiya
-            cursorItem.style.left = mouseX + 'px';
-            cursorItem.style.top = mouseY + 'px';
-            
-            // Random drift
-            const drift = (Math.random() - 0.5) * 40;
-            cursorItem.style.setProperty('--drift', drift + 'px');
-            
-            // Random aylanish
-            const rotation = Math.random() * 360 - 180;
-            cursorItem.style.setProperty('--rotation', rotation + 'deg');
-            
-            document.body.appendChild(cursorItem);
-            cursorItemCount++;
-            
-            setTimeout(() => {
-                if (cursorItem.parentNode) {
-                    cursorItem.remove();
-                    cursorItemCount--;
+            const randomIndex = Math.floor(Math.random() * bgMusics.length);
+            currentBgMusic = bgMusics[randomIndex];
+            currentBgMusic.play().catch(e => console.log('Audio play failed:', e));
+            isMusicPlaying = true;
+            audioControl.innerHTML = '<span class="audio-icon">🔊</span>';
+            audioControl.classList.add('playing');
+        }
+
+        // Audio control
+        audioControl.addEventListener('click', () => {
+            if (isMusicPlaying) {
+                if (currentBgMusic) {
+                    currentBgMusic.pause();
                 }
-            }, 2000);
+                audioControl.innerHTML = '<span class="audio-icon">🔇</span>';
+                audioControl.classList.remove('playing');
+                isMusicPlaying = false;
+            } else {
+                playRandomMusic();
+            }
         });
 
-        function createSnowflake() {
-            if (activeSnowflakes >= maxSnowflakes) return;
-            
-            const snowflake = document.createElement('div');
-            snowflake.className = 'snowflake';
-            snowflake.textContent = '❄';
-            
-            const size = Math.random() * 6 + 10;
-            snowflake.style.fontSize = size + 'px';
-            
-            const startX = Math.random() * window.innerWidth;
-            snowflake.style.left = startX + 'px';
-            snowflake.style.top = '-20px';
-            
-            const driftDirection = Math.random() > 0.5 ? 1 : -1;
-            const driftAmount = (Math.random() * 60 + 30) * driftDirection;
-            snowflake.style.setProperty('--drift', driftAmount + 'px');
-            
-            const rotation = Math.random() * 360 + 180;
-            snowflake.style.setProperty('--rotation', rotation + 'deg');
-            
-            const meltPoint = Math.random() * 30 + 70;
-            const fallDistance = (window.innerHeight * meltPoint / 100) + 20;
-            snowflake.style.setProperty('--fall-distance', fallDistance + 'px');
-            
-            const duration = Math.random() * 8 + 12;
-            snowflake.style.animationDuration = duration + 's';
-            
-            const delay = Math.random() * 2;
-            snowflake.style.animationDelay = delay + 's';
-            
-            snowContainer.appendChild(snowflake);
-            activeSnowflakes++;
-            
-            setTimeout(() => {
-                if (snowflake.parentNode) {
-                    snowflake.remove();
-                    activeSnowflakes--;
+        // Auto-play music on first interaction
+        document.addEventListener('click', function playOnFirstClick() {
+            if (!isMusicPlaying) {
+                playRandomMusic();
+            }
+            document.removeEventListener('click', playOnFirstClick);
+        }, { once: true });
+
+        // Musiqa tugaganda yangi random musiqa
+        bgMusics.forEach(music => {
+            music.addEventListener('ended', () => {
+                if (isMusicPlaying) {
+                    playRandomMusic();
                 }
-            }, (duration + delay) * 1000);
+            });
+        });
+
+        // Sovg'a tugmasini bosish
+        const openGiftBtn = document.getElementById('openGiftBtn');
+        if (openGiftBtn) {
+            openGiftBtn.addEventListener('click', () => {
+                // Sovg'a ovozini ijro etish
+                giftSound.currentTime = 0;
+                giftSound.play().catch(e => console.log('Sound play failed:', e));
+                
+                // Random tabrik tanlash
+                const randomIndex = Math.floor(Math.random() * greetings.length);
+                const randomGreeting = greetings[randomIndex];
+                const randomIcon = icons[Math.floor(Math.random() * icons.length)];
+                
+                openModal(randomGreeting, randomIcon);
+            });
         }
 
-        function snowLoop() {
-            if (activeSnowflakes < maxSnowflakes && Math.random() > 0.4) {
-                createSnowflake();
+        // Modalni ochish
+        function openModal(text, icon) {
+            const modal = document.getElementById('modalOverlay');
+            const modalText = document.getElementById('modalText');
+            const modalIcon = document.getElementById('modalMainIcon');
+            
+            modalText.textContent = text;
+            modalIcon.textContent = icon;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Modalni yopish
+        function closeModal() {
+            const modal = document.getElementById('modalOverlay');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        document.getElementById('modalClose').addEventListener('click', closeModal);
+        document.getElementById('modalOverlay').addEventListener('click', (e) => {
+            if (e.target.id === 'modalOverlay') {
+                closeModal();
+            }
+        });
+
+        // Escape tugmasi bilan yopish
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Yulduzlarni yaratish
+        function createStars() {
+            const container = document.getElementById('starsContainer');
+            const starCount = 100;
+
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                const size = Math.random() * 3 + 1;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 70 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                
+                container.appendChild(star);
             }
         }
 
-        setInterval(snowLoop, 1000);
+        // Qor animatsiyasi
+        const snowCanvas = document.getElementById('snowCanvas');
+        const snowCtx = snowCanvas.getContext('2d');
+        let snowflakes = [];
 
-        setTimeout(() => {
-            for (let i = 0; i < 6; i++) {
-                setTimeout(createSnowflake, i * 400);
+        function resizeSnowCanvas() {
+            snowCanvas.width = window.innerWidth;
+            snowCanvas.height = window.innerHeight;
+        }
+
+        class Snowflake {
+            constructor() {
+                this.x = Math.random() * snowCanvas.width;
+                this.y = Math.random() * snowCanvas.height - snowCanvas.height;
+                this.radius = Math.random() * 3 + 1;
+                this.speed = Math.random() * 1 + 0.5;
+                this.drift = Math.random() * 0.5 - 0.25;
+                this.opacity = Math.random() * 0.6 + 0.4;
             }
-        }, 500);
+
+            update() {
+                this.y += this.speed;
+                this.x += this.drift;
+
+                if (this.y > snowCanvas.height) {
+                    this.y = -10;
+                    this.x = Math.random() * snowCanvas.width;
+                }
+
+                if (this.x > snowCanvas.width) {
+                    this.x = 0;
+                } else if (this.x < 0) {
+                    this.x = snowCanvas.width;
+                }
+            }
+
+            draw() {
+                snowCtx.beginPath();
+                snowCtx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                snowCtx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                snowCtx.fill();
+            }
+        }
+
+        function initSnowfall() {
+            const snowflakeCount = window.innerWidth < 768 ? 50 : 100;
+            for (let i = 0; i < snowflakeCount; i++) {
+                snowflakes.push(new Snowflake());
+            }
+        }
+
+        function animateSnowfall() {
+            snowCtx.clearRect(0, 0, snowCanvas.width, snowCanvas.height);
+            
+            snowflakes.forEach(snowflake => {
+                snowflake.update();
+                snowflake.draw();
+            });
+
+            requestAnimationFrame(animateSnowfall);
+        }
+
+        // Salyut animatsiyasi
+        const fireworksCanvas = document.getElementById('fireworksCanvas');
+        const fireworksCtx = fireworksCanvas.getContext('2d');
+        let particles = [];
+
+        function resizeFireworksCanvas() {
+            fireworksCanvas.width = window.innerWidth;
+            fireworksCanvas.height = window.innerHeight;
+        }
+
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                this.radius = Math.random() * 2 + 1;
+                this.velocity = {
+                    x: (Math.random() - 0.5) * 8,
+                    y: (Math.random() - 0.5) * 8
+                };
+                this.gravity = 0.1;
+                this.opacity = 1;
+                this.fade = Math.random() * 0.015 + 0.015;
+            }
+
+            update() {
+                this.velocity.y += this.gravity;
+                this.x += this.velocity.x;
+                this.y += this.velocity.y;
+                this.opacity -= this.fade;
+            }
+
+            draw() {
+                fireworksCtx.save();
+                fireworksCtx.globalAlpha = this.opacity;
+                fireworksCtx.beginPath();
+                fireworksCtx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                fireworksCtx.fillStyle = this.color;
+                fireworksCtx.fill();
+                fireworksCtx.restore();
+            }
+        }
+
+        function createFirework() {
+            const x = Math.random() * fireworksCanvas.width;
+            const y = Math.random() * (fireworksCanvas.height * 0.5);
+            const colors = ['#FFD700', '#FF4444', '#4444FF', '#FF44FF', '#44FFFF', '#00FF00'];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            
+            const particleCount = 50;
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle(x, y, color));
+            }
+        }
+
+        function animateFireworks() {
+            fireworksCtx.fillStyle = 'rgba(10, 22, 40, 0.1)';
+            fireworksCtx.fillRect(0, 0, fireworksCanvas.width, fireworksCanvas.height);
+
+            particles = particles.filter(particle => particle.opacity > 0);
+
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+
+            requestAnimationFrame(animateFireworks);
+        }
+
+        let fireworkInterval;
+
+        // Vaqt hisobi
+        function updateCountdown() {
+            const now = new Date();
+            const newYear2026 = new Date('2026-01-01T00:00:00');
+            
+            const diff = newYear2026 - now;
+
+            if (diff <= 0 && !isNewYear) {
+                // Yangi yil keldi!
+                isNewYear = true;
+                
+                // Vaqtni yashirish
+                document.getElementById('countdownContainer').style.display = 'none';
+                
+                // Sarlavhani o'zgartirish
+                document.getElementById('mainTitle').textContent = '🎉 Yangi Yil 2026 Muborak! 🎉';
+                document.getElementById('mainSubtitle').textContent = 'Baxtli va muvaffaqiyatli yil bo\'lsin!';
+                
+                // Sovg'a tugmasini ko'rsatish
+                document.getElementById('giftButtonContainer').style.display = 'block';
+                
+                // Yangi yil ovozini ijro etish
+                newyearSound.play().catch(e => console.log('Newyear sound failed:', e));
+                
+                // Salyutni tezlashtirish
+                if (fireworkInterval) {
+                    clearInterval(fireworkInterval);
+                }
+                fireworkInterval = setInterval(createFirework, 300);
+                return;
+            }
+
+            if (diff <= 0) {
+                return; // Agar yangi yil bo'lsa, hisoblashni to'xtatish
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('days').textContent = String(days).padStart(2, '0');
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+        }
+
+        // Daraxt chiroqlarini qo'shish
+        function addTreeLights() {
+            const tree = document.getElementById('mainTree');
+            const lights = [
+                { color: 'red', left: '30%', top: '40%' },
+                { color: 'blue', left: '70%', top: '45%' },
+                { color: 'gold', left: '50%', top: '55%' },
+                { color: 'purple', left: '25%', top: '65%' },
+                { color: 'red', left: '75%', top: '70%' },
+                { color: 'blue', left: '45%', top: '75%' },
+                { color: 'gold', left: '60%', top: '80%' },
+                { color: 'purple', left: '35%', top: '85%' }
+            ];
+
+            lights.forEach(light => {
+                const lightEl = document.createElement('div');
+                lightEl.className = `tree-light light-${light.color}`;
+                lightEl.style.left = light.left;
+                lightEl.style.top = light.top;
+                tree.appendChild(lightEl);
+            });
+        }
+
+        // Ishga tushirish
+        window.addEventListener('load', () => {
+            resizeSnowCanvas();
+            resizeFireworksCanvas();
+            
+            createStars();
+            
+            initSnowfall();
+            animateSnowfall();
+            
+            animateFireworks();
+            
+            addTreeLights();
+            
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+            
+            // Boshlang'ich salyut
+            fireworkInterval = setInterval(createFirework, 2000);
+        });
+
+        window.addEventListener('resize', () => {
+            resizeSnowCanvas();
+            resizeFireworksCanvas();
+            
+            snowflakes = [];
+            initSnowfall();
+        });
     </script>
 </body>
 </html>
