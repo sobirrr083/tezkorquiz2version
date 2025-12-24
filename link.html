@@ -31,7 +31,6 @@
             overflow-x: hidden;
         }
 
-
         .profile-card {
             background: #ffffff;
             border-radius: 24px;
@@ -44,6 +43,44 @@
             opacity: 0;
             animation: slideUp 0.8s ease-out forwards;
             animation-delay: 0.3s;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         .profile-header {
@@ -95,7 +132,6 @@
             font-size: 1.05rem;
         }
 
-        /* Updates Section */
         .updates-section {
             background: linear-gradient(135deg, #f0f4ff 0%, #e8f0fe 100%);
             border-radius: 16px;
@@ -223,7 +259,6 @@
             transform: translateY(-1px);
         }
 
-        /* Error Report Section */
         .error-section {
             margin-bottom: 2rem;
             animation: fadeIn 1s ease-out forwards;
@@ -300,7 +335,6 @@
             75% { transform: translateX(5px); }
         }
 
-        /* Useful Links Section */
         .useful-links-section {
             margin-bottom: 2rem;
             animation: fadeIn 1s ease-out forwards;
@@ -463,6 +497,7 @@
             animation: fadeIn 1s ease-out forwards;
             animation-delay: 1.6s;
             opacity: 0;
+            transition: all 0.3s ease;
         }
 
         .share-btn:hover {
@@ -497,7 +532,6 @@
             100% { transform: scale(1); }
         }
 
-        /* Ripple Effect */
         .ripple {
             position: absolute;
             border-radius: 50%;
@@ -533,7 +567,6 @@
             }
         }
 
-        /* Notification Toast */
         .toast {
             position: fixed;
             bottom: 2rem;
@@ -563,12 +596,11 @@
 <body>
     <div class="profile-card">
         <div class="profile-header">
-            <div class="profile-avatar"><img src="" alt="Profile"></div>
+            <div class="profile-avatar"><img src="https://tezkorquiz.uz/aga/logo.png" alt="Tezkor Quiz"></div>
             <div class="profile-name">Tezkor Quiz</div>
             <div class="profile-bio">Raqamli testlarda maksimal qulaylik. Talabalarga testli sessiyaga tayyorlanish uchun mukammal sayt.</div>
         </div>
 
-        <!-- Updates Section -->
         <div class="updates-section">
             <div class="updates-header">
                 <div class="updates-title">
@@ -609,7 +641,6 @@
             </a>
         </div>
 
-        <!-- Error Report Section -->
         <div class="error-section">
             <div class="error-title">
                 <i class="fas fa-bug"></i>
@@ -621,7 +652,6 @@
             </a>
         </div>
 
-        <!-- Useful Links Section -->
         <div class="useful-links-section">
             <div class="section-title">Foydali Havolalar</div>
             <div class="useful-links">
@@ -661,14 +691,12 @@
         </button>
     </div>
 
-    <!-- Toast Notification -->
     <div class="toast" id="toast">
         <i class="fas fa-check-circle"></i>
         <span id="toastText">Havola nusxalandi!</span>
     </div>
 
     <script>
-        // Report Error Function
         function reportError(event) {
             event.preventDefault();
             const message = encodeURIComponent("Assalomu aleykum menda tezkor quiz saytida fayl yuklashda xato deyapti (Qaysi quiz oynasida shuni kiriting iloji bo'lsa screenshot bilan) shu bo'yicha yordam bera olasizmi? Hozir faylni yuboraman sizga");
@@ -676,7 +704,6 @@
             window.open(telegramUrl, '_blank');
         }
 
-        // Create Ripple Effect
         function createRipple(event) {
             const button = event.currentTarget;
             const ripple = document.createElement('span');
@@ -697,7 +724,17 @@
             }, 600);
         }
 
-        // Share Profile Function
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastText = document.getElementById('toastText');
+            toastText.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
         async function shareProfile(event) {
             createRipple(event);
 
@@ -713,7 +750,48 @@
                 url: window.location.href
             };
 
-        // Smooth scroll for all links
+            btn.classList.add('loading');
+            btnIcon.className = 'fas fa-spinner';
+            btnText.textContent = 'Ulashilmoqda...';
+
+            try {
+                if (navigator.share) {
+                    await navigator.share(shareData);
+                    btn.classList.remove('loading');
+                    btn.classList.add('success');
+                    btnIcon.className = 'fas fa-check';
+                    btnText.textContent = 'Ulashildi!';
+                    
+                    setTimeout(() => {
+                        btn.classList.remove('success');
+                        btnIcon.className = originalIconClass;
+                        btnText.textContent = originalText;
+                    }, 2000);
+                } else {
+                    await navigator.clipboard.writeText(window.location.href);
+                    btn.classList.remove('loading');
+                    btn.classList.add('success');
+                    btnIcon.className = 'fas fa-check';
+                    btnText.textContent = 'Havola nusxalandi!';
+                    showToast('Havola nusxalandi!');
+                    
+                    setTimeout(() => {
+                        btn.classList.remove('success');
+                        btnIcon.className = originalIconClass;
+                        btnText.textContent = originalText;
+                    }, 2000);
+                }
+            } catch (err) {
+                btn.classList.remove('loading');
+                btnIcon.className = originalIconClass;
+                btnText.textContent = originalText;
+                
+                if (err.name !== 'AbortError') {
+                    showToast('Xatolik yuz berdi');
+                }
+            }
+        }
+
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
