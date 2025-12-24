@@ -187,7 +187,6 @@
             background: white;
             border-radius: 12px;
             padding: 1rem;
-            margin-bottom: 0.8rem;
             text-align: left;
             border: 1px solid #e1e8f5;
             transition: all 0.3s ease;
@@ -195,10 +194,6 @@
             text-decoration: none;
             display: block;
             color: inherit;
-        }
-
-        .update-item:last-child {
-            margin-bottom: 0;
         }
 
         .update-item:hover {
@@ -232,13 +227,12 @@
         }
 
         .social-link {
-            padding: 0.6rem 1.2rem;
+            padding: 0.8rem 1.5rem;
             border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            background: #000000;
             text-decoration: none;
             font-size: 1rem;
             font-weight: 500;
@@ -246,8 +240,25 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
+        .social-link.telegram {
+            background: #0088cc;
+        }
+
+        .social-link.website {
+            background: #000000;
+        }
+
+        .social-link.instagram {
+            background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+        }
+
+        .social-link.youtube {
+            background: #FF0000;
+        }
+
         .social-link i {
             margin-right: 0.5rem;
+            font-size: 1.2rem;
         }
 
         .social-link:hover {
@@ -315,6 +326,26 @@
             font-size: 1.5rem;
             color: #dc2626;
             min-width: 28px;
+            flex-shrink: 0;
+        }
+
+        .error-link-content {
+            flex: 1;
+        }
+
+        .error-link-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 0.25rem;
+            color: #991b1b;
+        }
+
+        .error-link-desc {
+            font-size: 0.85rem;
+            font-weight: 400;
+            color: #b91c1c;
+            opacity: 0.9;
         }
 
         .error-link:hover {
@@ -327,6 +358,14 @@
 
         .error-link:hover i {
             animation: shake 0.5s ease;
+        }
+
+        .error-link:hover .error-link-title {
+            color: #7f1d1d;
+        }
+
+        .error-link:hover .error-link-desc {
+            color: #7f1d1d;
         }
 
         @keyframes shake {
@@ -392,9 +431,33 @@
         }
 
         .useful-link i {
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             color: #4460ef;
-            min-width: 24px;
+            min-width: 28px;
+            flex-shrink: 0;
+        }
+
+        .useful-link.telegram-link i {
+            color: #0088cc;
+        }
+
+        .useful-link-content {
+            flex: 1;
+        }
+
+        .useful-link-title {
+            font-weight: 700;
+            font-size: 1.05rem;
+            display: block;
+            margin-bottom: 0.25rem;
+            color: #1a1a1a;
+        }
+
+        .useful-link-desc {
+            font-weight: 400;
+            font-size: 0.85rem;
+            color: #666;
+            line-height: 1.4;
         }
 
         .useful-link:hover {
@@ -407,6 +470,14 @@
 
         .useful-link:hover i {
             color: white;
+        }
+
+        .useful-link:hover .useful-link-title {
+            color: white;
+        }
+
+        .useful-link:hover .useful-link-desc {
+            color: rgba(255, 255, 255, 0.9);
         }
 
         .useful-link:active {
@@ -456,9 +527,29 @@
         }
 
         .profile-link i {
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             color: #4460ef;
-            min-width: 24px;
+            min-width: 28px;
+            flex-shrink: 0;
+        }
+
+        .profile-link-content {
+            flex: 1;
+        }
+
+        .profile-link-title {
+            font-weight: 700;
+            font-size: 1.05rem;
+            display: block;
+            margin-bottom: 0.25rem;
+            color: #1a1a1a;
+        }
+
+        .profile-link-desc {
+            font-weight: 400;
+            font-size: 0.85rem;
+            color: #666;
+            line-height: 1.4;
         }
 
         .profile-link:hover {
@@ -473,12 +564,20 @@
             color: white;
         }
 
+        .profile-link:hover .profile-link-title {
+            color: white;
+        }
+
+        .profile-link:hover .profile-link-desc {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
         .profile-link:active {
             transform: translateX(3px);
         }
 
         .share-btn {
-            background: linear-gradient(135deg, #4460ef 0%, #764ba2 100%);
+            background: #4460ef;
             color: white;
             border: none;
             padding: 1.1rem 2rem;
@@ -501,6 +600,7 @@
         }
 
         .share-btn:hover {
+            background: #3651d9;
             transform: translateY(-3px);
             box-shadow: 0 10px 30px rgba(68, 96, 239, 0.4);
         }
@@ -549,8 +649,13 @@
         }
 
         @media (max-width: 480px) {
+            body {
+                padding: 1rem;
+            }
+
             .profile-card {
-                padding: 2rem 1.5rem;
+                padding: 2rem 1.2rem;
+                max-width: calc(100vw - 2rem);
             }
 
             .profile-name {
@@ -558,12 +663,42 @@
             }
 
             .social-icons {
-                gap: 0.7rem;
+                gap: 0.6rem;
             }
 
             .social-link {
-                font-size: 0.9rem;
-                padding: 0.5rem 1rem;
+                font-size: 1rem;
+                padding: 1rem 1.3rem;
+                flex: 1;
+                min-width: calc(50% - 0.3rem);
+            }
+
+            .social-link i {
+                font-size: 1.3rem;
+            }
+
+            .error-link {
+                padding: 1rem;
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .error-link i {
+                font-size: 1.3rem;
+            }
+
+            .updates-section {
+                padding: 1.2rem;
+            }
+
+            .updates-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.8rem;
+            }
+
+            .view-all-btn {
+                align-self: flex-end;
             }
         }
 
@@ -616,27 +751,19 @@
                 <div class="update-date">24-Dekabr, 2025</div>
                 <div class="update-text">📚 Informatika fanidan 500+ yangi test qo'shildi</div>
             </a>
-            <a href="https://t.me/tezkorquiz_rasmiy/122" target="_blank" class="update-item">
-                <div class="update-date">20-Dekabr, 2025</div>
-                <div class="update-text">🎯 Matematika kursi yangilandi - imtihonga tayyorlanish moduli</div>
-            </a>
-            <a href="https://t.me/tezkorquiz_rasmiy/121" target="_blank" class="update-item">
-                <div class="update-date">15-Dekabr, 2025</div>
-                <div class="update-text">⚡ Mobil ilova yangi dizayn bilan yangilandi</div>
-            </a>
         </div>
         
         <div class="social-icons">
-            <a href="https://t.me/tezkorquiz_rasmiy" target="_blank" class="social-link">
+            <a href="https://t.me/tezkorquiz_rasmiy" target="_blank" class="social-link telegram">
                 <i class="fab fa-telegram"></i> Telegram
             </a>
-            <a href="https://www.tezkorquiz.uz" target="_blank" class="social-link">
+            <a href="https://www.tezkorquiz.uz" target="_blank" class="social-link website">
                 <i class="fas fa-globe"></i> Veb-sayt
             </a>
-            <a href="https://www.instagram.com/tezkorquiz.uz/" target="_blank" class="social-link">
+            <a href="https://www.instagram.com/tezkorquiz.uz/" target="_blank" class="social-link instagram">
                 <i class="fab fa-instagram"></i> Instagram
             </a>
-            <a href="https://www.youtube.com/@Quiztezkor" target="_blank" class="social-link">
+            <a href="https://www.youtube.com/@Quiztezkor" target="_blank" class="social-link youtube">
                 <i class="fab fa-youtube"></i> YouTube
             </a>
         </div>
@@ -648,24 +775,36 @@
             </div>
             <a href="#" onclick="reportError(event)" class="error-link">
                 <i class="fas fa-exclamation-triangle"></i>
-                <span>Test faylini yuklashda xato</span>
+                <div class="error-link-content">
+                    <span class="error-link-title">Test faylini yuklashda xato</span>
+                    <span class="error-link-desc">Muammo haqida xabar berish</span>
+                </div>
             </a>
         </div>
 
         <div class="useful-links-section">
             <div class="section-title">Foydali Havolalar</div>
             <div class="useful-links">
-                <a href="https://t.me/tezkorquiz_rasmiy" target="_blank" class="useful-link">
-                    <i class="fas fa-users"></i>
-                    <span>Telegram Kanalimiz - Yangiliklar va e'lonlar</span>
+                <a href="https://t.me/tezkorquiz_rasmiy" target="_blank" class="useful-link telegram-link">
+                    <i class="fab fa-telegram"></i>
+                    <div class="useful-link-content">
+                        <span class="useful-link-title">Telegram Kanalimiz</span>
+                        <span class="useful-link-desc">Yangiliklar va e'lonlar</span>
+                    </div>
                 </a>
-                <a href="https://t.me/tezkorquiz_guruh" target="_blank" class="useful-link">
-                    <i class="fas fa-comments"></i>
-                    <span>Telegram Guruhimiz - Savol-javob va muloqot</span>
+                <a href="https://t.me/tezkorquiz_guruh" target="_blank" class="useful-link telegram-link">
+                    <i class="fab fa-telegram"></i>
+                    <div class="useful-link-content">
+                        <span class="useful-link-title">Telegram Guruhimiz</span>
+                        <span class="useful-link-desc">Savol-javob va muloqot</span>
+                    </div>
                 </a>
-                <a href="https://t.me/tezkorquiz_archive" target="_blank" class="useful-link">
-                    <i class="fas fa-archive"></i>
-                    <span>Test Arxivi - Barcha testlar va materiallar</span>
+                <a href="https://t.me/tezkorquiz_archive" target="_blank" class="useful-link telegram-link">
+                    <i class="fab fa-telegram"></i>
+                    <div class="useful-link-content">
+                        <span class="useful-link-title">Test Arxivi</span>
+                        <span class="useful-link-desc">Barcha testlar va materiallar</span>
+                    </div>
                 </a>
             </div>
         </div>
@@ -673,15 +812,24 @@
         <div class="profile-links">
             <a href="https://tirikchilik.uz" target="_blank" class="profile-link">
                 <i class="fas fa-heart"></i>
-                <span>Donat qilish - Loyihani qo'llab-quvvatlash</span>
+                <div class="profile-link-content">
+                    <span class="profile-link-title">Donat qilish</span>
+                    <span class="profile-link-desc">Loyihani qo'llab-quvvatlash</span>
+                </div>
             </a>
             <a href="https://forms.gle/Gauz14uPRnfdPPUGA" target="_blank" class="profile-link">
                 <i class="fas fa-comment-dots"></i>
-                <span>Taklif va mulohaza - Fikringizni bildiring</span>
+                <div class="profile-link-content">
+                    <span class="profile-link-title">Taklif va mulohaza</span>
+                    <span class="profile-link-desc">Fikringizni bildiring</span>
+                </div>
             </a>
             <a href="https://tezkorquiz.uz/faq" target="_blank" class="profile-link">
                 <i class="fas fa-question-circle"></i>
-                <span>FAQ - Ko'p beriladigan savollar</span>
+                <div class="profile-link-content">
+                    <span class="profile-link-title">FAQ</span>
+                    <span class="profile-link-desc">Ko'p beriladigan savollar</span>
+                </div>
             </a>
         </div>
         
@@ -792,6 +940,7 @@
             }
         }
 
+        // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -803,6 +952,31 @@
                     });
                 }
             });
+        });
+
+        // Add ripple effect to all clickable elements
+        document.querySelectorAll('.social-link, .useful-link, .profile-link, .error-link').forEach(element => {
+            element.addEventListener('click', createRipple);
+        });
+
+        // Lazy load animations on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all animated elements
+        document.querySelectorAll('.profile-link, .useful-link, .error-link').forEach(el => {
+            observer.observe(el);
         });
     </script>
 </body>
