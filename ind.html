@@ -615,6 +615,19 @@
       </div>
     </div>
   </div>
+ <!-- Banner bu yerda yuklanadi -->
+    <div id="telegram-banner-container"></div>
+
+    <!-- Banner yuklash scripti -->
+    <script>
+        fetch('telegram-banner.html')
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById('telegram-banner-container').innerHTML = html;
+            });
+    </script>
+  <!-- Banner bu yerda yuklanadi -->
+  
 <!-- himoyalangan sahifa: protected.html -->
 <script type="module">
   // Firebase SDK import qilingan deb faraz qilamiz
