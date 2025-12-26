@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donat Qiling</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* Radial Gradient Background */
+        .bg-gradient {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background: radial-gradient(125% 125% at 50% 90%, #fff 40%, #4460ef 100%);
+        }
+
+        /* Thank you modal */
+        .thank-you-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .thank-you-modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 400px;
+            animation: scaleIn 0.4s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes scaleIn {
+            from { 
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            to { 
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .check-icon {
+            width: 80px;
+            height: 80px;
+            background: #4460ef;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: bounceIn 0.6s ease;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .check-icon::before {
+            content: '✓';
+            color: white;
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+        .modal-content h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 28px;
+        }
+
+        .modal-content p {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .close-modal {
+            background: #4460ef;
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .close-modal:hover {
+            background: #3350de;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(68, 96, 239, 0.4);
+        }
+
+        .feedback-button {
+            background: white;
+            color: #4460ef;
+            border: 2px solid #4460ef;
+            padding: 12px 28px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .feedback-button:hover {
+            background: #f0f2ff;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(68, 96, 239, 0.2);
+        }
+
+        /* Main container */
+        .container {
+            background: white;
+            padding: 60px 50px;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(68, 96, 239, 0.15);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+            animation: slideUp 0.6s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .heart-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 32px;
+            background: linear-gradient(135deg, #4460ef 0%, #5a7aff 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 24px rgba(68, 96, 239, 0.3);
+        }
+
+        .heart-icon svg {
+            width: 48px;
+            height: 48px;
+            filter: brightness(0) invert(1);
+        }
+
+        h1 {
+            color: #1d1d1f;
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            color: #86868b;
+            font-size: 17px;
+            line-height: 1.5;
+            margin-bottom: 40px;
+            font-weight: 400;
+        }
+
+        /* Card Number Section - Professional Credit Card Design */
+        .card-section {
+            background: linear-gradient(135deg, #4460ef 0%, #5a7aff 100%);
+            padding: 36px 32px;
+            border-radius: 20px;
+            margin-bottom: 32px;
+            box-shadow: 0 12px 32px rgba(68, 96, 239, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Card background pattern */
+        .card-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: cardShine 3s infinite;
+        }
+
+        @keyframes cardShine {
+            0%, 100% { transform: rotate(0deg); opacity: 0.5; }
+            50% { transform: rotate(180deg); opacity: 0.8; }
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-label {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            text-align: left;
+        }
+
+        .card-number-wrapper {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(10px);
+            padding: 28px 24px;
+            border-radius: 14px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            min-width: 0;
+        }
+
+        .card-number-wrapper:hover {
+            background: rgba(255, 255, 255, 0.18);
+            border-color: rgba(255, 255, 255, 0.35);
+        }
+
+        .card-number-display {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            min-width: 0;
+        }
+
+        .card-number-text {
+            color: white;
+            font-size: clamp(20px, 4.5vw, 28px);
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            font-family: 'SF Mono', 'Monaco', 'Cascadia Code', 'Roboto Mono', monospace;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            white-space: nowrap;
+            overflow: visible;
+        }
+
+        @media (max-width: 600px) {
+            .card-number-text {
+                font-size: clamp(16px, 4vw, 20px);
+                letter-spacing: 0.1em;
+            }
+        }
+
+        @media (max-width: 450px) {
+            .card-number-wrapper {
+                padding: 24px 16px;
+            }
+            
+            .card-number-text {
+                font-size: clamp(14px, 3.5vw, 18px);
+                letter-spacing: 0.08em;
+            }
+        }
+
+        .copy-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #4460ef;
+            padding: 15px 36px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .copy-button:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .copy-button:active {
+            transform: translateY(0);
+        }
+
+        .copy-button svg {
+            width: 18px;
+            height: 18px;
+            fill: #4460ef;
+        }
+
+        .info-text {
+            margin-top: 24px;
+            color: #86868b;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* Copied notification */
+        .copied-notification {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #4460ef;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(68, 96, 239, 0.3);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 2000;
+        }
+
+        .copied-notification.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 50px 30px;
+            }
+
+            h1 {
+                font-size: 36px;
+            }
+        }
+
+        @media (max-width: 450px) {
+            .container {
+                padding: 40px 24px;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+
+            .subtitle {
+                font-size: 16px;
+            }
+
+            .modal-buttons {
+                flex-direction: column;
+            }
+
+            .close-modal,
+            .feedback-button {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Gradient -->
+    <div class="bg-gradient"></div>
+
+    <!-- Copied Notification -->
+    <div class="copied-notification" id="copiedNotification">
+        ✓ Karta raqami nusxalandi!
+    </div>
+
+    <!-- Thank you modal -->
+    <div class="thank-you-modal" id="thankYouModal">
+        <div class="modal-content">
+            <div class="check-icon"></div>
+            <h2>Rahmat!</h2>
+            <p>Qo'llab-quvvatlaganingiz uchun tashakkur!</p>
+            <div class="modal-buttons">
+                <a href="https://forms.gle/uGp41diEfrpzaURD8" target="_blank" class="feedback-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                    <span>Izoh qoldirish</span>
+                </a>
+                <button class="close-modal" onclick="closeModal()">Davom etish</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main content -->
+    <div class="container">
+        <div class="heart-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 492 492" xml:space="preserve"><path style="fill:#ffffff" d="M229.877 397.136h-.024l-97.584-.024a5.761 5.761 0 0 1-5.76-5.76 5.746 5.746 0 0 1 5.76-5.76l97.584.024h.024c21.528 0 42.576-6 60.864-17.352l122.256-75.936c3.48-2.592 5.424-5.52 5.952-8.952.576-3.72-.96-7.224-4.056-9.384-2.784-1.944-6.696-2.76-11.352-2.424-6.144.456-13.272 2.904-21.12 7.272-.984.576-9.576 5.976-23.784 14.928a77492.288 77492.288 0 0 1-60.768 38.256c-2.688 1.704-6.24.888-7.944-1.8-1.704-2.688-.888-6.24 1.8-7.944 26.976-16.944 47.304-29.76 60.744-38.232 18.144-11.424 23.4-14.76 24.312-15.24 9.336-5.184 18.024-8.088 25.872-8.688 7.32-.552 13.824.984 18.792 4.44 6.696 4.656 10.104 12.552 8.88 20.568-1.008 6.552-4.608 12.168-10.704 16.632-.072.048-.12.096-.192.12-.072.048-.12.072-.192.12l-122.424 76.032a126.69 126.69 0 0 1-66.936 19.104z"/><path style="fill:#ffffff" d="M274.709 349.472h-58.2c-3.192 0-5.76-2.568-5.76-5.76s2.568-5.76 5.76-5.76h58.2a14.693 14.693 0 0 0 14.712-14.04c.192-4.008-1.248-7.824-4.056-10.752-2.88-3.024-6.768-4.68-10.968-4.68h-72c-4.968-.048-16.584-.144-28.656 2.52-13.344 2.952-24.072 8.496-31.872 16.512a54.979 54.979 0 0 0-4.944 5.856c-1.872 2.568-5.472 3.144-8.04 1.272-2.568-1.872-3.144-5.472-1.272-8.04a63.015 63.015 0 0 1 6-7.104c9.408-9.648 22.056-16.272 37.656-19.728 11.832-2.616 22.896-2.856 31.224-2.784h71.928c7.248 0 14.28 3 19.296 8.256 4.992 5.232 7.56 12.072 7.224 19.248-.672 14.016-12.192 24.984-26.232 24.984z"/><path style="fill:#ffffff" d="M132.245 405.344H67.733a5.787 5.787 0 0 1-5.784-5.784v-86.784a5.787 5.787 0 0 1 5.784-5.784h64.512a5.787 5.787 0 0 1 5.784 5.784v86.784a5.787 5.787 0 0 1-5.784 5.784zm-58.776-11.52h53.04v-75.312h-53.04v75.312z"/><path style="fill:#ffffff" d="M254.285 262.136c-11.712 0-23.088-2.304-33.816-6.84a86.555 86.555 0 0 1-27.6-18.648c-7.968-7.992-14.232-17.28-18.6-27.648-4.536-10.728-6.816-22.128-6.816-33.864 0-11.736 2.304-23.136 6.816-33.864 4.368-10.368 10.632-19.656 18.6-27.648a86.555 86.555 0 0 1 27.6-18.648c10.704-4.536 22.08-6.84 33.816-6.84 11.712 0 23.088 2.304 33.816 6.84a86.555 86.555 0 0 1 27.6 18.648c7.968 7.992 14.232 17.28 18.6 27.648 4.536 10.728 6.816 22.128 6.816 33.864 0 11.736-2.304 23.136-6.816 33.864-4.368 10.368-10.632 19.656-18.6 27.648a86.555 86.555 0 0 1-27.6 18.648c-10.728 4.56-22.104 6.84-33.816 6.84zm0-162.456c-20.112 0-39.024 7.848-53.256 22.104S178.973 155 178.973 175.16s7.848 39.12 22.056 53.376c14.232 14.256 33.144 22.104 53.256 22.104 20.112 0 39.024-7.848 53.256-22.104s22.056-33.216 22.056-53.376-7.848-39.12-22.056-53.376c-14.232-14.256-33.144-22.104-53.256-22.104z"/><path style="fill:#ffffff" d="M254.285 218.528c-12.528 0-23.472-7.536-26.616-18.36-.888-3.048.864-6.24 3.912-7.152 3.048-.888 6.24.864 7.152 3.912 1.704 5.832 8.232 10.056 15.576 10.056 8.808 0 15.984-5.856 15.984-13.056 0-2.184 0-8.856-17.352-13.2-7.104-1.656-12.936-4.176-17.304-7.512-5.808-4.44-8.856-10.272-8.856-16.896 0-13.536 12.336-24.576 27.504-24.576 12.432 0 23.352 7.464 26.568 18.168a5.765 5.765 0 0 1-3.864 7.176 5.765 5.765 0 0 1-7.176-3.864c-1.752-5.856-8.16-9.96-15.528-9.96-8.808 0-15.984 5.856-15.984 13.056 0 8.016 10.824 11.712 17.28 13.2.024 0 .072.024.096.024 7.536 1.896 13.272 4.392 17.52 7.68 5.616 4.32 8.592 10.104 8.592 16.728 0 13.56-12.336 24.576-27.504 24.576z"/><path style="fill:#ffffff" d="M254.285 229.712a5.746 5.746 0 0 1-5.76-5.76v-97.584c0-3.192 2.568-5.76 5.76-5.76s5.76 2.568 5.76 5.76v97.584c0 3.168-2.592 5.76-5.76 5.76z"/></svg>
+        </div>
+        <h1>Qo'llab-quvvatlash</h1>
+        <p class="subtitle">Loyihamizni rivojlantirishda yordam bering</p>
+        
+        <div class="card-section">
+            <div class="card-content">
+                <div class="card-label">Karta raqami</div>
+                <div class="card-number-wrapper">
+                    <div class="card-number-display">
+                        <span class="card-number-text">4067 0700 0346 3796</span>
+                    </div>
+                </div>
+                <button class="copy-button" onclick="copyCardNumber()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                    </svg>
+                    <span>Nusxa olish</span>
+                </button>
+            </div>
+        </div>
+        
+        <p class="info-text">Har qanday miqdor biz uchun muhim</p>
+    </div>
+
+    <script>
+        function copyCardNumber() {
+            const cardNumber = '4067070003463796';
+            
+            // Copy to clipboard
+            navigator.clipboard.writeText(cardNumber).then(function() {
+                // Show notification
+                const notification = document.getElementById('copiedNotification');
+                notification.classList.add('show');
+                
+                // Hide notification after 2 seconds
+                setTimeout(function() {
+                    notification.classList.remove('show');
+                }, 2000);
+                
+                // Show thank you modal after a short delay
+                setTimeout(function() {
+                    document.getElementById('thankYouModal').classList.add('show');
+                }, 500);
+            }).catch(function(err) {
+                console.error('Nusxalashda xatolik: ', err);
+            });
+        }
+
+        function closeModal() {
+            document.getElementById('thankYouModal').classList.remove('show');
+        }
+    </script>
+</body>
+</html>
