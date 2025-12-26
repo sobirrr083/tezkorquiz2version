@@ -31,18 +31,20 @@
             overflow-x: hidden;
         }
 
+        .main-container {
+            width: 100%;
+            max-width: 480px;
+            opacity: 0;
+            animation: slideUp 0.8s ease-out forwards;
+            animation-delay: 0.3s;
+        }
+
         .profile-card {
             background: #ffffff;
             border-radius: 24px;
             padding: 2.5rem;
             box-shadow: 0 20px 60px rgba(0,0,0,0.1);
             border: 1px solid #e1e5e9;
-            text-align: center;
-            max-width: 480px;
-            width: 100%;
-            opacity: 0;
-            animation: slideUp 0.8s ease-out forwards;
-            animation-delay: 0.3s;
         }
 
         @keyframes slideUp {
@@ -84,6 +86,7 @@
         }
 
         .profile-header {
+            text-align: center;
             margin-bottom: 2rem;
             animation: fadeIn 1s ease-out forwards;
             animation-delay: 0.6s;
@@ -94,7 +97,7 @@
             width: 130px;
             height: 130px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #4460ef 0%, #764ba2 100%);
+            background: white;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -105,6 +108,7 @@
             box-shadow: 0 8px 25px rgba(68, 96, 239, 0.3);
             overflow: hidden;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            padding: 10px;
         }
 
         .profile-avatar:hover {
@@ -115,7 +119,7 @@
         .profile-avatar img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
         }
 
         .profile-name {
@@ -130,6 +134,14 @@
             margin-bottom: 2rem;
             line-height: 1.6;
             font-size: 1.05rem;
+        }
+
+        .content-grid {
+            display: block;
+        }
+
+        .left-column, .right-column {
+            width: 100%;
         }
 
         .updates-section {
@@ -397,6 +409,7 @@
             gap: 0.8rem;
             margin-bottom: 2rem;
         }
+
         .useful-link svg {
             width: 24px;
             height: 24px;
@@ -404,10 +417,10 @@
             min-width: 28px;
             flex-shrink: 0;
         }
+
         .useful-link:hover svg {
             fill: #ffffff;
         }
-
 
         .useful-link {
             background: #ffffff;
@@ -659,6 +672,198 @@
             }
         }
 
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(150%);
+            background: #1a1a1a;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast i {
+            font-size: 1.2rem;
+        }
+
+        /* Tablet uchun (768px va undan katta) */
+        @media (min-width: 768px) {
+            body {
+                padding: 3rem;
+            }
+
+            .main-container {
+                max-width: 720px;
+            }
+
+            .profile-card {
+                padding: 3rem;
+            }
+
+            .profile-avatar {
+                width: 150px;
+                height: 150px;
+                font-size: 4rem;
+            }
+
+            .profile-name {
+                font-size: 2.5rem;
+            }
+
+            .profile-bio {
+                font-size: 1.15rem;
+            }
+
+            .social-icons {
+                gap: 1.2rem;
+            }
+
+            .social-link {
+                padding: 1rem 2rem;
+                font-size: 1.1rem;
+            }
+
+            .useful-links {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+
+            .section-title {
+                font-size: 1.4rem;
+            }
+        }
+
+        /* Laptop va Desktop uchun (1024px va undan katta) */
+        @media (min-width: 1024px) {
+            body {
+                padding: 4rem;
+            }
+
+            .main-container {
+                max-width: 1200px;
+            }
+
+            .profile-card {
+                padding: 4rem;
+            }
+
+            .content-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 2rem;
+            }
+
+            .profile-header {
+                grid-column: 1 / -1;
+            }
+
+            .profile-avatar {
+                width: 180px;
+                height: 180px;
+                font-size: 4.5rem;
+            }
+
+            .profile-name {
+                font-size: 3rem;
+            }
+
+            .profile-bio {
+                font-size: 1.25rem;
+                max-width: 800px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .social-icons {
+                grid-column: 1 / -1;
+                gap: 1.5rem;
+            }
+
+            .social-link {
+                padding: 1.2rem 2.5rem;
+                font-size: 1.15rem;
+            }
+
+            .updates-section {
+                padding: 2rem;
+            }
+
+            .useful-links {
+                grid-template-columns: 1fr;
+            }
+
+            .share-btn {
+                grid-column: 1 / -1;
+                max-width: 400px;
+                margin: 0 auto;
+                padding: 1.3rem 2.5rem;
+                font-size: 1.2rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .useful-link, .profile-link {
+                padding: 1.3rem 1.5rem;
+            }
+
+            .error-link {
+                padding: 1.5rem 2rem;
+            }
+        }
+
+        /* Katta Desktop uchun (1440px va undan katta) */
+        @media (min-width: 1440px) {
+            .main-container {
+                max-width: 1400px;
+            }
+
+            .profile-card {
+                padding: 5rem;
+            }
+
+            .content-grid {
+                gap: 3rem;
+            }
+
+            .profile-avatar {
+                width: 200px;
+                height: 200px;
+                font-size: 5rem;
+            }
+
+            .profile-name {
+                font-size: 3.5rem;
+            }
+
+            .profile-bio {
+                font-size: 1.35rem;
+            }
+
+            .social-link {
+                padding: 1.4rem 3rem;
+                font-size: 1.25rem;
+            }
+
+            .section-title {
+                font-size: 1.6rem;
+            }
+        }
+
+        /* Mobil uchun (480px va undan kichik) */
         @media (max-width: 480px) {
             body {
                 padding: 1rem;
@@ -709,166 +914,150 @@
                 gap: 0.5rem;
             }
 
-
             .view-all-btn {
                 align-self: flex-start;
             }
         }
-
-        .toast {
-            position: fixed;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%) translateY(150%);
-            background: #1a1a1a;
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
-
-        .toast.show {
-            transform: translateX(-50%) translateY(0);
-        }
-
-        .toast i {
-            font-size: 1.2rem;
-        }
     </style>
 </head>
 <body>
-    <div class="profile-card">
-        <div class="profile-header">
-            <div class="profile-avatar"><img src="https://tezkorquiz.uz/aga/milliylogoo.png" alt="Tezkor Quiz"></div>
-            <div class="profile-name">Tezkor Quiz</div>
-            <div class="profile-bio">Raqamli testlarda maksimal qulaylik. Talabalarga testli sessiyaga tayyorlanish uchun mukammal sayt.</div>
-        </div>
-
-        <div class="updates-section">
-            <div class="updates-header">
-                <div class="updates-title">
-                    <i class="fas fa-bell"></i>
-                    <span>Yangiliklar</span>
-                </div>
-                <button class="view-all-btn" onclick="window.open('https://t.me/tezkorquiz_rasmiy/72', '_blank')">
-                    <span>Barchasi</span>
-                    <i class="fas fa-arrow-right"></i>
-                </button>
+    <div class="main-container">
+        <div class="profile-card">
+            <div class="profile-header">
+                <div class="profile-avatar"><img src="appicon/icon.png" alt="Tezkor Quiz"></div>
+                <div class="profile-name">Tezkor Quiz</div>
+                <div class="profile-bio">Raqamli testlarda maksimal qulaylik. Talabalarga testli sessiyaga tayyorlanish uchun mukammal sayt.</div>
             </div>
-            <a href="https://t.me/tezkorquiz_rasmiy/81" target="_blank" class="update-item">
-                <div class="update-date">17-Dekabr, 2025</div>
-                <div class="update-text">Tezkor Quiz saytida foydalanuvchilar soni 500 ta bo'ldi.</div>
-            </a>
-        </div>
-        
-        <div class="social-icons">
-            <a href="https://t.me/tezkorquiz_rasmiy" target="_blank" class="social-link telegram">
-                <i class="fab fa-telegram"></i> Telegram
-            </a>
-            <a href="https://www.tezkorquiz.uz" target="_blank" class="social-link website">
-                <i class="fas fa-globe"></i> Veb-sayt
-            </a>
-            <a href="https://www.instagram.com/tezkorquiz.uz/" target="_blank" class="social-link instagram">
-                <i class="fab fa-instagram"></i> Instagram
-            </a>
-            <a href="https://www.youtube.com/@Quiztezkor" target="_blank" class="social-link youtube">
-                <i class="fab fa-youtube"></i> YouTube
-            </a>
-        </div>
 
-        <div class="error-section">
-            <div class="error-title">
-                <span>Xatolar haqida</span>
-            </div>
-            <a href="#" onclick="reportError(event)" class="error-link">
-                <i class="fas fa-exclamation-triangle"></i>
-                <div class="error-link-content">
-                    <span class="error-link-title">Test faylini yuklashda xato</span>
-                    <span class="error-link-desc">Muammo haqida xabar berish</span>
-                </div>
-            </a>
-        </div>
-
-        <div class="useful-links-section">
-            <div class="section-title">Foydali havolalar</div>
-            <div class="useful-links">
-                <a href="https://t.me/tezkorquiz_rasmiy/72" target="_blank" class="useful-link telegram-link">
-                    <i class="fab fa-telegram"></i>
-                    <div class="useful-link-content">
-                        <span class="useful-link-title">Telegram kanalimiz</span>
-                        <span class="useful-link-desc">Yangiliklar va e'lonlar</span>
-                    </div>
+            <div class="social-icons">
+                <a href="https://t.me/tezkorquiz_rasmiy" target="_blank" class="social-link telegram">
+                    <i class="fab fa-telegram"></i> Telegram
                 </a>
-                <a href="https://t.me/tezkorquiz_group" target="_blank" class="useful-link telegram-link">
-                    <i class="fab fa-telegram"></i>
-                    <div class="useful-link-content">
-                        <span class="useful-link-title">Telegram guruhimiz</span>
-                        <span class="useful-link-desc">Savol-javob va muloqot</span>
-                    </div>
+                <a href="https://www.tezkorquiz.uz" target="_blank" class="social-link website">
+                    <i class="fas fa-globe"></i> Veb-sayt
                 </a>
-                <a href="https://t.me/sobirweb?text=Assalaomu%20aleykum%20aniq%20maqsadga%20o'ting%20va%20barcha%20savollaringizni%20to'liq%20yozgan%20holda%20yuboring."
-                   target="_blank"
-                   class="useful-link telegram-link">
-                    <i class="fab fa-telegram"></i>
-                    <div class="useful-link-content">
-                        <span class="useful-link-title">Adminga yozish</span>
-                        <span class="useful-link-desc">To‘g‘ridan-to‘g‘ri murojaat</span>
-                    </div>
+                <a href="https://www.instagram.com/tezkorquiz.uz/" target="_blank" class="social-link instagram">
+                    <i class="fab fa-instagram"></i> Instagram
                 </a>
-                <a href="https://tezkorquiz.uz/appdownloads"
-                   target="_blank"
-                   class="useful-link telegram-link">
-                    <i class="fa-solid fa-download"></i>
-                    <div class="useful-link-content">
-                        <span class="useful-link-title">Ilovani yuklab olish</span>
-                        <span class="useful-link-desc">Barcha qurilmalarda o'rnatish qo'llanmasi</span>
-                    </div>
-                </a>
-                <a href="https://tezkorquiz.uz/testlar" target="_blank" class="useful-link testlar">
-                    <svg class="nav-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
-                    </svg>
-                    <div class="useful-link-content">
-                        <span class="useful-link-title">Testlar</span>
-                        <span class="useful-link-desc">Barcha testlar bitta joyda</span>
-                    </div>
+                <a href="https://www.youtube.com/@Quiztezkor" target="_blank" class="social-link youtube">
+                    <i class="fab fa-youtube"></i> YouTube
                 </a>
             </div>
+
+            <div class="content-grid">
+                <div class="left-column">
+                    <div class="updates-section">
+                        <div class="updates-header">
+                            <div class="updates-title">
+                                <i class="fas fa-bell"></i>
+                                <span>Yangiliklar</span>
+                            </div>
+                            <button class="view-all-btn" onclick="window.open('https://t.me/tezkorquiz_rasmiy/72', '_blank')">
+                                <span>Barchasi</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                        <a href="https://t.me/tezkorquiz_rasmiy/81" target="_blank" class="update-item">
+                            <div class="update-date">17-Dekabr, 2025</div>
+                            <div class="update-text">Tezkor Quiz saytida foydalanuvchilar soni 500 ta bo'ldi.</div>
+                        </a>
+                    </div>
+                    
+                    <div class="error-section">
+                        <div class="error-title">
+                            <span>Xatolar haqida</span>
+                        </div>
+                        <a href="#" onclick="reportError(event)" class="error-link">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <div class="error-link-content">
+                                <span class="error-link-title">Test faylini yuklashda xato</span>
+                                <span class="error-link-desc">Muammo haqida xabar berish</span>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="useful-links-section">
+                        <div class="section-title">Foydali havolalar</div>
+                        <div class="useful-links">
+                            <a href="https://t.me/tezkorquiz_rasmiy/72" target="_blank" class="useful-link telegram-link">
+                                <i class="fab fa-telegram"></i>
+                                <div class="useful-link-content">
+                                    <span class="useful-link-title">Telegram kanalimiz</span>
+                                    <span class="useful-link-desc">Yangiliklar va e'lonlar</span>
+                                </div>
+                            </a>
+                            <a href="https://t.me/tezkorquiz_group" target="_blank" class="useful-link telegram-link">
+                                <i class="fab fa-telegram"></i>
+                                <div class="useful-link-content">
+                                    <span class="useful-link-title">Telegram guruhimiz</span>
+                                    <span class="useful-link-desc">Savol-javob va muloqot</span>
+                                </div>
+                            </a>
+                            <a href="https://t.me/sobirweb?text=Assalaomu%20aleykum%20aniq%20maqsadga%20o'ting%20va%20barcha%20savollaringizni%20to'liq%20yozgan%20holda%20yuboring."
+                               target="_blank"
+                               class="useful-link telegram-link">
+                                <i class="fab fa-telegram"></i>
+                                <div class="useful-link-content">
+                                    <span class="useful-link-title">Adminga yozish</span>
+                                    <span class="useful-link-desc">To'g'ridan-to'g'ri murojaat</span>
+                                </div>
+                            </a>
+                            <a href="https://tezkorquiz.uz/appdownloads"
+                               target="_blank"
+                               class="useful-link">
+                                <svg class="nav-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                                </svg>
+                                <div class="useful-link-content">
+                                    <span class="useful-link-title">Ilovani yuklab olish</span>
+                                    <span class="useful-link-desc">Barcha qurilmalarda o'rnatish qo'llanmasi</span>
+                                </div>
+                            </a>
+                            <a href="https://tezkorquiz.uz/testlar" target="_blank" class="useful-link testlar">
+                                <svg class="nav-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                                </svg>
+                                <div class="useful-link-content">
+                                    <span class="useful-link-title">Testlar</span>
+                                    <span class="useful-link-desc">Barcha testlar bitta joyda</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="right-column">
+                    <div class="profile-links">
+                        <a href="https://tirikchilik.uz" target="_blank" class="profile-link">
+                            <i class="fas fa-heart"></i>
+                            <div class="profile-link-content">
+                                <span class="profile-link-title">Donat qilish (tez kunda)</span>
+                                <span class="profile-link-desc">Loyihani qo'llab-quvvatlash</span>
+                            </div>
+                        </a>
+                        <a href="https://forms.gle/Gauz14uPRnfdPPUGA" target="_blank" class="profile-link">
+                            <i class="fas fa-comment-dots"></i>
+                            <div class="profile-link-content">
+                                <span class="profile-link-title">Taklif va mulohaza</span>
+                                <span class="profile-link-desc">Fikringizni bildiring</span>
+                            </div>
+                        </a>
+                        <a href="https://tezkorquiz.uz/faq" target="_blank" class="profile-link">
+                            <i class="fas fa-question-circle"></i>
+                            <div class="profile-link-content">
+                                <span class="profile-link-title">FAQ</span>
+                                <span class="profile-link-desc">Ko'p beriladigan savollar</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="share-btn" onclick="shareProfile(event)" id="shareBtn">
+                <i class="fas fa-share-alt"></i>
+                <span id="shareText">Profilni Ulashish</span>
+            </button>
         </div>
-        
-        <div class="profile-links">
-            <a href="https://tirikchilik.uz" target="_blank" class="profile-link">
-                <i class="fas fa-heart"></i>
-                <div class="profile-link-content">
-                    <span class="profile-link-title">Donat qilish (tez kunda)</span>
-                    <span class="profile-link-desc">Loyihani qo'llab-quvvatlash</span>
-                </div>
-            </a>
-            <a href="https://forms.gle/Gauz14uPRnfdPPUGA" target="_blank" class="profile-link">
-                <i class="fas fa-comment-dots"></i>
-                <div class="profile-link-content">
-                    <span class="profile-link-title">Taklif va mulohaza</span>
-                    <span class="profile-link-desc">Fikringizni bildiring</span>
-                </div>
-            </a>
-            <a href="https://tezkorquiz.uz/faq" target="_blank" class="profile-link">
-                <i class="fas fa-question-circle"></i>
-                <div class="profile-link-content">
-                    <span class="profile-link-title">FAQ</span>
-                    <span class="profile-link-desc">Ko'p beriladigan savollar</span>
-                </div>
-            </a>
-        </div>
-        
-        <button class="share-btn" onclick="shareProfile(event)" id="shareBtn">
-            <i class="fas fa-share-alt"></i>
-            <span id="shareText">Profilni Ulashish</span>
-        </button>
     </div>
 
     <div class="toast" id="toast">
@@ -972,7 +1161,6 @@
             }
         }
 
-        // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -986,12 +1174,10 @@
             });
         });
 
-        // Add ripple effect to all clickable elements
         document.querySelectorAll('.social-link, .useful-link, .profile-link, .error-link').forEach(element => {
             element.addEventListener('click', createRipple);
         });
 
-        // Lazy load animations on scroll
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
@@ -1006,7 +1192,6 @@
             });
         }, observerOptions);
 
-        // Observe all animated elements
         document.querySelectorAll('.profile-link, .useful-link, .error-link').forEach(el => {
             observer.observe(el);
         });
