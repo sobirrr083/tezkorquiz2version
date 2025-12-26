@@ -981,6 +981,37 @@
             .section-two .navbar-collapse::-webkit-scrollbar-thumb:hover {
                 background: rgba(102, 126, 234, 0.5);
             }
+
+            /* yangi tahrirlash va donat uchun css kodlari boshlandi */
+        .section-two .profile-action {
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--dark-color);
+        }
+        
+        .section-two .profile-action:hover {
+            background: rgba(67, 97, 238, 0.08);
+            color: var(--primary-color);
+        }
+        
+        .section-two .profile-action i {
+            font-size: 18px;
+        }
+        
+        .section-two .profile-action.donate {
+            color: #e53935;
+        }
+        
+        .section-two .profile-action.donate:hover {
+            background: #ffebee;
+        }
+
+            /* yangi tahrirlash va donat uchun css kodlari tugadi */
         }
 
         /* Birinchi HTML stillari (asosiy kontent uchun) */
@@ -1141,12 +1172,12 @@
         }
 
         .section-one .hero-card:hover {
-            transform: translateY(-10px);
+            transform: none;
             box-shadow: 0 35px 70px rgba(0, 0, 0, 0.3);
         }
 
         .section-one .card-container:hover .hero-card {
-            transform: translateY(-10px);
+            transform: none;
             box-shadow: 0 35px 70px rgba(0, 0, 0, 0.3);
         }
 
@@ -1643,6 +1674,14 @@
                             <h4 id="userDisplayName">Foydalanuvchi</h4>
                             <p id="userEmail">yuklanmoqda...</p>
                         </div>
+                    </div>
+                    <div class="profile-action" onclick="window.location.href='profile_edit'">
+
+                        <span>Tahrirlash</span>
+                    </div>
+                    <div class="profile-action donate" onclick="window.location.href='donate'">
+                        <i class="fas fa-heart"></i>
+                        <span>Donat qilish</span>
                     </div>
                     <div class="profile-logout" id="logoutTrigger">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -2347,6 +2386,7 @@
     </script>
 </body>
 </html>
+
 
 
 
