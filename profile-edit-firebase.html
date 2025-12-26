@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Tahrirlash</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            --hover-gradient: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .card-custom {
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border: none;
+            overflow: hidden;
+            background: white;
+        }
+
+        .card-header-gradient {
+            background: var(--primary-gradient);
+            padding: 32px 24px;
+            color: white;
+        }
+
+        .profile-image-edit {
+            width: 96px;
+            height: 96px;
+            background: var(--primary-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-image-edit img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .camera-badge {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 32px;
+            height: 32px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            border: 2px solid #e5e7eb;
+            transition: all 0.2s;
+        }
+
+        .camera-badge:hover {
+            background-color: #f3f4f6;
+            transform: scale(1.1);
+        }
+
+        .form-control-custom {
+            padding: 12px 12px 12px 40px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .form-control-custom:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            outline: none;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+
+        .btn-gradient {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-gradient:hover {
+            background: var(--hover-gradient);
+            box-shadow: 0 6px 12px rgba(59, 130, 246, 0.4);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .alert-custom {
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            border: none;
+        }
+
+        .alert-success-custom {
+            background-color: #f0fdf4;
+            color: #166534;
+        }
+
+        .alert-error-custom {
+            background-color: #fef2f2;
+            color: #991b1b;
+        }
+
+        .alert-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .success-icon {
+            background-color: #22c55e;
+        }
+
+        .error-icon {
+            background-color: #ef4444;
+        }
+
+        .spinner-border-sm {
+            width: 1rem;
+            height: 1rem;
+            border-width: 0.15em;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .loading-overlay.show {
+            display: flex;
+        }
+
+        .loading-spinner {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .forgot-password-link {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .forgot-password-link:hover {
+            color: #2563eb;
+            text-decoration: underline;
+        }
+
+        .logout-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 576px) {
+            .card-header-gradient {
+                padding: 24px 16px;
+            }
+            
+            .card-body {
+                padding: 24px 16px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner">
+            <div class="spinner-border text-primary mb-3" role="status">
+                <span class="visually-hidden">Yuklanmoqda...</span>
+            </div>
+            <p class="mb-0 fw-medium">Yuklanmoqda...</p>
+        </div>
+    </div>
+
+    <!-- Logout Button -->
+    <button class="logout-btn" onclick="handleLogout()">
+        <i class="fas fa-sign-out-alt me-2"></i>Chiqish
+    </button>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-xl-7">
+                <div class="card-custom">
+                    <div class="card-header-gradient">
+                        <h2 class="h3 fw-bold mb-1">Profil sozlamalari</h2>
+                        <p class="mb-0 opacity-75">Shaxsiy ma'lumotlaringizni tahrirlang</p>
+                    </div>
+                    <div class="card-body p-4 p-sm-5">
+                        <!-- Success Alert -->
+                        <div id="successAlert" class="alert-custom alert-success-custom" style="display: none;">
+                            <div class="alert-icon success-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <span class="fw-medium" id="successMessage">Ma'lumotlar muvaffaqiyatli saqlandi!</span>
+                        </div>
+
+                        <!-- Error Alert -->
+                        <div id="errorAlert" class="alert-custom alert-error-custom" style="display: none;">
+                            <div class="alert-icon error-icon">
+                                <i class="fas fa-exclamation"></i>
+                            </div>
+                            <span class="fw-medium" id="errorMessage">Xatolik yuz berdi!</span>
+                        </div>
+
+                        <!-- Profile Image -->
+                        <div class="mb-4">
+                            <label class="small fw-semibold mb-3">Profil rasmi</label>
+                            <div class="d-flex align-items-center gap-4">
+                                <div class="profile-image-edit" id="profileImageContainer">
+                                    <i class="fas fa-user" style="font-size: 40px; color: white;"></i>
+                                    <label class="camera-badge" for="imageUpload">
+                                        <i class="fas fa-camera text-secondary" style="font-size: 14px;"></i>
+                                    </label>
+                                    <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+                                </div>
+                                <div>
+                                    <p class="small text-muted mb-2">JPG, PNG maksimal 5MB</p>
+                                    <label for="imageUpload2" class="btn btn-light btn-sm fw-medium">
+                                        <i class="fas fa-upload me-1"></i> Rasm yuklash
+                                    </label>
+                                    <input type="file" id="imageUpload2" accept="image/*" style="display: none;">
+                                    <button id="removeImageBtn" class="btn btn-light btn-sm fw-medium ms-2" style="display: none;" onclick="removeProfileImage()">
+                                        <i class="fas fa-trash me-1"></i> O'chirish
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Full Name -->
+                        <div class="mb-4">
+                            <label class="small fw-semibold mb-2">To'liq ism</label>
+                            <div class="position-relative">
+                                <i class="fas fa-user input-icon"></i>
+                                <input type="text" class="form-control form-control-custom" id="displayName" placeholder="Ismingizni kiriting">
+                            </div>
+                        </div>
+
+                        <!-- Email (Read-only) -->
+                        <div class="mb-4">
+                            <label class="small fw-semibold mb-2">Email manzil</label>
+                            <div class="position-relative">
+                                <i class="fas fa-envelope input-icon"></i>
+                                <input type="email" class="form-control form-control-custom" id="userEmail" placeholder="email@example.com" readonly style="background-color: #f9fafb;">
+                            </div>
+                            <p class="small text-muted mt-1 mb-0">Email manzilini o'zgartirib bo'lmaydi</p>
+                        </div>
+
+                        <!-- Password Section -->
+                        <div class="border-top pt-4 mt-4">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h3 class="h5 fw-semibold mb-0">Parolni o'zgartirish</h3>
+                            </div>
+                            <p class="text-muted small mb-3">
+                                Parolni o'zgartirish uchun email manzilingizga havolani yuboramiz
+                            </p>
+                            <a href="forgot-password.html" class="forgot-password-link">
+                                <i class="fas fa-key me-2"></i>Parolni unutdingizmi?
+                            </a>
+                        </div>
+
+                        <!-- Save Buttons -->
+                        <div class="d-flex gap-3 pt-4 border-top mt-4">
+                            <button class="btn btn-light flex-grow-1 fw-semibold py-2" onclick="window.history.back()">
+                                <i class="fas fa-arrow-left me-2"></i>Orqaga
+                            </button>
+                            <button class="btn btn-gradient flex-grow-1 fw-semibold py-2" onclick="saveProfile()" id="saveBtn">
+                                <i class="fas fa-save me-2"></i>Saqlash
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const storage = firebase.storage();
+        const db = firebase.firestore();
+
+        let currentUser = null;
+        let currentPhotoURL = null;
+
+        // Check authentication
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                currentUser = user;
+                await loadUserProfile(user);
+            } else {
+                // Redirect to login if not authenticated
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Load user profile
+        async function loadUserProfile(user) {
+            showLoading(true);
+            try {
+                document.getElementById('userEmail').value = user.email;
+                document.getElementById('displayName').value = user.displayName || '';
+                
+                if (user.photoURL) {
+                    currentPhotoURL = user.photoURL;
+                    updateProfileImageDisplay(user.photoURL);
+                }
+
+                // Load additional user data from Firestore
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    if (userData.displayName) {
+                        document.getElementById('displayName').value = userData.displayName;
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading profile:', error);
+                showError('Profil ma\'lumotlarini yuklashda xatolik yuz berdi');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Handle image upload
+        document.getElementById('imageUpload').addEventListener('change', handleImageUpload);
+        document.getElementById('imageUpload2').addEventListener('change', handleImageUpload);
+
+        async function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            // Validate file size (5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                showError('Rasm hajmi 5MB dan oshmasligi kerak');
+                return;
+            }
+
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+                showError('Faqat rasm fayllarini yuklash mumkin');
+                return;
+            }
+
+            showLoading(true);
+            try {
+                // Upload to Firebase Storage
+                const storageRef = storage.ref();
+                const imageRef = storageRef.child(`profile-images/${currentUser.uid}/${Date.now()}_${file.name}`);
+                
+                const snapshot = await imageRef.put(file);
+                const downloadURL = await snapshot.ref.getDownloadURL();
+                
+                // Update display
+                currentPhotoURL = downloadURL;
+                updateProfileImageDisplay(downloadURL);
+                
+                showSuccess('Rasm muvaffaqiyatli yuklandi');
+            } catch (error) {
+                console.error('Error uploading image:', error);
+                showError('Rasmni yuklashda xatolik yuz berdi');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Update profile image display
+        function updateProfileImageDisplay(url) {
+            const container = document.getElementById('profileImageContainer');
+            container.innerHTML = `
+                <img src="${url}" alt="Profile">
+                <label class="camera-badge" for="imageUpload">
+                    <i class="fas fa-camera text-secondary" style="font-size: 14px;"></i>
+                </label>
+                <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+            `;
+            document.getElementById('imageUpload').addEventListener('change', handleImageUpload);
+            document.getElementById('removeImageBtn').style.display = 'inline-block';
+        }
+
+        // Remove profile image
+        async function removeProfileImage() {
+            if (!confirm('Profil rasmini o\'chirmoqchimisiz?')) return;
+
+            showLoading(true);
+            try {
+                // Delete from Storage if exists
+                if (currentPhotoURL && currentPhotoURL.includes('firebase')) {
+                    const imageRef = storage.refFromURL(currentPhotoURL);
+                    await imageRef.delete().catch(() => {});
+                }
+
+                currentPhotoURL = null;
+                
+                const container = document.getElementById('profileImageContainer');
+                container.innerHTML = `
+                    <i class="fas fa-user" style="font-size: 40px; color: white;"></i>
+                    <label class="camera-badge" for="imageUpload">
+                        <i class="fas fa-camera text-secondary" style="font-size: 14px;"></i>
+                    </label>
+                    <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+                `;
+                document.getElementById('imageUpload').addEventListener('change', handleImageUpload);
+                document.getElementById('removeImageBtn').style.display = 'none';
+                
+                showSuccess('Rasm o\'chirildi');
+            } catch (error) {
+                console.error('Error removing image:', error);
+                showError('Rasmni o\'chirishda xatolik yuz berdi');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Save profile
+        async function saveProfile() {
+            const displayName = document.getElementById('displayName').value.trim();
+
+            if (!displayName) {
+                showError('Iltimos, ismingizni kiriting');
+                return;
+            }
+
+            showLoading(true);
+            const saveBtn = document.getElementById('saveBtn');
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saqlanmoqda...';
+
+            try {
+                // Update Firebase Auth profile
+                await currentUser.updateProfile({
+                    displayName: displayName,
+                    photoURL: currentPhotoURL
+                });
+
+                // Update Firestore
+                await db.collection('users').doc(currentUser.uid).set({
+                    displayName: displayName,
+                    photoURL: currentPhotoURL,
+                    email: currentUser.email,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                }, { merge: true });
+
+                showSuccess('Ma\'lumotlar muvaffaqiyatli saqlandi!');
+                
+                // Redirect after 2 seconds
+                setTimeout(() => {
+                    window.location.href = 'profile.html';
+                }, 2000);
+
+            } catch (error) {
+                console.error('Error saving profile:', error);
+                showError('Ma\'lumotlarni saqlashda xatolik: ' + error.message);
+            } finally {
+                showLoading(false);
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = '<i class="fas fa-save me-2"></i>Saqlash';
+            }
+        }
+
+        // Handle logout
+        async function handleLogout() {
+            if (!confirm('Tizimdan chiqmoqchimisiz?')) return;
+
+            showLoading(true);
+            try {
+                await auth.signOut();
+                window.location.href = 'login.html';
+            } catch (error) {
+                console.error('Error logging out:', error);
+                showError('Chiqishda xatolik yuz berdi');
+                showLoading(false);
+            }
+        }
+
+        // Utility functions
+        function showSuccess(message) {
+            const alert = document.getElementById('successAlert');
+            document.getElementById('successMessage').textContent = message;
+            alert.style.display = 'flex';
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 5000);
+        }
+
+        function showError(message) {
+            const alert = document.getElementById('errorAlert');
+            document.getElementById('errorMessage').textContent = message;
+            alert.style.display = 'flex';
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 5000);
+        }
+
+        function showLoading(show) {
+            const overlay = document.getElementById('loadingOverlay');
+            if (show) {
+                overlay.classList.add('show');
+            } else {
+                overlay.classList.remove('show');
+            }
+        }
+    </script>
+</body>
+</html>
