@@ -606,7 +606,7 @@ window.showPage=id=>{
 };
 
 const pwInput = document.getElementById('signupPassword');
-const commonPasswords = ['abcd', '12345678', 'password', 'qwerty', 'abc123', 'admin', 'welcome', '1234567890', 'password123', '11111111', 'dragon', 'baseball', 'football', 'iloveyou'];
+const commonPasswords = ['abcd', '12345678', 'password', 'qwerty', 'abc12345', 'admin', 'welcome', '1234567890', 'password123', '11111111', 'dragon', 'baseball', 'football', 'iloveyou'];
 
 function checkPasswordRequirements(p) {
   const lengthOk = p.length >= 8;
@@ -680,7 +680,7 @@ document.getElementById('loginForm').addEventListener('submit',async e=>{
     showAlert('loginAlert','Muvaffaqiyatli kirildi!','success');
     clearForm('loginForm');
     const params = new URLSearchParams(window.location.search);
-    const returnUrl = params.get('returnUrl') || 'index.html';
+    const returnUrl = params.get('returnUrl') || 'index';
     setTimeout(()=>location.href=returnUrl,1500)
   
   }catch(err){
@@ -713,7 +713,7 @@ document.getElementById('signupForm').addEventListener('submit',async e=>{
     showAlert('signupAlert','Muvaffaqiyatli ro\'yxatdan o\'tdingiz!','success');
     clearForm('signupForm');
     const params = new URLSearchParams(window.location.search);
-    const returnUrl = params.get('returnUrl') || 'index.html';
+    const returnUrl = params.get('returnUrl') || 'index';
     setTimeout(()=>location.href=returnUrl,1500)
   }
   catch(err){
@@ -755,7 +755,7 @@ async function signInWithGoogle(buttonId, alertId) {
     showAlert(alertId, 'Google orqali muvaffaqiyatli kirildi!', 'success');
     console.log('Google user:', user.displayName, user.email);
     const params = new URLSearchParams(window.location.search);
-    const returnUrl = params.get('returnUrl') || 'index.html';
+    const returnUrl = params.get('returnUrl') || 'index';
     setTimeout(() => {
       location.href = returnUrl;
     }, 1500);
