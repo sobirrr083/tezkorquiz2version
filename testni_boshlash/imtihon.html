@@ -977,7 +977,7 @@
     <div class="countdown-content">
       <div class="countdown-text">Imtihon boshlanmoqda...</div>
       <div id="countdownNumber" class="countdown-number">3</div>
-      <div class="countdown-message">Omad tilaymiz! 🍀</div>
+      <div class="countdown-message">Omad tilaymiz!</div>
     </div>
   </div>
   
@@ -1011,19 +1011,19 @@
           Testlarni boshlash uchun yuqoridagi "Fayl tanlash" orqali .txt faylini yuklang. Fayl quyidagi formatda bo'lishi kerak:
         </p>
         <pre>O'zbekiston poytaxti qayer?
-A. Toshkent
-B. Samarqand
-C. Namangan
-D. Buxoro
-ANSWER: A
-
-Kompyuterda yozish uchun nima kerak?
-A. Monitor
-B. Sichqoncha
-C. Klaviatura
-D. Printer
-ANSWER: C
-</pre>
+        A. Toshkent
+        B. Samarqand
+        C. Namangan
+        D. Buxoro
+        ANSWER: A
+        
+        Kompyuterda yozish uchun nima kerak?
+        A. Monitor
+        B. Sichqoncha
+        C. Klaviatura
+        D. Printer
+        ANSWER: C
+        </pre>
         <p>
           <strong>Izoh:</strong> Har bir savol bir qatordan boshlanadi, undan keyin A, B, C, D variantlari va ANSWER: so'zidan keyin bitta probel bilan to'g'ri javob (A, B, C yoki D) ko'rsatiladi va bir qator ochiq joy (Enter) qoldiriladi va keyingi savol namunadek davom etadi.
           <br><br>
@@ -1038,76 +1038,11 @@ ANSWER: C
     </div>
   </div>
 </div>
- <!-- himoyalangan sahifa: protected.html -->
-<script type="module">
-  // Firebase SDK import qilingan deb faraz qilamiz
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-
-  const firebaseConfig = {
-   apiKey: "AIzaSyBxIpLY5WasiSIlDL4japBLnnXRwOLUKEQ",
-      authDomain: "tezkor-quiz-bbe3c.firebaseapp.com",
-    // ... boshqa sozlamalar
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-
-  // Current page URL (return uchun)
-  const returnUrl = encodeURIComponent(window.location.pathname + window.location.search);
-
-  onAuthStateChanged(auth, (user) => {
-    if (!user) {
-      // foydalanuvchi kirmagan — login sahifasiga yo'naltirish
-      window.location.replace(`/kirish.html?returnUrl=${returnUrl}`);
-    } else {
-      // foydalanuvchi kirdi — sahifa davom ettirilsin
-      console.log("User logged in:", user.uid);
-    }
-  });
-</script>
-  
-<script>
-(function(){
-const _0x5a3c=[
-'addEventListener','keydown','toLowerCase','includes','preventDefault','contextmenu','⚠️ Tizim xavfsizligi: ruxsatsiz amal aniqlandi.','⚠️ Tizim xavfsizligi: Developer Tools aniqlandi.','replace','about:blank'
-];
-function _0x1d9f(i){ return _0x5a3c[i]; }
-function _0x7b2e(msgIndex){
-alert(_0x1d9f(msgIndex));
-location[_0x1d9f(8)](_0x1d9f(9));
-}
-document[_0x1d9f(0)](_0x1d9f(1),function(e){
-let k=(e.key||'')[_0x1d9f(2)]();
-if(e.ctrlKey&&e.shiftKey&&['i','j','c','k'][_0x1d9f(3)](k)){
-e[_0x1d9f(4)](); _0x7b2e(6);
-}
-if(e.key==='F12'){
-e[_0x1d9f(4)](); _0x7b2e(6);
-}
-if(e.ctrlKey&&k==='u'){
-e[_0x1d9f(4)](); _0x7b2e(6);
-}
-});
-document[_0x1d9f(0)](_0x1d9f(5),function(e){
-e[_0x1d9f(4)]();
-});
-const _isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-if(!_isMobile){
-const LIMIT=160;
-setInterval(function(){
-const dw=window.outerWidth-window.innerWidth;
-const dh=window.outerHeight-window.innerHeight;
-if(dw>LIMIT||dh>LIMIT){
-_0x7b2e(7);
-}
-},700);
-}
-
-})();
-</script>
-
-<script>
+  <!-- protect java -->
+  <script type="module" src="/js/protect.js"></script>
+  <!-- xavsizlik kodi -->
+  <script type="module" src="/js/security.js"></script>
+  <script>
   let originalTests = [];
   let randomizedTests = [];
   let timerInterval;
@@ -1889,5 +1824,6 @@ _0x7b2e(7);
 </script>
 </body>
 </html>
+
 
 
