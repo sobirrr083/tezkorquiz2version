@@ -255,7 +255,10 @@
   </div>
 </div>
 <button id="backToTop" title="Yuqoriga qaytish">🔼</button>
-
+  <!-- protect java -->
+  <script type="module" src="/js/protect.js"></script>
+  <!-- xavsizlik kodi -->
+  <script type="module" src="/js/security.js"></script>
 <script>
   const backToTopButton = document.getElementById("backToTop");
   const startNewTestButton = document.getElementById("startNewTest");
@@ -279,7 +282,7 @@
   let stats = { correct: 0, incorrect: 0, total: 0 };
 
   const animationFiles = [
-      './json/buy.json',
+    './json/buy.json',
     './json/marketing.json',
     './json/target.json',
     './json/work.json',
@@ -720,3 +723,4 @@
 </script>
 </body>
 </html>
+
