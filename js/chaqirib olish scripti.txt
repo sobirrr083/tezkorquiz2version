@@ -1,0 +1,2 @@
+    <!-- Xavfsizlik skripti -->
+    <script src="/security.js"></script>
