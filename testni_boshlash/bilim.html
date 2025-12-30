@@ -868,101 +868,10 @@
             </div>
         </div>
     </div>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
- <!-- himoyalangan sahifa: protected.html -->
-<script type="module">
-  // Firebase SDK import qilingan deb faraz qilamiz
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-
-  const firebaseConfig = {
-   apiKey: "AIzaSyBxIpLY5WasiSIlDL4japBLnnXRwOLUKEQ",
-      authDomain: "tezkor-quiz-bbe3c.firebaseapp.com",
-    // ... boshqa sozlamalar
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-
-  // Current page URL (return uchun)
-  const returnUrl = encodeURIComponent(window.location.pathname + window.location.search);
-
-  onAuthStateChanged(auth, (user) => {
-    if (!user) {
-      // foydalanuvchi kirmagan — login sahifasiga yo'naltirish
-      window.location.replace(`/kirish.html?returnUrl=${returnUrl}`);
-    } else {
-      // foydalanuvchi kirdi — sahifa davom ettirilsin
-      console.log("User logged in:", user.uid);
-    }
-  });
-</script>
- 
-    <script>
-    (function(){
-    
-    /* ================== CORE STRINGS ================== */
-    const _0x5a3c=[
-    'addEventListener',
-    'keydown',
-    'toLowerCase',
-    'includes',
-    'preventDefault',
-    'contextmenu',
-    '⚠️ Tizim xavfsizligi: ruxsatsiz amal aniqlandi.',
-    '⚠️ Tizim xavfsizligi: Developer Tools aniqlandi.',
-    'replace',
-    'about:blank'
-    ];
-    
-    function _0x1d9f(i){ return _0x5a3c[i]; }
-    
-    /* ================== CLOSE HANDLER ================== */
-    function _0x7b2e(msgIndex){
-    alert(_0x1d9f(msgIndex));
-    location[_0x1d9f(8)](_0x1d9f(9));
-    }
-    
-    /* ================== HOTKEY BLOCK ================== */
-    document[_0x1d9f(0)](_0x1d9f(1),function(e){
-    let k=(e.key||'')[_0x1d9f(2)]();
-    
-    if(e.ctrlKey&&e.shiftKey&&['i','j','c','k'][_0x1d9f(3)](k)){
-    e[_0x1d9f(4)](); _0x7b2e(6);
-    }
-    
-    if(e.key==='F12'){
-    e[_0x1d9f(4)](); _0x7b2e(6);
-    }
-    
-    if(e.ctrlKey&&k==='u'){
-    e[_0x1d9f(4)](); _0x7b2e(6);
-    }
-    });
-    
-    /* ================== RIGHT CLICK ================== */
-    document[_0x1d9f(0)](_0x1d9f(5),function(e){
-    e[_0x1d9f(4)]();
-    });
-    
-    /* ================== DEVTOOLS DETECT (DESKTOP ONLY) ================== */
-    const _isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-    if(!_isMobile){
-    const LIMIT=160;
-    setInterval(function(){
-    const dw=window.outerWidth-window.innerWidth;
-    const dh=window.outerHeight-window.innerHeight;
-    if(dw>LIMIT||dh>LIMIT){
-    _0x7b2e(7);
-    }
-    },700);
-    }
-    
-    })();
-    </script>
-
-    
+      <!-- protect java -->
+      <script type="module" src="/js/protect.js"></script>
+      <!-- xavsizlik kodi -->
+      <script type="module" src="/js/security.js"></script>  
     <script>
         class QuizApp {
             constructor() {
