@@ -437,6 +437,8 @@
         <div class="faq-category">
             <button class="category-btn active" data-category="all">Barchasi</button>
             <button class="category-btn" data-category="sayt">Sayt bo'limlari</button>
+            <button class="category-btn" data-category="xatoliklar">Xatoliklar</button>
+            <button class="category-btn" data-category="login">Login</button>
             <button class="category-btn" data-category="xizmat">Xizmatlar</button>
             <button class="category-btn" data-category="bot">Telegram bot</button>
             <button class="category-btn" data-category="boshqa">Boshqalar</button> 
@@ -496,6 +498,50 @@
                 }
             ],
 
+            xatoliklar: [
+                {
+                    question: "Test savollari qanday formatda yozilishi kerak?",
+                    answer: "Test savoli oddiy matn ko'rinishida yoziladi va so'roq belgisi bilan tugaydi. Savoldan keyin variantlar beriladi. Variantlar A, B, C, D harflari bilan belgilanadi va har biri alohida qatorda yoziladi. Variantlardan keyin to'g'ri javob ANSWER: so'zi orqali ko'rsatiladi va faqat variant harfi yoziladi. Javob matni yozilmaydi. Har bir savol bloki savol, variantlar va ANSWER qismidan iborat bo'ladi. Har bir savoldan keyin kamida bitta bo'sh qator qoldiriladi. Bitta faylda yoki sahifada bir nechta savollar ketma-ket joylashtirilishi mumkin. ANSWER: so'zi aynan shu ko'rinishda yozilishi kerak. Variant harflari katta harfda bo'lishi tavsiya etiladi. Formatga to'liq amal qilinmasa test noto'g'ri ishlashi yoki yuklanmasligi mumkin.<br><br>Saytda testlar qanday yuklanishini tushunish uchun namuna test faylini yuklab oling.<br><a href=\"https://tezkorquiz.uz/namuna_test.txt\" download=\"namuna_test.txt\">Namuna test faylini yuklab olish (.txt)</a>"
+                },
+                {
+                    question: "Telegram’dan linkni bosib kirganimda nega login yoki Google hisob so‘raladi?",
+                    answer: "Telegram ichidagi brauzer (in-app browser) oddiy brauzer kabi ishlaydi, lekin u alohida muhit hisoblanadi. Shu sababli saytga oldin kirilgan bo‘lsa ham, sessiya va login ma’lumotlari saqlanmaydi. Natijada tizim foydalanuvchini yangi kirgan deb qabul qiladi va login, parol yoki Google hisob orqali qayta kirishni so‘raydi. <br> <br> <b> Bu xatolikmi yoki sayt muammosimi? </b> <br> Yo‘q, bu xatolik emas. Bu Telegram brauzerining ishlash xususiyati. Sayt xavfsizligi uchun foydalanuvchi autentifikatsiyasi qayta talab qilinadi. <br> <br> <b> Qanday qilib bu holatdan qochish mumkin? </b> <br> Agar doimiy login saqlanishini xohlasangiz, saytni Chrome, Safari yoki boshqa oddiy brauzerda ochish tavsiya etiladi. Telegram brauzerida esa har safar qayta login talab qilinishi mumkin. <br> <br> <b>Telegram’da ichki brauzerni qanday o‘chirish mumkin?</b> <br> Quyidagi amallarni bajaring: Telegram ilovasini oching Sozlamalar (Settings) bo‘limiga kiring Ma’lumotlar va xotira (Data and Storage) ni tanlang In-App Browser / Ichki brauzer sozlamasini toping Uni o‘chiring (OFF) yoki Always open in external browser holatiga o‘tkazing"
+                },
+            ],
+            login: [
+                {
+                    question: "Tezkor Quiz’da qanday qilib tizimga kiraman?",
+                    answer: "Tizimga kirish uchun sayt yuqorgi menyusida profilga bosing va tizimga kirish tugmasini bosing sahifasida elektron pochta va parolni kiriting yoki Google hisob orqali kirishni tanlang."
+                },
+                {
+                    question: "Ro‘yxatdan o‘tmagan bo‘lsam, login qila olamanmi?",
+                    answer: "Yo‘q. Avval ro‘yxatdan o‘tishingiz kerak. sayt menyusida profilga bosing va tizimga kirishni bosing yoki saxifalar ichiga kiring va avtomatik kirish sahifasiga kirasiz u joyda Ro'yxatdan o'tish tugmasini bosing va malumotlarni kiriting yoki Google orqali kirishni bosing. Ro‘yxatdan o‘tgach, login va parol orqali tizimga kirishingiz mumkin."
+                },
+                {
+                    question: "Login uchun qaysi ma’lumotlar talab qilinadi?",
+                    answer: "Ism, Elektron pochta (email) va siz yaratgan parol talab qilinadi. Agar Google orqali ro‘yxatdan o‘tilgan bo‘lsa, Google hisob yetarli."
+                },
+                                {
+                    question: "Parolimni unutib qo‘ysam nima qilaman?",
+                    answer: "Kirish sahifasida “Parolni unutdingizmi?” havolasini bosib, emailingizni kiriting. Parolni tiklash havolasi emailingiz (namuna@gmail.com) ga yuboriladi."
+                },
+                                {
+                    question: "Nega to‘g‘ri login-parol kiritsam ham tizimga kirmayapti?",
+                    answer: "Buning sabablari quyidagilar bo‘lishi mumkin: Email yoki parol noto‘g‘ri kiritilgan, Caps Lock yoqilgan, Internet aloqasi uzilgan, Hisobingiz elektron pochtasi haqiqiy emas, Ma’lumotlarni qayta tekshirib ko‘ring."
+                },
+                 {
+                    question: "Bir marta login qilgach, qayta kirishim kerak bo‘ladimi?",
+                    answer: "Oddiy brauzerda (Chrome, Safari) kirilgan bo‘lsa, login saqlanadi. Ammo Telegram ichki brauzerida har safar qayta login so‘ralishi mumkin."
+                },
+                 {
+                    question: "Login qilmasdan test ishlash mumkinmi?",
+                    answer: "Yo‘q. saytda test ishlash va funksiyalardan foydalanish uchun tizimga kirish shart."
+                },
+                 {
+                    question: "Agar login bilan bog‘liq muammo hal bo‘lmasa nima qilaman?",
+                    answer: "Aloqa sahifasi orqali administratorga murojaat qiling yoki qayta urinib ko‘ring."
+                },
+            ],
             xizmat: [
                 {
                     question: "Sizning xizmatlaringiz boshqa quiz saytlardan nimasi bilan farq qiladi?",
@@ -504,7 +550,19 @@
                 {
                     question: "Xizmatlar bepulmi?",
                     answer: "Bizning barcha xizmatlarimiz hozircha mutlaqo bepul"
-                }
+                },
+                {
+                question: "Adminga murojaat qilish",
+                answer: "Biz bu yerdamiz. Savol yoki muammo bo‘lsa <a href=\"https://tezkorquiz.uz/aloqa\" target=\"_blank\" rel=\"noopener noreferrer\">Aloqa sahifasi</a> orqali yoki <a href=\"https://tezkorquiz.uz/link\" target=\"_blank\" rel=\"noopener noreferrer\">Havolalar sahifasi</a> orqali biz bilan bog‘lanishingiz mumkin."
+                },
+                {
+                    question: "Bir nechta qurilmada bitta hisobdan foydalanish mumkinmi?",
+                    answer: "Ha. Bir hisob bilan bir nechta qurilmadan kirish mumkin. Har bir qurilmada alohida login talab qilinadi."
+                },
+                {
+                    question: "Google orqali kirish xavfsizmi?",
+                    answer: "Ha. Google orqali kirish rasmiy va xavfsiz hisoblanadi. Sayt foydalanuvchining parolini saqlamaydi, faqat Google tomonidan tasdiqlangan ma’lumotlardan foydalanadi."
+                },
             ],
             bot: [
                 {
@@ -522,9 +580,11 @@
 
         const categoryNames = {
             sayt: "Sayt bo'limlari",
+            xatoliklar: "Xatoliklar",
             xizmat: "Xizmatlar",
             bot: "Telegram bot",
-            boshqa: "Boshqalar"
+            boshqa: "Boshqalar",
+            login: "Login"
         };
 
         function renderFAQ(categories = Object.keys(faqData)) {
