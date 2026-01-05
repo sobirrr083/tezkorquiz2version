@@ -1951,13 +1951,13 @@
                         <a href="https://tezkorquiz.uz/terms_of_use" class="footer-link">Foydalanish shartlari</a>
                         <a href="faq" class="footer-link">Yordam</a>
                     </div>
-                    <div class="col-lg-4 col-md-4">
+                    <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
                         <h5 class="footer-title">Biz bilan bog'laning</h5>
                         <p class="mb-2"><i class="fas fa-envelope me-2"></i> tezkorquiz@gmail.com</p>
                         <p class="mb-2"><i class="fas fa-phone me-2"></i> +998 90 577 08 32</p>
-                        <p><i class="fas fa-map-marker-alt me-2"></i> O'zbekiston</p>
+                        <p><i class="fas fa-map-marker-alt me-2"></i>O'zbekiston</p>
                     </div>
-                    <div class="col-lg-4 col-md-4">
+                    <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
                     <button id="scrollToTop">
                       <div class="text">
                         <span>Yuqorga</span>
@@ -2017,7 +2017,6 @@
     <script>
     // JavaScript
     const scrollToTopBtn = document.getElementById('scrollToTop');
-    
     scrollToTopBtn.addEventListener('click', function() {
       window.scrollTo({
         top: 0,
@@ -2030,28 +2029,22 @@
         const snowContainer = document.getElementById('snowContainer');
         const maxSnowflakes = 25;
         let activeSnowflakes = 0;
-        
         // Cursor qor effekti
         let lastCursorMove = 0;
         let cursorSnowCount = 0;
         const maxCursorSnow = 20;
         let mouseX = 0, mouseY = 0;
         let lastX = 0, lastY = 0;
-        
         // Qor shakllari
         const snowShapes = ['❄', '❅', '❆', '✻'];
-        
         // Cursor harakati
         document.addEventListener('mousemove', (e) => {
             mouseX = e.clientX;
             mouseY = e.clientY;
-            
             const now = Date.now();
             const distance = Math.sqrt(Math.pow(mouseX - lastX, 2) + Math.pow(mouseY - lastY, 2));
-            
             let minInterval = 60;
             let spawnCount;
-            
             if (distance > 80) {
                 spawnCount = 2;
             } else if (distance > 40) {
@@ -2059,14 +2052,11 @@
             } else {
                 spawnCount = 1;
             }
-            
             if (now - lastCursorMove < minInterval) return;
             if (cursorSnowCount >= maxCursorSnow) return;
-            
             lastCursorMove = now;
             lastX = mouseX;
             lastY = mouseY;
-            
             for (let i = 0; i < spawnCount; i++) {
                 if (cursorSnowCount >= maxCursorSnow) break;
                 
@@ -2559,6 +2549,7 @@
     </script>
 </body>
 </html>
+
 
 
 
