@@ -1453,7 +1453,7 @@
                 display: none !important;
             }
         }
-        /* yuqorga qaytish */ 
+        /* yuqorga qaytish tugmasi kodi */
         button {
           width: 140px;
           height: 56px;
@@ -1464,6 +1464,12 @@
           position: relative;
           padding-bottom: 2em;
           cursor: pointer;
+        }
+        
+        button.show {
+          opacity: 1;
+          visibility: visible;
+          transform: translateY(0);
         }
         
         button > div,
@@ -1531,7 +1537,7 @@
         button:hover .clone > :nth-child(4) {
           transition-delay: 0.3s;
         }
-        /* icon style and hover */
+        
         button svg {
           width: 20px;
           right: 0;
@@ -1543,7 +1549,6 @@
         button:hover svg {
           transform: translateY(-50%) rotate(-90deg);
         }
-
     </style>
 
     <!-- qor effectlari kodlari -->
@@ -1953,13 +1958,14 @@
                         <p><i class="fas fa-map-marker-alt me-2"></i> O'zbekiston</p>
                     </div>
                     <div class="col-lg-4 col-md-4">
-                        <!-- From Uiverse.io by satyamchaudharydev --> 
-                    <button>
+                    <button id="scrollToTop">
                       <div class="text">
                         <span>Yuqorga</span>
+                        <span>qaytish</span>
                       </div>
                       <div class="clone">
                         <span>Yuqorga</span>
+                        <span>qaytish</span>
                       </div>
                       <svg
                         stroke-width="2"
@@ -1977,7 +1983,6 @@
                         ></path>
                       </svg>
                     </button>
-
                     </div>
                 </div>
                 <div class="copyright">
@@ -2012,7 +2017,17 @@
       }
     }
     </script>
-
+    <script>
+    // JavaScript
+    const scrollToTopBtn = document.getElementById('scrollToTop');
+    
+    scrollToTopBtn.addEventListener('click', function() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+    </script>
 <!-- qor effecti kodlari javascriptlar boshlandi-->
   <script>
         const snowContainer = document.getElementById('snowContainer');
@@ -2547,6 +2562,7 @@
     </script>
 </body>
 </html>
+
 
 
 
