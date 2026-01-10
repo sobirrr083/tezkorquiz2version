@@ -894,7 +894,7 @@
 <body>
 
 <div class="container">
-    <h1>Segment 25</h1>
+    <h1>📋 Segment 25</h1>
 
     <div class="features-container">
         <div class="feature-item">
@@ -920,7 +920,7 @@
             </div>
             <div class="feature-text">
                 <strong>25 ta testdan bo'lish</strong>
-                <p>Katta test faylini 25 yoki N ta testli qismlarga bo'ladi</p>
+                <p>Katta test faylini har biri 25 ta testli qismlarga bo'ladi</p>
             </div>
         </div>
         <div class="feature-item">
@@ -975,15 +975,22 @@
 
     <div class="upload-container">
         <h2>Test faylini yuklang</h2>
-        <p>Agar telegramdan kirsangiz, yuklab olish uchun Chrome brauzerdan oching!</p>
+        <p>Testlarni standart formatga to'g'irlayman va har bir sahifaga avtomatik nom beraman.<br>
+        Agar telegramdan kirsangiz, yuklab olish uchun Chrome brauzerdan oching!</p>
+        
+        <div class="settings-input">
+            <label>Har bir sahifada:</label>
+            <input type="number" id="testsPerPageInput" min="5" max="100" value="25">
+            <label>ta test</label>
+        </div>
         
         <div class="format-example">
-            <b>Standart format</b>
-            <br>O'zbekiston poytaxti qayer?
-            <br>A. Toshkent
-            <br>B. Xorazm
-            <br>C. Samarqand
-            <br>D. Andijon
+            <b>STANDART FORMAT</b>
+            <br>Qanday tarmoq turi Narsalar interneti komponentlari o'rtasidagi aloqa uchun ishlatiladi?
+            <br>A. LAN
+            <br>B. WAN 
+            <br>C. WLAN
+            <br>D. PAN 
             <br>ANSWER: A  
         </div>
      
@@ -995,7 +1002,7 @@
         </label>
         <input type="file" id="fileInput" accept=".txt" hidden>
         <div id="fileInfo" class="file-info" style="display: none;"></div>
-        <div id="uploadStatus"></div>
+        <div id="uploadStatus" style="display: none;"></div>
     </div>
 
     <div id="testResults" style="display: none;">
@@ -1213,13 +1220,21 @@
         const file = e.target.files[0];
         if (!file) return;
 
-        // testsPerPage qiymatini yangilash
-        testsPerPage = parseInt(testsPerPageInput.value) || 25;
+        // testsPerPage qiymatini yangilash va validatsiya
+        let inputValue = parseInt(testsPerPageInput.value);
+        if (isNaN(inputValue) || inputValue < 5 || inputValue > 100) {
+            testsPerPage = 25;
+            testsPerPageInput.value = 25;
+            testsPerPageInput.classList.remove('invalid');
+        } else {
+            testsPerPage = inputValue;
+        }
 
         originalFileName = file.name.replace('.txt', '');
         fileInfo.textContent = `📄 ${file.name}`;
         fileInfo.style.display = 'block';
         uploadStatus.innerHTML = "<span style='color: #f59e0b;'>⏳ Yuklanmoqda...</span>";
+        uploadStatus.style.display = 'block';
 
         const reader = new FileReader();
         reader.onload = function(e) {
@@ -1267,6 +1282,8 @@
         if (currentTest && currentTest.answer) {
             tests.push(currentTest);
         }
+
+        uploadStatus.style.display = 'block';
 
         if (tests.length > 0) {
             uploadStatus.innerHTML = `<span style='color: #10b981;'>✅ ${tests.length} ta test yuklandi!</span>`;
