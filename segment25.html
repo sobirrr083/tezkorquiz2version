@@ -2,16 +2,13 @@
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" href="aga/logo01.png">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Segment Qilish</title>
+    <title>Segment 25 - Test Qilish</title>
     
-    <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <style>
-        /* Global stil */
         body {
             font-family: 'Arial', sans-serif;
             background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
@@ -36,24 +33,6 @@
             font-size: 2.2rem;
         }
 
-        /* Bosh sahifa tugmasi */
-        .btn-home {
-            background: #4D6CFA;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-
-        .btn-home:hover {
-            background: #3d5ce8;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(77, 108, 250, 0.3);
-        }
-
-        /* Funksiyalar bo'limi */
         .features-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -110,7 +89,44 @@
             line-height: 1.5;
         }
 
-        /* Fayl yuklash */
+        .settings-input {
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            border: 2px solid #4D6CFA;
+        }
+
+        .settings-input label {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 15px;
+            margin: 0;
+        }
+
+        .settings-input input[type="number"] {
+            width: 80px;
+            padding: 10px 14px;
+            border: 2px solid #4D6CFA;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            text-align: center;
+            color: #4D6CFA;
+            background: #eff6ff;
+            transition: all 0.3s;
+        }
+
+        .settings-input input[type="number"]:focus {
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(77, 108, 250, 0.15);
+            background: white;
+        }
+
         .upload-container {
             margin: 25px 0;
             padding: 30px;
@@ -151,7 +167,9 @@
         }
 
         .file-label {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
             padding: 14px 32px;
             background: #4D6CFA;
             color: white;
@@ -162,26 +180,41 @@
             margin-top: 15px;
         }
 
+        .file-label svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+
         .file-label:hover {
             background: #3d5ce8;
             transform: translateY(-2px);
             box-shadow: 0 6px 16px rgba(77, 108, 250, 0.3);
         }
 
-        /* Test qutisi */
+        .file-info {
+            margin-top: 12px;
+            padding: 10px 16px;
+            background: #e0e7ff;
+            border-radius: 8px;
+            color: #3730a3;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
         .test-container {
             background: #f8f9fb;
             padding: 20px;
             margin-bottom: 16px;
             border-radius: 12px;
             border-left: 4px solid #4D6CFA;
-            transition: all 0.3s ease-in-out;
         }
 
-        .test-container:hover {
-            transform: translateX(5px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            background: white;
+        .test-number {
+            font-weight: 700;
+            color: #4D6CFA;
+            margin-bottom: 10px;
+            font-size: 14px;
         }
 
         .test-question {
@@ -218,7 +251,6 @@
             min-height: 300px;
         }
 
-        /* Pagination */
         #pagination {
             display: flex;
             justify-content: center;
@@ -254,33 +286,427 @@
             font-size: 15px;
         }
 
-        /* Export button */
-        #exportBtn {
+        .page-stats {
+            background: #eff6ff;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #4D6CFA;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .page-stats svg {
+            width: 24px;
+            height: 24px;
+            stroke: #4D6CFA;
+        }
+
+        .page-stats span {
+            font-weight: 600;
+            color: #1e3a8a;
+            font-size: 15px;
+        }
+
+        .export-all-btn {
             background: #4D6CFA;
             color: white;
             border: none;
-            padding: 12px 28px;
-            border-radius: 8px;
-            font-weight: 600;
+            padding: 16px 40px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 16px;
             transition: all 0.3s;
-            display: block;
-            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin: 25px auto;
+            box-shadow: 0 6px 20px rgba(77, 108, 250, 0.4);
+            cursor: pointer;
         }
 
-        #exportBtn:hover {
+        .export-all-btn svg {
+            width: 26px;
+            height: 26px;
+            fill: white;
+        }
+
+        .export-all-btn:hover {
+            background: #3d5ce8;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(77, 108, 250, 0.6);
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .custom-modal {
+            background: white;
+            border-radius: 16px;
+            padding: 0;
+            max-width: 650px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            transform: scale(0.9);
+            transition: all 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+            margin: auto;
+        }
+
+        .modal-overlay.active .custom-modal {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            background: #4D6CFA;
+            color: white;
+            padding: 24px 28px;
+            border-radius: 16px 16px 0 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .modal-header svg {
+            width: 28px;
+            height: 28px;
+            fill: white;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .modal-body {
+            padding: 28px;
+        }
+
+        .modal-summary {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .modal-info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 18px;
+            background: #eff6ff;
+            border-radius: 10px;
+            border: 1px solid #dbeafe;
+        }
+
+        .modal-info-label {
+            font-weight: 600;
+            color: #1e40af;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-info-label svg {
+            width: 18px;
+            height: 18px;
+            stroke: #4D6CFA;
+        }
+
+        .modal-info-value {
+            font-weight: 700;
+            color: #1e3a8a;
+            font-size: 15px;
+        }
+
+        .test-count-value {
+            background: #4D6CFA;
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .pages-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin: 20px 0;
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 4px;
+        }
+
+        .page-card {
+            background: linear-gradient(135deg, #4D6CFA 0%, #3d5ce8 100%);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 4px 12px rgba(77, 108, 250, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .page-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(77, 108, 250, 0.5);
+        }
+
+        .page-card:hover::before {
+            opacity: 1;
+        }
+
+        .page-card-number {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .page-card-number svg {
+            width: 18px;
+            height: 18px;
+            fill: white;
+        }
+
+        .page-card-count {
+            font-size: 28px;
+            font-weight: 800;
+            margin: 8px 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .page-card-label {
+            font-size: 12px;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .modal-form-group {
+            margin: 20px 0;
+        }
+
+        .modal-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            color: #1e3a8a;
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+
+        .modal-label svg {
+            width: 20px;
+            height: 20px;
+            stroke: #4D6CFA;
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #bfdbfe;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.3s;
+            font-weight: 500;
+            background: #eff6ff;
+        }
+
+        .modal-input:focus {
+            outline: none;
+            border-color: #4D6CFA;
+            box-shadow: 0 0 0 4px rgba(77, 108, 250, 0.1);
+            background: white;
+        }
+
+        .modal-warning {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 14px 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .modal-warning svg {
+            width: 24px;
+            height: 24px;
+            stroke: #f59e0b;
+            flex-shrink: 0;
+        }
+
+        .modal-warning-text {
+            flex: 1;
+        }
+
+        .modal-warning-text strong {
+            display: block;
+            color: #92400e;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .modal-warning-text p {
+            margin: 0;
+            color: #78350f;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .modal-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 16px 0;
+            padding: 14px;
+            background: #e0f2fe;
+            border-radius: 8px;
+            border: 2px solid #bae6fd;
+        }
+
+        .modal-checkbox input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #4D6CFA;
+        }
+
+        .modal-checkbox label {
+            margin: 0;
+            color: #075985;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .modal-suggestion {
+            background: #dbeafe;
+            border-left: 4px solid #4D6CFA;
+            padding: 14px 16px;
+            border-radius: 8px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-top: 16px;
+        }
+
+        .modal-suggestion svg {
+            width: 20px;
+            height: 20px;
+            fill: #4D6CFA;
+            flex-shrink: 0;
+        }
+
+        .modal-suggestion span {
+            color: #1e3a8a;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .modal-footer {
+            padding: 20px 28px;
+            background: #f8fafc;
+            border-radius: 0 0 16px 16px;
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        .modal-btn {
+            padding: 12px 28px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .modal-btn-cancel {
+            background: #e2e8f0;
+            color: #475569;
+        }
+
+        .modal-btn-cancel:hover {
+            background: #cbd5e1;
+        }
+
+        .modal-btn-confirm {
+            background: #4D6CFA;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-btn-confirm svg {
+            width: 18px;
+            height: 18px;
+            fill: white;
+        }
+
+        .modal-btn-confirm:hover {
             background: #3d5ce8;
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(77, 108, 250, 0.3);
+            box-shadow: 0 4px 12px rgba(77, 108, 250, 0.4);
         }
 
-        /* Upload status */
-        #uploadStatus {
-            margin-top: 15px;
-            font-weight: 600;
+        .modal-btn-confirm:disabled {
+            background: #cbd5e1;
+            cursor: not-allowed;
+            transform: none;
         }
 
-        /* Back to top button */
-        .back-to-top {
+        .float-button {
             width: 50px;
             height: 50px;
             border-radius: 50%;
@@ -302,34 +728,33 @@
             visibility: hidden;
         }
 
-        .back-to-top.visible {
+        .float-button.visible {
             opacity: 1;
             visibility: visible;
         }
 
-        .back-to-top .svgIcon {
+        .float-button .svgIcon {
             width: 12px;
             transition-duration: 0.3s;
         }
 
-        .back-to-top .svgIcon path {
+        .float-button .svgIcon path {
             fill: white;
         }
 
-        .back-to-top:hover {
+        .float-button:hover {
             width: 140px;
             border-radius: 50px;
             transition-duration: 0.3s;
             background-color: #3d5ce8;
-            align-items: center;
         }
 
-        .back-to-top:hover .svgIcon {
+        .float-button:hover .svgIcon {
             transition-duration: 0.3s;
             transform: translateY(-200%);
         }
 
-        .back-to-top::before {
+        .float-button::before {
             position: absolute;
             bottom: -20px;
             content: "Yuqorga qaytish";
@@ -337,35 +762,51 @@
             font-size: 0px;
         }
 
-        .back-to-top:hover::before {
+        .float-button:hover::before {
             font-size: 13px;
             opacity: 1;
             bottom: unset;
             transition-duration: 0.3s;
         }
 
-        /* Responsive styles */
+        #scrollToBottomBtn {
+            bottom: 90px;
+        }
+
+        #scrollToBottomBtn::before {
+            content: "Pastga tushish";
+        }
+
         @media screen and (max-width: 768px) {
-            .back-to-top {
+            .float-button {
                 bottom: 20px;
                 right: 20px;
+            }
+            
+            #scrollToBottomBtn {
+                bottom: 80px;
             }
             
             h1 {
                 font-size: 1.8rem;
             }
+
+            .pages-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .modal-summary {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media screen and (max-width: 480px) {
-            .back-to-top {
-                bottom: 15px;
-                right: 15px;
-                width: 45px;
-                height: 45px;
-            }
-            
             .container {
                 padding: 20px;
+            }
+
+            .pages-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -373,13 +814,8 @@
 <body>
 
 <div class="container">
-    <a href="index.html">
-        <button class="btn-home">← Bosh sahifa</button>
-    </a>
-
     <h1>Segment 25</h1>
 
-    <!-- Funksiyalar haqida ma'lumot -->
     <div class="features-container">
         <div class="feature-item">
             <div class="feature-icon">
@@ -428,8 +864,8 @@
                 </svg>
             </div>
             <div class="feature-text">
-                <strong>Sahifa bo'yicha yuklab olish</strong>
-                <p>Har bir sahifani alohida fayl sifatida saqlash imkoniyati</p>
+                <strong>Avtomatik raqamlash</strong>
+                <p>Har bir sahifa avtomatik raqamlanadi: 01, 02, 03...</p>
             </div>
         </div>
         <div class="feature-item">
@@ -451,17 +887,17 @@
                 </svg>
             </div>
             <div class="feature-text">
-                <strong>Tez va qulay navigatsiya</strong>
-                <p>Sahifalar orasida osongina harakatlanish, oldingi/keyingi tugmalari</p>
+                <strong>Aqlli ogohlantirish</strong>
+                <p>Oxirgi sahifada kam test bo'lsa, avtomatik oldingi faylga qo'shiladi</p>
             </div>
         </div>
     </div>
 
     <div class="upload-container">
         <h2>Test faylini yuklang</h2>
-        <p>Testlarni standart formatga to'g'irlayman, Umumiy testni bo'laklarga bo'lib, 25 ta testdan yuklab olish va Quiz Testda boshlash imkoniyatini taklif qilaman.<br>
-        Agar telegramdan kirsangiz Yuklab olish uchun Chromedan oching!</p>
-        
+        <p>Testlarni standart formatga to'g'irlayman va har bir sahifaga avtomatik nom beraman.<br>
+        Agar telegramdan kirsangiz, yuklab olish uchun Chrome brauzerdan oching!</p>
+                
         <div class="format-example">
             <b>STANDART FORMAT</b>
             <br>Qanday tarmoq turi Narsalar interneti komponentlari o'rtasidagi aloqa uchun ishlatiladi?
@@ -472,65 +908,220 @@
             <br>ANSWER: A  
         </div>
      
-        <label for="fileInput" class="file-label">📁 Fayl tanlash</label>
+        <label for="fileInput" class="file-label">
+            <svg viewBox="0 0 24 24">
+                <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>
+            Fayl tanlash
+        </label>
         <input type="file" id="fileInput" accept=".txt" hidden>
+        <div id="fileInfo" class="file-info" style="display: none;"></div>
         <div id="uploadStatus"></div>
     </div>
 
     <div id="testResults" style="display: none;">
+        <div class="settings-input">
+            <label>Har bir sahifada:</label>
+            <input type="number" id="testsPerPageInput" min="5" max="100" value="25">
+            <label>ta test</label>
+        </div>
+        <div class="page-stats">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+            </svg>
+            <span id="pageStatsText">Bu sahifada 25 ta test bor</span>
+        </div>
+        
         <div id="testContainer"></div>
+        
         <div id="pagination">
             <button id="prevBtn">← Oldingi</button>
             <span id="pageInfo"></span>
             <button id="nextBtn">Keyingi →</button>
         </div>
-        <button id="exportBtn">Shu sahifadagi testlarni yuklab olish</button>
+        
+        <div class="page-stats">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+            </svg>
+            <span id="downloadStatsText">Bu sahifada 25 ta test bor</span>
+        </div>
+        
+        <button class="export-all-btn" id="exportAllBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Barcha sahifalarni yuklab olish
+        </button>
     </div>
 </div>
 
-<button class="back-to-top" id="backToTopBtn">
+<button class="float-button" id="backToTopBtn">
     <svg class="svgIcon" viewBox="0 0 384 512">
         <path d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"></path>
     </svg>
 </button>
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+<button class="float-button" id="scrollToBottomBtn">
+    <svg class="svgIcon" viewBox="0 0 384 512">
+        <path d="M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8V64c0-17.7-14.3-32-32-32s-32 14.3-32 32v306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"></path>
+    </svg>
+</button>
 
-  const firebaseConfig = {
-   apiKey: "AIzaSyBxIpLY5WasiSIlDL4japBLnnXRwOLUKEQ",
-      authDomain: "tezkor-quiz-bbe3c.firebaseapp.com",
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-
-  const returnUrl = encodeURIComponent(window.location.pathname + window.location.search);
-
-  onAuthStateChanged(auth, (user) => {
-    if (!user) {
-      window.location.replace(`/kirish.html?returnUrl=${returnUrl}`);
-    } else {
-      console.log("User logged in:", user.uid);
-    }
-  });
-</script>
+<div class="modal-overlay" id="modalOverlay">
+    <div class="custom-modal">
+        <div class="modal-header">
+            <svg viewBox="0 0 24 24">
+                <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>
+            <h3>Barcha testlarni yuklab olish</h3>
+        </div>
+        <div class="modal-body">
+            <div class="modal-summary">
+                <div class="modal-info-item">
+                    <span class="modal-info-label">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                        </svg>
+                        Jami testlar:
+                    </span>
+                    <span class="test-count-value" id="modalTestCount">125</span>
+                </div>
+                <div class="modal-info-item">
+                    <span class="modal-info-label">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        Sahifalar soni:
+                    </span>
+                    <span class="modal-info-value" id="modalPagesCount">5</span>
+                </div>
+            </div>
+            
+            <div class="pages-grid" id="pagesGrid"></div>
+            
+            <div id="lastPageWarning" style="display: none;">
+                <div class="modal-warning">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+                        <line x1="12" y1="9" x2="12" y2="13"/>
+                        <line x1="12" y1="17" x2="12.01" y2="17"/>
+                    </svg>
+                    <div class="modal-warning-text">
+                        <strong>ℹ️ Ma'lumot</strong>
+                        <p id="warningText">Oxirgi sahifada faqat 3 ta test bor. Default: Bu testlar avtomatik oldingi sahifaga qo'shiladi.</p>
+                    </div>
+                </div>
+                <div class="modal-checkbox">
+                    <input type="checkbox" id="confirmWarning">
+                    <label for="confirmWarning">Oxirgi sahifa testlarini alohida faylga saqlash</label>
+                </div>
+            </div>
+            
+            <div class="modal-form-group">
+                <label class="modal-label">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                    </svg>
+                    Fayl nomi (barcha sahifalar uchun):
+                </label>
+                <input type="text" id="fileNameInput" class="modal-input" placeholder="Masalan: Iqtisodiyot">
+            </div>
+            
+            <div class="modal-suggestion">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                </svg>
+                <span>Misol: "Iqtisodiyot" → Iqtisodiyot_01.txt, Iqtisodiyot_02.txt...</span>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="modal-btn modal-btn-cancel" id="modalCancelBtn">✖ Bekor qilish</button>
+            <button class="modal-btn modal-btn-confirm" id="modalConfirmBtn" disabled>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                Yuklab olish
+            </button>
+        </div>
+    </div>
+</div>
 
 <script>
     let tests = [];
     let currentPage = 1;
-    const testsPerPage = 25;
+    let testsPerPage = 25; // Default qiymat
     let totalPages = 0;
+    let originalFileName = '';
 
     const fileInput = document.getElementById('fileInput');
+    const fileInfo = document.getElementById('fileInfo');
     const uploadStatus = document.getElementById('uploadStatus');
     const testResults = document.getElementById('testResults');
     const testContainer = document.getElementById('testContainer');
-    const exportBtn = document.getElementById('exportBtn');
+    const exportAllBtn = document.getElementById('exportAllBtn');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
     const pageInfo = document.getElementById('pageInfo');
+    const pageStatsText = document.getElementById('pageStatsText');
+    const downloadStatsText = document.getElementById('downloadStatsText');
+    const backToTopBtn = document.getElementById('backToTopBtn');
+    const scrollToBottomBtn = document.getElementById('scrollToBottomBtn');
+    const testsPerPageInput = document.getElementById('testsPerPageInput');
+
+    const modalOverlay = document.getElementById('modalOverlay');
+    const modalTestCount = document.getElementById('modalTestCount');
+    const modalPagesCount = document.getElementById('modalPagesCount');
+    const fileNameInput = document.getElementById('fileNameInput');
+    const modalCancelBtn = document.getElementById('modalCancelBtn');
+    const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+    const lastPageWarning = document.getElementById('lastPageWarning');
+    const confirmWarning = document.getElementById('confirmWarning');
+    const warningText = document.getElementById('warningText');
+
+    // Tests per page input validatsiyasi
+    testsPerPageInput.addEventListener('input', function() {
+        let value = parseInt(this.value);
+        if (value < 5) this.value = 5;
+        if (value > 100) this.value = 100;
+        
+        // Agar testlar yuklangan bo'lsa, yangilansin
+        if (tests.length > 0) {
+            testsPerPage = parseInt(this.value);
+            totalPages = Math.ceil(tests.length / testsPerPage);
+            currentPage = 1;
+            displayTests();
+            updatePageInfo();
+            updatePageStats();
+        }
+    });
+
+    testsPerPageInput.addEventListener('change', function() {
+        let value = parseInt(this.value);
+        if (isNaN(value) || value < 5) {
+            this.value = 5;
+            value = 5;
+        }
+        if (value > 100) {
+            this.value = 100;
+            value = 100;
+        }
+        
+        testsPerPage = value;
+        
+        // Agar testlar yuklangan bo'lsa, yangilansin
+        if (tests.length > 0) {
+            totalPages = Math.ceil(tests.length / testsPerPage);
+            currentPage = 1;
+            displayTests();
+            updatePageInfo();
+            updatePageStats();
+        }
+    });
 
     function formatOption(option) {
         return option.replace(/^([A-D])\)/, '$1.');
@@ -540,10 +1131,22 @@
         return text.replace(/^\d+\.\s*/, '');
     }
 
+    function normalizeAnswer(answerLine) {
+        const match = answerLine.match(/(ans|answer|ansver|javob|to['']?g['']?ri\s+javob|togri\s+javob|t['']?o['']?g['']?ri\s+javob)[\s:]*([A-Da-d])/i);
+        if (match) return 'ANSWER: ' + match[2].toUpperCase();
+        return answerLine;
+    }
+
     fileInput.addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (!file) return;
 
+        // testsPerPage qiymatini yangilash
+        testsPerPage = parseInt(testsPerPageInput.value) || 25;
+
+        originalFileName = file.name.replace('.txt', '');
+        fileInfo.textContent = `📄 ${file.name}`;
+        fileInfo.style.display = 'block';
         uploadStatus.innerHTML = "<span style='color: #f59e0b;'>⏳ Yuklanmoqda...</span>";
 
         const reader = new FileReader();
@@ -555,34 +1158,42 @@
 
     function parseTestFile(content) {
         tests = [];
-        let lines = content.split('\n');
+        const lines = content.split('\n');
         let currentTest = null;
         let questionNumber = 1;
 
         for (let i = 0; i < lines.length; i++) {
             let line = lines[i].trim();
-            if (line === '') continue;
-
-            if (/^(ANSWER:|JAVOB:)/i.test(line)) {
-                if (currentTest) {
-                    let answerPart = line.split(':')[1].trim();
-                    currentTest.answer = `ANSWER: ${answerPart}`;
+            if (line === '') {
+                if (currentTest && currentTest.answer) {
                     tests.push(currentTest);
                     currentTest = null;
                     questionNumber++;
                 }
+                continue;
             }
-            else if (!currentTest) {
+
+            if (/(ans|answer|ansver|javob|to['']?g['']?ri\s+javob|togri\s+javob|t['']?o['']?g['']?ri\s+javob)[\s:]*[A-Da-d]/i.test(line)) {
+                if (currentTest) {
+                    currentTest.answer = normalizeAnswer(line);
+                    tests.push(currentTest);
+                    currentTest = null;
+                    questionNumber++;
+                }
+            } else if (!currentTest && !/^[A-D][\.\)]/i.test(line)) {
                 let cleanQuestion = removeQuestionNumber(line);
                 currentTest = {
                     question: cleanQuestion,
                     options: [],
                     answer: ''
                 };
-            }
-            else if (currentTest && !/^(ANSWER:|JAVOB:)/i.test(line)) {
+            } else if (currentTest && /^[A-D][\.\)]/i.test(line)) {
                 currentTest.options.push(formatOption(line));
             }
+        }
+
+        if (currentTest && currentTest.answer) {
+            tests.push(currentTest);
         }
 
         if (tests.length > 0) {
@@ -591,9 +1202,10 @@
             currentPage = 1;
             displayTests();
             updatePageInfo();
+            updatePageStats();
             testResults.style.display = 'block';
         } else {
-            uploadStatus.innerHTML = "<span style='color: #ef4444;'>❌ Xatolik: Test ma'lumotlari topilmadi!</span>";
+            uploadStatus.innerHTML = "<span style='color: #ef4444;'>✖ Xatolik: Test ma'lumotlari topilmadi!</span>";
         }
     }
 
@@ -601,14 +1213,21 @@
         const startIndex = (currentPage - 1) * testsPerPage;
         const endIndex = startIndex + testsPerPage;
         const testsToDisplay = tests.slice(startIndex, endIndex);
+        
         testContainer.innerHTML = '';
+        
         testsToDisplay.forEach((test, index) => {
             const testElement = document.createElement('div');
             testElement.className = 'test-container';
 
+            const testNumber = document.createElement('div');
+            testNumber.className = 'test-number';
+            testNumber.textContent = `Test ${startIndex + index + 1}`;
+            testElement.appendChild(testNumber);
+
             const questionElement = document.createElement('div');
             questionElement.className = 'test-question';
-            questionElement.textContent = `${startIndex + index + 1}. ${test.question}`;
+            questionElement.textContent = test.question;
             testElement.appendChild(questionElement);
 
             const optionsElement = document.createElement('div');
@@ -635,12 +1254,20 @@
         nextBtn.disabled = currentPage === totalPages;
     }
 
+    function updatePageStats() {
+        const startIndex = (currentPage - 1) * testsPerPage;
+        const endIndex = Math.min(startIndex + testsPerPage, tests.length);
+        const testsOnPage = endIndex - startIndex;
+        pageStatsText.textContent = `Bu sahifada ${testsOnPage} ta test bor`;
+        downloadStatsText.textContent = `Bu sahifada ${testsOnPage} ta test bor`;
+    }
+
     prevBtn.addEventListener('click', function() {
         if (currentPage > 1) {
             currentPage--;
             displayTests();
             updatePageInfo();
-            // Pagination tugmalariga scroll qilish
+            updatePageStats();
             setTimeout(() => {
                 document.getElementById('pagination').scrollIntoView({ behavior: 'smooth', block: 'center' });
             }, 100);
@@ -652,51 +1279,249 @@
             currentPage++;
             displayTests();
             updatePageInfo();
-            // Pagination tugmalariga scroll qilish
+            updatePageStats();
             setTimeout(() => {
                 document.getElementById('pagination').scrollIntoView({ behavior: 'smooth', block: 'center' });
             }, 100);
         }
     });
 
-    exportBtn.addEventListener('click', function() {
-        const startIndex = (currentPage - 1) * testsPerPage;
-        const endIndex = startIndex + testsPerPage;
-        const testsToExport = tests.slice(startIndex, endIndex);
-        let content = '';
-        testsToExport.forEach(test => {
-            content += test.question + '\n';
-            test.options.forEach(option => {
-                content += option + '\n';
-            });
-            content += test.answer + '\n\n';
-        });
-        const blob = new Blob([content], { type: 'text/plain' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `Tezkor_Quiz_${currentPage}.txt`;
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(a);
-    });
-</script>
+    exportAllBtn.addEventListener('click', openModal);
 
-<script>
-    const backToTopBtn = document.getElementById('backToTopBtn');
-    
-    window.onscroll = function() {
-        if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+    function openModal() {
+        modalTestCount.textContent = tests.length;
+        
+        const lastPageTests = tests.length % testsPerPage;
+        
+        // DEFAULT: oxirgi sahifada < 5 bo'lsa oldingi sahifaga qo'shiladi
+        // Checkbox unchecked bo'lsa - merge qilinadi (default)
+        // Checkbox checked bo'lsa - alohida sahifa qilinadi
+        const keepSeparate = confirmWarning.checked;
+        
+        let effectiveTotalPages = totalPages;
+        if (!keepSeparate && lastPageTests > 0 && lastPageTests < 5 && totalPages > 1) {
+            effectiveTotalPages = totalPages - 1;
+        }
+        
+        modalPagesCount.textContent = effectiveTotalPages;
+        
+        // Sahifalar grid'ini yaratish
+        updatePagesGrid(effectiveTotalPages, !keepSeparate);
+        
+        if (originalFileName) {
+            fileNameInput.value = originalFileName;
+        } else {
+            const now = new Date();
+            const defaultName = `Testlar_${now.getDate()}.${now.getMonth() + 1}.${now.getFullYear()}`;
+            fileNameInput.value = defaultName;
+        }
+        
+        if (lastPageTests > 0 && lastPageTests < 5 && totalPages > 1) {
+            lastPageWarning.style.display = 'block';
+            warningText.textContent = `Oxirgi sahifada faqat ${lastPageTests} ta test bor. Default: Bu testlar avtomatik oldingi sahifaga qo'shiladi.`;
+        } else {
+            lastPageWarning.style.display = 'none';
+            confirmWarning.checked = false;
+        }
+        
+        updateConfirmButton();
+        modalOverlay.classList.add('active');
+        setTimeout(() => fileNameInput.focus(), 100);
+    }
+
+    function updatePagesGrid(effectiveTotalPages, shouldMerge) {
+        const pagesGrid = document.getElementById('pagesGrid');
+        pagesGrid.innerHTML = '';
+        
+        const lastPageTests = tests.length % testsPerPage;
+        
+        for (let page = 1; page <= effectiveTotalPages; page++) {
+            const startIndex = (page - 1) * testsPerPage;
+            let endIndex = Math.min(startIndex + testsPerPage, tests.length);
+            
+            // Agar oxirgi sahifa birlashtirilsa
+            if (shouldMerge && page === effectiveTotalPages && lastPageTests > 0 && lastPageTests < 5) {
+                endIndex = tests.length;
+            }
+            
+            const testsCount = endIndex - startIndex;
+            
+            const pageCard = document.createElement('div');
+            pageCard.className = 'page-card';
+            pageCard.innerHTML = `
+                <div class="page-card-number">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    ${page}-sahifa
+                </div>
+                <div class="page-card-count">${testsCount}</div>
+                <div class="page-card-label">testlar</div>
+            `;
+            pagesGrid.appendChild(pageCard);
+        }
+    }
+
+    function closeModal() {
+        modalOverlay.classList.remove('active');
+    }
+
+    function updateConfirmButton() {
+        const fileName = fileNameInput.value.trim();
+        modalConfirmBtn.disabled = !fileName;
+        
+        const lastPageTests = tests.length % testsPerPage;
+        const keepSeparate = confirmWarning.checked;
+        
+        let effectiveTotalPages = totalPages;
+        if (!keepSeparate && lastPageTests > 0 && lastPageTests < 5 && totalPages > 1) {
+            effectiveTotalPages = totalPages - 1;
+        }
+        
+        modalPagesCount.textContent = effectiveTotalPages;
+        
+        // Grid'ni yangilash
+        updatePagesGrid(effectiveTotalPages, !keepSeparate);
+    }
+
+    fileNameInput.addEventListener('input', updateConfirmButton);
+    confirmWarning.addEventListener('change', updateConfirmButton);
+
+    function downloadAllTests() {
+        const baseName = fileNameInput.value.trim();
+        if (!baseName) {
+            fileNameInput.style.borderColor = '#ef4444';
+            setTimeout(() => fileNameInput.style.borderColor = '', 2000);
+            return;
+        }
+
+        const lastPageTests = tests.length % testsPerPage;
+        
+        // DEFAULT: oxirgi sahifada < 5 bo'lsa merge qilinadi
+        // Checkbox checked bo'lsa - alohida sahifa saqlanadi
+        const keepSeparate = confirmWarning.checked;
+        const shouldMerge = !keepSeparate && lastPageTests > 0 && lastPageTests < 5 && totalPages > 1;
+        
+        let pagesToExport = totalPages;
+        
+        if (shouldMerge) {
+            pagesToExport = totalPages - 1;
+        }
+
+        // Ko'p fayllarni yuklab olish uchun ruxsat so'rash (Chrome uchun)
+        if (pagesToExport > 1 && 'permissions' in navigator) {
+            navigator.permissions.query({name: 'downloads'}).then(function(result) {
+                if (result.state === 'prompt') {
+                    // Birinchi faylni yuklab olish - ruxsat so'raladi
+                    downloadPageFile(1);
+                    // Qolgan fayllarni kechikish bilan yuklab olish
+                    setTimeout(() => {
+                        for (let page = 2; page <= pagesToExport; page++) {
+                            setTimeout(() => downloadPageFile(page), (page - 2) * 200);
+                        }
+                    }, 500);
+                } else {
+                    // Ruxsat allaqachon berilgan yoki kerak emas
+                    for (let page = 1; page <= pagesToExport; page++) {
+                        setTimeout(() => downloadPageFile(page), page * 100);
+                    }
+                }
+            }).catch(() => {
+                // Permissions API qo'llab-quvvatlanmasa, oddiy yuklab olish
+                for (let page = 1; page <= pagesToExport; page++) {
+                    setTimeout(() => downloadPageFile(page), page * 100);
+                }
+            });
+        } else {
+            // Bitta fayl yoki Permissions API mavjud emas
+            for (let page = 1; page <= pagesToExport; page++) {
+                setTimeout(() => downloadPageFile(page), page * 100);
+            }
+        }
+
+        closeModal();
+        
+        function downloadPageFile(page) {
+            const startIndex = (page - 1) * testsPerPage;
+            let endIndex = Math.min(startIndex + testsPerPage, tests.length);
+            
+            if (shouldMerge && page === pagesToExport) {
+                endIndex = tests.length;
+            }
+            
+            const testsToExport = tests.slice(startIndex, endIndex);
+            
+            let content = '';
+            testsToExport.forEach((test, i) => {
+                content += test.question + '\n';
+                test.options.forEach(opt => content += opt + '\n');
+                content += test.answer + '\n';
+                if (i < testsToExport.length - 1) content += '\n';
+            });
+
+            const pageNumber = page.toString().padStart(2, '0');
+            const fileName = `${baseName}_${pageNumber}.txt`;
+
+            const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(() => URL.revokeObjectURL(url), 100);
+        }
+    }
+
+    modalCancelBtn.addEventListener('click', closeModal);
+    modalConfirmBtn.addEventListener('click', downloadAllTests);
+
+    modalOverlay.addEventListener('click', e => {
+        if (e.target === modalOverlay) closeModal();
+    });
+
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+            closeModal();
+        }
+        if (e.key === 'Enter' && modalOverlay.classList.contains('active') && !modalConfirmBtn.disabled) {
+            downloadAllTests();
+        }
+    });
+
+    function updateFloatButtons() {
+        const scrolled = document.documentElement.scrollTop || document.body.scrollTop;
+        const totalHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const nearBottom = 150;
+
+        if (scrolled > 100) {
             backToTopBtn.classList.add('visible');
         } else {
             backToTopBtn.classList.remove('visible');
         }
-    };
-    
-    backToTopBtn.addEventListener('click', function() {
+
+        if (scrolled < totalHeight - nearBottom && totalHeight > window.innerHeight + 200) {
+            scrollToBottomBtn.classList.add('visible');
+        } else {
+            scrollToBottomBtn.classList.remove('visible');
+        }
+    }
+
+    window.addEventListener('scroll', updateFloatButtons);
+    window.addEventListener('load', updateFloatButtons);
+    window.addEventListener('resize', updateFloatButtons);
+
+    backToTopBtn.addEventListener('click', () => {
         window.scrollTo({
             top: 0,
+            behavior: 'smooth'
+        });
+    });
+
+    scrollToBottomBtn.addEventListener('click', () => {
+        window.scrollTo({
+            top: document.documentElement.scrollHeight,
             behavior: 'smooth'
         });
     });
