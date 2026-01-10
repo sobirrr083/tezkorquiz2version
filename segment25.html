@@ -121,10 +121,20 @@
             transition: all 0.3s;
         }
 
+        .settings-input input[type="number"].invalid {
+            border-color: #ef4444;
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
         .settings-input input[type="number"]:focus {
             outline: none;
             box-shadow: 0 0 0 4px rgba(77, 108, 250, 0.15);
             background: white;
+        }
+
+        .settings-input input[type="number"].invalid:focus {
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15);
         }
 
         .upload-container {
@@ -257,6 +267,7 @@
             align-items: center;
             gap: 20px;
             margin: 25px 0;
+            flex-wrap: wrap;
         }
 
         #pagination button {
@@ -267,6 +278,7 @@
             border-radius: 8px;
             font-weight: 600;
             transition: all 0.3s;
+            white-space: nowrap;
         }
 
         #pagination button:hover:not(:disabled) {
@@ -284,6 +296,7 @@
             font-weight: 600;
             color: #2c3e50;
             font-size: 15px;
+            white-space: nowrap;
         }
 
         .page-stats {
@@ -325,12 +338,14 @@
             margin: 25px auto;
             box-shadow: 0 6px 20px rgba(77, 108, 250, 0.4);
             cursor: pointer;
+            white-space: nowrap;
         }
 
         .export-all-btn svg {
             width: 26px;
             height: 26px;
             fill: white;
+            flex-shrink: 0;
         }
 
         .export-all-btn:hover {
@@ -474,6 +489,9 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
         .page-card::before {
@@ -498,26 +516,26 @@
         }
 
         .page-card-number {
-            font-size: 18px;
+            font-size: 14px;
             font-weight: 700;
-            margin-bottom: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 6px;
+            flex-shrink: 0;
         }
 
         .page-card-number svg {
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
             fill: white;
         }
 
         .page-card-count {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 800;
-            margin: 8px 0;
             text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            flex-shrink: 0;
         }
 
         .page-card-label {
@@ -525,6 +543,7 @@
             opacity: 0.9;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            flex-shrink: 0;
         }
 
         .modal-form-group {
@@ -669,6 +688,7 @@
             font-size: 14px;
             cursor: pointer;
             transition: all 0.3s;
+            white-space: nowrap;
         }
 
         .modal-btn-cancel {
@@ -792,11 +812,71 @@
             }
 
             .pages-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: 1fr;
             }
             
             .modal-summary {
                 grid-template-columns: 1fr;
+            }
+
+            .export-all-btn {
+                padding: 12px 20px;
+                font-size: 14px;
+                gap: 8px;
+            }
+
+            .export-all-btn svg {
+                width: 20px;
+                height: 20px;
+            }
+
+            #pagination {
+                gap: 10px;
+            }
+
+            #pagination button {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+
+            #pageInfo {
+                font-size: 14px;
+            }
+
+            .page-card {
+                padding: 12px;
+                gap: 8px;
+            }
+
+            .page-card-number {
+                font-size: 12px;
+            }
+
+            .page-card-number svg {
+                width: 14px;
+                height: 14px;
+            }
+
+            .page-card-count {
+                font-size: 20px;
+            }
+
+            .page-card-label {
+                font-size: 11px;
+            }
+
+            .modal-footer {
+                justify-content: space-between;
+            }
+
+            .modal-btn {
+                flex: 1;
+                padding: 10px 16px;
+                font-size: 13px;
+            }
+
+            .modal-btn-confirm {
+                order: -1;
             }
         }
 
@@ -840,7 +920,7 @@
             </div>
             <div class="feature-text">
                 <strong>25 ta testdan bo'lish</strong>
-                <p>Katta test faylini har biri 25 ta testli qismlarga bo'ladi</p>
+                <p>Katta test faylini 25 yoki N ta testli qismlarga bo'ladi</p>
             </div>
         </div>
         <div class="feature-item">
@@ -895,16 +975,15 @@
 
     <div class="upload-container">
         <h2>Test faylini yuklang</h2>
-        <p>Testlarni standart formatga to'g'irlayman va har bir sahifaga avtomatik nom beraman.<br>
-        Agar telegramdan kirsangiz, yuklab olish uchun Chrome brauzerdan oching!</p>
-                
+        <p>Agar telegramdan kirsangiz, yuklab olish uchun Chrome brauzerdan oching!</p>
+        
         <div class="format-example">
-            <b>STANDART FORMAT</b>
-            <br>Qanday tarmoq turi Narsalar interneti komponentlari o'rtasidagi aloqa uchun ishlatiladi?
-            <br>A. LAN
-            <br>B. WAN 
-            <br>C. WLAN
-            <br>D. PAN 
+            <b>Standart format</b>
+            <br>O'zbekiston poytaxti qayer?
+            <br>A. Toshkent
+            <br>B. Xorazm
+            <br>C. Samarqand
+            <br>D. Andijon
             <br>ANSWER: A  
         </div>
      
@@ -920,11 +999,6 @@
     </div>
 
     <div id="testResults" style="display: none;">
-        <div class="settings-input">
-            <label>Har bir sahifada:</label>
-            <input type="number" id="testsPerPageInput" min="5" max="100" value="25">
-            <label>ta test</label>
-        </div>
         <div class="page-stats">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
@@ -934,7 +1008,7 @@
         
         <div id="testContainer"></div>
         
-        <div id="pagination">
+                    <div id="pagination">
             <button id="prevBtn">← Oldingi</button>
             <span id="pageInfo"></span>
             <button id="nextBtn">Keyingi →</button>
@@ -1086,22 +1160,19 @@
     // Tests per page input validatsiyasi
     testsPerPageInput.addEventListener('input', function() {
         let value = parseInt(this.value);
-        if (value < 5) this.value = 5;
-        if (value > 100) this.value = 100;
         
-        // Agar testlar yuklangan bo'lsa, yangilansin
-        if (tests.length > 0) {
-            testsPerPage = parseInt(this.value);
-            totalPages = Math.ceil(tests.length / testsPerPage);
-            currentPage = 1;
-            displayTests();
-            updatePageInfo();
-            updatePageStats();
+        // Qizil rang validatsiyasi
+        if (value < 5 || value > 100 || isNaN(value)) {
+            this.classList.add('invalid');
+        } else {
+            this.classList.remove('invalid');
         }
     });
 
     testsPerPageInput.addEventListener('change', function() {
         let value = parseInt(this.value);
+        
+        // Faqat blur/change da limitlar qo'llaniladi
         if (isNaN(value) || value < 5) {
             this.value = 5;
             value = 5;
@@ -1111,6 +1182,7 @@
             value = 100;
         }
         
+        this.classList.remove('invalid');
         testsPerPage = value;
         
         // Agar testlar yuklangan bo'lsa, yangilansin
@@ -1249,7 +1321,7 @@
     }
 
     function updatePageInfo() {
-        pageInfo.textContent = `Sahifa ${currentPage} / ${totalPages}`;
+        pageInfo.textContent = `${currentPage}/${totalPages}`;
         prevBtn.disabled = currentPage === 1;
         nextBtn.disabled = currentPage === totalPages;
     }
