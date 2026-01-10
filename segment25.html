@@ -494,6 +494,15 @@
             gap: 12px;
         }
 
+        /* Desktop, laptop va tablet uchun kvadrat shakl */
+        @media screen and (min-width: 769px) {
+            .page-card {
+                aspect-ratio: 1 / 1;
+                flex-direction: column;
+                justify-content: center;
+            }
+        }
+
         .page-card::before {
             content: '';
             position: absolute;
@@ -1091,8 +1100,8 @@
                         <line x1="12" y1="17" x2="12.01" y2="17"/>
                     </svg>
                     <div class="modal-warning-text">
-                        <strong>ℹ️ Ma'lumot</strong>
-                        <p id="warningText">Oxirgi sahifada faqat 3 ta test bor. Default: Bu testlar avtomatik oldingi sahifaga qo'shiladi.</p>
+                        <strong>Ma'lumot</strong>
+                        <p id="warningText">Oxirgi sahifada faqat 3 ta test bor. Bu testlar avtomatik oldingi sahifaga qo'shiladi.</p>
                     </div>
                 </div>
                 <div class="modal-checkbox">
@@ -1407,7 +1416,7 @@
         
         if (lastPageTests > 0 && lastPageTests < 5 && totalPages > 1) {
             lastPageWarning.style.display = 'block';
-            warningText.textContent = `Oxirgi sahifada faqat ${lastPageTests} ta test bor. Default: Bu testlar avtomatik oldingi sahifaga qo'shiladi.`;
+            warningText.textContent = `Oxirgi sahifada faqat ${lastPageTests} ta test bor. Bu testlar avtomatik oldingi sahifaga qo'shiladi.`;
         } else {
             lastPageWarning.style.display = 'none';
             confirmWarning.checked = false;
@@ -1439,13 +1448,10 @@
             pageCard.className = 'page-card';
             pageCard.innerHTML = `
                 <div class="page-card-number">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                    </svg>
-                    ${page}-sahifa
+                    ${page}-SAHIFA
                 </div>
                 <div class="page-card-count">${testsCount}</div>
-                <div class="page-card-label">testlar</div>
+                <div class="page-card-label">test</div>
             `;
             pagesGrid.appendChild(pageCard);
         }
