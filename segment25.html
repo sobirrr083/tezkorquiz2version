@@ -1157,7 +1157,7 @@
                 </div>
                 <div class="modal-checkbox">
                     <input type="checkbox" id="confirmWarning">
-                    <label for="confirmWarning">Oxirgi sahifa testlarini alohida faylga saqlash</label>
+                    <label for="confirmWarning" id="confirmWarningLabel">Oxirgi sahifa testlarini alohida faylga saqlash</label>
                 </div>
             </div>
             
@@ -1226,6 +1226,7 @@
     const modalConfirmBtn = document.getElementById('modalConfirmBtn');
     const lastPageWarning = document.getElementById('lastPageWarning');
     const confirmWarning = document.getElementById('confirmWarning');
+    const confirmWarningLabel = document.getElementById('confirmWarningLabel');
     const warningText = document.getElementById('warningText');
 
     // Ikkala input'ni sinxronlashtirish funksiyasi
@@ -1482,7 +1483,7 @@
                 const pageTestsCount = pageEndIndex - pageStartIndex;
                 pageInfoParts.push(`${page}=${pageTestsCount}`);
             }
-            const pageInfoText = `Sahifalarda testlar soni: ${pageInfoParts.join(', ')}`;
+            const pageInfoText = `sahifalarda testlar soni: ${pageInfoParts.join(', ')}`;
             pageInfoSummary1.textContent = pageInfoText;
             pageInfoSummary2.textContent = pageInfoText;
         } else {
@@ -1554,9 +1555,15 @@
         if (lastPageTests > 0 && lastPageTests < 5 && totalPages > 1) {
             lastPageWarning.style.display = 'block';
             warningText.textContent = `Oxirgi sahifada faqat ${lastPageTests} ta test bor. Bu testlar avtomatik oldingi sahifaga qo'shiladi.`;
+            if (confirmWarningLabel) {
+                confirmWarningLabel.textContent = `Oxirgi ${lastPageTests} ta testni alohida faylga saqlash`;
+            }
         } else {
             lastPageWarning.style.display = 'none';
             confirmWarning.checked = false;
+            if (confirmWarningLabel) {
+                confirmWarningLabel.textContent = 'Oxirgi sahifa testlarini alohida faylga saqlash';
+            }
         }
         
         updateConfirmButton();
@@ -1611,6 +1618,15 @@
         }
         
         modalPagesCount.textContent = effectiveTotalPages;
+        
+        // Label'ni yangilash
+        if (confirmWarningLabel) {
+            if (lastPageTests > 0 && lastPageTests < 5 && totalPages > 1) {
+                confirmWarningLabel.textContent = `Oxirgi ${lastPageTests} ta testni alohida faylga saqlash`;
+            } else {
+                confirmWarningLabel.textContent = 'Oxirgi sahifa testlarini alohida faylga saqlash';
+            }
+        }
         
         // Grid'ni yangilash
         updatePagesGrid(effectiveTotalPages, !keepSeparate);
