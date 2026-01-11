@@ -98,7 +98,6 @@
             padding: 20px;
             background: white;
             border-radius: 12px;
-            border: 2px solid #4D6CFA;
         }
 
         .settings-input label {
@@ -320,6 +319,31 @@
             font-weight: 600;
             color: #1e3a8a;
             font-size: 15px;
+        }
+
+        .page-info-summary {
+            background: #f0f9ff;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #3b82f6;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .page-info-summary svg {
+            width: 24px;
+            height: 24px;
+            stroke: #3b82f6;
+            flex-shrink: 0;
+        }
+
+        .page-info-summary span {
+            font-weight: 600;
+            color: #1e40af;
+            font-size: 14px;
+            line-height: 1.5;
         }
 
         .export-all-btn {
@@ -852,6 +876,19 @@
                 font-size: 14px;
             }
 
+            .page-info-summary {
+                padding: 12px 16px;
+            }
+
+            .page-info-summary svg {
+                width: 20px;
+                height: 20px;
+            }
+
+            .page-info-summary span {
+                font-size: 13px;
+            }
+
             .page-card {
                 padding: 12px;
                 gap: 8px;
@@ -1008,7 +1045,7 @@
     <div id="testResults" style="display: none;">
         <div class="settings-input">
             <label>Har bir sahifada:</label>
-            <input type="number" id="testsPerPageInput" min="5" max="100" value="25">
+            <input type="number" id="testsPerPageInput1" class="testsPerPageInput" min="20" max="100" value="25">
             <label>ta test</label>
         </div>
         <div class="page-stats">
@@ -1016,6 +1053,13 @@
                 <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
             </svg>
             <span id="pageStatsText">Bu sahifada 25 ta test bor</span>
+        </div>
+        
+        <div class="page-info-summary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>
+            <span id="pageInfoSummary1"></span>
         </div>
         
         <div id="testContainer"></div>
@@ -1027,7 +1071,7 @@
         </div>
         <div class="settings-input">
             <label>Har bir sahifada:</label>
-            <input type="number" id="testsPerPageInput" min="5" max="100" value="25">
+            <input type="number" id="testsPerPageInput2" class="testsPerPageInput" min="20" max="100" value="25">
             <label>ta test</label>
         </div>
         <div class="page-stats">
@@ -1035,6 +1079,13 @@
                 <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
             </svg>
             <span id="downloadStatsText">Bu sahifada 25 ta test bor</span>
+        </div>
+        
+        <div class="page-info-summary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>
+            <span id="pageInfoSummary2"></span>
         </div>
         
         <button class="export-all-btn" id="exportAllBtn">
@@ -1159,9 +1210,13 @@
     const pageInfo = document.getElementById('pageInfo');
     const pageStatsText = document.getElementById('pageStatsText');
     const downloadStatsText = document.getElementById('downloadStatsText');
+    const pageInfoSummary1 = document.getElementById('pageInfoSummary1');
+    const pageInfoSummary2 = document.getElementById('pageInfoSummary2');
     const backToTopBtn = document.getElementById('backToTopBtn');
     const scrollToBottomBtn = document.getElementById('scrollToBottomBtn');
-    const testsPerPageInput = document.getElementById('testsPerPageInput');
+    const testsPerPageInput1 = document.getElementById('testsPerPageInput1');
+    const testsPerPageInput2 = document.getElementById('testsPerPageInput2');
+    const testsPerPageInputs = [testsPerPageInput1, testsPerPageInput2];
 
     const modalOverlay = document.getElementById('modalOverlay');
     const modalTestCount = document.getElementById('modalTestCount');
@@ -1173,43 +1228,99 @@
     const confirmWarning = document.getElementById('confirmWarning');
     const warningText = document.getElementById('warningText');
 
-    // Tests per page input validatsiyasi
-    testsPerPageInput.addEventListener('input', function() {
-        let value = parseInt(this.value);
-        
-        // Qizil rang validatsiyasi
-        if (value < 5 || value > 100 || isNaN(value)) {
-            this.classList.add('invalid');
-        } else {
-            this.classList.remove('invalid');
-        }
-    });
+    // Ikkala input'ni sinxronlashtirish funksiyasi
+    let isSyncing = false;
+    function syncInputs(changedInput) {
+        if (isSyncing) return;
+        isSyncing = true;
+        const value = changedInput.value;
+        const isInvalid = changedInput.classList.contains('invalid');
+        testsPerPageInputs.forEach(input => {
+            if (input !== changedInput) {
+                input.value = value;
+                if (isInvalid) {
+                    input.classList.add('invalid');
+                } else {
+                    input.classList.remove('invalid');
+                }
+            }
+        });
+        isSyncing = false;
+    }
 
-    testsPerPageInput.addEventListener('change', function() {
-        let value = parseInt(this.value);
-        
-        // Faqat blur/change da limitlar qo'llaniladi
-        if (isNaN(value) || value < 5) {
-            this.value = 5;
-            value = 5;
-        }
-        if (value > 100) {
-            this.value = 100;
-            value = 100;
-        }
-        
-        this.classList.remove('invalid');
-        testsPerPage = value;
-        
-        // Agar testlar yuklangan bo'lsa, yangilansin
-        if (tests.length > 0) {
-            totalPages = Math.ceil(tests.length / testsPerPage);
-            currentPage = 1;
-            displayTests();
-            updatePageInfo();
-            updatePageStats();
-        }
-    });
+    // Tests per page input validatsiyasi va real-time yangilanish
+    function setupTestsPerPageInput(input) {
+        input.addEventListener('input', function() {
+            if (isSyncing) return;
+            
+            let value = parseInt(this.value);
+            
+            // Qizil rang validatsiyasi
+            if (value < 20 || value > 100 || isNaN(value)) {
+                this.classList.add('invalid');
+            } else {
+                this.classList.remove('invalid');
+                // Agar valid bo'lsa, darhol sahifa yangilansin
+                if (tests.length > 0) {
+                    // Scroll pozitsiyasini saqlash
+                    const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+                    testsPerPage = value;
+                    totalPages = Math.ceil(tests.length / testsPerPage);
+                    currentPage = 1;
+                    displayTests();
+                    updatePageInfo();
+                    updatePageStats();
+                    // Scroll pozitsiyasini qayta tiklash
+                    requestAnimationFrame(() => {
+                        window.scrollTo(0, scrollPosition);
+                    });
+                }
+            }
+            
+            // Ikkala input'ni sinxronlashtirish
+            syncInputs(this);
+        });
+
+        input.addEventListener('change', function() {
+            if (isSyncing) return;
+            
+            let value = parseInt(this.value);
+            
+            // Faqat blur/change da limitlar qo'llaniladi
+            if (isNaN(value) || value < 20) {
+                this.value = 20;
+                value = 20;
+            }
+            if (value > 100) {
+                this.value = 100;
+                value = 100;
+            }
+            
+            this.classList.remove('invalid');
+            testsPerPage = value;
+            
+            // Ikkala input'ni sinxronlashtirish
+            syncInputs(this);
+            
+            // Agar testlar yuklangan bo'lsa, yangilansin
+            if (tests.length > 0) {
+                // Scroll pozitsiyasini saqlash
+                const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+                totalPages = Math.ceil(tests.length / testsPerPage);
+                currentPage = 1;
+                displayTests();
+                updatePageInfo();
+                updatePageStats();
+                // Scroll pozitsiyasini qayta tiklash
+                requestAnimationFrame(() => {
+                    window.scrollTo(0, scrollPosition);
+                });
+            }
+        });
+    }
+
+    // Ikkala input'ga ham listener qo'shish
+    testsPerPageInputs.forEach(setupTestsPerPageInput);
 
     function formatOption(option) {
         return option.replace(/^([A-D])\)/, '$1.');
@@ -1230,13 +1341,16 @@
         if (!file) return;
 
         // testsPerPage qiymatini yangilash va validatsiya
-        let inputValue = parseInt(testsPerPageInput.value);
-        if (isNaN(inputValue) || inputValue < 5 || inputValue > 100) {
+        let inputValue = parseInt(testsPerPageInput1.value);
+        if (isNaN(inputValue) || inputValue < 20 || inputValue > 100) {
             testsPerPage = 25;
-            testsPerPageInput.value = 25;
-            testsPerPageInput.classList.remove('invalid');
+            testsPerPageInput1.value = 25;
+            testsPerPageInput2.value = 25;
+            testsPerPageInput1.classList.remove('invalid');
+            testsPerPageInput2.classList.remove('invalid');
         } else {
             testsPerPage = inputValue;
+            testsPerPageInput2.value = inputValue;
         }
 
         originalFileName = file.name.replace('.txt', '');
@@ -1358,29 +1472,52 @@
         const testsOnPage = endIndex - startIndex;
         pageStatsText.textContent = `Bu sahifada ${testsOnPage} ta test bor`;
         downloadStatsText.textContent = `Bu sahifada ${testsOnPage} ta test bor`;
+        
+        // Sahifalar haqida qisqa info yangilash
+        if (tests.length > 0 && totalPages > 0) {
+            const pageInfoParts = [];
+            for (let page = 1; page <= totalPages; page++) {
+                const pageStartIndex = (page - 1) * testsPerPage;
+                const pageEndIndex = Math.min(pageStartIndex + testsPerPage, tests.length);
+                const pageTestsCount = pageEndIndex - pageStartIndex;
+                pageInfoParts.push(`${page}=${pageTestsCount}`);
+            }
+            const pageInfoText = `sahifalarda testlar soni: ${pageInfoParts.join(', ')}`;
+            pageInfoSummary1.textContent = pageInfoText;
+            pageInfoSummary2.textContent = pageInfoText;
+        } else {
+            pageInfoSummary1.textContent = '';
+            pageInfoSummary2.textContent = '';
+        }
     }
 
     prevBtn.addEventListener('click', function() {
         if (currentPage > 1) {
+            // Scroll pozitsiyasini saqlash
+            const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
             currentPage--;
             displayTests();
             updatePageInfo();
             updatePageStats();
-            setTimeout(() => {
-                document.getElementById('pagination').scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, 100);
+            // Scroll pozitsiyasini qayta tiklash
+            requestAnimationFrame(() => {
+                window.scrollTo(0, scrollPosition);
+            });
         }
     });
 
     nextBtn.addEventListener('click', function() {
         if (currentPage < totalPages) {
+            // Scroll pozitsiyasini saqlash
+            const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
             currentPage++;
             displayTests();
             updatePageInfo();
             updatePageStats();
-            setTimeout(() => {
-                document.getElementById('pagination').scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, 100);
+            // Scroll pozitsiyasini qayta tiklash
+            requestAnimationFrame(() => {
+                window.scrollTo(0, scrollPosition);
+            });
         }
     });
 
