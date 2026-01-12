@@ -1550,6 +1550,219 @@
         button:hover svg {
           transform: translateY(-50%) rotate(-90deg);
         }
+
+        /* ========== THREE SECTION STYLES ========== */
+        .three-section * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .three-section {
+            font-family: 'Nunito', 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #ECF2FF;
+            padding: 80px 20px;
+            margin-top: 50px;
+        }
+
+        .three-section-container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .three-section-title {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 60px;
+            letter-spacing: -0.5px;
+            font-family: 'Nunito', 'Roboto', sans-serif;
+        }
+
+        .three-section-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+        }
+
+        .three-section-step {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(68, 96, 239, 0.08);
+            transition: box-shadow 0.4s ease;
+        }
+
+        .three-section-step:hover {
+            box-shadow: 0 20px 60px rgba(68, 96, 239, 0.15);
+        }
+
+        .three-section-image-container {
+            width: 100%;
+            height: 240px;
+            position: relative;
+            overflow: hidden;
+            background: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+        }
+
+        .three-section-image {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            transition: transform 0.4s ease;
+        }
+
+        .three-section-step:hover .three-section-image {
+            transform: scale(1.08);
+        }
+
+        .three-section-overlay {
+            display: none;
+        }
+
+        .three-section-number {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #4361ee;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            z-index: 2;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            font-family: 'Nunito', 'Roboto', sans-serif;
+        }
+
+        .three-section-content {
+            padding: 35px 30px;
+        }
+
+        .three-section-subtitle {
+            text-align: center;
+            color: #4361ee;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            font-family: 'Nunito', 'Roboto', sans-serif;
+        }
+
+        .three-section-step-title {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-family: 'Nunito', 'Roboto', sans-serif;
+        }
+
+        .three-section-description {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 1rem;
+            line-height: 1.6;
+            font-family: 'Nunito', 'Roboto', sans-serif;
+        }
+
+        .three-section-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+            color: white;
+            font-size: 3rem;
+        }
+
+        @media (max-width: 1024px) {
+            .three-section-image-container {
+                height: 220px;
+                padding: 25px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .three-section {
+                padding: 60px 20px;
+                margin-top: 40px;
+            }
+
+            .three-section-title {
+                font-size: 2rem;
+                margin-bottom: 40px;
+            }
+
+            .three-section-steps {
+                gap: 30px;
+                grid-template-columns: 1fr;
+            }
+
+            .three-section-image-container {
+                height: 200px;
+                padding: 20px;
+            }
+
+            .three-section-content {
+                padding: 25px 20px;
+            }
+
+            .three-section-step-title {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .three-section {
+                padding: 40px 15px;
+                margin-top: 30px;
+            }
+
+            .three-section-title {
+                font-size: 1.75rem;
+                margin-bottom: 30px;
+            }
+
+            .three-section-image-container {
+                height: 180px;
+                padding: 15px;
+            }
+
+            .three-section-content {
+                padding: 20px 15px;
+            }
+
+            .three-section-step-title {
+                font-size: 1.2rem;
+            }
+
+            .three-section-description {
+                font-size: 0.9rem;
+            }
+
+            .three-section-number {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                top: 15px;
+                right: 15px;
+            }
+        }
     </style>
 
     <!-- qor effectlari kodlari -->
@@ -1918,6 +2131,60 @@
                                 </span>
                                 <span class="button-text">Kirish</span>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Three Steps Section -->
+        <div class="three-section">
+            <div class="three-section-container">
+                <h1 class="three-section-title">Tezkor Quizda testni boshlash</h1>
+                
+                <div class="three-section-steps">
+                    <!-- Step 1 -->
+                    <div class="three-section-step">
+                        <div class="three-section-image-container">
+                            <img src="document.png" alt="Research" class="three-section-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="three-section-placeholder" style="display: none;">🔍</div>
+                            <div class="three-section-overlay"></div>
+                            <div class="three-section-number">1</div>
+                        </div>
+                        <div class="three-section-content">
+                            <div class="three-section-subtitle">1-qadam</div>
+                            <h3 class="three-section-step-title">Testni saytga moslashtirish</h3>
+                            <p class="three-section-description">.txt formatda testni tuzish yoki ai (sunniy intelektlar) orqali standart formatga moslashtirib oling! </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="three-section-step">
+                        <div class="three-section-image-container">
+                            <img src="shuttle.png" alt="Design" class="three-section-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="three-section-placeholder" style="display: none;">✏️</div>
+                            <div class="three-section-overlay"></div>
+                            <div class="three-section-number">2</div>
+                        </div>
+                        <div class="three-section-content">
+                            <div class="three-section-subtitle">2-qadam</div>
+                            <h3 class="three-section-step-title">Ishga tushirish</h3>
+                            <p class="three-section-description">Saytga kirib testni boshlash (menyusi) bo'limi bosiladi va test turlaridan 1 tasi (tavsiya Pro Quiz) tanlanadi.</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="three-section-step">
+                        <div class="three-section-image-container">
+                            <img src="inbox.png" alt="Launch" class="three-section-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="three-section-placeholder" style="display: none;">🚀</div>
+                            <div class="three-section-overlay"></div>
+                            <div class="three-section-number">3</div>
+                        </div>
+                        <div class="three-section-content">
+                            <div class="three-section-subtitle">3-qadam</div>
+                            <h3 class="three-section-step-title">Testni boshlash</h3>
+                            <p class="three-section-description">Fayl tanlash joyiga .txt faylni tanlang va testni boshlang.</p>
                         </div>
                     </div>
                 </div>
@@ -2550,51 +2817,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
