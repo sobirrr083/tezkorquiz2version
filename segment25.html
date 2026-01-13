@@ -1375,35 +1375,42 @@
 
         for (let i = 0; i < lines.length; i++) {
             let line = lines[i].trim();
-            if (line === '') {
-                if (currentTest && currentTest.answer) {
-                    tests.push(currentTest);
-                    currentTest = null;
-                    questionNumber++;
-                }
-                continue;
-            }
+            
+            // 1. Bo'sh qatorlarni FAQAT skip qilish (testni push QILMASLIK!)
+            if (line === '') continue;
 
-            if (/(ans|answer|ansver|javob|to['']?g['']?ri\s+javob|togri\s+javob|t['']?o['']?g['']?ri\s+javob)[\s:]*[A-Da-d]/i.test(line)) {
+            // 2. ANSWER detection - SODDA va ISHONCHLI yondashuv
+            if (/^(ANSWER:|JAVOB:)/i.test(line)) {
                 if (currentTest) {
-                    currentTest.answer = normalizeAnswer(line);
-                    tests.push(currentTest);
+                    // Answer extraction - split() ishlatish
+                    let answerPart = line.split(':')[1].trim();
+                    currentTest.answer = `ANSWER: ${answerPart}`;
+                    
+                    // Validation: answer mavjud va options bor
+                    if (currentTest.options.length > 0) {
+                        tests.push(currentTest);
+                    }
                     currentTest = null;
                     questionNumber++;
                 }
-            } else if (!currentTest && !/^[A-D][\.\)]/i.test(line)) {
+            } 
+            // 3. Yangi savol detection - Option EMAS bo'lsa
+            else if (!currentTest && !/^[A-D][\.\)]/i.test(line)) {
                 let cleanQuestion = removeQuestionNumber(line);
                 currentTest = {
                     question: cleanQuestion,
                     options: [],
                     answer: ''
                 };
-            } else if (currentTest && /^[A-D][\.\)]/i.test(line)) {
+            }
+            // 4. Option qo'shish - FAQAT currentTest mavjud bo'lganda
+            else if (currentTest && /^[A-D][\.\)]/i.test(line)) {
                 currentTest.options.push(formatOption(line));
             }
         }
 
-        if (currentTest && currentTest.answer) {
+        // 5. Oxirgi test - Validation bilan
+        if (currentTest && currentTest.answer && currentTest.options.length > 0) {
             tests.push(currentTest);
         }
 
