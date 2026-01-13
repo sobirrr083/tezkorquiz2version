@@ -1303,56 +1303,90 @@
     }
 
     // ======================== PARSING VA KO‘RSATISH ========================
-    async function parseTestFile(content) {
-        tests = [];
-        corrections = [];
-        const lines = content.split('\n');
-        let currentTest = null;
-        let questionNumber = 1;
+async function parseTestFile(content) {
+    tests = [];
+    corrections = [];
+    const lines = content.split('\n');
+    let currentTest = null;
+    let questionNumber = 1;
 
-        for (let line of lines) {
-            line = line.trim();
-            if (line === '') {
-                if (currentTest && currentTest.answer) {
-                    tests.push(currentTest);
-                    currentTest = null;
-                    questionNumber++;
-                }
-                continue;
-            }
+    for (let line of lines) {
+        line = line.trim();
+        
+        // 1. Bo'sh qatorlarni FAQAT skip qilish
+        if (line === '') continue;
 
-            if (/(ans|answer|ansver|javob|to['‘]?g['‘]?ri\s+javob|togri\s+javob|t['‘]?o['‘]?g['‘]?ri\s+javob)[\s:]*[A-Da-d]/i.test(line)) {
-                if (currentTest) {
-                    const original = line;
-                    const normalized = normalizeAnswer(line);
-                    if (original !== normalized) {
-                        corrections.push({ testNumber: questionNumber, type: 'Javob formati', original, corrected: normalized });
-                    }
-                    currentTest.answer = normalized;
+        // 2. ANSWER detection - SODDA va ISHONCHLI
+        if (/^(ANSWER:|JAVOB:)/i.test(line)) {
+            if (currentTest) {
+                const original = line;
+                // Answer extraction - split() ishlatish
+                let answerPart = line.split(':')[1].trim();
+                const normalized = `ANSWER: ${answerPart}`;
+                
+                // Correction tracking
+                if (original !== normalized) {
+                    corrections.push({ 
+                        testNumber: questionNumber, 
+                        type: 'Javob formati', 
+                        original, 
+                        corrected: normalized 
+                    });
+                }
+                
+                currentTest.answer = normalized;
+                
+                // Validation: options mavjud bo'lsa
+                if (currentTest.options.length > 0) {
                     tests.push(currentTest);
-                    currentTest = null;
-                    questionNumber++;
                 }
-            } else if (!currentTest && !/^[A-D][\.\)]/i.test(line)) {
-                const original = line;
-                const clean = removeQuestionNumber(line);
-                if (original !== clean) {
-                    corrections.push({ testNumber: questionNumber, type: 'Savol raqami', original: original.slice(0,50)+(original.length>50?'...':''), corrected: clean.slice(0,50)+(clean.length>50?'...':'') });
-                }
-                currentTest = { question: clean, options: [], answer: '' };
-            } else if (currentTest && /^[A-D][\.\)]/i.test(line)) {
-                const original = line;
-                const formatted = formatOption(line);
-                if (original !== formatted) {
-                    corrections.push({ testNumber: questionNumber, type: 'Variant formati', original, corrected: formatted });
-                }
-                currentTest.options.push(formatted);
+                currentTest = null;
+                questionNumber++;
             }
+        } 
+        // 3. Yangi savol detection
+        else if (!currentTest && !/^[A-D][\.\)]/i.test(line)) {
+            const original = line;
+            const clean = removeQuestionNumber(line);
+            
+            // Correction tracking
+            if (original !== clean) {
+                corrections.push({ 
+                    testNumber: questionNumber, 
+                    type: 'Savol raqami', 
+                    original: original.slice(0, 50) + (original.length > 50 ? '...' : ''), 
+                    corrected: clean.slice(0, 50) + (clean.length > 50 ? '...' : '') 
+                });
+            }
+            
+            currentTest = { question: clean, options: [], answer: '' };
         }
-
-        if (currentTest && currentTest.answer) tests.push(currentTest);
-        await displayTests();
+        // 4. Option qo'shish
+        else if (currentTest && /^[A-D][\.\)]/i.test(line)) {
+            const original = line;
+            const formatted = formatOption(line);
+            
+            // Correction tracking
+            if (original !== formatted) {
+                corrections.push({ 
+                    testNumber: questionNumber, 
+                    type: 'Variant formati', 
+                    original, 
+                    corrected: formatted 
+                });
+            }
+            
+            currentTest.options.push(formatted);
+        }
     }
+
+    // 5. Oxirgi test - Validation bilan
+    if (currentTest && currentTest.answer && currentTest.options.length > 0) {
+        tests.push(currentTest);
+    }
+
+    await displayTests();
+}
 
     async function displayTests() {
         testContainer.innerHTML = '';
