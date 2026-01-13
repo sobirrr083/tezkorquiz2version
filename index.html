@@ -1763,6 +1763,231 @@
                 right: 15px;
             }
         }
+
+        /* ========== CTA SECTION STYLES ========== */
+        .cta-section {
+            background: #ECF2FF;
+            padding: 80px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cta-section .container-fluid {
+            max-width: 1200px;
+            width: 100%;
+            background: white;
+            border-radius: 30px;
+            padding: 60px 50px;
+            box-shadow: 0 20px 60px rgba(67, 97, 238, 0.12);
+            text-align: center;
+        }
+
+        .cta-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            box-shadow: 0 10px 30px rgba(67, 97, 238, 0.25);
+        }
+
+        .cta-icon svg {
+            width: 40px;
+            height: 40px;
+            fill: white;
+        }
+
+        .cta-badge {
+            display: inline-block;
+            background: rgba(67, 97, 238, 0.1);
+            color: #4361ee;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            font-family: 'Nunito', 'Roboto', sans-serif;
+        }
+
+        .cta-heading {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            font-family: 'Nunito', 'Roboto', sans-serif;
+        }
+
+        .cta-heading .highlight {
+            color: #4361ee;
+            position: relative;
+        }
+
+        .cta-description {
+            color: #7f8c8d;
+            font-size: 1.125rem;
+            line-height: 1.7;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            font-family: 'Nunito', 'Roboto', sans-serif;
+        }
+
+        .cta-features {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .cta-feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #2c3e50;
+            font-size: 0.95rem;
+            font-family: 'Nunito', 'Roboto', sans-serif;
+        }
+
+        .cta-feature-item svg {
+            width: 20px;
+            height: 20px;
+            fill: #4361ee;
+            flex-shrink: 0;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+            color: white;
+            padding: 18px 50px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(67, 97, 238, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Nunito', 'Roboto', sans-serif;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(67, 97, 238, 0.4);
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:active {
+            transform: translateY(-1px);
+        }
+
+        .cta-note {
+            margin-top: 25px;
+            color: #95a5a6;
+            font-size: 0.9rem;
+            font-family: 'Nunito', 'Roboto', sans-serif;
+        }
+
+        @media (max-width: 768px) {
+            .cta-section {
+                padding: 60px 15px;
+            }
+
+            .cta-section .container-fluid {
+                padding: 40px 30px;
+                border-radius: 20px;
+            }
+
+            .cta-heading {
+                font-size: 2rem;
+            }
+
+            .cta-description {
+                font-size: 1rem;
+            }
+
+            .cta-features {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+
+            .cta-button {
+                padding: 16px 40px;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .cta-section {
+                padding: 40px 10px;
+            }
+
+            .cta-section .container-fluid {
+                padding: 30px 20px;
+                border-radius: 15px;
+            }
+
+            .cta-icon {
+                width: 60px;
+                height: 60px;
+                margin-bottom: 20px;
+            }
+
+            .cta-icon svg {
+                width: 30px;
+                height: 30px;
+            }
+
+            .cta-badge {
+                font-size: 0.75rem;
+                padding: 6px 15px;
+            }
+
+            .cta-heading {
+                font-size: 1.5rem;
+                margin-bottom: 15px;
+            }
+
+            .cta-description {
+                font-size: 0.95rem;
+                margin-bottom: 30px;
+            }
+
+            .cta-button {
+                padding: 14px 35px;
+                font-size: 0.95rem;
+                width: 100%;
+                max-width: 280px;
+            }
+
+            .cta-note {
+                font-size: 0.85rem;
+            }
+        }
     </style>
 
     <!-- qor effectlari kodlari -->
@@ -2147,7 +2372,7 @@
                     <div class="three-section-step">
                         <div class="three-section-image-container">
                             <img src="aga/document.webp" alt="Research" class="three-section-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            <div class="three-section-placeholder" style="display: none;"></div>
+                            <div class="three-section-placeholder" style="display: none;">🔍</div>
                             <div class="three-section-overlay"></div>
                             <div class="three-section-number">1</div>
                         </div>
@@ -2162,7 +2387,7 @@
                     <div class="three-section-step">
                         <div class="three-section-image-container">
                             <img src="aga/shuttle.webp" alt="Design" class="three-section-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            <div class="three-section-placeholder" style="display: none;"></div>
+                            <div class="three-section-placeholder" style="display: none;">✏️</div>
                             <div class="three-section-overlay"></div>
                             <div class="three-section-number">2</div>
                         </div>
@@ -2177,7 +2402,7 @@
                     <div class="three-section-step">
                         <div class="three-section-image-container">
                             <img src="aga/inbox.webp" alt="Launch" class="three-section-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            <div class="three-section-placeholder" style="display: none;"></div>
+                            <div class="three-section-placeholder" style="display: none;">🚀</div>
                             <div class="three-section-overlay"></div>
                             <div class="three-section-number">3</div>
                         </div>
@@ -2188,6 +2413,65 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="cta-section">
+            <div class="container-fluid">
+                <!-- Icon -->
+                <div class="cta-icon">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11zm-9-9h8v2h-8v-2zm0 4h8v2h-8v-2z"/>
+                    </svg>
+                </div>
+
+                <!-- Badge -->
+                <div class="cta-badge">Bepul xizmat</div>
+
+                <!-- Heading -->
+                <h2 class="cta-heading">
+                    <span class="highlight">Har qanday</span> faylni saytga<br>
+                    bepul moslab beramiz
+                </h2>
+
+                <!-- Description -->
+                <p class="cta-description">
+                    Sizning test fayllaringizni saytimiz formatiga moslashtirishda yordam beramiz. 
+                    Faqat faylingizni yuboring, qolganini biz qilamiz!
+                </p>
+
+                <!-- Features -->
+                <div class="cta-features">
+                    <div class="cta-feature-item">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                        </svg>
+                        <span>100% Bepul</span>
+                    </div>
+                    <div class="cta-feature-item">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                        </svg>
+                        <span>Tez va oson</span>
+                    </div>
+                    <div class="cta-feature-item">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                        </svg>
+                        <span>Barcha formatlar</span>
+                    </div>
+                </div>
+
+                <!-- Button -->
+                <a href="https://t.me/sobirweb?text=Assalomu%20aleykum%2C%20maqsadga%20tez%20o%27ting%2C%20kerakli%20faylni%20yuborgan%20holda%20yozing" class="cta-button" target="_blank">
+                    Hoziroq yuborish
+                </a>
+
+                <!-- Note -->
+                <p class="cta-note">
+                    Telegram orqali
+                </p>
             </div>
         </div>
 
@@ -2817,4 +3101,3 @@
     </script>
 </body>
 </html>
-
