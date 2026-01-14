@@ -1483,23 +1483,47 @@
         
         // Sahifalar haqida qisqa info yangilash
         if (tests.length > 0 && totalPages > 0) {
-            const pageInfoParts = [];
-            for (let page = 1; page <= totalPages; page++) {
-                const pageStartIndex = (page - 1) * testsPerPage;
-                const pageEndIndex = Math.min(pageStartIndex + testsPerPage, tests.length);
-                const pageTestsCount = pageEndIndex - pageStartIndex;
-                pageInfoParts.push(`${page}=${pageTestsCount}`);
+           const pageCounts = [];
+
+        for (let page = 1; page <= totalPages; page++) {
+            const start = (page - 1) * testsPerPage;
+            const end = Math.min(start + testsPerPage, tests.length);
+            pageCounts.push(end - start);
+        }
+        
+        // Guruhlash
+        const grouped = [];
+        let startPage = 1;
+        
+        for (let i = 1; i <= pageCounts.length; i++) {
+            if (pageCounts[i] !== pageCounts[i - 1]) {
+                const endPage = i;
+                grouped.push({
+                    from: startPage,
+                    to: endPage,
+                    count: pageCounts[i - 1]
+                });
+                startPage = i + 1;
             }
-            const pageInfoText = `sahifalarda testlar soni: ${pageInfoParts.join(', ')}`;
+        }
+        
+        // Natijani matnga aylantirish
+        const result = grouped.map(g =>
+            g.from === g.to
+                ? `${g.from}=${g.count}`
+                : `${g.from}-${g.to}=${g.count}`
+        );
+        
+        const pageInfoText = `sahifalarda testlar soni: ${result.join(', ')}`;
             pageInfoSummary1.textContent = pageInfoText;
             pageInfoSummary2.textContent = pageInfoText;
         } else {
             pageInfoSummary1.textContent = '';
             pageInfoSummary2.textContent = '';
         }
-    }
+        }
 
-    prevBtn.addEventListener('click', function() {
+        prevBtn.addEventListener('click', function() {
         if (currentPage > 1) {
             // Scroll pozitsiyasini saqlash
             const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
