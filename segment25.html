@@ -952,7 +952,7 @@
             </div>
             <div class="feature-text">
                 <strong>Tartib raqamlarni olib tashlash</strong>
-                <p>Test boshidagi 1. 2. 10. kabi raqamlar avtomatik tozalanadi</p>
+                <p>Test boshidagi 1. 2. 10. kabi raqamlar avtomatik tozalanadi. Chunki quizlarda tasodifiy tanlanib avto raqamlanadi.</p>
             </div>
         </div>
         <div class="feature-item">
@@ -965,8 +965,8 @@
                 </svg>
             </div>
             <div class="feature-text">
-                <strong>25 ta testdan bo'lish</strong>
-                <p>Katta test faylini har biri 25 ta testli qismlarga bo'ladi</p>
+                <strong>25 ta yoki N ta testdan bo'lish</strong>
+                <p>Katta test faylini har birini 25 (N) ta testli qismlarga bo'ladi va testlarga qisqa tayyorlanish imkonini beradi.</p>
             </div>
         </div>
         <div class="feature-item">
@@ -978,7 +978,7 @@
             </div>
             <div class="feature-text">
                 <strong>Format tuzatish</strong>
-                <p>A) dan A. ga, variantlarni standart formatga o'zgartiradi</p>
+                <p>A) dan A. ga, variantlar va kichik xatoliklarni standart formatga o'zgartiradi.</p>
             </div>
         </div>
         <div class="feature-item">
@@ -1003,7 +1003,7 @@
             </div>
             <div class="feature-text">
                 <strong>Quiz uchun tayyor</strong>
-                <p>Yuklangan fayllar Quiz Test dasturida to'g'ridan-to'g'ri ishlatish uchun tayyor</p>
+                <p>Yuklangan fayllar Testni boshlashda to'g'ridan-to'g'ri ishlatish uchun tayyor.</p>
             </div>
         </div>
         <div class="feature-item">
@@ -1014,7 +1014,7 @@
             </div>
             <div class="feature-text">
                 <strong>Aqlli ogohlantirish</strong>
-                <p>Oxirgi sahifada kam test bo'lsa, avtomatik oldingi faylga qo'shiladi</p>
+                <p>Oxirgi sahifada kam test bo'lsa, avtomatik oldingi faylga qo'shiladi.</p>
             </div>
         </div>
     </div>
@@ -1045,7 +1045,7 @@
     <div id="testResults" style="display: none;">
         <div class="settings-input">
             <label>Har bir sahifada:</label>
-            <input type="number" id="testsPerPageInput1" class="testsPerPageInput" min="20" max="100" value="25">
+            <input type="number" id="testsPerPageInput1" class="testsPerPageInput" min="15" max="100" value="25">
             <label>ta test</label>
         </div>
         <div class="page-stats">
@@ -1071,7 +1071,7 @@
         </div>
         <div class="settings-input">
             <label>Har bir sahifada:</label>
-            <input type="number" id="testsPerPageInput2" class="testsPerPageInput" min="20" max="100" value="25">
+            <input type="number" id="testsPerPageInput2" class="testsPerPageInput" min="15" max="100" value="25">
             <label>ta test</label>
         </div>
         <div class="page-stats">
@@ -1166,15 +1166,12 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
                     </svg>
-                    Fayl nomi (barcha sahifalar uchun):
+                    Fayl nomi: (barcha sahifalar uchun):
                 </label>
                 <input type="text" id="fileNameInput" class="modal-input" placeholder="Masalan: Iqtisodiyot">
             </div>
             
             <div class="modal-suggestion">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                </svg>
                 <span>Misol: "Iqtisodiyot" → Iqtisodiyot_01.txt, Iqtisodiyot_02.txt...</span>
             </div>
         </div>
