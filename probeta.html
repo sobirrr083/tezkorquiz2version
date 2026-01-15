@@ -11,6 +11,7 @@
   <meta name="author" content="Tezkor Quiz">
   <meta name="language" content="uz">
   <meta name="theme-color" content="#506eec">
+  <html data-theme="dark" data-display="oled">
 
   <meta property="og:type" content="website">
   <meta property="og:title" content="Pro Quiz — Professional test va chuqur tahlil">
@@ -134,6 +135,62 @@
     .restart-button {
       color: #f9fafb;
     }
+
+    /* ===============================
+   TRUE BLACK – OLED / AMOLED
+   =============================== */
+    [data-theme="dark"][data-display="oled"] {
+
+      --body-bg: #000000;
+      --container-bg: #000000;
+      --stats-bg: #000000;
+
+      --text-color: #e5e7eb;
+
+      --progress-bg: #0a0a0a;
+      --option-hover: #0a0a0a;
+
+      --scrollbar-track: #000000;
+      --scrollbar-thumb: #1f2937;
+
+      /* Tugmalar */
+      --new-test-bg: #000000;
+      --new-test-hover: #111827;
+
+      --share-bg: #000000;
+      --share-hover: #022c22;
+
+      --restart-bg: #000000;
+      --restart-hover: #451a03;
+
+      --button-bg: #2563eb;
+      --button-hover: #1d4ed8;
+    }
+
+    [data-theme="dark"][data-display="oled"] 
+    .new-test-button,
+    [data-theme="dark"][data-display="oled"] 
+    .share-button,
+    [data-theme="dark"][data-display="oled"] 
+    .restart-button {
+      border: 1px solid #1f2937;
+      color: #f9fafb;
+    }
+    [data-theme="dark"][data-display="oled"] 
+    .new-test-button,
+    [data-theme="dark"][data-display="oled"] 
+    .share-button,
+    [data-theme="dark"][data-display="oled"] 
+    .restart-button {
+      border: 1px solid #1f2937;
+      color: #f9fafb;
+    }
+    [data-theme="dark"][data-display="oled"] .time-display {
+      background-color: #000000;
+      color: #e5e7eb;
+      border: 1px solid #1f2937;
+    }
+
 
     body {
       background-color: var(--body-bg);
@@ -1683,7 +1740,13 @@ document.addEventListener("DOMContentLoaded", function() {
   
   // Testlar sahifasidan test yuklash
   const testData = localStorage.getItem('currentTestData');
-  
+  if (
+  window.matchMedia("(prefers-color-scheme: dark)").matches &&
+  /Android|iPhone|iPad/i.test(navigator.userAgent)
+  ) {
+    document.documentElement.setAttribute("data-display", "oled");
+  }
+
   if (testData) {
     // Tugmani ko'rsatish
     document.getElementById('backToTestsButton').style.display = 'block';
