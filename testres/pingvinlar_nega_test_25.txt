@@ -1,0 +1,174 @@
+Nega pingvinlar uchmaydi?
+A. Qanotlari kuchsiz bo‘lgani uchun
+B. Uchish energiya talab qiladi
+C. Qanotlari suzishga moslashgani uchun
+D. Havoda yo‘nalishni yo‘qotgani uchun
+ANSWER: C
+
+Nega pingvinlar suvda quruqlikdagidan tezroq harakatlanadi?
+A. Suv sovuq bo‘lgani uchun
+B. Tana shakli suv oqimiga moslashgan
+C. Quruqlik xavfli bo‘lgani uchun
+D. Suvda dushman kam bo‘lgani uchun
+ANSWER: B
+
+Nega pingvinlar qora-oq rangda bo‘ladi?
+A. Issiqlikni ushlab qolish uchun
+B. Juftini jalb qilish uchun
+C. Suvda kamuflyaj bo‘lishi uchun
+D. Koloniyada ajralib turish uchun
+ANSWER: C
+
+Nega pingvinlar tuxumni yerga qo‘ymaydi?
+A. Yirtqichlar ko‘p bo‘lgani uchun
+B. Namlik zararli bo‘lgani uchun
+C. Sovuq issiqlikni tez tortib olgani uchun
+D. Tuxum dumalab ketishi mumkinligi uchun
+ANSWER: C
+
+Nega pingvinlar guruh bo‘lib yashaydi?
+A. Ovni osonlashtirish uchun
+B. Hududni egallash uchun
+C. Sovuqda issiqlikni saqlash uchun
+D. Juft tanlash uchun
+ANSWER: C
+
+Nega pingvinlar uzoq masofaga ovga ketadi?
+A. Baliqlar chuqurda bo‘lgani uchun
+B. Koloniya yaqinida ov kam bo‘lgani uchun
+C. Suv harorati qulayroq bo‘lgani uchun
+D. Raqobat kam bo‘lgani uchun
+ANSWER: B
+
+Nega pingvinlar suvdan chiqqach patlarini silkita boshlaydi?
+A. Sovuqni sezgani uchun
+B. Patlarni tozalash uchun
+C. Suvni chiqarib, issiqlikni saqlash uchun
+D. Dam olish uchun
+ANSWER: C
+
+Nega pingvinlarning tanasida yog‘ qatlami qalin?
+A. Suzishni osonlashtirish uchun
+B. Energiya zaxirasi uchun
+C. Sovuqdan himoyalanish uchun
+D. Og‘irlikni oshirish uchun
+ANSWER: C
+
+Nega pingvinlar bolalarini ma’lum vaqtdan keyin yolg‘iz qoldiradi?
+A. Oziq kam bo‘lgani uchun
+B. Bola mustaqil bo‘lishni o‘rganishi uchun
+C. Koloniyada joy kamligi uchun
+D. Ota-ona charchagani uchun
+ANSWER: B
+
+Nega pingvinlar ko‘zlari suvga yaxshi moslashgan?
+A. Quruqlikda kam vaqt bo‘lgani uchun
+B. Ov asosan suvda bo‘lgani uchun
+C. Yorug‘lik kam bo‘lgani uchun
+D. Suv sovuq bo‘lgani uchun
+ANSWER: B
+
+Nega erkak pingvin tuxumni saqlab turadi, urg‘ochi esa ovga ketadi?
+A. Erkak sovuqqa chidamliroq bo‘lgani uchun
+B. Urg‘ochi tuxumdan keyin energiyasiz qoladi
+C. Erkak kamroq ov qiladi
+D. Koloniya tartibi shunday
+ANSWER: B
+
+Nega pingvin tuxumni tanasiga yaqin tutadi, patlar bilan emas?
+A. Patlar ho‘l bo‘lib qolishi mumkin
+B. Bevosita issiqlik uzatilishi kuchliroq
+C. Tuxum sirpanib ketmasligi uchun
+D. Yirtqichlardan yashirish uchun
+ANSWER: B
+
+Nega pingvinlar sovuq kuchayganda harakatni kamaytiradi?
+A. Charchamaslik uchun
+B. Energiya va issiqlikni tejash uchun
+C. Koloniyada joy toraygani uchun
+D. Dushman sezilmasligi uchun
+ANSWER: B
+
+Nega pingvinlar tuxum ochilguncha deyarli ov qilmaydi?
+A. Ov qilish xavfli bo‘lgani uchun
+B. Koloniyani tark eta olmagani uchun
+C. Tuxum issiqliksiz qolmasligi uchun
+D. Oziq talab qilinmagani uchun
+ANSWER: C
+
+Nega pingvin tuxumni qisqa vaqtga yerga qo‘ysa bu juda xavfli?
+A. Yirtqichlar ko‘rib qoladi
+B. Tuxum namlanadi
+C. Issiqlik juda tez yo‘qoladi
+D. Tuxum harakatlanib ketadi
+ANSWER: C
+
+Nega pingvinlar quruqlikda sirpanib yuradi?
+A. Tezroq harakatlanish uchun
+B. Energiya kam sarflanishi uchun
+C. Muz silliq bo‘lgani uchun
+D. Qanotlar xalaqit bermasligi uchun
+ANSWER: B
+
+Nega pingvinlar ovoz orqali bir-birini taniydi?
+A. Ko‘rish qiyin bo‘lgani uchun
+B. Koloniya juda katta bo‘lgani uchun
+C. Hid sezgisi kuchsiz bo‘lgani uchun
+D. Masofa uzoq bo‘lgani uchun
+ANSWER: B
+
+Nega pingvinlar bolalarini koloniyada qoldiradi?
+A. Himoya kuchliroq bo‘lgani uchun
+B. Oziq yetarli bo‘lgani uchun
+C. Bola tez o‘sishi uchun
+D. Nazorat oson bo‘lgani uchun
+ANSWER: A
+
+Nega pingvinlar asosan sovuq hududlarda yashaydi?
+A. Raqobat kam bo‘lgani uchun
+B. Ov ko‘p bo‘lgani uchun
+C. Evolyutsion moslashuv natijasi
+D. Quruqlik xavfsiz bo‘lgani uchun
+ANSWER: C
+
+Nega pingvinlar suzishda qanotdan foydalanadi?
+A. Qanotlar kuchli bo‘lgani uchun
+B. Dum qisqa bo‘lgani uchun
+C. Qanotlar suzishga moslashgan
+D. Muvozanat uchun
+ANSWER: C
+
+Nega pingvinlar doimo suvga yaqin yashaydi?
+A. Issiqlik sabab
+B. Ov manbai yaqin bo‘lishi uchun
+C. Koloniya qulayligi uchun
+D. Dushman kam bo‘lgani uchun
+ANSWER: B
+
+Nega pingvinlar sho‘r suv ichib ham yashay oladi?
+A. Organizm moslashgan
+B. Tuz zarar qilmaydi
+C. Maxsus bezlar tuzni chiqaradi
+D. Suv kam ichiladi
+ANSWER: C
+
+Nega pingvinlar bolalarini uzoq vaqt parvarish qiladi?
+A. Bola zaif bo‘lgani uchun
+B. Sovuq sharoit sabab
+C. Ovni o‘rganishi kerak
+D. Koloniya talabi
+ANSWER: B
+
+Nega pingvinlar yirtqichlardan suvda ko‘proq himoyalangan?
+A. Suv chuqur bo‘lgani uchun
+B. Tez harakatlana olgani uchun
+C. Rang moslashuvi sabab
+D. Dushman kam bo‘lgani uchun
+ANSWER: B
+
+Nega pingvinlarni himoya qilish muhim?
+A. Ular noyob bo‘lgani uchun
+B. Ekotizim muvozanatini saqlagani uchun
+C. Turizm uchun
+D. Ilmiy qiziqish sabab
+ANSWER: B
