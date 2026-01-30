@@ -1,0 +1,1977 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tezkor Quiz - Admin Panel</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💡</text></svg>">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.10.0/lottie.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root {
+      --primary-color: #506eec;
+      --secondary-color: #f5f7fb;
+      --text-color: #333;
+      --correct-color: #28a745;
+      --incorrect-color: #dc3545;
+      --background-color: #f5f7fb;
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --admin-color: #ff6b35;
+      --warning-color: #ffc107;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--background-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .logo-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .app-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-size: 24px;
+      font-weight: bold;
+      color: var(--primary-color);
+    }
+
+    .logo-icon {
+      font-size: 28px;
+    }
+
+    /* Admin Badge */
+    .admin-badge {
+      background-color: var(--admin-color);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-left: 10px;
+      display: inline-block;
+    }
+
+    /* Session Link Display */
+    .session-link-container {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      color: white;
+      box-shadow: var(--shadow);
+    }
+
+    .session-link-title {
+      font-size: 14px;
+      opacity: 0.9;
+      margin-bottom: 8px;
+    }
+
+    .session-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,0.2);
+      padding: 12px;
+      border-radius: 8px;
+      font-family: 'Courier New', monospace;
+      word-break: break-all;
+    }
+
+    .copy-link-btn {
+      background: white;
+      color: #667eea;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      white-space: nowrap;
+      transition: all 0.3s;
+    }
+
+    .copy-link-btn:hover {
+      transform: scale(1.05);
+    }
+
+    /* User Status Display */
+    .users-status {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .status-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .status-count {
+      display: flex;
+      gap: 20px;
+    }
+
+    .count-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .count-badge {
+      background: var(--primary-color);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-weight: bold;
+    }
+
+    .ready-badge {
+      background: var(--correct-color);
+    }
+
+    .user-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .user-card {
+      background: var(--secondary-color);
+      padding: 10px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s;
+    }
+
+    .user-card.ready {
+      background: rgba(40, 167, 69, 0.1);
+      border: 2px solid var(--correct-color);
+    }
+
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .user-info {
+      flex: 1;
+    }
+
+    .user-name {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .user-status {
+      font-size: 11px;
+      color: #666;
+    }
+
+    .ready-icon {
+      color: var(--correct-color);
+      font-size: 18px;
+    }
+
+    /* Admin Controls */
+    .admin-controls {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .control-section {
+      margin-bottom: 20px;
+    }
+
+    .control-title {
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: var(--primary-color);
+    }
+
+    .file-upload-area {
+      border: 2px dashed var(--primary-color);
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .file-upload-area:hover {
+      background: var(--secondary-color);
+    }
+
+    .file-upload-area.drag-over {
+      background: rgba(80, 110, 236, 0.1);
+      border-color: var(--admin-color);
+    }
+
+    .uploaded-file-info {
+      background: var(--secondary-color);
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .file-name {
+      font-weight: 600;
+      color: var(--primary-color);
+    }
+
+    .control-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .control-btn {
+      flex: 1;
+      min-width: 150px;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.3s;
+    }
+
+    .control-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-start {
+      background: var(--correct-color);
+      color: white;
+    }
+
+    .btn-pause {
+      background: var(--warning-color);
+      color: #333;
+    }
+
+    .btn-stop {
+      background: var(--incorrect-color);
+      color: white;
+    }
+
+    .btn-upload {
+      background: var(--primary-color);
+      color: white;
+    }
+
+    /* Approval Modal */
+    .approval-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .approval-modal.active {
+      display: flex;
+    }
+
+    .approval-content {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+    }
+
+    .approval-title {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      color: var(--incorrect-color);
+    }
+
+    .approval-message {
+      margin-bottom: 20px;
+      color: #666;
+    }
+
+    .approval-users {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .approval-user {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px;
+      background: var(--secondary-color);
+      border-radius: 8px;
+    }
+
+    .approval-user.approved {
+      background: rgba(40, 167, 69, 0.1);
+      border: 2px solid var(--correct-color);
+    }
+
+    .approval-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .approve-btn {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .approve-yes {
+      background: var(--correct-color);
+      color: white;
+    }
+
+    .approve-no {
+      background: #6c757d;
+      color: white;
+    }
+
+    /* Chat System */
+    .chat-container {
+      background: white;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    .chat-header {
+      background: var(--primary-color);
+      color: white;
+      padding: 15px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .chat-messages {
+      height: 300px;
+      overflow-y: auto;
+      padding: 15px;
+      background: #fafafa;
+    }
+
+    .chat-message {
+      margin-bottom: 12px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .message-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .message-content {
+      flex: 1;
+    }
+
+    .message-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .message-sender {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .message-time {
+      font-size: 11px;
+      color: #999;
+    }
+
+    .message-text {
+      background: white;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .chat-input-area {
+      padding: 15px;
+      background: white;
+      border-top: 1px solid #e0e0e0;
+      display: flex;
+      gap: 10px;
+    }
+
+    .chat-input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 20px;
+      outline: none;
+    }
+
+    .send-btn {
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    /* Quiz Section */
+    .user-setup {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+    }
+
+    .profile-section {
+      text-align: center;
+    }
+
+    .profile-picture-container {
+      position: relative;
+      margin: 0 auto 15px;
+      width: 100px;
+      height: 100px;
+    }
+
+    .profile-picture {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--primary-color);
+    }
+
+    .edit-profile-icon {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background-color: var(--primary-color);
+      color: #fff;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .profile-input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    .action-button {
+      background-color: var(--primary-color);
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background-color 0.3s;
+      width: 100%;
+    }
+
+    .action-button:hover {
+      background-color: #3f5ac5;
+    }
+
+    .action-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .waiting-message {
+      background: var(--secondary-color);
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .waiting-title {
+      font-size: 18px;
+      font-weight: bold;
+      color: var(--primary-color);
+      margin-bottom: 10px;
+    }
+
+    .waiting-text {
+      color: #666;
+    }
+
+    /* Quiz Display */
+    .quiz-section {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+    }
+
+    .quiz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid var(--secondary-color);
+    }
+
+    .quiz-timer {
+      font-size: 24px;
+      font-weight: bold;
+      color: var(--primary-color);
+    }
+
+    .quiz-status {
+      background: var(--warning-color);
+      color: #333;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .quiz-status.active {
+      background: var(--correct-color);
+      color: white;
+    }
+
+    .quiz-status.paused {
+      background: var(--warning-color);
+    }
+
+    .question-container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      border: 2px solid var(--secondary-color);
+    }
+
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .question-number {
+      background: var(--primary-color);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .question-text {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: var(--text-color);
+    }
+
+    .options-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .option-btn {
+      background: var(--secondary-color);
+      border: 2px solid transparent;
+      padding: 15px;
+      border-radius: 8px;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 16px;
+    }
+
+    .option-btn:hover {
+      background: rgba(80, 110, 236, 0.1);
+      border-color: var(--primary-color);
+    }
+
+    .option-btn.selected {
+      background: var(--primary-color);
+      color: white;
+      border-color: var(--primary-color);
+    }
+
+    .option-btn.correct {
+      background: var(--correct-color);
+      color: white;
+      border-color: var(--correct-color);
+    }
+
+    .option-btn.incorrect {
+      background: var(--incorrect-color);
+      color: white;
+      border-color: var(--incorrect-color);
+    }
+
+    .option-btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+
+    /* Results Section */
+    .results-section {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .results-animation {
+      width: 200px;
+      height: 200px;
+      margin: 0 auto 20px;
+    }
+
+    .results-score {
+      font-size: 48px;
+      font-weight: bold;
+      color: var(--primary-color);
+      margin-bottom: 20px;
+    }
+
+    .results-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .stat-card {
+      background: var(--secondary-color);
+      padding: 15px;
+      border-radius: 8px;
+    }
+
+    .stat-value {
+      font-size: 32px;
+      font-weight: bold;
+      color: var(--primary-color);
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: #666;
+      margin-top: 5px;
+    }
+
+    .leaderboard {
+      margin-top: 30px;
+    }
+
+    .leaderboard-title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      color: var(--primary-color);
+    }
+
+    .leaderboard-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .leaderboard-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 15px;
+      background: var(--secondary-color);
+      border-radius: 8px;
+    }
+
+    .leaderboard-item.current-user {
+      background: rgba(80, 110, 236, 0.1);
+      border: 2px solid var(--primary-color);
+    }
+
+    .rank {
+      font-size: 20px;
+      font-weight: bold;
+      min-width: 30px;
+    }
+
+    .rank.top3 {
+      font-size: 24px;
+    }
+
+    .leader-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .leader-info {
+      flex: 1;
+    }
+
+    .leader-name {
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    .leader-score {
+      font-size: 14px;
+      color: #666;
+    }
+
+    .score-value {
+      font-size: 24px;
+      font-weight: bold;
+      color: var(--primary-color);
+    }
+
+    /* Hidden sections */
+    .hidden {
+      display: none !important;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .container {
+        padding: 10px;
+      }
+
+      .control-buttons {
+        flex-direction: column;
+      }
+
+      .control-btn {
+        min-width: 100%;
+      }
+
+      .user-list {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      }
+    }
+
+    /* Animations */
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+
+    /* Loading Spinner */
+    .spinner {
+      border: 3px solid var(--secondary-color);
+      border-top: 3px solid var(--primary-color);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Logo -->
+    <div class="logo-container">
+      <div class="app-logo">
+        <span class="logo-icon">💡</span>
+        <span>Tezkor Quiz</span>
+        <span class="admin-badge" id="adminBadge" style="display: none;">ADMIN</span>
+      </div>
+    </div>
+
+    <!-- Session Link (shown after admin creates session) -->
+    <div class="session-link-container hidden" id="sessionLinkContainer">
+      <div class="session-link-title">Session Linki</div>
+      <div class="session-link">
+        <span id="sessionLinkText">-</span>
+        <button class="copy-link-btn" onclick="copySessionLink()">
+          <i class="fas fa-copy"></i> Nusxalash
+        </button>
+      </div>
+    </div>
+
+    <!-- Users Status Display -->
+    <div class="users-status hidden" id="usersStatus">
+      <div class="status-header">
+        <h3><i class="fas fa-users"></i> Ishtirokchilar</h3>
+        <div class="status-count">
+          <div class="count-item">
+            <i class="fas fa-user"></i>
+            <span class="count-badge" id="totalUsersCount">0</span>
+          </div>
+          <div class="count-item">
+            <i class="fas fa-check"></i>
+            <span class="count-badge ready-badge" id="readyUsersCount">0</span>
+          </div>
+        </div>
+      </div>
+      <div class="user-list" id="userList"></div>
+    </div>
+
+    <!-- Admin Controls -->
+    <div class="admin-controls hidden" id="adminControls">
+      <div class="control-section">
+        <div class="control-title"><i class="fas fa-upload"></i> Test Fayli</div>
+        <div class="file-upload-area" id="fileUploadArea" onclick="document.getElementById('quizFileInput').click()">
+          <i class="fas fa-cloud-upload-alt" style="font-size: 48px; color: var(--primary-color); margin-bottom: 10px;"></i>
+          <div>Test faylini yuklang yoki shu yerga tashlang</div>
+          <div style="font-size: 12px; color: #999; margin-top: 5px;">JSON formatdagi test fayli</div>
+        </div>
+        <input type="file" id="quizFileInput" accept=".json" style="display: none;" onchange="handleFileUpload(event)">
+        <div class="uploaded-file-info hidden" id="uploadedFileInfo">
+          <div>
+            <i class="fas fa-file-alt"></i>
+            <span class="file-name" id="uploadedFileName">-</span>
+          </div>
+          <button class="control-btn btn-upload" style="flex: none; min-width: auto; padding: 8px 16px;" onclick="uploadNewFile()">
+            <i class="fas fa-sync"></i> Yangi fayl
+          </button>
+        </div>
+      </div>
+
+      <div class="control-section">
+        <div class="control-title"><i class="fas fa-gamepad"></i> Testni Boshqarish</div>
+        <div class="control-buttons">
+          <button class="control-btn btn-start" id="adminStartBtn" onclick="adminStartQuiz()" disabled>
+            <i class="fas fa-play"></i> Testni Boshlash
+          </button>
+          <button class="control-btn btn-pause" id="adminPauseBtn" onclick="adminPauseQuiz()" disabled>
+            <i class="fas fa-pause"></i> Pauza
+          </button>
+          <button class="control-btn btn-stop" id="adminStopBtn" onclick="requestStopQuiz()" disabled>
+            <i class="fas fa-stop"></i> To'xtatish
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chat System -->
+    <div class="chat-container hidden" id="chatContainer">
+      <div class="chat-header">
+        <span><i class="fas fa-comments"></i> Chat</span>
+        <span id="onlineCount">0 online</span>
+      </div>
+      <div class="chat-messages" id="chatMessages"></div>
+      <div class="chat-input-area">
+        <input type="text" class="chat-input" id="chatInput" placeholder="Xabar yozing..." onkeypress="handleChatKeyPress(event)">
+        <button class="send-btn" onclick="sendMessage()">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- User Setup Section -->
+    <div class="user-setup" id="userSetupSection">
+      <div class="profile-section">
+        <div class="profile-picture-container">
+          <img src="https://ui-avatars.com/api/?name=User&background=506eec&color=fff&size=200" 
+               class="profile-picture" id="profilePic" alt="Profile">
+          <div class="edit-profile-icon" onclick="document.getElementById('profilePicInput').click()">
+            <i class="fas fa-camera"></i>
+          </div>
+        </div>
+        <input type="file" id="profilePicInput" accept="image/*" style="display: none;" onchange="handleProfilePicUpload(event)">
+        
+        <input type="text" class="profile-input" id="userNameInput" placeholder="Ismingizni kiriting" maxlength="30">
+        
+        <button class="action-button" id="readyBtn" onclick="markAsReady()" disabled>
+          <i class="fas fa-check"></i> Tayyor
+        </button>
+
+        <div class="waiting-message hidden" id="waitingMessage">
+          <div class="waiting-title"><i class="fas fa-hourglass-half pulse"></i> Kutilmoqda...</div>
+          <div class="waiting-text">Adminning testni boshlashini kuting</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quiz Section -->
+    <div class="quiz-section hidden" id="quizSection">
+      <div class="quiz-header">
+        <div class="quiz-timer" id="quizTimer">00:00</div>
+        <div class="quiz-status" id="quizStatus">Aktiv</div>
+      </div>
+      <div id="questionsContainer"></div>
+    </div>
+
+    <!-- Results Section -->
+    <div class="results-section hidden" id="resultsSection">
+      <div class="results-animation" id="resultsAnimation"></div>
+      <div class="results-score" id="finalScore">0/0</div>
+      <div class="results-stats">
+        <div class="stat-card">
+          <div class="stat-value" id="correctCount">0</div>
+          <div class="stat-label">To'g'ri</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="incorrectCount">0</div>
+          <div class="stat-label">Noto'g'ri</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="accuracyPercent">0%</div>
+          <div class="stat-label">Aniqlik</div>
+        </div>
+      </div>
+      
+      <div class="leaderboard">
+        <div class="leaderboard-title">🏆 Reytinglar</div>
+        <div class="leaderboard-list" id="leaderboardList"></div>
+      </div>
+
+      <button class="action-button" style="margin-top: 30px;" onclick="resetQuiz()">
+        <i class="fas fa-redo"></i> Qaytadan boshlash
+      </button>
+    </div>
+
+    <!-- Approval Modal -->
+    <div class="approval-modal" id="approvalModal">
+      <div class="approval-content">
+        <div class="approval-title">
+          <i class="fas fa-exclamation-triangle"></i> Testni To'xtatish
+        </div>
+        <div class="approval-message">
+          Testni to'xtatish uchun kamida 2 ta ishtirokchi tasdiqlashi kerak
+        </div>
+        <div class="approval-users" id="approvalUsers"></div>
+        <div class="approval-actions">
+          <button class="approve-btn approve-yes" onclick="approveStop(true)">
+            <i class="fas fa-check"></i> Tasdiqlash
+          </button>
+          <button class="approve-btn approve-no" onclick="approveStop(false)">
+            <i class="fas fa-times"></i> Bekor qilish
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ============= SUPABASE CONFIGURATION =============
+    // MUHIM: Bu yerga o'zingizning Supabase ma'lumotlaringizni kiriting
+    const SUPABASE_URL = 'https://suwfffcfrptvdxwpqyut.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN1d2ZmZmNmcnB0dmR4d3BxeXV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkxMzYzMzYsImV4cCI6MjA4NDcxMjMzNn0.LP2bEjoE2Q8v5I2OYDJO8KcUOmx2iqrePVkIu6gW7AQ';
+    
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // ============= GLOBAL VARIABLES =============
+    let currentUser = null;
+    let sessionId = null;
+    let isAdmin = false;
+    let quizData = null;
+    let userAnswers = [];
+    let timerInterval = null;
+    let startTime = null;
+    let isPaused = false;
+    let stopRequestActive = false;
+
+    // Subscriptions
+    let sessionSubscription = null;
+    let usersSubscription = null;
+    let chatSubscription = null;
+    let approvalSubscription = null;
+
+    // ============= INITIALIZATION =============
+    window.addEventListener('DOMContentLoaded', async () => {
+      await initializeApp();
+    });
+
+    async function initializeApp() {
+      // Check if URL has session parameter
+      const urlParams = new URLSearchParams(window.location.search);
+      const sessionParam = urlParams.get('session');
+
+      if (sessionParam) {
+        // Join existing session
+        sessionId = sessionParam;
+        isAdmin = false;
+        await joinSession();
+      } else {
+        // Create new session (admin)
+        isAdmin = true;
+        await createNewSession();
+      }
+    }
+
+    // ============= SESSION MANAGEMENT =============
+    async function createNewSession() {
+      try {
+        // Generate random session ID
+        sessionId = 'quiz_' + Math.random().toString(36).substr(2, 9);
+        
+        // Create session in database
+        const { data, error } = await supabaseClient
+          .from('sessions')
+          .insert({
+            session_id: sessionId,
+            status: 'waiting',
+            created_at: new Date().toISOString()
+          })
+          .select()
+          .single();
+
+        if (error) throw error;
+
+        // Show admin interface
+        document.getElementById('adminBadge').style.display = 'inline-block';
+        document.getElementById('adminControls').classList.remove('hidden');
+        document.getElementById('sessionLinkContainer').classList.remove('hidden');
+        document.getElementById('usersStatus').classList.remove('hidden');
+        document.getElementById('chatContainer').classList.remove('hidden');
+
+        // Display session link
+        const sessionLink = `${window.location.origin}${window.location.pathname}?session=${sessionId}`;
+        document.getElementById('sessionLinkText').textContent = sessionLink;
+
+        // Subscribe to session changes
+        await subscribeToSession();
+        await subscribeToUsers();
+        await subscribeToChat();
+
+        console.log('Session created:', sessionId);
+      } catch (error) {
+        console.error('Error creating session:', error);
+        alert('Sessiya yaratishda xatolik: ' + error.message);
+      }
+    }
+
+    async function joinSession() {
+      try {
+        // Check if session exists
+        const { data: session, error } = await supabaseClient
+          .from('sessions')
+          .select('*')
+          .eq('session_id', sessionId)
+          .single();
+
+        if (error || !session) {
+          alert('Session topilmadi!');
+          window.location.href = window.location.pathname;
+          return;
+        }
+
+        // Show user interface
+        document.getElementById('usersStatus').classList.remove('hidden');
+        document.getElementById('chatContainer').classList.remove('hidden');
+
+        // Subscribe to session changes
+        await subscribeToSession();
+        await subscribeToUsers();
+        await subscribeToChat();
+
+        // Load quiz data if exists
+        if (session.quiz_data) {
+          quizData = session.quiz_data;
+          document.getElementById('uploadedFileName').textContent = session.file_name || 'Test fayli';
+        }
+
+        console.log('Joined session:', sessionId);
+      } catch (error) {
+        console.error('Error joining session:', error);
+        alert('Sessionga qo\'shilishda xatolik: ' + error.message);
+      }
+    }
+
+    function copySessionLink() {
+      const linkText = document.getElementById('sessionLinkText').textContent;
+      navigator.clipboard.writeText(linkText).then(() => {
+        alert('Link nusxalandi!');
+      });
+    }
+
+    // ============= FILE UPLOAD =============
+    function handleFileUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        try {
+          const jsonData = JSON.parse(e.target.result);
+          
+          // Validate quiz data structure
+          if (!jsonData.questions || !Array.isArray(jsonData.questions)) {
+            throw new Error('Noto\'g\'ri fayl formati');
+          }
+
+          quizData = jsonData;
+
+          // Save to session
+          const { error } = await supabaseClient
+            .from('sessions')
+            .update({
+              quiz_data: quizData,
+              file_name: file.name
+            })
+            .eq('session_id', sessionId);
+
+          if (error) throw error;
+
+          // Update UI
+          document.getElementById('uploadedFileName').textContent = file.name;
+          document.getElementById('fileUploadArea').classList.add('hidden');
+          document.getElementById('uploadedFileInfo').classList.remove('hidden');
+          document.getElementById('adminStartBtn').disabled = false;
+
+          alert('Fayl muvaffaqiyatli yuklandi!');
+        } catch (error) {
+          console.error('Error uploading file:', error);
+          alert('Fayl yuklashda xatolik: ' + error.message);
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function uploadNewFile() {
+      document.getElementById('fileUploadArea').classList.remove('hidden');
+      document.getElementById('uploadedFileInfo').classList.add('hidden');
+      document.getElementById('quizFileInput').value = '';
+      document.getElementById('adminStartBtn').disabled = true;
+    }
+
+    // Drag and drop
+    const fileUploadArea = document.getElementById('fileUploadArea');
+    if (fileUploadArea) {
+      fileUploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        fileUploadArea.classList.add('drag-over');
+      });
+
+      fileUploadArea.addEventListener('dragleave', () => {
+        fileUploadArea.classList.remove('drag-over');
+      });
+
+      fileUploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        fileUploadArea.classList.remove('drag-over');
+        
+        const file = e.dataTransfer.files[0];
+        if (file && file.name.endsWith('.json')) {
+          document.getElementById('quizFileInput').files = e.dataTransfer.files;
+          handleFileUpload({ target: { files: [file] } });
+        }
+      });
+    }
+
+    // ============= USER PROFILE =============
+    function handleProfilePicUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        document.getElementById('profilePic').src = e.target.result;
+        if (currentUser) {
+          updateUserProfile();
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async function markAsReady() {
+      const userName = document.getElementById('userNameInput').value.trim();
+      const profilePic = document.getElementById('profilePic').src;
+
+      if (!userName) {
+        alert('Iltimos ismingizni kiriting!');
+        return;
+      }
+
+      try {
+        // Create or update user
+        const { data: user, error } = await supabaseClient
+          .from('users')
+          .insert({
+            session_id: sessionId,
+            name: userName,
+            profile_pic: profilePic,
+            is_ready: true,
+            is_admin: isAdmin
+          })
+          .select()
+          .single();
+
+        if (error) throw error;
+
+        currentUser = user;
+
+        // Update UI
+        document.getElementById('readyBtn').classList.add('hidden');
+        document.getElementById('waitingMessage').classList.remove('hidden');
+        document.getElementById('userNameInput').disabled = true;
+
+        console.log('User marked as ready:', currentUser);
+      } catch (error) {
+        console.error('Error marking user as ready:', error);
+        alert('Xatolik: ' + error.message);
+      }
+    }
+
+    async function updateUserProfile() {
+      if (!currentUser) return;
+
+      try {
+        const { error } = await supabaseClient
+          .from('users')
+          .update({
+            name: document.getElementById('userNameInput').value,
+            profile_pic: document.getElementById('profilePic').src
+          })
+          .eq('id', currentUser.id);
+
+        if (error) throw error;
+      } catch (error) {
+        console.error('Error updating profile:', error);
+      }
+    }
+
+    // Enable ready button when name is entered
+    document.getElementById('userNameInput')?.addEventListener('input', (e) => {
+      document.getElementById('readyBtn').disabled = !e.target.value.trim();
+    });
+
+    // ============= QUIZ CONTROLS (ADMIN) =============
+    async function adminStartQuiz() {
+      if (!quizData) {
+        alert('Iltimos test faylini yuklang!');
+        return;
+      }
+
+      try {
+        // Check if at least 2 users are ready
+        const { data: users } = await supabaseClient
+          .from('users')
+          .select('*')
+          .eq('session_id', sessionId)
+          .eq('is_ready', true);
+
+        if (users.length < 2) {
+          alert('Kamida 2 ta ishtirokchi tayyor bo\'lishi kerak!');
+          return;
+        }
+
+        // Update session status
+        const { error } = await supabaseClient
+          .from('sessions')
+          .update({
+            status: 'active',
+            started_at: new Date().toISOString()
+          })
+          .eq('session_id', sessionId);
+
+        if (error) throw error;
+
+        // Update UI
+        document.getElementById('adminStartBtn').disabled = true;
+        document.getElementById('adminPauseBtn').disabled = false;
+        document.getElementById('adminStopBtn').disabled = false;
+
+        console.log('Quiz started by admin');
+      } catch (error) {
+        console.error('Error starting quiz:', error);
+        alert('Testni boshlashda xatolik: ' + error.message);
+      }
+    }
+
+    async function adminPauseQuiz() {
+      try {
+        const newStatus = isPaused ? 'active' : 'paused';
+        
+        const { error } = await supabaseClient
+          .from('sessions')
+          .update({ status: newStatus })
+          .eq('session_id', sessionId);
+
+        if (error) throw error;
+
+        isPaused = !isPaused;
+        document.getElementById('adminPauseBtn').innerHTML = isPaused 
+          ? '<i class="fas fa-play"></i> Davom ettirish'
+          : '<i class="fas fa-pause"></i> Pauza';
+
+        console.log('Quiz paused:', isPaused);
+      } catch (error) {
+        console.error('Error pausing quiz:', error);
+      }
+    }
+
+    async function requestStopQuiz() {
+      try {
+        // Create stop request
+        const { error } = await supabaseClient
+          .from('stop_requests')
+          .insert({
+            session_id: sessionId,
+            status: 'pending',
+            created_at: new Date().toISOString()
+          });
+
+        if (error) throw error;
+
+        stopRequestActive = true;
+        showApprovalModal();
+
+        console.log('Stop request created');
+      } catch (error) {
+        console.error('Error creating stop request:', error);
+      }
+    }
+
+    // ============= APPROVAL SYSTEM =============
+    function showApprovalModal() {
+      document.getElementById('approvalModal').classList.add('active');
+      loadApprovalUsers();
+    }
+
+    function hideApprovalModal() {
+      document.getElementById('approvalModal').classList.remove('active');
+    }
+
+    async function loadApprovalUsers() {
+      try {
+        const { data: users } = await supabaseClient
+          .from('users')
+          .select('*')
+          .eq('session_id', sessionId)
+          .eq('is_ready', true);
+
+        const approvalContainer = document.getElementById('approvalUsers');
+        approvalContainer.innerHTML = '';
+
+        users.forEach(user => {
+          const userDiv = document.createElement('div');
+          userDiv.className = 'approval-user';
+          userDiv.id = `approval-user-${user.id}`;
+          
+          userDiv.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <img src="${user.profile_pic}" class="user-avatar" alt="${user.name}">
+              <span>${user.name}</span>
+            </div>
+            <span id="approval-status-${user.id}" style="color: #999;">Kutilmoqda...</span>
+          `;
+          
+          approvalContainer.appendChild(userDiv);
+        });
+
+        // Subscribe to approvals
+        await subscribeToApprovals();
+      } catch (error) {
+        console.error('Error loading approval users:', error);
+      }
+    }
+
+    async function approveStop(approved) {
+      if (!currentUser) return;
+
+      try {
+        // Get active stop request
+        const { data: stopRequest } = await supabaseClient
+          .from('stop_requests')
+          .select('*')
+          .eq('session_id', sessionId)
+          .eq('status', 'pending')
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .single();
+
+        if (!stopRequest) return;
+
+        // Record approval
+        const { error } = await supabaseClient
+          .from('stop_approvals')
+          .insert({
+            stop_request_id: stopRequest.id,
+            user_id: currentUser.id,
+            approved: approved
+          });
+
+        if (error) throw error;
+
+        // Update UI
+        const statusEl = document.getElementById(`approval-status-${currentUser.id}`);
+        if (statusEl) {
+          statusEl.textContent = approved ? '✓ Tasdiqlandi' : '✗ Rad etildi';
+          statusEl.style.color = approved ? 'var(--correct-color)' : 'var(--incorrect-color)';
+        }
+
+        document.getElementById(`approval-user-${currentUser.id}`).classList.add('approved');
+
+        // Check if we have enough approvals
+        await checkStopApprovals(stopRequest.id);
+      } catch (error) {
+        console.error('Error approving stop:', error);
+      }
+    }
+
+    async function checkStopApprovals(stopRequestId) {
+      try {
+        const { data: approvals } = await supabaseClient
+          .from('stop_approvals')
+          .select('*')
+          .eq('stop_request_id', stopRequestId);
+
+        const approvedCount = approvals.filter(a => a.approved).length;
+        const rejectedCount = approvals.filter(a => !a.approved).length;
+
+        if (approvedCount >= 2) {
+          // Stop quiz
+          await stopQuiz();
+          hideApprovalModal();
+        } else if (rejectedCount >= 2) {
+          // Cancel stop request
+          await supabaseClient
+            .from('stop_requests')
+            .update({ status: 'rejected' })
+            .eq('id', stopRequestId);
+          
+          hideApprovalModal();
+          stopRequestActive = false;
+        }
+      } catch (error) {
+        console.error('Error checking approvals:', error);
+      }
+    }
+
+    async function stopQuiz() {
+      try {
+        const { error } = await supabaseClient
+          .from('sessions')
+          .update({ status: 'completed' })
+          .eq('session_id', sessionId);
+
+        if (error) throw error;
+
+        stopRequestActive = false;
+        console.log('Quiz stopped');
+      } catch (error) {
+        console.error('Error stopping quiz:', error);
+      }
+    }
+
+    // ============= QUIZ DISPLAY =============
+    async function startQuizForUser() {
+      if (!quizData) return;
+
+      // Hide setup, show quiz
+      document.getElementById('userSetupSection').classList.add('hidden');
+      document.getElementById('quizSection').classList.remove('hidden');
+
+      // Render questions
+      renderQuestions();
+
+      // Start timer
+      startTimer();
+
+      console.log('Quiz started for user');
+    }
+
+    function renderQuestions() {
+      const container = document.getElementById('questionsContainer');
+      container.innerHTML = '';
+
+      quizData.questions.forEach((question, index) => {
+        const questionDiv = document.createElement('div');
+        questionDiv.className = 'question-container';
+        questionDiv.innerHTML = `
+          <div class="question-header">
+            <span class="question-number">Savol ${index + 1}</span>
+          </div>
+          <div class="question-text">${question.question}</div>
+          <div class="options-container">
+            ${question.options.map((opt, i) => `
+              <button class="option-btn" data-question="${index}" data-option="${i}" onclick="selectAnswer(${index}, ${i})">
+                ${String.fromCharCode(65 + i)}. ${opt.text}
+              </button>
+            `).join('')}
+          </div>
+        `;
+        container.appendChild(questionDiv);
+      });
+    }
+
+    async function selectAnswer(questionIndex, optionIndex) {
+      if (isPaused) {
+        alert('Test pauza holatida!');
+        return;
+      }
+
+      const question = quizData.questions[questionIndex];
+      const selectedOption = question.options[optionIndex];
+      const isCorrect = selectedOption.correct;
+
+      try {
+        // Save answer
+        const { error } = await supabaseClient
+          .from('user_answers')
+          .insert({
+            session_id: sessionId,
+            user_id: currentUser.id,
+            question_index: questionIndex,
+            selected_option: optionIndex,
+            is_correct: isCorrect
+          });
+
+        if (error) throw error;
+
+        // Update UI
+        const buttons = document.querySelectorAll(`[data-question="${questionIndex}"]`);
+        buttons.forEach(btn => {
+          btn.disabled = true;
+          const btnOptionIndex = parseInt(btn.getAttribute('data-option'));
+          
+          if (btnOptionIndex === optionIndex) {
+            btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+          }
+          
+          // Show correct answer
+          if (question.options[btnOptionIndex].correct) {
+            btn.classList.add('correct');
+          }
+        });
+
+        userAnswers.push({ questionIndex, optionIndex, isCorrect });
+
+        // Check if all questions answered
+        if (userAnswers.length === quizData.questions.length) {
+          setTimeout(() => finishQuiz(), 1000);
+        }
+      } catch (error) {
+        console.error('Error saving answer:', error);
+      }
+    }
+
+    function startTimer() {
+      startTime = Date.now();
+      timerInterval = setInterval(() => {
+        if (!isPaused) {
+          const elapsed = Math.floor((Date.now() - startTime) / 1000);
+          const minutes = Math.floor(elapsed / 60);
+          const seconds = elapsed % 60;
+          document.getElementById('quizTimer').textContent = 
+            `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+      }, 1000);
+    }
+
+    async function finishQuiz() {
+      clearInterval(timerInterval);
+
+      // Calculate score
+      const correctCount = userAnswers.filter(a => a.isCorrect).length;
+      const totalQuestions = quizData.questions.length;
+      const accuracy = Math.round((correctCount / totalQuestions) * 100);
+
+      // Update user score
+      await supabaseClient
+        .from('users')
+        .update({ score: correctCount })
+        .eq('id', currentUser.id);
+
+      // Show results
+      document.getElementById('quizSection').classList.add('hidden');
+      document.getElementById('resultsSection').classList.remove('hidden');
+
+      document.getElementById('finalScore').textContent = `${correctCount}/${totalQuestions}`;
+      document.getElementById('correctCount').textContent = correctCount;
+      document.getElementById('incorrectCount').textContent = totalQuestions - correctCount;
+      document.getElementById('accuracyPercent').textContent = `${accuracy}%`;
+
+      // Load leaderboard
+      await loadLeaderboard();
+
+      // Play animation
+      playResultAnimation(accuracy);
+    }
+
+    function playResultAnimation(accuracy) {
+      const container = document.getElementById('resultsAnimation');
+      const animationUrl = accuracy >= 80 
+        ? 'https://assets6.lottiefiles.com/packages/lf20_touohxv0.json'
+        : accuracy >= 50
+        ? 'https://assets7.lottiefiles.com/private_files/lf30_poez9ped.json'
+        : 'https://assets9.lottiefiles.com/private_files/lf30_ulp9xqqw.json';
+
+      lottie.loadAnimation({
+        container: container,
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: animationUrl
+      });
+    }
+
+    async function loadLeaderboard() {
+      try {
+        const { data: users } = await supabaseClient
+          .from('users')
+          .select('*')
+          .eq('session_id', sessionId)
+          .not('score', 'is', null)
+          .order('score', { ascending: false });
+
+        const container = document.getElementById('leaderboardList');
+        container.innerHTML = '';
+
+        users.forEach((user, index) => {
+          const rank = index + 1;
+          const itemDiv = document.createElement('div');
+          itemDiv.className = 'leaderboard-item';
+          if (user.id === currentUser.id) {
+            itemDiv.classList.add('current-user');
+          }
+
+          const rankDisplay = rank <= 3 
+            ? (rank === 1 ? '🥇' : rank === 2 ? '🥈' : '🥉')
+            : rank;
+
+          itemDiv.innerHTML = `
+            <div class="rank ${rank <= 3 ? 'top3' : ''}">${rankDisplay}</div>
+            <img src="${user.profile_pic}" class="leader-avatar" alt="${user.name}">
+            <div class="leader-info">
+              <div class="leader-name">${user.name}</div>
+              <div class="leader-score">${user.score}/${quizData.questions.length} to'g'ri</div>
+            </div>
+            <div class="score-value">${user.score}</div>
+          `;
+
+          container.appendChild(itemDiv);
+        });
+      } catch (error) {
+        console.error('Error loading leaderboard:', error);
+      }
+    }
+
+    async function resetQuiz() {
+      if (confirm('Testni qaytadan boshlashni xohlaysizmi?')) {
+        window.location.reload();
+      }
+    }
+
+    // ============= CHAT SYSTEM =============
+    async function sendMessage() {
+      const input = document.getElementById('chatInput');
+      const message = input.value.trim();
+
+      if (!message || !currentUser) return;
+
+      try {
+        const { error } = await supabaseClient
+          .from('chat_messages')
+          .insert({
+            session_id: sessionId,
+            user_id: currentUser.id,
+            message: message,
+            created_at: new Date().toISOString()
+          });
+
+        if (error) throw error;
+
+        input.value = '';
+      } catch (error) {
+        console.error('Error sending message:', error);
+      }
+    }
+
+    function handleChatKeyPress(event) {
+      if (event.key === 'Enter') {
+        sendMessage();
+      }
+    }
+
+    function displayChatMessage(msg, user) {
+      const container = document.getElementById('chatMessages');
+      const messageDiv = document.createElement('div');
+      messageDiv.className = 'chat-message';
+
+      const time = new Date(msg.created_at).toLocaleTimeString('uz-UZ', {
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+
+      messageDiv.innerHTML = `
+        <img src="${user.profile_pic}" class="message-avatar" alt="${user.name}">
+        <div class="message-content">
+          <div class="message-header">
+            <span class="message-sender">${user.name}</span>
+            <span class="message-time">${time}</span>
+          </div>
+          <div class="message-text">${msg.message}</div>
+        </div>
+      `;
+
+      container.appendChild(messageDiv);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    // ============= REAL-TIME SUBSCRIPTIONS =============
+    async function subscribeToSession() {
+      sessionSubscription = supabaseClient
+        .channel(`session:${sessionId}`)
+        .on('postgres_changes', {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'sessions',
+          filter: `session_id=eq.${sessionId}`
+        }, async (payload) => {
+          const session = payload.new;
+
+          // Update quiz status
+          if (session.status === 'active' && !document.getElementById('quizSection').classList.contains('hidden') === false) {
+            await startQuizForUser();
+          } else if (session.status === 'paused') {
+            isPaused = true;
+            document.getElementById('quizStatus').textContent = 'Pauza';
+            document.getElementById('quizStatus').classList.remove('active');
+            document.getElementById('quizStatus').classList.add('paused');
+          } else if (session.status === 'completed') {
+            if (!document.getElementById('resultsSection').classList.contains('hidden') === false) {
+              await finishQuiz();
+            }
+          }
+
+          // Update quiz data
+          if (session.quiz_data && !quizData) {
+            quizData = session.quiz_data;
+            document.getElementById('uploadedFileName').textContent = session.file_name || 'Test fayli';
+          }
+        })
+        .subscribe();
+    }
+
+    async function subscribeToUsers() {
+      usersSubscription = supabaseClient
+        .channel(`users:${sessionId}`)
+        .on('postgres_changes', {
+          event: '*',
+          schema: 'public',
+          table: 'users',
+          filter: `session_id=eq.${sessionId}`
+        }, async () => {
+          await updateUsersList();
+        })
+        .subscribe();
+
+      // Initial load
+      await updateUsersList();
+    }
+
+    async function updateUsersList() {
+      try {
+        const { data: users } = await supabaseClient
+          .from('users')
+          .select('*')
+          .eq('session_id', sessionId);
+
+        const totalUsers = users.length;
+        const readyUsers = users.filter(u => u.is_ready).length;
+
+        document.getElementById('totalUsersCount').textContent = totalUsers;
+        document.getElementById('readyUsersCount').textContent = readyUsers;
+        document.getElementById('onlineCount').textContent = `${totalUsers} online`;
+
+        // Display users
+        const container = document.getElementById('userList');
+        container.innerHTML = '';
+
+        users.forEach(user => {
+          const userDiv = document.createElement('div');
+          userDiv.className = 'user-card';
+          if (user.is_ready) userDiv.classList.add('ready');
+
+          userDiv.innerHTML = `
+            <img src="${user.profile_pic}" class="user-avatar" alt="${user.name}">
+            <div class="user-info">
+              <div class="user-name">${user.name}</div>
+              <div class="user-status">${user.is_ready ? 'Tayyor' : 'Tayyorlanmoqda...'}</div>
+            </div>
+            ${user.is_ready ? '<i class="fas fa-check-circle ready-icon"></i>' : ''}
+          `;
+
+          container.appendChild(userDiv);
+        });
+      } catch (error) {
+        console.error('Error updating users list:', error);
+      }
+    }
+
+    async function subscribeToChat() {
+      chatSubscription = supabaseClient
+        .channel(`chat:${sessionId}`)
+        .on('postgres_changes', {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'chat_messages',
+          filter: `session_id=eq.${sessionId}`
+        }, async (payload) => {
+          const message = payload.new;
+          
+          // Get user info
+          const { data: user } = await supabaseClient
+            .from('users')
+            .select('*')
+            .eq('id', message.user_id)
+            .single();
+
+          if (user) {
+            displayChatMessage(message, user);
+          }
+        })
+        .subscribe();
+
+      // Load existing messages
+      const { data: messages } = await supabaseClient
+        .from('chat_messages')
+        .select('*')
+        .eq('session_id', sessionId)
+        .order('created_at', { ascending: true });
+
+      if (messages) {
+        for (const msg of messages) {
+          const { data: user } = await supabaseClient
+            .from('users')
+            .select('*')
+            .eq('id', msg.user_id)
+            .single();
+
+          if (user) {
+            displayChatMessage(msg, user);
+          }
+        }
+      }
+    }
+
+    async function subscribeToApprovals() {
+      if (approvalSubscription) {
+        supabaseClient.removeChannel(approvalSubscription);
+      }
+
+      approvalSubscription = supabaseClient
+        .channel(`approvals:${sessionId}`)
+        .on('postgres_changes', {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'stop_approvals'
+        }, async (payload) => {
+          const approval = payload.new;
+          
+          // Update UI
+          const statusEl = document.getElementById(`approval-status-${approval.user_id}`);
+          if (statusEl) {
+            statusEl.textContent = approval.approved ? '✓ Tasdiqlandi' : '✗ Rad etildi';
+            statusEl.style.color = approval.approved ? 'var(--correct-color)' : 'var(--incorrect-color)';
+          }
+
+          document.getElementById(`approval-user-${approval.user_id}`)?.classList.add('approved');
+
+          // Check approvals
+          await checkStopApprovals(approval.stop_request_id);
+        })
+        .subscribe();
+    }
+
+    // ============= CLEANUP =============
+    window.addEventListener('beforeunload', async () => {
+      if (currentUser) {
+        await supabaseClient
+          .from('users')
+          .update({ is_ready: false })
+          .eq('id', currentUser.id);
+      }
+
+      if (sessionSubscription) supabaseClient.removeChannel(sessionSubscription);
+      if (usersSubscription) supabaseClient.removeChannel(usersSubscription);
+      if (chatSubscription) supabaseClient.removeChannel(chatSubscription);
+      if (approvalSubscription) supabaseClient.removeChannel(approvalSubscription);
+    });
+  </script>
+</body>
+</html>
