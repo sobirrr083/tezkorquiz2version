@@ -10,8 +10,6 @@
     <title>Bilim Quiz — Fayldan test yuklab bilimni sinash</title>
     <meta name="description" content="Bilim Quiz — .txt fayldan test yuklab, vaqt bilan bilimni sinash imkoniyati. Mobilga mos, tezkor va qulay onlayn quiz tizimi.">
     <meta name="keywords" content="bilim quiz, online test, fayldan test, txt quiz, tezkor quiz, bilim sinash, test tizimi">
-    
-    <!-- Open Graph meta teglar (Facebook, LinkedIn, WhatsApp) -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://tezkorquiz.uz">
     <meta property="og:title" content="Bilim Quiz">
@@ -19,8 +17,6 @@
     <meta property="og:image" content="https://tezkorquiz/aga/bilim_quiz.webp">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    
-    <!-- Twitter Card meta teglar -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://tezkorquiz.uz">
     <meta name="twitter:title" content="Bilim Quiz">
@@ -751,12 +747,192 @@
                 min-height: calc(100vh - 220px);
             }
         }
+            .breadcrumb-container {
+            background: #ffffff;
+            padding: 0.625rem 1.25rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .breadcrumb-container::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(
+                90deg,
+                rgba(68, 96, 239, 0) 0%,
+                rgba(68, 96, 239, 0) 46%,
+                rgba(68, 96, 239, 0.5) 48%,
+                rgba(68, 96, 239, 1) 50%,
+                rgba(68, 96, 239, 0.5) 52%,
+                rgba(68, 96, 239, 0) 54%,
+                rgba(68, 96, 239, 0) 100%
+            );
+            background-size: 200% 100%;
+            animation: shimmer 5s linear infinite;
+            border-radius: 0 0 8px 8px;
+        }
+        @keyframes shimmer {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+        
+        .breadcrumb {
+            margin-bottom: 0;
+            background: transparent;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0;
+            list-style: none;
+        }
+        .breadcrumb-item {
+            display: inline-flex;
+            align-items: center;
+        }
+        .breadcrumb-item a {
+            color: #495057;
+            text-decoration: none;
+            padding: 0.4rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: background-color 0.2s ease, color 0.2s ease;
+            display: inline-block;
+            line-height: 1.4;
+        }
+        
+        .breadcrumb-item a:hover {
+            background-color: #e7f0ff;
+            color: #4a90e2;
+        }
+        .breadcrumb-item.active {
+            background-color: #e7f0ff;
+            color: #4a90e2;
+            padding: 0.4rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+        .breadcrumb-item + .breadcrumb-item::before {
+            content: "/";
+            color: #cbd5e0;
+            font-weight: 400;
+            padding-left: 0.625rem;
+            padding-right: 0.625rem;
+            margin-right: 0;
+            font-size: 0.875rem;
+            display: inline-block;
+        }
+        @media (max-width: 991px) {
+            .breadcrumb-container {
+                padding: 0.5rem 1rem;
+            }
+            
+            .breadcrumb-item a,
+            .breadcrumb-item.active {
+                padding: 0.375rem 0.625rem;
+                font-size: 0.8125rem;
+            }
+            
+            .breadcrumb-item + .breadcrumb-item::before {
+                padding-left: 0.5rem;
+                padding-right: 0.5rem;
+            }
+        }
+        @media (max-width: 576px) {
+            .breadcrumb-container {
+                padding: 0.5rem 0.875rem;
+            }
+            
+            .breadcrumb-container::after {
+                height: 2.5px;
+            }
+            
+            .breadcrumb-item a,
+            .breadcrumb-item.active {
+                padding: 0.35rem 0.5rem;
+                font-size: 0.75rem;
+            }
+            
+            .breadcrumb-item + .breadcrumb-item::before {
+                padding-left: 0.375rem;
+                padding-right: 0.375rem;
+                font-size: 0.75rem;
+            }
+        }
+        @media (max-width: 400px) {
+            .breadcrumb-container {
+                padding: 0.45rem 0.75rem;
+            }
+            
+            .breadcrumb-container::after {
+                height: 2px;
+            }
+            
+            .breadcrumb-item a,
+            .breadcrumb-item.active {
+                padding: 0.3rem 0.45rem;
+                font-size: 0.7rem;
+            }
+            
+            .breadcrumb-item + .breadcrumb-item::before {
+                padding-left: 0.3rem;
+                padding-right: 0.3rem;
+            }
+        }
+        .breadcrumb-item a:focus {
+            outline: 2px solid #4a90e2;
+            outline-offset: 2px;
+        }
+        
+        @media (prefers-contrast: high) {
+            .breadcrumb-item a {
+                color: #000000;
+            }
+            
+            .breadcrumb-item.active {
+                background-color: #0066cc;
+                color: #ffffff;
+            }
+        }
+
     </style>
 </head>
 <body>
     <div class="toast-container" id="toastContainer"></div>
     
     <div class="quiz-container">
+        <div class="container mt-4">
+        <div class="breadcrumb-container">
+            <nav aria-label="Yo'lni ko'rsatuvchi navigatsiya">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="/" aria-label="Bosh sahifaga o'tish">Bosh sahifa</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="/testni_boshlash" aria-label="Testni boshlash sahifasiga o'tish">Testni boshlash</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="/testni_boshlash/bilim" aria-label="Bilim Quiz sahifasiga o'tish">Bilim Quiz</a>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+        </div>
+
+
         <div id="startScreen" class="start-screen">
             <h1><i class="fas fa-brain"></i> Bilim Quiz</h1>
             <p>Test savollarini yuklang va bilimlaringizni sinab ko'ring</p>
