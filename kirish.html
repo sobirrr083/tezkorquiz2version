@@ -137,88 +137,8 @@
     .countdown{font-size:14px;color:#2e7d32;margin-top:10px;text-align:center}
     .back-to-login{margin-top:15px}
   </style>
-</style>
-
-      <style>
-        /* Qor konteyner */
-        .snow-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 9999;
-            overflow: hidden;
-        }
-
-        /* Qor parchalari */
-        .snowflake {
-            position: absolute;
-            color: rgba(255, 255, 255, 0.85);
-            font-size: 14px;
-            text-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
-            animation: fall linear forwards;
-            will-change: transform, opacity;
-        }
-
-        /* Qor tushish animatsiyasi */
-        @keyframes fall {
-            0% {
-                transform: translateY(0) translateX(0) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            60% {
-                opacity: 0.9;
-            }
-            80% {
-                opacity: 0.5;
-            }
-            100% {
-                transform: translateY(var(--fall-distance)) translateX(var(--drift)) rotate(var(--rotation));
-                opacity: 0;
-            }
-        }
-
-        /* Cursor qor effekti */
-        .cursor-snowflake {
-            position: fixed;
-            pointer-events: none;
-            font-size: 20px;
-            z-index: 9998;
-            animation: cursor-fall 2.5s ease-out forwards;
-            color: rgba(255, 255, 255, 0.95);
-            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
-        }
-
-        @keyframes cursor-fall {
-            0% {
-                opacity: 0;
-                transform: translateY(-10px) translateX(0) rotate(0deg) scale(0.3);
-            }
-            15% {
-                opacity: 1;
-                transform: translateY(0) translateX(0) rotate(45deg) scale(1.1);
-            }
-            85% {
-                opacity: 0.9;
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(120px) translateX(var(--cursor-drift)) rotate(var(--rotation)) scale(0.2);
-            }
-        }
-    </style>
-
 </head>
 <body>
-      <!-- Qor konteyner -->
-    <div class="snow-container" id="snowContainer"></div>
-
-  
   <div class="copy-notification" id="copyNotification">
     www.tezkorquiz.uz saytida nusxalash mumkin emas!
   </div>
