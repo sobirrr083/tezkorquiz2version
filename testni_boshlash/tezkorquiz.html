@@ -190,6 +190,12 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
   .btn-primary,.btn-outline-primary{padding:12px 26px;font-size:.97rem;min-width:140px}
   #toast-container{top:12px;right:12px;max-width:290px}
   .result-body{padding:54px 18px 28px}
+  .breadcrumb-container{padding:.45rem .85rem;overflow:hidden}
+  .breadcrumb{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+  .breadcrumb::-webkit-scrollbar{display:none}
+  .breadcrumb-item a{font-size:.75rem;padding:.28rem .38rem;white-space:nowrap}
+  .breadcrumb-item.active{font-size:.75rem;padding:.28rem .38rem;white-space:nowrap}
+  .breadcrumb-item+.breadcrumb-item::before{padding:0 .2rem;font-size:.75rem}
 }
 @media(max-width:480px){
   .quiz-header{padding:20px 16px}.upload-area{padding:40px 18px;margin-top:16px}
@@ -261,9 +267,9 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
         </div>
         <div class="sample-section">
           <button class="sample-toggle" id="sampleToggle">
-            <i class="fas fa-download"></i> Namuna test yuklab olish
+            <i class="fas fa-download"></i> Namuna testni yuklab olish
           </button>
-          <p style="margin-top:10px;color:#94a3b8;font-size:.84rem">Kichik namuna test faylini yuklab oling.</p>
+          <p style="margin-top:10px;color:#94a3b8;font-size:.84rem">Namuna testni  yuklab oling va sinab ko'ring.</p>
         </div>
       </div>
     </div>
@@ -301,7 +307,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
             </div>
             <div class="info-item">
               <div class="info-number"><i class="fas fa-mobile-alt"></i></div>
-              <div class="info-text">Mobil qurilmada <strong>swipe</strong> qilish ham ishlaydi</div>
+              <div class="info-text">Mobil qurilmada <strong>o'ngdan chapga surish</strong> da ham ishlaydi</div>
             </div>
           </div>
         </div>
@@ -315,7 +321,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
         <button class="btn btn-primary btn-start" onclick="startQuizFromInfo()">
           <i class="fas fa-play"></i> Testni boshlash
         </button>
-        <p class="info-tip"><i class="fas fa-lightbulb"></i> Maslahat: Klaviaturadan foydalanish tezroq natija beradi!</p>
+        <p class="info-tip">Maslahat: Klaviaturadan foydalanish tezroq natija beradi! </p>
       </div>
     </div>
 
@@ -524,7 +530,7 @@ function showQuestion(){
     si.forEach((oi,di)=>{const btn=document.createElement('button');btn.className='option-btn';btn.textContent=q.options[oi];btn.onclick=()=>selectAnswer(di);cont.appendChild(btn)});
     document.getElementById('progressBar').style.width=((curIdx+1)/questions.length*100)+'%';
     const nb=document.getElementById('nextBtn');
-    nb.disabled=true;nb.textContent=curIdx===questions.length-1?'Testni yakunlash':'Keyingi savol';
+    nb.disabled=true;nb.textContent=stayOnQuestion?'Tasdiqlash':(curIdx===questions.length-1?'Testni yakunlash':'Keyingi savol');
     resetPhase();applyCtrlVis();
     slide.classList.remove('exit');slide.classList.add('active');
     setTimeout(()=>cont.querySelectorAll('.option-btn').forEach((b,i)=>setTimeout(()=>b.classList.add('animate-bounce'),i*80)),120);
@@ -536,7 +542,9 @@ function selectAnswer(idx){
   if(showNextButton){
     phase='selecting';selectedAnswer=idx;
     document.querySelectorAll('.option-btn').forEach((b,i)=>b.classList.toggle('selected',i===idx));
-    document.getElementById('nextBtn').disabled=false;
+    const nb=document.getElementById('nextBtn');
+    nb.disabled=false;
+    if(stayOnQuestion) nb.textContent='Tasdiqlash';
   }else{
     selectedAnswer=idx;
     document.querySelectorAll('.option-btn').forEach((b,i)=>b.classList.toggle('selected',i===idx));
@@ -551,7 +559,11 @@ function startChecking(){
     revealAnswer();phase='revealed';applyCtrlVis();
     const correct=questions[curIdx].shuffledAnswer;
     if(selectedAnswer===correct){comboCount++;checkCombo()}else{comboCount=0}
-    if(stayOnQuestion)document.getElementById('nextBtn').disabled=false;
+    if(stayOnQuestion){
+      const nb=document.getElementById('nextBtn');
+      nb.disabled=false;
+      nb.textContent=curIdx===questions.length-1?'Testni yakunlash':'Keyingi savol';
+    }
     else setTimeout(()=>advance(),750);
   },500);
 }
