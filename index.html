@@ -1628,25 +1628,23 @@
         }
 
         .cta-section .container-fluid {
-            max-width: 1200px;
             width: 100%;
-            background: white;
+            background: #4460ef;
             border-radius: 30px;
             padding: 60px 50px;
-            box-shadow: 0 20px 60px rgba(67, 97, 238, 0.12);
             text-align: center;
         }
 
         .cta-icon {
             width: 80px;
             height: 80px;
-            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+            background: rgba(255, 255, 255, 0.2);
             border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto 30px;
-            box-shadow: 0 10px 30px rgba(67, 97, 238, 0.25);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
         }
 
         .cta-icon svg {
@@ -1657,8 +1655,8 @@
 
         .cta-badge {
             display: inline-block;
-            background: rgba(67, 97, 238, 0.1);
-            color: #4361ee;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
             padding: 8px 20px;
             border-radius: 20px;
             font-size: 0.85rem;
@@ -1670,7 +1668,7 @@
         }
 
         .cta-heading {
-            color: #2c3e50;
+            color: white;
             font-size: 2.5rem;
             font-weight: 700;
             margin-bottom: 20px;
@@ -1679,12 +1677,12 @@
         }
 
         .cta-heading .highlight {
-            color: #4361ee;
+            color: rgba(255, 255, 255, 0.85);
             position: relative;
         }
 
         .cta-description {
-            color: #7f8c8d;
+            color: rgba(255, 255, 255, 0.9);
             font-size: 1.125rem;
             line-height: 1.7;
             max-width: 700px;
@@ -1704,7 +1702,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            color: #2c3e50;
+            color: white;
             font-size: 0.95rem;
             font-family: 'Nunito', 'Roboto', sans-serif;
         }
@@ -1712,55 +1710,114 @@
         .cta-feature-item svg {
             width: 20px;
             height: 20px;
-            fill: #4361ee;
+            fill: white;
             flex-shrink: 0;
         }
 
         .cta-button {
             display: inline-block;
-            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
-            color: white;
-            padding: 18px 50px;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: 600;
+            background: #ffffff;
+            color: #4460ef;
+            padding: 13px 36px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
             text-decoration: none;
             border: none;
             cursor: pointer;
-            box-shadow: 0 10px 30px rgba(67, 97, 238, 0.3);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            transition: background 0.2s ease, color 0.2s ease;
+            text-align: center;
+            text-transform: uppercase;
             font-family: 'Nunito', 'Roboto', sans-serif;
-        }
-
-        .cta-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s ease;
+            letter-spacing: 0.5px;
         }
 
         .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(67, 97, 238, 0.4);
-        }
-
-        .cta-button:hover::before {
-            left: 100%;
+            background: #fafaff;
+            color: #4460ef;
         }
 
         .cta-button:active {
-            transform: translateY(-1px);
+            background: #f0f0ff;
+        }
+
+        /* Card kirish button-8 uslubi */
+        .card-btn-8-wrap {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 15px auto 0;
+            padding: .5em;
+            line-height: normal;
+        }
+
+        .card-btn-8-wrap .button {
+            color: #fff;
+            margin: 0;
+            padding: 12px 15px;
+            text-align: center;
+            text-transform: uppercase;
+            position: relative;
+            transition: .3s;
+            z-index: 1;
+            background: #4460ef;
+            cursor: pointer;
+            border-radius: 6px;
+            text-decoration: none;
+            display: inline-block;
+            width: 150px;
+            font-weight: 600;
+            font-family: 'Nunito', 'Roboto', sans-serif;
+        }
+
+        .card-btn-8-wrap .button-8:before {
+            content: '';
+            background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            background-size: 400%;
+            z-index: -1;
+            filter: blur(5px);
+            width: calc(100% + 4px);
+            height: calc(100% + 4px);
+            animation: glowing-card 20s linear infinite;
+            opacity: 0;
+            transition: opacity .3s ease-in-out;
+            border-radius: 6px;
+        }
+
+        .card-btn-8-wrap .button-8:hover:before,
+        .card-btn-8-wrap .button-8:hover:after {
+            opacity: 1;
+        }
+
+        .card-btn-8-wrap .button-8:after {
+            z-index: -1;
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #111;
+            left: 0;
+            top: 0;
+            border-radius: 6px;
+            opacity: 0;
+        }
+
+        .card-btn-8-wrap .button-8:active:after {
+            background: transparent;
+        }
+
+        @keyframes glowing-card {
+            0% { background-position: 0 0; }
+            50% { background-position: 400% 0; }
+            100% { background-position: 0 0; }
         }
 
         .cta-note {
             margin-top: 25px;
-            color: #95a5a6;
+            color: rgba(255, 255, 255, 0.75);
             font-size: 0.9rem;
             font-family: 'Nunito', 'Roboto', sans-serif;
         }
@@ -1785,13 +1842,8 @@
 
             .cta-features {
                 flex-direction: column;
-                align-items: center;
+                align-items: flex-start;
                 gap: 15px;
-            }
-
-            .cta-button {
-                padding: 16px 40px;
-                font-size: 1rem;
             }
         }
 
@@ -1831,15 +1883,12 @@
                 margin-bottom: 30px;
             }
 
-            .cta-button {
-                padding: 14px 35px;
-                font-size: 0.95rem;
-                width: 100%;
-                max-width: 280px;
-            }
-
             .cta-note {
                 font-size: 0.85rem;
+            }
+
+            .cta-features {
+                align-items: flex-start;
             }
         }
     </style>
@@ -2077,13 +2126,8 @@
                         <div class="hero-card card-3" onclick="handleCardClick(3)">
                             <div class="card-image"></div>
                         </div>
-                        <div class="card-button-container">
-                            <div class="learn-more-button" onclick="handleEnter(3)">
-                                <span class="circle" aria-hidden="true">
-                                    <span class="icon arrow"></span>
-                                </span>
-                                <span class="button-text">Kirish</span>
-                            </div>
+                        <div class="card-btn-8-wrap">
+                            <a class="button button-8" onclick="handleEnter(3)">Kirish</a>
                         </div>
                     </div>
                 </div>
@@ -2093,13 +2137,8 @@
                         <div class="hero-card card-4" onclick="handleCardClick(4)">
                             <div class="card-image"></div>
                         </div>
-                        <div class="card-button-container">
-                            <div class="learn-more-button" onclick="handleEnter(4)">
-                                <span class="circle" aria-hidden="true">
-                                    <span class="icon arrow"></span>
-                                </span>
-                                <span class="button-text">Kirish</span>
-                            </div>
+                        <div class="card-btn-8-wrap">
+                            <a class="button button-8" onclick="handleEnter(4)">Kirish</a>
                         </div>
                     </div>
                 </div>
@@ -2109,13 +2148,8 @@
                         <div class="hero-card card-1" onclick="handleCardClick(1)">
                             <div class="card-image"></div>
                         </div>
-                        <div class="card-button-container">
-                            <div class="learn-more-button" onclick="handleEnter(1)">
-                                <span class="circle" aria-hidden="true">
-                                    <span class="icon arrow"></span>
-                                </span>
-                                <span class="button-text">Kirish</span>
-                            </div>
+                        <div class="card-btn-8-wrap">
+                            <a class="button button-8" onclick="handleEnter(1)">Kirish</a>
                         </div>
                     </div>
                 </div>
@@ -2125,13 +2159,8 @@
                         <div class="hero-card card-2" onclick="handleCardClick(2)">
                             <div class="card-image"></div>
                         </div>
-                        <div class="card-button-container">
-                            <div class="learn-more-button" onclick="handleEnter(2)">
-                                <span class="circle" aria-hidden="true">
-                                    <span class="icon arrow"></span>
-                                </span>
-                                <span class="button-text">Kirish</span>
-                            </div>
+                        <div class="card-btn-8-wrap">
+                            <a class="button button-8" onclick="handleEnter(2)">Kirish</a>
                         </div>
                     </div>
                 </div>
@@ -2195,16 +2224,6 @@
         <!-- CTA Section -->
         <div class="cta-section">
             <div class="container-fluid">
-                <!-- Icon -->
-                <div class="cta-icon">
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11zm-9-9h8v2h-8v-2zm0 4h8v2h-8v-2z"/>
-                    </svg>
-                </div>
-
-                <!-- Badge -->
-                <div class="cta-badge">quiz qilish xizmati</div>
-
                 <!-- Heading -->
                 <h2 class="cta-heading">
                     <span class="highlight">Har qanday</span> faylni saytga<br>
@@ -2281,7 +2300,7 @@
                     </div>
                     <div class="col-lg-4 col-md-4">
                         <h5 class="footer-title">Biz bilan bog'laning</h5>
-                        <p class="mb-2"><i class="fas fa-envelope me-2"></i> tezkorquiz@gmail.com</p>
+                        <p class="mb-2"><i class="fas fa-envelope me-2"></i> tezkorquiz@gmail.com </p>
                         <p class="mb-2"><i class="fas fa-phone me-2"></i> +998 90 577 08 32</p>
                         <p><i class="fas fa-map-marker-alt me-2"></i>O'zbekiston</p>
                     </div>
@@ -2318,7 +2337,7 @@
             </div>
         </footer>
     </div>
-    <script type="application/ld+json">
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
@@ -2352,133 +2371,7 @@
       });
     });
     </script>
-<!-- qor effecti kodlari javascriptlar boshlandi-->
-  <script>
-        const snowContainer = document.getElementById('snowContainer');
-        const maxSnowflakes = 25;
-        let activeSnowflakes = 0;
-        // Cursor qor effekti
-        let lastCursorMove = 0;
-        let cursorSnowCount = 0;
-        const maxCursorSnow = 20;
-        let mouseX = 0, mouseY = 0;
-        let lastX = 0, lastY = 0;
-        // Qor shakllari
-        const snowShapes = ['❄', '❅', '❆', '✻'];
-        // Cursor harakati
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            const now = Date.now();
-            const distance = Math.sqrt(Math.pow(mouseX - lastX, 2) + Math.pow(mouseY - lastY, 2));
-            let minInterval = 60;
-            let spawnCount;
-            if (distance > 80) {
-                spawnCount = 2;
-            } else if (distance > 40) {
-                spawnCount = Math.random() > 0.5 ? 2 : 1;
-            } else {
-                spawnCount = 1;
-            }
-            if (now - lastCursorMove < minInterval) return;
-            if (cursorSnowCount >= maxCursorSnow) return;
-            lastCursorMove = now;
-            lastX = mouseX;
-            lastY = mouseY;
-            for (let i = 0; i < spawnCount; i++) {
-                if (cursorSnowCount >= maxCursorSnow) break;
-                
-                setTimeout(() => {
-                    const cursorSnow = document.createElement('div');
-                    cursorSnow.className = 'cursor-snowflake';
-                    cursorSnow.textContent = snowShapes[Math.floor(Math.random() * snowShapes.length)];
-                    
-                    const offsetX = (Math.random() - 0.5) * 20;
-                    const offsetY = (Math.random() - 0.5) * 20;
-                    cursorSnow.style.left = (mouseX + offsetX) + 'px';
-                    cursorSnow.style.top = (mouseY + offsetY) + 'px';
-                    cursorSnow.style.fontSize = (Math.random() * 8 + 16) + 'px';
-                    
-                    const drift = (Math.random() - 0.5) * 60;
-                    cursorSnow.style.setProperty('--cursor-drift', drift + 'px');
-                    
-                    const rotation = Math.random() * 720 - 360;
-                    cursorSnow.style.setProperty('--rotation', rotation + 'deg');
-                    
-                    document.body.appendChild(cursorSnow);
-                    cursorSnowCount++;
-                    
-                    setTimeout(() => {
-                        if (cursorSnow.parentNode) {
-                            cursorSnow.remove();
-                            cursorSnowCount--;
-                        }
-                    }, 2500);
-                }, i * 30);
-            }
-        });
 
-        // Qor yaratish funksiyasi
-        function createSnowflake() {
-            if (activeSnowflakes >= maxSnowflakes) return;
-            
-            const snowflake = document.createElement('div');
-            snowflake.className = 'snowflake';
-            snowflake.textContent = snowShapes[Math.floor(Math.random() * snowShapes.length)];
-            
-            const size = Math.random() * 6 + 10;
-            snowflake.style.fontSize = size + 'px';
-            
-            const startX = Math.random() * window.innerWidth;
-            snowflake.style.left = startX + 'px';
-            snowflake.style.top = '-20px';
-            
-            const driftDirection = Math.random() > 0.5 ? 1 : -1;
-            const driftAmount = (Math.random() * 80 + 40) * driftDirection;
-            snowflake.style.setProperty('--drift', driftAmount + 'px');
-            
-            const rotation = Math.random() * 360 + 180;
-            snowflake.style.setProperty('--rotation', rotation + 'deg');
-            
-            const meltPoint = Math.random() * 40 + 60;
-            const fallDistance = (window.innerHeight * meltPoint / 100) + 20;
-            snowflake.style.setProperty('--fall-distance', fallDistance + 'px');
-            
-            const duration = Math.random() * 8 + 12;
-            snowflake.style.animationDuration = duration + 's';
-            
-            const delay = Math.random() * 2;
-            snowflake.style.animationDelay = delay + 's';
-            
-            snowContainer.appendChild(snowflake);
-            activeSnowflakes++;
-            
-            setTimeout(() => {
-                if (snowflake.parentNode) {
-                    snowflake.remove();
-                    activeSnowflakes--;
-                }
-            }, (duration + delay) * 1000);
-        }
-
-        // Qorni muntazam yaratish
-        function snowLoop() {
-            if (activeSnowflakes < maxSnowflakes && Math.random() > 0.3) {
-                createSnowflake();
-            }
-        }
-
-        setInterval(snowLoop, 800);
-
-        // Dastlabki qorlar
-        setTimeout(() => {
-            for (let i = 0; i < 8; i++) {
-                setTimeout(createSnowflake, i * 300);
-            }
-        }, 500);
-    </script>
-
-<!-- qor effecti kodlari javascriptlar tugadi -->
 
     <!-- google analiz kodi -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-6HJZ457YMB"></script>
@@ -2913,8 +2806,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
