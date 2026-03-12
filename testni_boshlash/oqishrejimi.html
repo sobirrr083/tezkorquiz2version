@@ -1,852 +1,1050 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-    <meta charset="UTF-8">
-    <meta name="robots" content="index, follow">
-    <meta name="author" content="Tezkor Quiz">
-    <meta name="language" content="uz">
-    <meta name="theme-color" content="#2a5298">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Testlarni O‘qish — Savollarni ko‘rish va nusxa olish</title>
-    <meta name="description" content="Testlarni O‘qish — test savollarini qulay ko‘rish, yulduzcha bilan ajratish, nusxa olish va TXT sifatida saqlash uchun maxsus rejim.">
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Testlarni O‘qish — Savollarni qulay ko‘rish va saqlash">
-    <meta property="og:description" content="Testlarni yechmasdan ko‘ring, muhim savollarni belgilang va nusxa oling. O‘qituvchilar va test tuzuvchilar uchun ideal.">
-    <meta property="og:url" content="https://tezkorquiz.uz/testni_boshlash/oqishrejimi">
-    <meta property="og:site_name" content="Tezkor Quiz">
-    <meta property="og:image" content="https://tezkorquiz.uz/aga/oqish_rejimi.webbp">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:locale" content="uz_UZ">
+  <meta charset="UTF-8">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="Tezkor Quiz">
+  <meta name="language" content="uz">
+  <meta name="theme-color" content="#506eec">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Testlarni O'qish — Savollarni ko'rish va nusxa olish</title>
+  <meta name="description" content="Testlarni O'qish — test savollarini qulay ko'rish, yulduzcha bilan ajratish, nusxa olish va TXT sifatida saqlash uchun maxsus rejim.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Testlarni O'qish — Savollarni qulay ko'rish va saqlash">
+  <meta property="og:description" content="Testlarni yechmasdan ko'ring, muhim savollarni belgilang va nusxa oling.">
+  <meta property="og:url" content="https://tezkorquiz.uz/testni_boshlash/oqishrejimi">
+  <meta property="og:site_name" content="Tezkor Quiz">
+  <meta property="og:image" content="https://tezkorquiz.uz/aga/oqish_rejimi.webp">
+  <meta property="og:locale" content="uz_UZ">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Testlarni O'qish — Nusxa olish va saqlash">
+  <meta name="twitter:description" content="Test savollarini qulay o'qing, ajrating va nusxa oling.">
+  <meta name="twitter:image" content="https://tezkorquiz.uz/aga/oqish_rejimi.webp">
+  <link rel="icon" href="aga/iconcha.png">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       CSS VARIABLES
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    :root {
+      --bg:           #f4f6f9;
+      --card:         #ffffff;
+      --text:         #333333;
+      --sub:          #6b7280;
+      --border:       #e2e8f0;
+      --btn:          #506eec;
+      --btn-h:        #3a5ad9;
+      --acc-bg:       #eff6ff;
+      --acc-h:        #dbe9ff;
+      --inner-bg:     #f8f9fa;
+      --scard-bg:     #ffffff;
+      --tog-off:      #c8cdd5;
+      --shadow:       rgba(0,0,0,0.07);
+      --ans-col:      #059669;
+      --ans-bg:       #ecfdf5;
+    }
+    [data-theme="dark"] {
+      --bg:           #191f2e;
+      --card:         #232c3e;
+      --text:         #c4cde0;
+      --sub:          #7a8a9e;
+      --border:       #2c3850;
+      --btn:          #5a74e8;
+      --btn-h:        #4a64d8;
+      --acc-bg:       #1c2b46;
+      --acc-h:        #243358;
+      --inner-bg:     #1a2436;
+      --scard-bg:     #1e2a40;
+      --tog-off:      #374560;
+      --shadow:       rgba(0,0,0,0.3);
+      --ans-col:      #34d399;
+      --ans-bg:       rgba(52,211,153,0.1);
+    }
 
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Testlarni O‘qish — Nusxa olish va saqlash">
-    <meta name="twitter:description" content="Test savollarini qulay o‘qing, ajrating va nusxa oling. Test tayyorlash uchun qulay rejim.">
-    <meta name="twitter:image" content="https://tezkorquiz.uz/aga/oqish_rejimi.webp">
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       BASE
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      min-height: 100vh; overflow-x: hidden;
+      transition: background .3s, color .3s;
+    }
 
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       BREADCRUMB (Pro Quiz uslubi)
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #bcWrapper {
+      width: 70%; max-width: 1200px; min-width: 320px;
+      margin: 18px auto 0;
+    }
+    @media (max-width: 992px) { #bcWrapper { width: 80%; } }
+    @media (max-width: 768px) { #bcWrapper { width: 90%; } }
 
-    <link rel="icon" href="aga/iconcha.png">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            padding: 20px;
-            transition: all 0.3s ease;
-        }
+    .bc-nav {
+      background: var(--card);
+      padding: .55rem 1.1rem;
+      border-radius: 10px;
+      box-shadow: 0 1px 4px var(--shadow);
+      margin-bottom: 1rem;
+      position: relative; overflow: hidden;
+      transition: background .3s;
+    }
+    .bc-nav::after {
+      content: ''; position: absolute;
+      bottom: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg,
+        rgba(80,110,236,0) 0%,   rgba(80,110,236,0) 44%,
+        rgba(80,110,236,.5) 48%, rgba(80,110,236,1) 50%,
+        rgba(80,110,236,.5) 52%, rgba(80,110,236,0) 56%,
+        rgba(80,110,236,0) 100%);
+      background-size: 200% 100%;
+      animation: bcshine 5s linear infinite;
+      border-radius: 0 0 10px 10px;
+    }
+    @keyframes bcshine {
+      0%  { background-position: 200% 0 }
+      100%{ background-position: -200% 0 }
+    }
+    .bc-list {
+      margin:0; padding:0; list-style:none;
+      display:flex; flex-wrap:nowrap; align-items:center;
+      overflow-x:auto; scrollbar-width:none;
+    }
+    .bc-list::-webkit-scrollbar { display:none; }
+    .bc-item { display:inline-flex; align-items:center; white-space:nowrap; }
+    .bc-item a {
+      color:#555; text-decoration:none;
+      padding:.28rem .52rem; border-radius:6px;
+      font-size:.83rem; font-weight:500;
+      transition: background .2s, color .2s;
+    }
+    [data-theme="dark"] .bc-item a { color:#aaa; }
+    .bc-item a:hover { background:#e7f0ff; color:#506eec; }
+    [data-theme="dark"] .bc-item a:hover { background:#243358; color:#7a9af7; }
+    .bc-item + .bc-item::before {
+      content:"/"; color:#cbd5e0;
+      padding:0 .28rem; font-size:.83rem;
+    }
+    [data-theme="dark"] .bc-item+.bc-item::before { color:#374560; }
 
-        .container {
-            max-width: 850px;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
-        }
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       MAIN CONTAINER
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .wrap {
+      width: 70%; max-width: 1200px; min-width: 320px;
+      margin: 0 auto 50px;
+      background: var(--card);
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px var(--shadow);
+      transition: background .3s, box-shadow .3s;
+    }
+    @media (max-width: 992px) { .wrap { width: 80%; } }
+    @media (max-width: 768px) { .wrap { width: 90%; padding: 20px; } }
 
-        /* Theme styles remain unchanged */
-        body.theme-default { background: linear-gradient(135deg, #1e3c72, #2a5298); color: white; }
-        body.theme-default .container { background: rgba(255, 255, 255, 0.1); }
-        body.theme-dark { background: #1c2526; color: #e0e0e0; }
-        body.theme-dark .container { background: #2d3839; }
-        body.theme-light { background: #f4f4f4; color: #333; }
-        body.theme-light .container { background: #fff; }
-        body.theme-nature { background: linear-gradient(135deg, #d4e4bc, #a9c7a0); color: #2d5a27; }
-        body.theme-nature .container { background: #a9c7a0; }
-        body.theme-ocean { background: linear-gradient(135deg, #2c5364, #203a43, #0f2027); color: #d4f1f9; }
-        body.theme-ocean .container { background: rgba(44, 83, 100, 0.8); }
-        body.theme-sunset { background: linear-gradient(135deg, #ff5e62, #ff9966); color: #fff; }
-        body.theme-sunset .container { background: rgba(255, 94, 98, 0.7); }
-        body.theme-forest { background: linear-gradient(135deg, #2f4f4f, #3b5e5e); color: #d2b48c; }
-        body.theme-forest .container { background: rgba(47, 79, 79, 0.8); }
-        body.theme-minimal { background: #eceff1; color: #37474f; }
-        body.theme-minimal .container { background: #fff; }
-        body.theme-retro { background: linear-gradient(135deg, #f4a261, #e9c46a); color: #2a2a2a; }
-        body.theme-retro .container { background: #e9c46a; }
-        body.theme-tech { background: linear-gradient(135deg, #0d1b2a, #1b263b, #415a77); color: #00d4ff; }
-        body.theme-tech .container { background: rgba(13, 27, 42, 0.9); }
+    h1 {
+      text-align: center; font-weight: 800;
+      font-size: 1.9rem; color: var(--btn);
+      margin-bottom: 24px; letter-spacing: -.3px;
+    }
 
-        /* Answer colors remain unchanged */
-        body.theme-default .test-answer { color: #0FFF50; }
-        body.theme-dark .test-answer { color: #00ff9d; }
-        body.theme-light .test-answer { color: #008000; }
-        body.theme-nature .test-answer { color: #228b22; }
-        body.theme-ocean .test-answer { color: #00ced1; }
-        body.theme-sunset .test-answer { color: #ff4500; }
-        body.theme-forest .test-answer { color: #8b4513; }
-        body.theme-minimal .test-answer { color: #4682b4; }
-        body.theme-retro .test-answer { color: #ff6347; }
-        body.theme-tech .test-answer { color: #00bfff; }
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       UPLOAD
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .upload-box {
+      border: 2px dashed var(--border);
+      border-radius: 10px;
+      padding: 24px 20px;
+      background: var(--inner-bg);
+      text-align: center;
+      margin-bottom: 14px;
+      transition: border-color .3s, background .3s;
+    }
+    .upload-box h2 { font-size:1.15rem; font-weight:700; margin-bottom:8px; color:var(--text); }
+    .upload-box p  { font-size:13.5px; color:var(--sub); margin-bottom:4px; }
+    .fmt-box {
+      text-align:left; background:var(--card);
+      padding:12px 16px; border-radius:8px;
+      border-left:4px solid var(--btn);
+      margin:12px 0 16px; font-size:13px;
+      line-height:1.75; color:var(--text);
+      transition: background .3s;
+    }
+    .fmt-box b { color:var(--btn); font-weight:700; }
+    .file-lbl {
+      display:inline-flex; align-items:center; gap:9px;
+      padding:11px 28px; background:var(--btn); color:white;
+      border-radius:8px; cursor:pointer;
+      font-weight:700; font-size:14px;
+      transition: background .25s, transform .2s, box-shadow .2s;
+    }
+    .file-lbl:hover {
+      background:var(--btn-h); transform:translateY(-1px);
+      box-shadow:0 4px 14px rgba(80,110,236,.35);
+    }
+    .file-lbl svg { width:18px; height:18px; fill:white; flex-shrink:0; }
+    #uploadStatus { margin-top:10px; font-weight:600; font-size:14px; min-height:22px; }
 
-        /* Clipboard styles updated only for button appearance */
-        .clipboard {
-            position: fixed;
-            bottom: 90px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
-            background: rgba(0, 0, 0, 0.8); 
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            z-index: 100;
-        }
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       SETTINGS ROW  (Star btn + Accordion)
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .settings-row {
+      display:flex; align-items:flex-start;
+      gap:8px; margin-top:14px;
+    }
+    .acc-wrap { flex:1; }
 
-        .clipboard:hover {
-            background: rgba(0, 0, 0, 0.8); /* Lighter blue on hover */
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.8); /* Glow effect */
-        }
+    /* Accordion button */
+    .acc-btn {
+      display:flex; align-items:center; justify-content:space-between;
+      width:100%; background:var(--acc-bg); color:var(--text);
+      border:none; border-radius:8px; padding:11px 16px;
+      font-size:14px; font-weight:600; cursor:pointer;
+      transition:background .25s, border-radius .3s;
+      user-select:none;
+    }
+    .acc-btn:hover { background:var(--acc-h); }
+    .acc-btn.open  { border-radius:8px 8px 0 0; }
+    .acc-btn .acc-l { display:flex; align-items:center; gap:8px; }
+    .acc-btn .acc-arrow { font-size:13px; transition:transform .3s; }
+    .acc-btn.open .acc-arrow { transform:rotate(180deg); }
 
-        .clipboard.expanded {
-            width: 350px;
-            height: auto;
-            min-height: 150px;
-            max-height: 500px;
-            border-radius: 15px;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-        }
+    /* Accordion content */
+    .acc-body {
+      max-height:0; overflow:hidden;
+      transition:max-height .42s cubic-bezier(.4,0,.2,1);
+      background:var(--inner-bg); border-radius:0 0 8px 8px;
+      border:1px solid var(--border); border-top:none;
+    }
+    .acc-body.open { max-height:700px; }
+    .acc-inner { padding:10px 10px 8px; }
 
-        .clipboard-content {
-            display: none;
-            flex-grow: 1;
-            max-height: 400px;
-            overflow-y: auto;
-            font-size: 14px;
-            line-height: 1.6;
-        }
+    /* Setting card */
+    .scard {
+      display:flex; align-items:center; justify-content:space-between;
+      background:var(--scard-bg); border-radius:8px;
+      padding:11px 14px; margin-bottom:8px;
+      cursor:pointer; user-select:none;
+      transition:background .2s, box-shadow .2s;
+      border:1px solid var(--border);
+    }
+    .scard:last-child { margin-bottom:0; }
+    .scard:hover { box-shadow:0 2px 8px rgba(80,110,236,.1); }
+    .scard-l { flex:1; margin-right:14px; }
+    .scard-label { font-size:14px; font-weight:600; color:var(--text); display:block; margin-bottom:2px; }
+    .scard-desc  { font-size:12px; color:var(--sub); line-height:1.4; margin-top:2px; }
 
-        .clipboard.expanded .clipboard-content {
-            display: block;
-        }
+    /* Toggle switch */
+    .tog { position:relative; display:inline-block; width:48px; height:24px; flex-shrink:0; }
+    .tog input { opacity:0; width:0; height:0; }
+    .tog-sl {
+      position:absolute; cursor:pointer; inset:0;
+      background:var(--tog-off); transition:.35s; border-radius:24px;
+    }
+    .tog-sl::before {
+      position:absolute; content:""; height:18px; width:18px;
+      left:3px; bottom:3px; background:white; transition:.35s;
+      border-radius:50%; box-shadow:0 1px 3px rgba(0,0,0,.2);
+    }
+    input:checked + .tog-sl { background:var(--btn); }
+    input:checked + .tog-sl::before { transform:translateX(24px); }
 
-        .clipboard-content p {
-            white-space: pre-wrap;
-            margin-bottom: 10px;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
-        }
+    /* Star filter button — acc-btn bilan aynan bir xil o'lcham */
+    .star-btn {
+      display:flex; align-items:center; justify-content:space-between;
+      width:100%; padding:11px 16px;
+      background:var(--acc-bg); color:var(--text);
+      border:none; border-radius:8px;
+      font-size:14px; font-weight:600; cursor:pointer;
+      transition:background .25s, color .2s, border-radius .3s;
+      user-select:none; line-height:1.4;
+    }
+    .star-btn:hover { background:var(--acc-h); }
+    .star-btn.active { background:#fffbeb; color:#b45309; }
+    [data-theme="dark"] .star-btn.active { background:#3b2d10; color:#f59e0b; }
+    .star-btn .star-l { display:flex; align-items:center; gap:8px; }
+    .star-btn .star-ico { width:14px; height:14px; flex-shrink:0; }
 
-        .clipboard-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-            flex-shrink: 0;
-        }
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       DIVIDER
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .divider { height:1px; background:var(--border); margin:20px 0; }
 
-        .clipboard-close {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 20px;
-            cursor: pointer;
-            transition: color 0.3s ease;
-            padding: 0;
-            width: 24px;
-            height: 24px;
-            line-height: 24px;
-        }
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       TEST CARDS
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .tcard {
+      background:var(--inner-bg);
+      border:1px solid var(--border);
+      border-radius:10px;
+      padding:16px 46px 16px 18px;
+      margin-bottom:12px; position:relative;
+      animation:fadeUp .35s ease both;
+      transition:background .3s, border-color .3s;
+    }
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(8px) }
+      to   { opacity:1; transform:translateY(0) }
+    }
 
-        .clipboard-close:hover {
-            color: #ff4444;
-        }
+    .tcard-q {
+      font-weight:700; font-size:15px; color:var(--text);
+      margin-bottom:10px; line-height:1.5; cursor:pointer;
+      user-select:none; position:relative; padding-right:4px;
+    }
+    .tcard-q.starred::after {
+      content:'★'; color:#f59e0b; margin-left:8px; font-size:16px;
+    }
+    .tcard-opts {
+      font-size:14px; color:var(--sub);
+      line-height:1.85; margin-left:2px;
+    }
+    .tcard-opts div { margin:1px 0; }
+    body.hide-opts .tcard-opts { display:none !important; }
 
-        .clipboard-buttons {
-            margin-top: 10px;
-            flex-shrink: 0;
-        }
+    .tcard-ans {
+      display:inline-flex; align-items:center; gap:5px;
+      margin-top:8px; font-size:13.5px; font-weight:600;
+      color:var(--text);
+    }
+    .tcard-ans svg { width:13px; height:13px; flex-shrink:0; stroke:var(--btn); }
 
-        /* Notification styles remain unchanged */
-        .notification {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(135deg, #28a745, #218838);
-            color: white;
-            padding: 15px 30px;
-            border-radius: 50px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
-            opacity: 0;
-            transition: opacity 0.5s ease, transform 0.5s ease;
-            z-index: 1000;
-        }
+    /* copy btn */
+    .cpbtn {
+      position:absolute; bottom:12px; right:12px;
+      background:none; border:none; cursor:pointer;
+      padding:6px; border-radius:6px; opacity:.4;
+      display:flex; align-items:center; justify-content:center;
+      transition:opacity .2s, background .2s;
+    }
+    .cpbtn:hover { opacity:1; background:var(--border); }
+    .cpbtn svg { width:15px; height:15px; stroke:var(--btn); fill:none; }
 
-        .notification.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(-10px);
-        }
+    /* no-stars message */
+    .no-stars {
+      text-align:center; padding:36px 20px;
+      color:var(--sub); font-size:14px;
+      display:none;
+    }
+    .no-stars svg { width:42px; height:42px; stroke:var(--border); display:block; margin:0 auto 12px; }
 
-        .clipboard-saved-notification {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background-color: #28a745;
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
-            display: none;
-            animation: slideIn 0.5s ease-out;
-            z-index: 1100;
-        }
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       NOTIFICATION
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .notif {
+      position:fixed; bottom:24px; left:50%;
+      transform:translateX(-50%);
+      background:linear-gradient(135deg,#059669,#047857);
+      color:white; padding:11px 26px; border-radius:50px;
+      box-shadow:0 4px 18px rgba(5,150,105,.4);
+      opacity:0; pointer-events:none;
+      transition:opacity .35s, transform .35s;
+      z-index:10000; font-weight:600; font-size:14px; white-space:nowrap;
+    }
+    .notif.show { opacity:1; transform:translateX(-50%) translateY(-6px); }
 
-        @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       FLOAT BUTTONS  (Segment25 uslubi)
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .fbtn {
+      width:50px; height:50px; border-radius:50%;
+      background:var(--btn); border:none; color:white;
+      display:flex; align-items:center; justify-content:center;
+      box-shadow:0 4px 14px rgba(80,110,236,.35);
+      cursor:pointer; overflow:hidden;
+      position:fixed; right:28px; z-index:200;
+      opacity:0; visibility:hidden;
+      transition-duration:.3s;
+    }
+    .fbtn.vis { opacity:1; visibility:visible; }
+    .fbtn .ico { width:14px; transition-duration:.3s; }
+    .fbtn .ico path { fill:white; }
+    .fbtn:hover {
+      width:150px; border-radius:50px;
+      background:var(--btn-h); transition-duration:.3s;
+    }
+    .fbtn:hover .ico { transform:translateY(-200%); transition-duration:.3s; }
+    .fbtn::before {
+      position:absolute; content:"Yuqorga";
+      color:white; font-size:0; font-weight:600;
+    }
+    .fbtn:hover::before { font-size:13px; transition-duration:.3s; }
 
-        /* Back to top button styles updated only for button appearance */
-        .back-to-top {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: rgba(30, 144, 255, 0.253); /* Blue color */
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0px 0px 0px 2px rgba(30, 144, 255, 0.253);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 99;
-            opacity: 0;
-            visibility: hidden;
-        }
+    #topBtn { bottom:28px; }
+    #downBtn { bottom:90px; }
+    #downBtn::before { content:"Pastga"; }
+    #downBtn .ico { transform:rotate(180deg); }
+    #downBtn:hover .ico { transform:rotate(180deg) translateY(-200%); }
 
-        .back-to-top.visible {
-            opacity: 1;
-            visibility: visible;
-        }
+    @media (max-width:768px) {
+      .fbtn { right:16px; }
+      #topBtn  { bottom:18px; }
+      #downBtn { bottom:78px; }
+    }
 
-        .back-to-top:hover {
-            width: 50px;
-            background-color: #63b8ff; /* Lighter blue on hover */
-            box-shadow: 0 0 10px rgba(30, 144, 255, 0.7); /* Glow effect */
-        }
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       TEZKOR SAQLAGICH
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .qs-btn {
+      position:fixed; bottom:154px; right:28px;
+      width:50px; height:50px; border-radius:50%;
+      background:#1e293b; border:2px solid rgba(255,255,255,.1);
+      color:white; display:flex; align-items:center; justify-content:center;
+      cursor:pointer; box-shadow:0 4px 16px rgba(0,0,0,.35); z-index:200;
+      transition:background .3s, border-color .3s, box-shadow .3s;
+    }
+    .qs-btn:hover { background:#2d3f5e; box-shadow:0 6px 20px rgba(0,0,0,.45); }
+    .qs-btn.lit { border-color:var(--btn); }
+    .qs-btn svg { width:22px; height:22px; }
+    .qs-dot {
+      position:absolute; top:-6px; right:-6px;
+      background:#ef4444; color:white; border-radius:50%;
+      width:20px; height:20px;
+      font-size:11px; font-weight:700;
+      display:none; align-items:center; justify-content:center;
+      border:2px solid var(--card);
+    }
+    .qs-btn.lit .qs-dot { display:flex; }
 
-        .back-to-top::before {
-            content: "Yuqorga";
-            position: absolute;
-            bottom: -20px;
-            color: white;
-            font-size: 10px;
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
+    @media (max-width:768px) { .qs-btn { right:16px; bottom:142px; } }
 
-        .back-to-top:hover::before {
-            opacity: 1;
-            bottom: -25px;
-        }
+    /* Panel */
+    .qs-panel {
+      position:fixed; bottom:216px; right:28px;
+      width:330px; background:#0f172a;
+      border-radius:16px; border:1px solid rgba(255,255,255,.08);
+      box-shadow:0 20px 50px rgba(0,0,0,.55);
+      z-index:300; display:flex; flex-direction:column;
+      max-height:430px; overflow:hidden;
+      transform:scale(.92) translateY(12px);
+      opacity:0; pointer-events:none;
+      transition:transform .25s cubic-bezier(.34,1.56,.64,1), opacity .22s;
+    }
+    .qs-panel.open { transform:scale(1) translateY(0); opacity:1; pointer-events:all; }
 
-        /* Test container styles with hover toggle */
-        h1 { text-align: center; font-weight: bold; text-transform: uppercase; }
-        .upload-container { margin: 20px 0; padding: 25px; border: 2px dashed rgba(255, 255, 255, 0.5); border-radius: 10px; text-align: center; transition: all 0.3s; }
-        .upload-container:hover { background: rgba(255, 255, 255, 0.2); transform: scale(1.02); }
-        .file-label { padding: 12px 25px; background: #ff7e5f; color: white; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.3s; }
-        .file-label:hover { background: #feb47b; }
-        .test-container { position: relative; padding: 15px; margin-bottom: 15px; border-radius: 8px; transition: 0.3s ease-in-out; background: rgba(255, 255, 255, 0.2); animation: fadeIn 0.5s ease-in-out; }
-        .test-container.hover-enabled:hover { transform: scale(1.02); box-shadow: 0px 5px 15px rgba(255, 255, 255, 0.2); }
-        .test-question { font-weight: bold; margin-bottom: 10px; cursor: pointer; position: relative; padding-right: 30px; }
-        .test-question.starred::after { content: '★'; position: absolute; right: 5px; top: 50%; transform: translateY(-50%); color: yellow; }
-        .test-options { margin-left: 20px; }
-        .test-answer { margin-top: 10px; font-weight: bold; }
-        .copy-btn { background: none; border: none; font-size: 20px; cursor: pointer; position: absolute; bottom: 10px; right: 10px; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .qs-head {
+      padding:13px 16px; flex-shrink:0;
+      border-bottom:1px solid rgba(255,255,255,.07);
+      display:flex; align-items:center; justify-content:space-between;
+    }
+    .qs-title {
+      font-size:13px; font-weight:700; color:#fff;
+      display:flex; align-items:center; gap:8px;
+    }
+    .qs-title svg { width:15px; height:15px; stroke:var(--btn); fill:none; }
+    .qs-x {
+      background:rgba(255,255,255,.07); border:none; color:#94a3b8;
+      width:26px; height:26px; border-radius:50%; cursor:pointer;
+      font-size:13px; display:flex; align-items:center; justify-content:center;
+      transition:background .2s, color .2s;
+    }
+    .qs-x:hover { background:rgba(239,68,68,.2); color:#f87171; }
 
-        /* Toggle switch styles */
-        .toggle-container {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            margin-bottom: 15px;
-        }
+    .qs-list {
+      overflow-y:auto; flex:1; padding:10px 12px;
+      overscroll-behavior: contain;
+    }
+    .qs-list::-webkit-scrollbar { width:3px; }
+    .qs-list::-webkit-scrollbar-thumb { background:rgba(255,255,255,.12); border-radius:3px; }
 
-        .toggle-switch {
-            position: relative;
-            display: inline-block;
-            width: 50px;
-            height: 24px;
-            margin-left: 10px;
-        }
+    .qs-empty {
+      text-align:center; padding:28px 16px;
+      color:rgba(255,255,255,.25); font-size:13px;
+    }
+    .qs-empty svg { width:34px; height:34px; stroke:rgba(255,255,255,.12); display:block; margin:0 auto 10px; }
 
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
+    .qs-item {
+      background:rgba(255,255,255,.04); border-radius:8px;
+      padding:9px 12px; margin-bottom:7px;
+      border-left:3px solid var(--btn);
+    }
+    .qs-txt { font-size:12px; color:#94a3b8; white-space:pre-wrap; line-height:1.55; }
 
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: 0.4s;
-            border-radius: 24px;
-        }
+    .qs-foot {
+      padding:10px 12px; flex-shrink:0;
+      border-top:1px solid rgba(255,255,255,.07);
+      display:flex; gap:8px;
+    }
+    .qs-fbtn {
+      flex:1; padding:9px 10px; border:none; border-radius:8px;
+      font-size:12px; font-weight:700; cursor:pointer;
+      display:flex; align-items:center; justify-content:center; gap:6px;
+      transition:background .2s;
+    }
+    .qs-fbtn svg { width:14px; height:14px; flex-shrink:0; }
+    .qs-copy { background:rgba(255,255,255,.07); color:#94a3b8; }
+    .qs-copy:hover { background:rgba(255,255,255,.12); color:white; }
+    .qs-copy svg { fill:none; stroke:currentColor; }
+    .qs-save { background:var(--btn); color:white; }
+    .qs-save:hover { background:var(--btn-h); }
+    .qs-save svg { fill:none; stroke:white; }
 
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 18px;
-            width: 18px;
-            left: 3px;
-            bottom: 3px;
-            background-color: white;
-            transition: 0.4s;
-            border-radius: 50%;
-        }
-
-        input:checked + .slider {
-            background-color: #2196F3;
-        }
-
-        input:checked + .slider:before {
-            transform: translateX(26px);
-        }
-
-        .breadcrumb-container {
-            background: #ffffff;
-            padding: 0.625rem 1.25rem;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-            margin-bottom: 1.5rem;
-            position: relative;
-            overflow: hidden;
-        }
-        .breadcrumb-container::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(
-                90deg,
-                rgba(68, 96, 239, 0) 0%,
-                rgba(68, 96, 239, 0) 46%,
-                rgba(68, 96, 239, 0.5) 48%,
-                rgba(68, 96, 239, 1) 50%,
-                rgba(68, 96, 239, 0.5) 52%,
-                rgba(68, 96, 239, 0) 54%,
-                rgba(68, 96, 239, 0) 100%
-            );
-            background-size: 200% 100%;
-            animation: shimmer 5s linear infinite;
-            border-radius: 0 0 8px 8px;
-        }
-        @keyframes shimmer {
-            0% {
-                background-position: 200% 0;
-            }
-            100% {
-                background-position: -200% 0;
-            }
-        }
-        
-        .breadcrumb {
-            margin-bottom: 0;
-            background: transparent;
-            padding: 0;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 0;
-            list-style: none;
-        }
-        .breadcrumb-item {
-            display: inline-flex;
-            align-items: center;
-        }
-        .breadcrumb-item a {
-            color: #495057;
-            text-decoration: none;
-            padding: 0.4rem 0.75rem;
-            border-radius: 6px;
-            font-size: 0.875rem;
-            font-weight: 500;
-            transition: background-color 0.2s ease, color 0.2s ease;
-            display: inline-block;
-            line-height: 1.4;
-        }
-        
-        .breadcrumb-item a:hover {
-            background-color: #e7f0ff;
-            color: #4a90e2;
-        }
-        .breadcrumb-item.active {
-            background-color: #e7f0ff;
-            color: #4a90e2;
-            padding: 0.4rem 0.75rem;
-            border-radius: 6px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            line-height: 1.4;
-        }
-        .breadcrumb-item + .breadcrumb-item::before {
-            content: "/";
-            color: #cbd5e0;
-            font-weight: 400;
-            padding-left: 0.625rem;
-            padding-right: 0.625rem;
-            margin-right: 0;
-            font-size: 0.875rem;
-            display: inline-block;
-        }
-        @media (max-width: 991px) {
-            .breadcrumb-container {
-                padding: 0.5rem 1rem;
-            }
-            
-            .breadcrumb-item a,
-            .breadcrumb-item.active {
-                padding: 0.375rem 0.625rem;
-                font-size: 0.8125rem;
-            }
-            
-            .breadcrumb-item + .breadcrumb-item::before {
-                padding-left: 0.5rem;
-                padding-right: 0.5rem;
-            }
-        }
-        @media (max-width: 576px) {
-            .breadcrumb-container {
-                padding: 0.5rem 0.875rem;
-            }
-            
-            .breadcrumb-container::after {
-                height: 2.5px;
-            }
-            
-            .breadcrumb-item a,
-            .breadcrumb-item.active {
-                padding: 0.35rem 0.5rem;
-                font-size: 0.75rem;
-            }
-            
-            .breadcrumb-item + .breadcrumb-item::before {
-                padding-left: 0.375rem;
-                padding-right: 0.375rem;
-                font-size: 0.75rem;
-            }
-        }
-        @media (max-width: 400px) {
-            .breadcrumb-container {
-                padding: 0.45rem 0.75rem;
-            }
-            
-            .breadcrumb-container::after {
-                height: 2px;
-            }
-            
-            .breadcrumb-item a,
-            .breadcrumb-item.active {
-                padding: 0.3rem 0.45rem;
-                font-size: 0.7rem;
-            }
-            
-            .breadcrumb-item + .breadcrumb-item::before {
-                padding-left: 0.3rem;
-                padding-right: 0.3rem;
-            }
-        }
-        .breadcrumb-item a:focus {
-            outline: 2px solid #4a90e2;
-            outline-offset: 2px;
-        }
-        
-        @media (prefers-contrast: high) {
-            .breadcrumb-item a {
-                color: #000000;
-            }
-            
-            .breadcrumb-item.active {
-                background-color: #0066cc;
-                color: #ffffff;
-            }
-        }
-    </style>
+    @media (max-width:768px) {
+      .qs-panel { right:16px; width:calc(100vw - 32px); bottom:204px; }
+    }
+  </style>
 </head>
-<body class="theme-default">
-<div class="container mt-4">
-    <div class="breadcrumb-container">
-        <nav aria-label="Yo'lni ko'rsatuvchi navigatsiya">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item">
-                    <a href="/" aria-label="Bosh sahifaga o'tish">Bosh sahifa</a>
-                </li>
-                <li class="breadcrumb-item">
-                    <a href="/testni_boshlash" aria-label="Testni boshlash sahifasiga o'tish">Testni boshlash</a>
-                </li>
-                <li class="breadcrumb-item">
-                    <a href="/testni_boshlash/oqishrejimi" aria-label="O'qish rejimi sahifasiga o'tish">O'qish rejimi</a>
-                </li>
-            </ol>
-        </nav>
-    </div>
-</div>
-    <br>
-<div class="container">
-    <h1>Testlarni O'qish</h1>
-
-    <div class="mb-3">
-        <label for="themeSelect" class="form-label">Mavzuni tanlang:</label>
-        <select id="themeSelect" class="form-select w-25">
-            <option value="theme-default">Oddiy</option>
-            <option value="theme-dark">Tun</option>
-            <option value="theme-light">Yorug'</option>
-            <option value="theme-nature">Tabiat</option>
-            <option value="theme-ocean">Okean</option>
-            <option value="theme-sunset">Quyosh botishi</option>
-            <option value="theme-forest">Oy</option>
-            <option value="theme-minimal">Oq</option>
-            <option value="theme-retro">Retro</option>
-            <option value="theme-tech">Texnologiya</option>
-        </select>
-    </div>
-
-    <!-- Toggle switch for hover effect -->
-    <div class="toggle-container">
-        <span>Hover effekt:</span>
-        <label class="toggle-switch">
-            <input type="checkbox" id="hoverToggle" checked>
-            <span class="slider"></span>
-        </label>
-    </div>
-
-    <div class="upload-container">
-        <h2>Test faylini yuklang</h2>
-        <p>Testlarni yuklab, ularni o'qish, test savolni (o'ng burchakni) 1 marotaba bosgan holda savolga yulduzcha qo'yish orqali alohida ajratish va nusxa olish imkoniyatiga egasiz.</p>
-        <p style="text-align: left;">
-            <b>STANDART FORMAT</b><br>
-            Qanday tarmoq turi Narsalar interneti komponentlari o'rtasidagi aloqa uchun ishlatiladi?<br>
-            A. LAN<br>
-            B. WAN<br>
-            C. WLAN<br>
-            D. PAN<br>
-            ANSWER: A
-        </p>
-        <label for="fileInput" class="file-label">📁 Fayl tanlash</label>
-        <input type="file" id="fileInput" accept=".txt" hidden>
-        <div id="uploadStatus"></div>
-    </div>
-
-    <div id="testResults" style="display: none;">
-        <div id="testContainer"></div>
-    </div>
+<body>
+<div id="bcWrapper">
+  <div class="bc-nav">
+    <nav aria-label="Navigatsiya">
+      <ol class="bc-list">
+        <li class="bc-item">
+          <a href="/"><i class="fas fa-home" style="margin-right:4px;font-size:.78rem"></i>Bosh sahifa</a>
+        </li>
+        <li class="bc-item"><a href="/testni_boshlash">Testni boshlash</a></li>
+        <li class="bc-item"><a href="/testni_boshlash/oqishrejimi">O'qish rejimi</a></li>
+      </ol>
+    </nav>
+  </div>
 </div>
 
-<button class="back-to-top" id="backToTopBtn">
-    <svg class="svgIcon" viewBox="0 0 384 512" width="20" height="20">
-        <path d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0 --12.5-32.8 0-45.3l-160-160z"></path>
-    </svg>
+<div class="wrap">
+  <h1>Testlarni O'qish</h1>
+
+  <div class="upload-box">
+    <h2>Test faylini yuklang</h2>
+    <p>Savollarni ko'ring, yulduzcha bilan belgilang va nusxa oling.</p>
+    <div class="fmt-box">
+      <b>STANDART FORMAT</b><br>
+      Qanday tarmoq turi IoT uchun ishlatiladi?<br>
+      A. LAN<br>B. WAN<br>C. WLAN<br>D. PAN<br>
+      ANSWER: A
+    </div>
+    <label for="fileInput" class="file-lbl">
+      <svg viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+      Fayl tanlash
+    </label>
+    <input type="file" id="fileInput" accept=".txt" hidden>
+    <div id="uploadStatus"></div>
+  </div>
+
+  <!-- Settings accordion -->
+  <div class="acc-wrap" style="margin-top:14px;">
+    <button class="acc-btn" id="accBtn" onclick="toggleAcc()">
+      <span class="acc-l">
+        <i class="fas fa-sliders-h"></i>
+        Test sozlamalari
+      </span>
+      <i class="fas fa-chevron-down acc-arrow"></i>
+    </button>
+    <div class="acc-body" id="accBody">
+      <div class="acc-inner">
+
+        <!-- Tungi rejim (toggle) -->
+        <div class="scard" onclick="toggleCard('darkTog')">
+          <div class="scard-l">
+            <span class="scard-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;vertical-align:-2px;margin-right:6px;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+              Tungi rejim
+            </span>
+            <div class="scard-desc">Qorong'uda qulay o'qish uchun tungi rejim</div>
+          </div>
+          <label class="tog" onclick="event.stopPropagation()">
+            <input type="checkbox" id="darkTog">
+            <span class="tog-sl"></span>
+          </label>
+        </div>
+
+        <!-- Faqat savol va javob -->
+        <div class="scard" onclick="toggleCard('onlyQATog')">
+          <div class="scard-l">
+            <span class="scard-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;vertical-align:-2px;margin-right:6px;"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+              Faqat savol va javob
+            </span>
+            <div class="scard-desc">Variantlar (A, B, C, D) yashiriladi — faqat savol va to'g'ri variant ko'rsatiladi.</div>
+          </div>
+          <label class="tog" onclick="event.stopPropagation()">
+            <input type="checkbox" id="onlyQATog">
+            <span class="tog-sl"></span>
+          </label>
+        </div>
+
+        <!-- Javob belgisi -->
+        <div class="scard" onclick="toggleCard('ansLblTog')">
+          <div class="scard-l">
+            <span class="scard-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;vertical-align:-2px;margin-right:6px;"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              Javob belgisi
+            </span>
+            <div class="scard-desc" id="ansLblDesc">savollar javoblarini ko'rsatish matinini javob yoki to'g'ri javob qilish</div>
+          </div>
+          <label class="tog" onclick="event.stopPropagation()">
+            <input type="checkbox" id="ansLblTog">
+            <span class="tog-sl"></span>
+          </label>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Yulduzchalar — alohida kichik card, test sozlamalari kabi -->
+  <button class="star-btn" id="starBtn" title="Yulduzcha qo'yilgan savollarni ko'rsatish" style="margin-top:8px;">
+    <span class="star-l">
+      <svg id="starBtnIco" class="star-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+      </svg>
+      <span id="starBtnLbl">Yulduzchalar</span>
+    </span>
+  </button>
+
+  <!-- Results -->
+  <div class="divider" id="divider" style="display:none;"></div>
+  <div id="results" style="display:none;">
+    <div class="no-stars" id="noStarMsg">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+      </svg>
+      Hali yulduzcha qo'yilgan savol yo'q.<br>
+      Savolni bosib yulduzcha qo'ying, keyin filterni yoqing.
+    </div>
+    <div id="cards"></div>
+  </div>
+</div>
+
+<!-- Notification -->
+<div class="notif" id="notif"></div>
+
+<!-- Float: Down -->
+<button class="fbtn" id="downBtn" title="Pastga tushish">
+  <svg class="ico" viewBox="0 0 384 512">
+    <path d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"/>
+  </svg>
 </button>
 
-<div class="clipboard" id="clipboard">
-    <span id="clipboardIcon">📋</span>
-    <div class="clipboard-content" id="clipboardContent"></div>
+<!-- Float: Up -->
+<button class="fbtn" id="topBtn" title="Yuqoriga qaytish">
+  <svg class="ico" viewBox="0 0 384 512">
+    <path d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"/>
+  </svg>
+</button>
+
+<!-- Tezkor Saqlagich button -->
+<div class="qs-btn" id="qsBtn" title="Tezkor Saqlagich">
+  <div class="qs-dot" id="qsDot">0</div>
+  <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/>
+    <polyline points="13 2 13 9 20 9"/>
+    <line x1="9" y1="14" x2="15" y2="14"/>
+    <line x1="9" y1="18" x2="13" y2="18"/>
+    <path d="M7 6h2"/>
+  </svg>
 </div>
 
-<div id="clipboardSavedNotification" class="clipboard-saved-notification">
-    ✅ Savoldan nusxa olindi va tezkor saqlagichga saqlandi!
+<!-- Tezkor Saqlagich panel -->
+<div class="qs-panel" id="qsPanel">
+  <div class="qs-head">
+    <div class="qs-title">
+      <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round">
+        <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/>
+        <polyline points="13 2 13 9 20 9"/>
+      </svg>
+      Tezkor Saqlagich
+    </div>
+    <button class="qs-x" id="qsX">✕</button>
+  </div>
+  <div class="qs-list" id="qsList">
+    <div class="qs-empty" id="qsEmpty">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round">
+        <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+      </svg>
+      Hech narsa saqlanmagan
+    </div>
+    <div id="qsItems"></div>
+  </div>
+  <div class="qs-foot" id="qsFoot" style="display:none;">
+    <button class="qs-fbtn qs-copy" id="qsCopy">
+      <svg viewBox="0 0 24 24"><path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+      Umumiy nusxa
+    </button>
+    <button class="qs-fbtn qs-save" id="qsSave">
+      <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      TXT yuklash
+    </button>
+  </div>
 </div>
 
-<div class="notification" id="copyNotification">✅ Nusxa olindi</div>
-<!-- protect java -->
 <script type="module" src="/js/protect.js"></script>
-<!-- xavsizlik kodi -->
 <script type="module" src="/js/security.js"></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "EducationalContent",
-  "name": "Testlarni O‘qish",
-  "description": "Testlarni O‘qish — test savollarini yechmasdan ko‘rish, ajratish, nusxa olish va TXT formatda saqlash uchun mo‘ljallangan rejim.",
+  "name": "Testlarni O'qish",
+  "description": "Testlarni O'qish — test savollarini yechmasdan ko'rish, ajratish, nusxa olish va TXT formatda saqlash uchun mo'ljallangan rejim.",
   "learningResourceType": "Reference",
   "educationalUse": "Preparation",
-  "interactivityType": "Mixed",
-  "typicalAgeRange": "16-60",
   "inLanguage": "uz",
   "isAccessibleForFree": true,
   "url": "https://tezkorquiz.uz/testni_boshlash/oqishrejimi"
 }
 </script>
-    
 <script>
-    let tests = [];
-    let clipboardItems = [];
+/* ═══════════════════════════════
+   STATE
+═══════════════════════════════ */
+let tests = [];
+let saved = [];
+let ansLabel = 'Javob:';
+let starActive = false;
 
-    const fileInput = document.getElementById('fileInput');
-    const uploadStatus = document.getElementById('uploadStatus');
-    const testResults = document.getElementById('testResults');
-    const testContainer = document.getElementById('testContainer');
-    const backToTopBtn = document.getElementById('backToTopBtn');
-    const clipboard = document.getElementById('clipboard');
-    const clipboardContent = document.getElementById('clipboardContent');
-    const themeSelect = document.getElementById('themeSelect');
-    const copyNotification = document.getElementById('copyNotification');
-    const clipboardSavedNotification = document.getElementById('clipboardSavedNotification');
-    const hoverToggle = document.getElementById('hoverToggle');
+/* ═══════════════════════════════
+   DOM
+═══════════════════════════════ */
+const fileInput   = document.getElementById('fileInput');
+const upStatus    = document.getElementById('uploadStatus');
+const resultsDiv  = document.getElementById('results');
+const cardsDiv    = document.getElementById('cards');
+const divider     = document.getElementById('divider');
+const noStarMsg   = document.getElementById('noStarMsg');
+const notifEl     = document.getElementById('notif');
+const topBtn      = document.getElementById('topBtn');
+const downBtn     = document.getElementById('downBtn');
 
-    // Theme selection
-    themeSelect.addEventListener('change', function() {
-        document.body.className = this.value;
-    });
+// Settings
+const darkTog     = document.getElementById('darkTog');
+const onlyQATog   = document.getElementById('onlyQATog');
+const ansLblTog   = document.getElementById('ansLblTog');
+const ansLblDesc  = document.getElementById('ansLblDesc');
 
-    // Toggle hover effect
-    hoverToggle.addEventListener('change', function() {
-        const containers = document.querySelectorAll('.test-container');
-        containers.forEach(container => {
-            if (this.checked) {
-                container.classList.add('hover-enabled');
-            } else {
-                container.classList.remove('hover-enabled');
-            }
-        });
-    });
+// Star filter
+const starBtn     = document.getElementById('starBtn');
+const starBtnIco  = document.getElementById('starBtnIco');
+const starBtnLbl  = document.getElementById('starBtnLbl');
 
-    // File upload
-    fileInput.addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (!file) return;
+// Tezkor Saqlagich
+const qsBtn   = document.getElementById('qsBtn');
+const qsPanel = document.getElementById('qsPanel');
+const qsX     = document.getElementById('qsX');
+const qsDot   = document.getElementById('qsDot');
+const qsEmpty = document.getElementById('qsEmpty');
+const qsItems = document.getElementById('qsItems');
+const qsFoot  = document.getElementById('qsFoot');
+const qsCopy  = document.getElementById('qsCopy');
+const qsSave  = document.getElementById('qsSave');
 
-        uploadStatus.innerHTML = "<span style='color: yellow;'>⏳ Yuklanmoqda...</span>";
+/* ═══════════════════════════════
+   ACCORDION
+═══════════════════════════════ */
+function toggleAcc() {
+  document.getElementById('accBtn').classList.toggle('open');
+  document.getElementById('accBody').classList.toggle('open');
+}
+function toggleCard(id) {
+  const el = document.getElementById(id);
+  el.checked = !el.checked;
+  el.dispatchEvent(new Event('change'));
+}
 
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            parseTestFile(e.target.result);
-        };
-        reader.readAsText(file);
-    });
+/* ═══════════════════════════════
+   DARK MODE TOGGLE
+═══════════════════════════════ */
+darkTog.addEventListener('change', function () {
+  if (this.checked) document.body.setAttribute('data-theme','dark');
+  else document.body.removeAttribute('data-theme');
+});
 
-    // Parse test file
-    function parseTestFile(content) {
-        tests = [];
-        let lines = content.split('\n');
-        let currentTest = null;
-        let questionLines = [];
-        let optionLines = [];
-        let answerRegex = /^(ANSWER:|ANS:|JAVOB:|javob:)/i;
+/* ═══════════════════════════════
+   ONLY Q&A
+═══════════════════════════════ */
+onlyQATog.addEventListener('change', function () {
+  document.body.classList.toggle('hide-opts', this.checked);
+  // Update answer display — show full option text or just letter
+  document.querySelectorAll('.tcard-ans').forEach((el, i) => {
+    if (tests[i]) el.innerHTML = mkAns(tests[i]);
+  });
+});
 
-        for (let i = 0; i < lines.length; i++) {
-            let line = lines[i].trim();
-            if (line === '') continue;
+/* ═══════════════════════════════
+   ANSWER LABEL
+═══════════════════════════════ */
+ansLblTog.addEventListener('change', function () {
+  ansLabel = this.checked ? "To'g'ri javob:" : 'Javob:';
+  ansLblDesc.innerHTML = this.checked
+    ? "Hozir: <b>To'g'ri javob:</b> — o'chirilsa <b>Javob:</b> ko'rsatiladi."
+    : "Hozir: <b>Javob:</b> — yoqilsa <b>To'g'ri javob:</b> ko'rsatiladi.";
+  document.querySelectorAll('.tcard-ans').forEach((el, i) => {
+    if (tests[i]) el.innerHTML = mkAns(tests[i]);
+  });
+});
 
-            if (answerRegex.test(line)) {
-                if (currentTest) {
-                    currentTest.question = questionLines.join(' ');
-                    currentTest.options = optionLines;
-                    let answerPart = line.split(':')[1]?.trim();
-                    if (answerPart) {
-                        currentTest.answer = `ANSWER: ${answerPart}`;
-                        tests.push(currentTest);
-                    }
-                    currentTest = null;
-                    questionLines = [];
-                    optionLines = [];
-                }
-            } else if (!currentTest) {
-                currentTest = { question: '', options: [], answer: '' };
-                questionLines.push(line);
-            } else if (!/^[A-D]\./.test(line) && optionLines.length === 0) {
-                questionLines.push(line);
-            } else {
-                optionLines.push(line);
-            }
-        }
+/* Build answer HTML.
+   onlyQATog ON  → "Javob: C. Klaviatura"  (full option text)
+   onlyQATog OFF → "Javob: C"               (just the letter) */
+function mkAns(test) {
+  const letter = test.answerLetter.trim();
+  let display = letter;
+  if (onlyQATog && onlyQATog.checked && test.options && test.options.length) {
+    const fullOpt = test.options.find(o =>
+      new RegExp('^' + letter + '[\\.)\\s]').test(o.trim())
+    );
+    if (fullOpt) display = fullOpt.trim();
+  }
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><polyline points="20 6 9 17 4 12"/></svg>${ansLabel} ${display}`;
+}
 
-        if (tests.length > 0) {
-            uploadStatus.innerHTML = `<span style='color: lightgreen;'>✅ ${tests.length} ta test yuklandi!</span>`;
-            displayTests();
-            testResults.style.display = 'block';
-        } else {
-            uploadStatus.innerHTML = "<span style='color: red;'>❌ Xatolik: Test ma'lumotlari topilmadi!</span>";
-        }
+/* ═══════════════════════════════
+   STAR FILTER
+═══════════════════════════════ */
+starBtn.addEventListener('click', function () {
+  starActive = !starActive;
+  this.classList.toggle('active', starActive);
+
+  if (starActive) {
+    starBtnIco.setAttribute('fill','currentColor');
+    starBtnIco.removeAttribute('stroke');
+    starBtnLbl.textContent = 'Hammasi ko\'rsatish';
+  } else {
+    starBtnIco.setAttribute('fill','none');
+    starBtnIco.setAttribute('stroke','currentColor');
+    starBtnLbl.textContent = 'Yulduzchalar';
+  }
+  applyStarFilter();
+});
+
+function applyStarFilter() {
+  if (!starActive) {
+    document.querySelectorAll('.tcard').forEach(c => c.style.display = '');
+    noStarMsg.style.display = 'none';
+    return;
+  }
+  let cnt = 0;
+  document.querySelectorAll('.tcard').forEach(c => {
+    const starred = c.querySelector('.tcard-q')?.classList.contains('starred');
+    c.style.display = starred ? '' : 'none';
+    if (starred) cnt++;
+  });
+  noStarMsg.style.display = cnt === 0 ? 'block' : 'none';
+}
+
+/* ═══════════════════════════════
+   FILE UPLOAD
+═══════════════════════════════ */
+fileInput.addEventListener('change', function (e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  upStatus.innerHTML = "<span style='color:#f59e0b;'>⏳ Yuklanmoqda...</span>";
+  const reader = new FileReader();
+  reader.onload = ev => parseFile(ev.target.result);
+  reader.readAsText(file);
+});
+
+/* ═══════════════════════════════
+   PARSE
+═══════════════════════════════ */
+function parseFile(content) {
+  tests = [];
+  const lines = content.split('\n');
+  let cur = null, qL = [], oL = [];
+  const re = /^(ANSWER:|ANS:|JAVOB:|javob:)/i;
+
+  for (let i = 0; i < lines.length; i++) {
+    const ln = lines[i].trim();
+    if (!ln) continue;
+
+    if (re.test(ln)) {
+      if (cur) {
+        cur.question = qL.join(' ');
+        cur.options = oL;
+        cur.answerLetter = ln.split(':')[1]?.trim() || '';
+        tests.push(cur);
+      }
+      cur = null; qL = []; oL = [];
+    } else if (!cur) {
+      cur = { question:'', options:[], answerLetter:'' };
+      qL.push(ln);
+    } else if (!/^[A-D][\.\)]/.test(ln) && oL.length === 0) {
+      qL.push(ln);
+    } else {
+      oL.push(ln);
     }
+  }
 
-    // Display all tests
-    function displayTests() {
-        testContainer.innerHTML = '';
-        tests.forEach((test, index) => {
-            const testElement = document.createElement('div');
-            testElement.className = 'test-container hover-enabled';
+  if (tests.length > 0) {
+    upStatus.innerHTML = `<span style='color:#059669;font-weight:600;'>✅ ${tests.length} ta test yuklandi!</span>`;
+    renderCards();
+    resultsDiv.style.display = 'block';
+    divider.style.display = 'block';
+  } else {
+    upStatus.innerHTML = "<span style='color:#ef4444;font-weight:600;'>❌ Xatolik: Test ma'lumotlari topilmadi!</span>";
+  }
+}
 
-            const copyBtn = document.createElement('button');
-            copyBtn.className = 'copy-btn';
-            copyBtn.title = 'Nusxa olish';
-            copyBtn.textContent = '📋';
-            testElement.appendChild(copyBtn);
+/* ═══════════════════════════════
+   RENDER CARDS
+═══════════════════════════════ */
+function renderCards() {
+  cardsDiv.innerHTML = '';
+  // reset star filter state
+  starActive = false;
+  starBtn.classList.remove('active');
+  starBtnIco.setAttribute('fill','none');
+  starBtnIco.setAttribute('stroke','currentColor');
+  starBtnLbl.textContent = 'Yulduzchalar';
+  noStarMsg.style.display = 'none';
 
-            const questionElement = document.createElement('div');
-            questionElement.className = 'test-question';
-            questionElement.textContent = `${index + 1}. ${test.question}`;
-            questionElement.addEventListener('click', function(e) {
-                if (e.target !== copyBtn) {  // Prevent toggle when clicking copy button
-                    this.classList.toggle('starred');
-                }
-            });
-            testElement.appendChild(questionElement);
+  tests.forEach((test, idx) => {
+    const card = document.createElement('div');
+    card.className = 'tcard';
 
-            const optionsElement = document.createElement('div');
-            optionsElement.className = 'test-options';
-            test.options.forEach(option => {
-                const optionElement = document.createElement('div');
-                optionElement.textContent = option;
-                optionsElement.appendChild(optionElement);
-            });
-            testElement.appendChild(optionsElement);
-
-            const answerElement = document.createElement('div');
-            answerElement.className = 'test-answer';
-            answerElement.textContent = test.answer;
-            testElement.appendChild(answerElement);
-
-            testContainer.appendChild(testElement);
-        });
-
-        setupCopyButtons();
-    }
-
-    // Setup copy buttons
-    function setupCopyButtons() {
-        document.querySelectorAll('.copy-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const testContainer = this.parentElement;
-                const question = testContainer.querySelector('.test-question').textContent;
-                const options = Array.from(testContainer.querySelectorAll('.test-options div')).map(opt => opt.textContent).join('\n');
-                const answer = testContainer.querySelector('.test-answer').textContent;
-                const fullText = `${question}\n${options}\n${answer}`;
-                
-                navigator.clipboard.writeText(fullText).then(() => {
-                    copyNotification.textContent = '✅ Nusxa olindi';
-                    copyNotification.classList.add('show');
-                    setTimeout(() => copyNotification.classList.remove('show'), 3000);
-
-                    clipboardSavedNotification.style.display = 'block';
-                    setTimeout(() => {
-                        clipboardSavedNotification.style.display = 'none';
-                    }, 2000);
-
-                    clipboardItems.push(fullText);
-                    clipboard.classList.add('expanded');
-                    updateClipboard();
-                });
-            });
-        });
-    }
-
-    // Update clipboard
-    function updateClipboard() {
-        clipboardContent.innerHTML = '';
-
-        const clipboardHeader = document.createElement('div');
-        clipboardHeader.className = 'clipboard-header';
-        
-        const clipboardTitle = document.createElement('span');
-        clipboardTitle.textContent = 'Tezkor Saqlagich';
-        clipboardTitle.style.fontWeight = 'bold';
-
-        const closeBtn = document.createElement('button');
-        closeBtn.innerHTML = '✖';
-        closeBtn.className = 'clipboard-close';
-        closeBtn.addEventListener('click', function() {
-            clipboard.classList.remove('expanded');
-        });
-
-        clipboardHeader.appendChild(clipboardTitle);
-        clipboardHeader.appendChild(closeBtn);
-        clipboardContent.appendChild(clipboardHeader);
-
-        const itemsContainer = document.createElement('div');
-        itemsContainer.style.flexGrow = '1';
-        itemsContainer.style.overflowY = 'auto';
-        itemsContainer.innerHTML = clipboardItems.length > 0 
-            ? clipboardItems.map(item => `<p>${item}</p>`).join('') 
-            : '<p style="text-align: center; padding: 20px 0;">Hech narsa saqlanmagan</p>';
-        clipboardContent.appendChild(itemsContainer);
-        
-        if (clipboardItems.length > 0) {
-            const btnContainer = document.createElement('div');
-            btnContainer.className = 'clipboard-buttons d-flex justify-content-between mt-2';
-
-            const copyAllBtn = document.createElement('button');
-            copyAllBtn.innerHTML = '📋 Umumiy nusxa olish';
-            copyAllBtn.className = 'btn btn-sm btn-primary';
-            copyAllBtn.onclick = () => {
-                const allText = clipboardItems.join('\n\n');
-                navigator.clipboard.writeText(allText).then(() => {
-                    copyNotification.textContent = '✅ Nusxa olindi';
-                    copyNotification.classList.add('show');
-                    setTimeout(() => copyNotification.classList.remove('show'), 3000);
-                });
-            };
-
-            const saveBtn = document.createElement('button');
-            saveBtn.innerHTML = '💾 TXT yuklash';
-            saveBtn.className = 'btn btn-sm btn-secondary';
-            saveBtn.onclick = () => {
-                const blob = new Blob([clipboardItems.join('\n\n')], { type: 'text/plain' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'saqlangan_matnlar.txt';
-                a.click();
-                URL.revokeObjectURL(url);
-            };
-
-            btnContainer.appendChild(copyAllBtn);
-            btnContainer.appendChild(saveBtn);
-            clipboardContent.appendChild(btnContainer);
-        }
-    }
-
-    // Open clipboard
-    clipboard.addEventListener('click', function(e) {
-        if (e.target.className === 'clipboard-close') return;
-
-        if (!this.classList.contains('expanded')) {
-            this.classList.add('expanded');
-            updateClipboard();
-        }
+    // Question
+    const q = document.createElement('div');
+    q.className = 'tcard-q';
+    q.textContent = test.question;
+    q.addEventListener('click', function (e) {
+      if (e.target.closest('.cpbtn')) return;
+      this.classList.toggle('starred');
+      if (starActive) applyStarFilter();
     });
+    card.appendChild(q);
 
-    // Back to top button
-    window.onscroll = function() {
-        if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-            backToTopBtn.classList.add('visible');
-        } else {
-            backToTopBtn.classList.remove('visible');
-        }
-    };
-    
-    backToTopBtn.addEventListener('click', function() {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Options
+    const opts = document.createElement('div');
+    opts.className = 'tcard-opts';
+    test.options.forEach(o => {
+      const d = document.createElement('div');
+      d.textContent = o;
+      opts.appendChild(d);
     });
+    card.appendChild(opts);
 
-    // Warning before leaving
-    window.onbeforeunload = function() {
-        if (clipboardItems.length > 0) {
-            return "Haqiqatdan ham bu oynadan chiqmoqchimisiz? Agar chiqsangiz, vaqtinchalik xotiradagi elementlar o'chib ketadi.";
-        }
-    };
+    // Answer
+    const ans = document.createElement('div');
+    ans.className = 'tcard-ans';
+    ans.innerHTML = mkAns(test);
+    card.appendChild(ans);
+
+    // Copy button
+    const cpbtn = document.createElement('button');
+    cpbtn.className = 'cpbtn';
+    cpbtn.title = 'Nusxa olish';
+    cpbtn.innerHTML = `<svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round"><path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>`;
+    cpbtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      const qText = q.textContent;
+      const oText = Array.from(opts.querySelectorAll('div')).map(d=>d.textContent).join('\n');
+      const aText = `${ansLabel} ${test.answerLetter}`;
+      const full  = `${qText}\n${oText}\n${aText}`;
+
+      // Avval tezkor saqlagichga qo'shiladi
+      addToSaved(full);
+
+      // Keyin clipboard ga nusxa olishga uriniladi
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(full)
+          .then(() => showNotif('✅ Nusxa olindi va saqlagichga qo\'shildi'))
+          .catch(() => showNotif('📋 Saqlagichga qo\'shildi'));
+      } else {
+        showNotif('📋 Saqlagichga qo\'shildi');
+      }
+    });
+    card.appendChild(cpbtn);
+
+    cardsDiv.appendChild(card);
+  });
+
+  updateFloats();
+}
+
+/* ═══════════════════════════════
+   NOTIFICATION
+═══════════════════════════════ */
+let notifTmr;
+function showNotif(msg) {
+  notifEl.textContent = msg;
+  notifEl.classList.add('show');
+  clearTimeout(notifTmr);
+  notifTmr = setTimeout(() => notifEl.classList.remove('show'), 2600);
+}
+
+/* ═══════════════════════════════
+   TEZKOR SAQLAGICH
+═══════════════════════════════ */
+function addToSaved(text) {
+  saved.push(text);
+  updateQSDot();
+  renderQSItems();
+  qsBtn.classList.add('lit');
+}
+
+function updateQSDot() {
+  const n = saved.length;
+  qsDot.textContent = n;
+  qsDot.style.display = n > 0 ? 'flex' : 'none';
+  qsBtn.classList.toggle('lit', n > 0);
+}
+
+function renderQSItems() {
+  const has = saved.length > 0;
+  qsEmpty.style.display = has ? 'none' : 'block';
+  qsFoot.style.display  = has ? 'flex' : 'none';
+
+  qsItems.innerHTML = saved.map(txt =>
+    `<div class="qs-item">
+       <div class="qs-txt">${txt.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
+     </div>`
+  ).join('');
+}
+
+/* Toggle panel */
+qsBtn.addEventListener('click', e => {
+  e.stopPropagation();
+  const open = qsPanel.classList.contains('open');
+  if (!open) renderQSItems();
+  qsPanel.classList.toggle('open');
+});
+
+qsX.addEventListener('click', () => qsPanel.classList.remove('open'));
+
+document.addEventListener('click', e => {
+  if (!qsPanel.contains(e.target) && e.target !== qsBtn && !qsBtn.contains(e.target))
+    qsPanel.classList.remove('open');
+});
+
+qsCopy.addEventListener('click', () => {
+  if (!saved.length) return;
+  navigator.clipboard.writeText(saved.join('\n\n'))
+    .then(() => showNotif('✅ Hammasi nusxa olindi'));
+});
+
+qsSave.addEventListener('click', () => {
+  if (!saved.length) return;
+  const blob = new Blob([saved.join('\n\n')], {type:'text/plain'});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.download = 'saqlangan_testlar.txt';
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 100);
+});
+
+/* ═══════════════════════════════
+   FLOAT BUTTONS
+═══════════════════════════════ */
+function updateFloats() {
+  const sc  = document.documentElement.scrollTop || document.body.scrollTop;
+  const tot = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  topBtn.classList.toggle('vis', sc > 120);
+  downBtn.classList.toggle('vis', sc < tot - 140 && tot > window.innerHeight + 200);
+}
+window.addEventListener('scroll', updateFloats, { passive:true });
+window.addEventListener('load',   updateFloats);
+window.addEventListener('resize', updateFloats);
+topBtn.addEventListener('click',  () => window.scrollTo({ top:0, behavior:'smooth' }));
+downBtn.addEventListener('click', () => window.scrollTo({ top:document.documentElement.scrollHeight, behavior:'smooth' }));
+
+/* ═══════════════════════════════
+   WARN BEFORE LEAVE
+═══════════════════════════════ */
+window.addEventListener('beforeunload', e => {
+  if (saved.length > 0) { e.preventDefault(); e.returnValue = ''; }
+});
 </script>
 </body>
 </html>
