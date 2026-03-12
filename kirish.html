@@ -31,8 +31,10 @@
     body{font-family:'Poppins',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,sans-serif;background:#fff;min-height:100vh;position:relative;overflow-x:hidden}
     body::before{content:'';position:fixed;inset:0;background:#fff;background-image:radial-gradient(circle at top left,rgba(70,130,180,.3),transparent 70%);filter:blur(80px);z-index:0;pointer-events:none}
     @media (max-width: 768px){
-    .container{padding:30px 20px;margin:10px}
-    .modal-content{padding:20px;max-width:95%}
+    .main-wrapper{padding:12px}
+    .container{padding:28px 18px;margin:0;max-width:100%}
+    .modal-content{padding:20px;max-width:98%}
+    h2{font-size:clamp(18px,5.5vw,28px)}
     }
     .offline-mode{position:fixed;top:10px;left:50%;transform:translateX(-50%);background:#ff4757;color:#fff;padding:8px 16px;border-radius:6px;font-size:13px;z-index:9999;box-shadow:0 4px 12px rgba(255,71,87,.3);display:none;animation:slideDown .3s ease}
     .offline-mode.show{display:block}
@@ -62,7 +64,7 @@
     .btn-primary:hover:not(:disabled){background:#3651d4;transform:translateY(-1px);box-shadow:0 8px 20px rgba(67,97,238,.2)}
     .btn-secondary{background:#fff;border:1px solid #e1e8ed;color:#333}
     .btn-secondary:hover:not(:disabled){background:#f8f9fa;border-color:#4361ee}
-    .btn-google{background:#fff;border:1px solid #e1e8ed;color:#444}
+    .btn-google{background:#fff;border:1px solid #e1e8ed;color:#444;white-space:nowrap;font-size:clamp(13px,3.5vw,15px)}
     .btn-google:hover:not(:disabled){background:#f8f9fa;border-color:#4361ee}
     .btn-google:disabled{opacity:.55;background:#f8f9fa !important;border-color:#e1e8ed !important;color:#999 !important;cursor:not-allowed}
     .btn-help{background:transparent;border:1px solid #4361ee;color:#4361ee;padding:10px 20px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;transition:all .3s;display:inline-flex;align-items:center;gap:6px;width:auto}
@@ -115,14 +117,15 @@
     .password-requirements .req.met::before{content:'✓';color:#26de81}
     .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);backdrop-filter:blur(4px);z-index:1000;align-items:center;justify-content:center;padding:20px;animation:fadeIn .3s ease}
     .modal.show{display:flex}
-    .modal-content{background:#fff;border-radius:16px;padding:28px;max-width:480px;width:100%;max-height:80vh;overflow-y:auto;animation:modalSlideUp .3s ease;box-shadow:0 12px 40px rgba(0,0,0,.15)}
+    .modal-content{background:#fff;border-radius:16px;padding:0;max-width:480px;width:100%;max-height:80vh;overflow-y:auto;animation:modalSlideUp .3s ease;box-shadow:0 12px 40px rgba(0,0,0,.15)}
     @keyframes modalSlideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-    .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;position:sticky;top:0;background:#fff;z-index:10;padding-bottom:10px}
-    .modal-header h3{color:#1a1a2e;font-size:22px;font-weight:500}
-    .modal-close{background:#f8f9fa;border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:18px;line-height:1;transition:all .3s;flex-shrink:0}
-    .modal-close:hover{background:#e9ecef;transform:rotate(90deg)}
-    .modal-body{color:#555;line-height:1.6;font-size:14px;font-weight:400}
-    .modal-body h4{color:#1a1a2e;margin-top:20px;margin-bottom:10px;font-size:16px;font-weight:500}
+    .modal-header{display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:rgba(255,255,255,.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:10;padding:18px 24px;border-bottom:1px solid rgba(0,0,0,.07);border-radius:16px 16px 0 0}
+    .modal-header h3{color:#1a1a2e;font-size:18px;font-weight:600;margin:0}
+    .modal-close{background:none;border:none;cursor:pointer;color:#666;padding:4px;display:flex;align-items:center;justify-content:center;border-radius:6px;transition:background .2s,color .2s;flex-shrink:0}
+    .modal-close:hover{background:#f0f0f0;color:#1a1a2e}
+    .modal-body{color:#555;line-height:1.6;font-size:14px;font-weight:400;padding:20px 24px 24px}
+    .modal-body h4{color:#4361ee;margin-top:24px;margin-bottom:10px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;display:flex;align-items:center;gap:8px}
+    .modal-body h4::before{content:'';display:inline-block;width:3px;height:14px;background:#4361ee;border-radius:2px;flex-shrink:0}
     .modal-body p{margin-bottom:15px}
     .contact-links{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap}
     .contact-link{flex:1;min-width:130px;display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;background:#fff;border:1px solid #e1e8ed;border-radius:10px;text-decoration:none;color:#333;font-weight:500;font-size:14px;transition:all .3s}
@@ -168,8 +171,8 @@
           <div class="spinner"></div>
         </button>
 
-        <div class="links" style="margin-top:30px;">
-          <button type="button" class="btn-help" onclick="showModal('helpModal')">Yordam kerakmi?</button>
+        <div style="margin-top:4px;">
+          <button type="button" class="btn btn-secondary" onclick="showModal('helpModal')">Yordam kerakmi?</button>
         </div>
       </div>
 
@@ -237,7 +240,7 @@
             <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
             <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
           </svg>
-          <span class="btn-text">Google orqali ro'yxatdan o'tish</span>
+          <span class="btn-text" style="white-space:nowrap">Google bilan boshlash</span>
           <div class="spinner"></div>
         </button>
         <div class="links">Hisobingiz bormi? <a onclick="showPage('emailLoginPage')">Kirish</a></div>
@@ -265,11 +268,21 @@
   <!-- Help Modal -->
   <div id="helpModal" class="modal">
     <div class="modal-content">
-      <div class="modal-header"><h3>Yordam</h3><button class="modal-close" onclick="closeModal('helpModal')">x</button></div>
+      <div class="modal-header">
+        <h3>Yordam</h3>
+        <button class="modal-close" onclick="closeModal('helpModal')" aria-label="Yopish">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
       <div class="modal-body">
         <h4>Kirish muammolari</h4>
-        <p><strong>Parolni unutdingizmi?</strong><br>"Email orqali kirish" tugmasini bosing va "Parolni unutdingizmi?" havolasiga o'ting. Email manzilingizga parolni tiklash havolasi yuboriladi.</p>
+        <p><strong>Parolni unutdingizmi?</strong><br>"Kirish" tugmasini bosing va "Parolni unutdingizmi?" havolasiga o'ting. Email manzilingizga parolni tiklash havolasi yuboriladi.</p>
         <p><strong>Email yoki parol noto'g'ri?</strong><br>Email manzilingiz va parolingizni to'g'ri kiritganingizga ishonch hosil qiling. Caps Lock yoqilmaganligini tekshiring.</p>
+        <h4>Ro'yxatdan o'tish</h4>
+        <p><strong>Yangi hisob qanday ochiladi?</strong><br>"Ro'yxatdan o'tish" tugmasini bosing. Ism, email va kamida 8 ta belgidan iborat kuchli parol kiriting. "Foydalanish shartlari" bilan rozilishingizni belgilang va "Ro'yxatdan o'tish" tugmasini bosing.</p>
+        <p><strong>Google orqali tez ro'yxatdan o'tish</strong><br>Ro'yxatdan o'tish sahifasidagi "Google orqali ro'yxatdan o'tish" tugmasini bosing va Google hisobingizni tanlang — shunday qilib 1 daqiqada hisob ochasiz.</p>
         <h4>Google orqali kirish</h4>
         <p>Siz bemalol Google orqali kirish va ro'yxatdan o'tish imkoniyatiga egasiz.</p>
         <h4>Texnik muammolar</h4>
@@ -316,139 +329,7 @@
   </script>
 
 
-    <script>
-        const snowContainer = document.getElementById('snowContainer');
-        const maxSnowflakes = 25;
-        let activeSnowflakes = 0;
-        
-        // Cursor qor effekti
-        let lastCursorMove = 0;
-        let cursorSnowCount = 0;
-        const maxCursorSnow = 20;
-        let mouseX = 0, mouseY = 0;
-        let lastX = 0, lastY = 0;
-        
-        // Qor shakllari
-        const snowShapes = ['❄', '❅', '❆', '✻'];
-        
-        // Cursor harakati
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            
-            const now = Date.now();
-            const distance = Math.sqrt(Math.pow(mouseX - lastX, 2) + Math.pow(mouseY - lastY, 2));
-            
-            let minInterval = 60;
-            let spawnCount;
-            
-            if (distance > 80) {
-                spawnCount = 2;
-            } else if (distance > 40) {
-                spawnCount = Math.random() > 0.5 ? 2 : 1;
-            } else {
-                spawnCount = 1;
-            }
-            
-            if (now - lastCursorMove < minInterval) return;
-            if (cursorSnowCount >= maxCursorSnow) return;
-            
-            lastCursorMove = now;
-            lastX = mouseX;
-            lastY = mouseY;
-            
-            for (let i = 0; i < spawnCount; i++) {
-                if (cursorSnowCount >= maxCursorSnow) break;
-                
-                setTimeout(() => {
-                    const cursorSnow = document.createElement('div');
-                    cursorSnow.className = 'cursor-snowflake';
-                    cursorSnow.textContent = snowShapes[Math.floor(Math.random() * snowShapes.length)];
-                    
-                    const offsetX = (Math.random() - 0.5) * 20;
-                    const offsetY = (Math.random() - 0.5) * 20;
-                    cursorSnow.style.left = (mouseX + offsetX) + 'px';
-                    cursorSnow.style.top = (mouseY + offsetY) + 'px';
-                    cursorSnow.style.fontSize = (Math.random() * 8 + 16) + 'px';
-                    
-                    const drift = (Math.random() - 0.5) * 60;
-                    cursorSnow.style.setProperty('--cursor-drift', drift + 'px');
-                    
-                    const rotation = Math.random() * 720 - 360;
-                    cursorSnow.style.setProperty('--rotation', rotation + 'deg');
-                    
-                    document.body.appendChild(cursorSnow);
-                    cursorSnowCount++;
-                    
-                    setTimeout(() => {
-                        if (cursorSnow.parentNode) {
-                            cursorSnow.remove();
-                            cursorSnowCount--;
-                        }
-                    }, 2500);
-                }, i * 30);
-            }
-        });
 
-        // Qor yaratish funksiyasi
-        function createSnowflake() {
-            if (activeSnowflakes >= maxSnowflakes) return;
-            
-            const snowflake = document.createElement('div');
-            snowflake.className = 'snowflake';
-            snowflake.textContent = snowShapes[Math.floor(Math.random() * snowShapes.length)];
-            
-            const size = Math.random() * 6 + 10;
-            snowflake.style.fontSize = size + 'px';
-            
-            const startX = Math.random() * window.innerWidth;
-            snowflake.style.left = startX + 'px';
-            snowflake.style.top = '-20px';
-            
-            const driftDirection = Math.random() > 0.5 ? 1 : -1;
-            const driftAmount = (Math.random() * 80 + 40) * driftDirection;
-            snowflake.style.setProperty('--drift', driftAmount + 'px');
-            
-            const rotation = Math.random() * 360 + 180;
-            snowflake.style.setProperty('--rotation', rotation + 'deg');
-            
-            const meltPoint = Math.random() * 40 + 60;
-            const fallDistance = (window.innerHeight * meltPoint / 100) + 20;
-            snowflake.style.setProperty('--fall-distance', fallDistance + 'px');
-            
-            const duration = Math.random() * 8 + 12;
-            snowflake.style.animationDuration = duration + 's';
-            
-            const delay = Math.random() * 2;
-            snowflake.style.animationDelay = delay + 's';
-            
-            snowContainer.appendChild(snowflake);
-            activeSnowflakes++;
-            
-            setTimeout(() => {
-                if (snowflake.parentNode) {
-                    snowflake.remove();
-                    activeSnowflakes--;
-                }
-            }, (duration + delay) * 1000);
-        }
-
-        // Qorni muntazam yaratish
-        function snowLoop() {
-            if (activeSnowflakes < maxSnowflakes && Math.random() > 0.3) {
-                createSnowflake();
-            }
-        }
-
-        setInterval(snowLoop, 800);
-
-        // Dastlabki qorlar
-        setTimeout(() => {
-            for (let i = 0; i < 8; i++) {
-                setTimeout(createSnowflake, i * 300);
-            }
-        }, 500);
-    </script>
   <script type="module">
  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, updateProfile, signInWithPopup, GoogleAuthProvider } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
