@@ -12,7 +12,7 @@
     <meta name="description" content="Tezkor Quiz — testlarni tez va oqimli yeching. Klaviatura, sichqoncha yoki mobil orqali boshqarish, random savollar va aniq natija.">
     <meta property="og:type" content="website">
     <meta property="og:title" content="Tezkor Quiz — Tez fikrla, tez javob ber">
-    <meta property="og:description" content="Klaviatura yoki mobil orqali testlarni oqimli tarzda yeching. Vaqtni sozlash imkoniyati , tezlik maksimal.">
+    <meta property="og:description" content="Klaviatura yoki mobil orqali testlarni oqimli tarzda yeching. Vaqt cheklanmagan, tezlik maksimal.">
     <meta property="og:url" content="https://tezkorquiz.uz/testni_boshlash/tezkorquiz">
     <meta property="og:site_name" content="Tezkor Quiz">
     <meta property="og:image" content="https://tezkorquiz.uz/aga/tezkor_quiz.webp">
@@ -81,14 +81,10 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
 .sample-modal-content p{color:#64748b;font-size:15px;margin-bottom:20px}
 .sample-modal-close{background:#4460ef;color:white;border:none;padding:11px 28px;border-radius:50px;font-size:15px;font-weight:600;cursor:pointer;transition:background .25s}
 .sample-modal-close:hover{background:#2d44c7}
-.progress-container{padding:18px 28px 14px;background:#f3f6fc}
-.question-counter-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:0}
-.qc-number{display:inline-flex;align-items:baseline;gap:3px;background:#fff;padding:5px 14px;border-radius:20px;box-shadow:0 1px 4px rgba(0,0,0,.09)}
-.qc-cur{font-weight:800;color:#4460ef;font-size:1rem;line-height:1;font-variant-numeric:tabular-nums}
-.qc-sep{font-weight:600;color:#c0c9d8;font-size:.85rem;margin:0 1px 0 2px}
-.qc-tot{font-weight:600;color:#94a3b8;font-size:.82rem}
+.progress-container{padding:22px 30px 16px;background:#f3f6fc}
 .progress{height:8px;border-radius:10px;background:#dde3ef;overflow:hidden}
 .progress-bar{background:linear-gradient(90deg,#4460ef,#2d44c7);transition:width .5s ease;border-radius:10px}
+.question-counter{text-align:center;margin-top:13px;font-weight:600;color:#64748b;font-size:.95rem}
 .question-container{padding:36px 30px 18px}
 .question-slide{opacity:0;transform:translateX(50px);transition:all .4s cubic-bezier(.4,0,.2,1)}
 .question-slide.active{opacity:1;transform:translateX(0)}.question-slide.exit{opacity:0;transform:translateX(-50px)}
@@ -129,44 +125,6 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
 .btn-start:hover{animation:none}
 .info-tip{margin-top:16px;color:#64748b;font-size:.88rem;display:flex;align-items:center;justify-content:center;gap:7px}
 .info-tip i{color:#f59e0b}
-/* Settings cards in infoSection */
-.settings-card{background:white;border-radius:18px;padding:22px 24px;margin-bottom:18px;box-shadow:0 4px 16px rgba(0,0,0,.07)}
-.settings-card-title{font-size:1rem;font-weight:700;color:#4460ef;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.setting-row{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;background:#f3f6fc;border-radius:12px;margin-bottom:10px}
-.setting-row:last-child{margin-bottom:0}
-.setting-row-label{font-size:.95rem;font-weight:600;color:#334155;display:flex;align-items:center;gap:8px}
-.setting-row-label i{color:#4460ef;width:16px}
-.time-input-wrap{display:flex;align-items:center;gap:8px;margin-top:10px;padding:10px 14px;background:#e0e7ff;border-radius:10px;animation:fadeIn .3s ease}
-.time-input-wrap label{font-size:.9rem;font-weight:600;color:#4460ef;white-space:nowrap}
-.time-input-wrap input{width:72px;padding:6px 10px;border:2px solid #a5b4fc;border-radius:8px;font-size:1rem;font-weight:700;color:#1e293b;text-align:center;outline:none;transition:border-color .2s}
-.time-input-wrap input:focus{border-color:#4460ef}
-.time-input-wrap span{font-size:.9rem;color:#64748b}
-/* Timer mode selector */
-.timer-mode-wrap{margin-top:10px;animation:fadeIn .3s ease}
-.timer-mode-tabs{display:flex;background:#e0e7ff;border-radius:10px;padding:3px;gap:3px;margin-bottom:10px}
-.timer-mode-tab{flex:1;padding:7px 10px;border:none;border-radius:8px;font-size:.82rem;font-weight:600;cursor:pointer;transition:all .2s;color:#6b7280;background:transparent}
-.timer-mode-tab.active{background:white;color:#4460ef;box-shadow:0 2px 6px rgba(68,96,239,.18)}
-.timer-val-row{display:flex;align-items:center;gap:8px;padding:8px 12px;background:#e0e7ff;border-radius:10px}
-.timer-val-row label{font-size:.88rem;font-weight:600;color:#4460ef;white-space:nowrap}
-.timer-val-row input[type=number]{width:68px;padding:5px 8px;border:2px solid #a5b4fc;border-radius:7px;font-size:.97rem;font-weight:700;color:#1e293b;text-align:center;outline:none;transition:border-color .2s}
-.timer-val-row input[type=number]:focus{border-color:#4460ef}
-.timer-unit-toggle{display:flex;background:#c7d2fe;border-radius:7px;overflow:hidden}
-.timer-unit-btn{padding:5px 10px;border:none;font-size:.8rem;font-weight:700;cursor:pointer;background:transparent;color:#4460ef;transition:all .2s}
-.timer-unit-btn.active{background:#4460ef;color:white}
-/* Timer pill in quiz counter */
-.timer-pill{display:inline-flex;align-items:center;gap:5px;padding:5px 14px;border-radius:20px;font-size:.9rem;font-weight:700;background:#e0e7ff;color:#4460ef;transition:background .3s,color .3s;box-shadow:0 1px 4px rgba(0,0,0,.09)}
-.timer-pill.warn{background:#fef3c7;color:#d97706}
-.timer-pill.danger{background:#fee2e2;color:#dc2626}
-.timer-pill.danger .pill-time{animation:tickPulse .6s infinite}
-@keyframes tickPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
-.pill-icon{font-size:.75rem}
-.pill-time{font-variant-numeric:tabular-nums;letter-spacing:.02em}
-/* Per-question timer bar — no CSS transition, JS updates every 100ms */
-.q-timer-bar-wrap{height:4px;background:#e2e8f4;border-radius:3px;margin:0 0 2px;overflow:hidden}
-.q-timer-bar{height:100%;border-radius:3px;background:#4460ef;transition:width .12s linear,background .3s}
-.q-timer-bar.warn{background:#f59e0b}
-.q-timer-bar.danger{background:#ef4444}
-.q-timer-bar.fill{background:#4460ef;transition:width .4s ease-in}
 @keyframes pulse{0%,100%{box-shadow:0 6px 22px rgba(68,96,239,.30)}50%{box-shadow:0 6px 32px rgba(68,96,239,.50)}}
 .result-wrapper{padding:0}
 .result-header{background:linear-gradient(135deg,#4460ef 0%,#2d44c7 100%);padding:40px 30px 56px;text-align:center;position:relative}
@@ -195,30 +153,19 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
 .score-bar-ticks{display:flex;justify-content:space-between;margin-top:8px}
 .score-bar-ticks span{font-size:.72rem;color:#cbd5e0;font-weight:600}
 .score-pct-green{color:#10b981}.score-pct-blue{color:#4460ef}.score-pct-red{color:#ef4444}
-.result-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
-.rstat{border-radius:16px;padding:18px 10px;text-align:center;position:relative;overflow:hidden;opacity:0;transform:translateY(18px)}
+.result-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px}
+.rstat{border-radius:16px;padding:20px 14px;text-align:center;position:relative;overflow:hidden;opacity:0;transform:translateY(18px)}
 .rstat.animate{opacity:1;transform:translateY(0)}
 .rstat.correct-card{background:linear-gradient(135deg,#d1fae5,#a7f3d0);border:1.5px solid #6ee7b7;transition:opacity .45s .85s,transform .45s .85s}
 .rstat.incorrect-card{background:linear-gradient(135deg,#fee2e2,#fecaca);border:1.5px solid #fca5a5;transition:opacity .45s .95s,transform .45s .95s}
-.rstat.unanswered-card{background:linear-gradient(135deg,#fef9c3,#fde68a);border:1.5px solid #fcd34d;transition:opacity .45s 1.0s,transform .45s 1.0s}
 .rstat.time-card{background:linear-gradient(135deg,#e0e7ff,#c7d2fe);border:1.5px solid #a5b4fc;transition:opacity .45s 1.05s,transform .45s 1.05s}
-.rstat-icon-wrap{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-size:1.2rem}
+.rstat-icon-wrap{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:1.4rem}
 .correct-card .rstat-icon-wrap{background:rgba(5,150,105,.15);color:#059669}
 .incorrect-card .rstat-icon-wrap{background:rgba(220,38,38,.15);color:#dc2626}
-.unanswered-card .rstat-icon-wrap{background:rgba(217,119,6,.15);color:#d97706}
 .time-card .rstat-icon-wrap{background:rgba(68,96,239,.15);color:#4460ef}
-.rstat-val{font-size:1.7rem;font-weight:800;line-height:1;margin-bottom:4px}
-.correct-card .rstat-val{color:#059669}.incorrect-card .rstat-val{color:#dc2626}.unanswered-card .rstat-val{color:#d97706}.time-card .rstat-val{color:#4460ef}
-.rstat-lbl{font-size:.7rem;font-weight:700;color:#64748b;letter-spacing:.03em;text-transform:uppercase}
-/* Score bar segments */
-.score-bar-track{height:14px;background:#e2e8f4;border-radius:30px;overflow:hidden}
-.score-seg-correct{background:linear-gradient(90deg,#10b981,#059669)}
-.score-seg-incorrect{background:linear-gradient(90deg,#ef4444,#dc2626)}
-.score-seg-unanswered{background:linear-gradient(90deg,#f59e0b,#d97706)}
-.score-bar-legend{display:flex;gap:14px;margin-top:10px;justify-content:center;flex-wrap:wrap}
-.sbl-item{display:flex;align-items:center;gap:5px;font-size:.78rem;font-weight:600;color:#64748b}
-.sbl-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-.sbl-correct .sbl-dot{background:#10b981}.sbl-incorrect .sbl-dot{background:#ef4444}.sbl-unanswered .sbl-dot{background:#f59e0b}
+.rstat-val{font-size:2rem;font-weight:800;line-height:1;margin-bottom:4px}
+.correct-card .rstat-val{color:#059669}.incorrect-card .rstat-val{color:#dc2626}.time-card .rstat-val{color:#4460ef}
+.rstat-lbl{font-size:.76rem;font-weight:700;color:#64748b;letter-spacing:.03em;text-transform:uppercase}
 .result-actions{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;opacity:0;transform:translateY(12px);transition:opacity .5s 1.15s,transform .5s 1.15s}
 .result-actions.animate{opacity:1;transform:translateY(0)}
 .btn-result{display:inline-flex;align-items:center;gap:9px;padding:14px 32px;border-radius:50px;border:none;font-size:1rem;font-weight:700;cursor:pointer;transition:all .25s;min-width:165px;justify-content:center}
@@ -232,17 +179,33 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
 .animate-fade-in{animation:fadeIn .45s ease-in-out}.animate-bounce{animation:bounce .55s ease-in-out}
 @keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 @keyframes bounce{0%,20%,50%,80%,100%{transform:translateY(0)}40%{transform:translateY(-8px)}60%{transform:translateY(-4px)}}
-/* Pause modal */
-.pause-modal{display:none;position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(4px);justify-content:center;align-items:center;z-index:99999}
-.pause-modal-box{background:#fff;border-radius:22px;padding:36px 32px;width:90%;max-width:360px;box-shadow:0 24px 60px rgba(0,0,0,.18);text-align:center;animation:fadeIn .3s ease}
-.pause-icon-wrap{width:72px;height:72px;background:linear-gradient(135deg,#4460ef,#2d44c7);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:2rem;color:white}
-.pause-modal-title{font-size:1.4rem;font-weight:800;color:#1e293b;margin-bottom:8px}
-.pause-modal-sub{font-size:.93rem;color:#64748b;margin-bottom:24px;line-height:1.5}
-.pause-resume-btn{width:100%;padding:14px;background:linear-gradient(135deg,#4460ef,#2d44c7);color:white;border:none;border-radius:13px;font-size:1.05rem;font-weight:700;cursor:pointer;transition:box-shadow .2s;display:flex;align-items:center;justify-content:center;gap:9px}
-.pause-resume-btn:hover{box-shadow:0 8px 24px rgba(68,96,239,.35)}
 @media(max-width:768px){
-  .result-stats{grid-template-columns:1fr 1fr}
+  .quiz-container{padding:10px}.quiz-title{font-size:1.5rem}.question-text{font-size:1.15rem}
+  .option-btn{padding:14px 16px;font-size:.97rem}.progress-container{padding:18px 20px 14px}
+  .question-container{padding:26px 20px 14px}.controls{padding:10px 20px 24px}
+  .file-upload-container{padding:0 18px 22px}.toggle-container{padding:16px}
+  .info-container{padding:26px 18px}.info-card{padding:22px 16px}
+  .info-stats{grid-template-columns:1fr}.result-stats{grid-template-columns:1fr 1fr}
+  .rstat.time-card{grid-column:1/-1}
+  .btn-primary,.btn-outline-primary{padding:12px 26px;font-size:.97rem;min-width:140px}
+  #toast-container{top:12px;right:12px;max-width:290px}
+  .result-body{padding:54px 18px 28px}
+  .breadcrumb-container{padding:.45rem .85rem;overflow:hidden}
+  .breadcrumb{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+  .breadcrumb::-webkit-scrollbar{display:none}
+  .breadcrumb-item a{font-size:.75rem;padding:.28rem .38rem;white-space:nowrap}
+  .breadcrumb-item.active{font-size:.75rem;padding:.28rem .38rem;white-space:nowrap}
+  .breadcrumb-item+.breadcrumb-item::before{padding:0 .2rem;font-size:.75rem}
+}
+@media(max-width:480px){
+  .quiz-header{padding:20px 16px}.upload-area{padding:40px 18px;margin-top:16px}
+  .upload-icon{font-size:2.8rem}.upload-text{font-size:1.05rem}
+  .info-item{flex-direction:column;text-align:center;gap:8px}
+  .quiz-title{font-size:1.3rem}
+  #toast-container{top:10px;right:10px;left:10px;width:auto;max-width:none}
+  .result-stats{grid-template-columns:1fr}
   .rstat.time-card{grid-column:auto}
+  .btn-result{min-width:140px;padding:12px 22px;font-size:.93rem}
 }
 </style>
 </head>
@@ -268,12 +231,12 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
     <div id="uploadSection">
       <div class="quiz-header">
         <h1 class="quiz-title">Tezkor Quiz</h1>
-        <p class="quiz-subtitle">test faylini yuklang va bilimingizni sinab ko'ring!</p>
+        <p class="quiz-subtitle">Test faylini yuklang va bilimingizni sinab ko'ring!</p>
       </div>
       <div class="file-upload-container">
         <div class="upload-area" id="uploadArea">
           <i class="fas fa-cloud-upload-alt upload-icon"></i>
-          <div class="upload-text">test faylini yuklash uchun bosing yoki drop qiling</div>
+          <div class="upload-text">Test faylini yuklash uchun bosing yoki drop qiling</div>
           <div class="upload-subtext">.txt formatda faylni tanlang</div>
         </div>
         <input type="file" id="fileInput" accept=".txt" style="display:none">
@@ -304,16 +267,16 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
         </div>
         <div class="sample-section">
           <button class="sample-toggle" id="sampleToggle">
-            <i class="fas fa-download"></i> Namuna testni yuklab olish
+            <i class="fas fa-download"></i> Namuna test yuklab olish
           </button>
-          <p style="margin-top:10px;color:#94a3b8;font-size:.84rem"> kichik namuna test faylini yuklab oling.</p>
+          <p style="margin-top:10px;color:#94a3b8;font-size:.84rem">Kichik namuna test faylini yuklab oling.</p>
         </div>
       </div>
     </div>
     <div id="infoSection" style="display:none">
       <div class="quiz-header">
-        <h1 class="quiz-title">Tezkor Quiz</h1>
-        <p class="quiz-subtitle">testni boshlashdan oldin qulayliklar bilan tanishing!</p>
+        <h1 class="quiz-title"><i class="fas fa-rocket"></i> Tezkor Quiz</h1>
+        <p class="quiz-subtitle">Testni boshlashdan oldin qulayliklar bilan tanishing!</p>
       </div>
       <div class="info-container">
         <div class="info-card animate-fade-in">
@@ -344,70 +307,30 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
             </div>
             <div class="info-item">
               <div class="info-number"><i class="fas fa-mobile-alt"></i></div>
-              <div class="info-text">Mobil qurilmada <strong>o'ngdan chapga surishda</strong> ham ishlaydi</div>
+              <div class="info-text">Mobil qurilmada <strong>swipe</strong> qilish ham ishlaydi</div>
             </div>
           </div>
         </div>
         <div class="info-stats">
           <div class="info-stat"><i class="fas fa-list-ol"></i><span id="infoQuestionCount">0</span><p>Savollar soni</p></div>
-          <div class="info-stat"><i class="fas fa-shuffle"></i><span id="infoRandomLabel">Random</span><p>Savollar tartibi</p></div>
-          <div class="info-stat"><i class="fas fa-clock"></i><span id="infoTimeLabel">Cheksiz</span><p>Vaqt</p></div>
-        </div>
-
-        <!-- Settings card: Random & Timer -->
-        <div class="settings-card" style="margin-top:18px">
-          <div class="settings-card-title"><i class="fas fa-sliders-h"></i> Test sozlamalari</div>
-          <!-- Random toggle -->
-          <div class="setting-row" id="randomToggleRow">
-            <div class="setting-row-label"><i class="fas fa-shuffle"></i> Savollarni aralashtirib yuborish</div>
-            <div class="form-check form-switch" style="margin:0">
-              <input class="form-check-input" type="checkbox" id="randomToggle" checked>
-            </div>
-          </div>
-          <!-- Timer toggle -->
-          <div class="setting-row" id="timerToggleRow">
-            <div class="setting-row-label"><i class="fas fa-hourglass-half"></i> Vaqt cheklovi</div>
-            <div class="form-check form-switch" style="margin:0">
-              <input class="form-check-input" type="checkbox" id="timerToggle">
-            </div>
-          </div>
-          <!-- Timer config (hidden by default) -->
-          <div class="timer-mode-wrap" id="timerModeWrap" style="display:none">
-            <!-- Mode tabs -->
-            <div class="timer-mode-tabs">
-              <button class="timer-mode-tab active" id="tabTotal" onclick="setTimerMode('total')"><i class="fas fa-layer-group" style="margin-right:4px"></i>Umumiy test</button>
-              <button class="timer-mode-tab" id="tabPerQ" onclick="setTimerMode('perq')"><i class="fas fa-clock-rotate-left" style="margin-right:4px"></i>Har bir savol</button>
-            </div>
-            <!-- Value + unit -->
-            <div class="timer-val-row">
-              <label><i class="fas fa-clock"></i> Vaqt:</label>
-              <input type="number" id="timerValue" min="1" max="9999" value="30">
-              <div class="timer-unit-toggle">
-                <button class="timer-unit-btn active" id="unitMin" onclick="setTimerUnit('min')">daq</button>
-                <button class="timer-unit-btn" id="unitSec" onclick="setTimerUnit('sec')">son</button>
-              </div>
-            </div>
-          </div>
+          <div class="info-stat"><i class="fas fa-shuffle"></i><span>Random</span><p>Savollar tartibi</p></div>
+          <div class="info-stat"><i class="fas fa-infinity"></i><span>Cheksiz</span><p>Vaqt</p></div>
         </div>
       </div>
       <div class="info-footer">
         <button class="btn btn-primary btn-start" onclick="startQuizFromInfo()">
-          Testni boshlash
+          <i class="fas fa-play"></i> Testni boshlash
         </button>
-        <p class="info-tip"><i class="fas fa-lightbulb"></i> klaviaturadan foydalanish tezroq natija beradi!</p>
+        <p class="info-tip"><i class="fas fa-lightbulb"></i> Maslahat: Klaviaturadan foydalanish tezroq natija beradi!</p>
       </div>
     </div>
 
     <div id="quizSection" style="display:none">
       <div class="progress-container">
-        <div class="question-counter-row">
-          <span class="qc-number"><span class="qc-cur" id="currentQuestion">1</span><span class="qc-sep">/</span><span class="qc-tot" id="totalQuestions">10</span></span>
-          <span id="timerPill" class="timer-pill" style="display:none"><span class="pill-icon"><i class="fas fa-clock"></i></span><span class="pill-time" id="timerText">0:30</span></span>
-        </div>
-        <div class="progress" style="margin-top:8px">
+        <div class="progress">
           <div class="progress-bar" id="progressBar" style="width:0%"></div>
         </div>
-        <div class="q-timer-bar-wrap" id="qTimerBarWrap" style="display:none;margin-top:6px"><div class="q-timer-bar" id="qTimerBar" style="width:100%"></div></div>
+        <div class="question-counter"><span id="currentQuestion">1</span> / <span id="totalQuestions">10</span></div>
       </div>
       <div class="question-container">
         <div id="questionSlide" class="question-slide">
@@ -424,7 +347,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
         <!-- Header with floating icon -->
         <div class="result-header" id="resultHeader">
           <div class="result-header-title" id="resultHeaderTitle">Test yakunlandi!</div>
-          <div class="result-header-sub" id="resultHeaderSub">mana sizning natijangiz</div>
+          <div class="result-header-sub" id="resultHeaderSub">Mana sizning natijangiz</div>
           <!-- Floating icon -->
           <div class="result-icon-card" id="resultIconCard">
             <div class="result-icon-inner" id="resultIconInner">
@@ -446,16 +369,10 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
               <span class="score-bar-pct" id="scoreBarPct">0%</span>
             </div>
             <div class="score-bar-track">
-              <div class="score-bar-fill-wrap" id="scoreBarFillWrap" style="display:flex;height:100%;border-radius:30px;overflow:hidden;width:0%;transition:width 1.2s cubic-bezier(.4,0,.2,1) 1s">
-                <div class="score-seg-correct" id="scoreSegCorrect" style="height:100%;width:0%;transition:width .1s"></div>
-                <div class="score-seg-incorrect" id="scoreSegIncorrect" style="height:100%;width:0%;transition:width .1s"></div>
-                <div class="score-seg-unanswered" id="scoreSegUnanswered" style="height:100%;width:0%;transition:width .1s"></div>
-              </div>
+              <div class="score-bar-fill" id="scoreBarFill"></div>
             </div>
-            <div class="score-bar-legend" id="scoreBarLegend">
-              <span class="sbl-item sbl-correct"><span class="sbl-dot"></span><span id="sblCorrectPct">0%</span> To'g'ri</span>
-              <span class="sbl-item sbl-incorrect"><span class="sbl-dot"></span><span id="sblIncorrectPct">0%</span> Xato</span>
-              <span class="sbl-item sbl-unanswered"><span class="sbl-dot"></span><span id="sblUnansweredPct">0%</span> Javobsiz</span>
+            <div class="score-bar-ticks">
+              <span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span>
             </div>
           </div>
 
@@ -470,13 +387,8 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
               <div class="rstat-val" id="incorrectCount">0</div>
               <div class="rstat-lbl">Xato</div>
             </div>
-            <div class="rstat unanswered-card" id="rstatUnanswered">
-              <div class="rstat-icon-wrap"><i class="fas fa-clock"></i></div>
-              <div class="rstat-val" id="unansweredCount">0</div>
-              <div class="rstat-lbl">Javobsiz</div>
-            </div>
             <div class="rstat time-card" id="rstatTime">
-              <div class="rstat-icon-wrap"><i class="fas fa-stopwatch"></i></div>
+              <div class="rstat-icon-wrap"><i class="fas fa-clock"></i></div>
               <div class="rstat-val" id="totalTime">0:00</div>
               <div class="rstat-lbl">Vaqt</div>
             </div>
@@ -503,18 +415,10 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
     <button class="sample-modal-close" id="sampleModalClose">Hop, rahmat!</button>
   </div>
 </div>
-<div class="pause-modal" id="pauseModal">
-  <div class="pause-modal-box">
-    <div class="pause-icon-wrap"><i class="fas fa-pause"></i></div>
-    <div class="pause-modal-title">Test pauza qilindi</div>
-    <div class="pause-modal-sub" id="pauseModalSub"> Tayyor bo'lganingizda davom eting — vaqt to'xtatilgan.</div>
-    <button class="pause-resume-btn" onclick="resumeQuiz()"><i class="fas fa-play"></i> Davom etish</button>
-  </div>
-</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
 <script>
 const T_ICONS  = {success:'<i class="fas fa-check"></i>',error:'<i class="fas fa-xmark"></i>',info:'<i class="fas fa-circle-info"></i>',warning:'<i class="fas fa-triangle-exclamation"></i>',combo:'<i class="fas fa-fire"></i>'};
-const T_TITLES = {success:"Muvaffaqiyatli",error:"Xatolik",info:"Ma'lumot",warning:"Diqqat",combo:"Kombo!"};
+const T_TITLES = {success:"Muvaffaqiyat",error:"Xatolik",info:"Ma'lumot",warning:"Diqqat",combo:"Kombo!"};
 function showToast(msg,type='info',dur=3000){
   const c=document.getElementById('toast-container'),t=document.createElement('div');
   t.className=`toast-item ${type}`;
@@ -525,15 +429,15 @@ function showToast(msg,type='info',dur=3000){
 }
 function dismissToast(t){if(!t||!t.parentElement)return;clearTimeout(t._tmr);t.classList.add('hide');setTimeout(()=>t.remove(),380)}
 const RESULT_CFG = [
-  { min:90, icon:'fa-trophy',       bg:'linear-gradient(135deg,#f59e0b,#d97706)', bar:'green', pct:'score-pct-green', title:'Super',        sub:'Siz bu testni mukammal bajardingiz!',           toast:'Ajoyib! Siz haqiqiy bilim egasisiz!',    tt:'success' },
+  { min:90, icon:'fa-trophy',       bg:'linear-gradient(135deg,#f59e0b,#d97706)', bar:'green', pct:'score-pct-green', title:'Ustoz darajasi!',        sub:'Siz bu testni mukammal bajardingiz!',           toast:'Ajoyib! Siz haqiqiy bilim egasisiz!',    tt:'success' },
   { min:75, icon:'fa-medal',        bg:'linear-gradient(135deg,#4460ef,#2d44c7)', bar:'green', pct:'score-pct-green', title:"Zo'r natija!",            sub:'Bilimingiz yuqori darajada!',                    toast:"Juda yaxshi! Davom eting!",             tt:'success' },
   { min:60, icon:'fa-thumbs-up',    bg:'linear-gradient(135deg,#10b981,#059669)', bar:'blue',  pct:'score-pct-blue',  title:'Yaxshi ish!',             sub:"Yana bir oz harakat — va siz chempion bo'lasiz!", toast:"Yaxshi natija! Ko'proq mashq qiling.",  tt:'info'    },
-  { min:40, icon:'fa-book-open',    bg:'linear-gradient(135deg,#f59e0b,#d97706)', bar:'blue',  pct:'score-pct-blue',  title:'Harakat qiling!',         sub:"Ko'proq mashq qilish kerak",         toast:"Yana urinib ko'ring!",                   tt:'warning' },
+  { min:40, icon:'fa-book-open',    bg:'linear-gradient(135deg,#f59e0b,#d97706)', bar:'blue',  pct:'score-pct-blue',  title:'Harakat qiling!',         sub:"Ko'proq mashq qilish kerak — siz qodir!",         toast:"Yana urinib ko'ring!",                   tt:'warning' },
   { min:0,  icon:'fa-rotate-left',  bg:'linear-gradient(135deg,#ef4444,#dc2626)', bar:'red',   pct:'score-pct-red',   title:"Qayta urinib ko'ring!",  sub:'Yo\'l boshida hamma ham qoqiladi. Yana bir bor!',  toast:"Tushkunlikka tushmang! Yana urinib ko'ring!", tt:'error' }
 ];
 function getCfg(pct){ return RESULT_CFG.find(c=>pct>=c.min); }
-const COMBO5  = [" 5 ta ketma-ket! Zo'r ketayabsiz, davom eting!","5 kombo! To'xtamang!","<i class='fas fa-rocket'></i> Besh marta to'g'ri! Siz zo'rsiz!","<i class='fas fa-bullseye'></i> 5 streak! Nishonga tek urmoqdasiz!","Besh ketma-ket!  davom eting"];
-const COMBO10 = ["10 Kombo! Siz dahosiz!","O'n ketma-ket! Haqiqiy chempion!"," 10 streak! Hech kim to'xtata olmaydi!","Mega-kombo x10! Siz tengsiz!","<i class='fas fa-star-half-stroke'></i> O'nta to'g'ri! Bu san'at!"];
+const COMBO5  = ["<i class='fas fa-fire'></i> 5 ta ketma-ket! Zo'r ketayabsiz, davom eting!","<i class='fas fa-bolt'></i> 5 kombo! To'xtamang!","<i class='fas fa-rocket'></i> Besh marta to'g'ri! Siz mashinasiz!","<i class='fas fa-bullseye'></i> 5 streak! Nishonga tek urmoqdasiz!","<i class='fas fa-star'></i> Besh ketma-ket! Shu sur'atni saqlang!"];
+const COMBO10 = ["<i class='fas fa-crown'></i> 10 KOMBO! Siz dahosiz!","<i class='fas fa-trophy'></i> O'n ketma-ket! Haqiqiy chempion!","<i class='fas fa-fire-flame-curved'></i> 10 streak! Hech kim to'xtata olmaydi!","<i class='fas fa-medal'></i> Mega-kombo x10! Siz tengsiz!","<i class='fas fa-star-half-stroke'></i> O'nta to'g'ri! Bu san'at!"];
 function rnd(a){return a[Math.floor(Math.random()*a.length)]}
 const CC=['#4460ef','#10b981','#f59e0b','#ef4444','#8b5cf6','#ec4899'];
 function launchConfetti(n=60){
@@ -546,12 +450,10 @@ function launchConfetti(n=60){
   }
   setTimeout(()=>w.innerHTML='',4000);
 }
-let questions=[],curIdx=0,userAnswers=[],score=0,unansweredCount=0,consecutiveUnanswered=0,startTime;
+let questions=[],curIdx=0,userAnswers=[],score=0,startTime;
 let questionAlign='left',showNextButton=true,stayOnQuestion=false;
 let phase='idle',selectedAnswer=null,lastKeyPressed=null;
 let comboCount=0,comboShownCount=0;
-let randomEnabled=true,timerEnabled=false,timerMode='total',timerUnit='min',timerVal=30;
-let timerInterval=null;
 const MAX_COMBO=2;
 const alignEl=document.getElementById('alignToggle');
 function applyAlignUI(v){questionAlign=v?'center':'left';document.getElementById('alignLabel').textContent=v?'Savol markazda':'Savol chap tomonda';document.getElementById('alignDesc').textContent=v?'Savol matni markazda.':'Savol matni chap tomonda.';const q=document.getElementById('questionText');if(q){q.classList.toggle('align-center',v);q.classList.toggle('align-left',!v)}}
@@ -565,197 +467,6 @@ const stayEl=document.getElementById('stayToggle');
 function applyStayUI(v){stayOnQuestion=v;document.getElementById('stayToggleLabel').textContent=v?'Javob tanlanganda shu joyda qolish':'Javob tanlanganda avtomatik o\'tish';document.getElementById('stayToggleDesc').textContent=v?'Shu savolda qoladi.':'Avtomatik keyingi savolga o\'tiladi.'}
 stayEl.addEventListener('change',function(){applyStayUI(this.checked);showToast(this.checked?'Shu joyda qoladi.':'Avtomatik o\'tiladi.','info')});
 document.getElementById('stayToggleItem').addEventListener('click',e=>{if(e.target===stayEl)return;stayEl.checked=!stayEl.checked;stayEl.dispatchEvent(new Event('change'))});
-
-// Random toggle (infoSection)
-const randomEl=document.getElementById('randomToggle');
-function applyRandomUI(v){
-  randomEnabled=v;
-  document.getElementById('infoRandomLabel').textContent=v?'Random':'Ketma-ket';
-}
-randomEl.addEventListener('change',function(){applyRandomUI(this.checked);showToast(this.checked?'Savollar aralashtiriladi.':'Savollar ketma-ket ko\'rsatiladi.','info')});
-document.getElementById('randomToggleRow').addEventListener('click',e=>{if(e.target===randomEl)return;randomEl.checked=!randomEl.checked;randomEl.dispatchEvent(new Event('change'))});
-
-// Timer toggle (infoSection)
-const timerToggleEl=document.getElementById('timerToggle');
-function applyTimerToggleUI(v){
-  timerEnabled=v;
-  document.getElementById('timerModeWrap').style.display=v?'block':'none';
-  updateInfoTimeLabel();
-}
-timerToggleEl.addEventListener('change',function(){applyTimerToggleUI(this.checked);showToast(this.checked?'Vaqt cheklovi yoqildi.':'Vaqt cheksiz.','info')});
-document.getElementById('timerToggleRow').addEventListener('click',e=>{if(e.target===timerToggleEl)return;timerToggleEl.checked=!timerToggleEl.checked;timerToggleEl.dispatchEvent(new Event('change'))});
-
-function setTimerMode(m){
-  timerMode=m;
-  document.getElementById('tabTotal').classList.toggle('active',m==='total');
-  document.getElementById('tabPerQ').classList.toggle('active',m==='perq');
-  // Sensible defaults: per-question default 30s, total default 30min
-  if(m==='perq'&&timerUnit==='min'){setTimerUnit('sec');document.getElementById('timerValue').value=30;}
-  if(m==='total'&&timerUnit==='sec'){setTimerUnit('min');document.getElementById('timerValue').value=30;}
-  updateInfoTimeLabel();
-}
-function setTimerUnit(u){
-  timerUnit=u;
-  document.getElementById('unitMin').classList.toggle('active',u==='min');
-  document.getElementById('unitSec').classList.toggle('active',u==='sec');
-  updateInfoTimeLabel();
-}
-document.getElementById('timerValue').addEventListener('input',()=>{updateInfoTimeLabel()});
-function updateInfoTimeLabel(){
-  if(!timerEnabled){document.getElementById('infoTimeLabel').textContent='Cheksiz';return}
-  const v=parseInt(document.getElementById('timerValue').value)||30;
-  const u=timerUnit==='min'?'daq':'son';
-  const mode=timerMode==='total'?'umumiy':'savol/';
-  document.getElementById('infoTimeLabel').textContent=v+' '+u+' ('+mode+')';
-}
-
-// ---- Timer core (Date.now based — no drift) ----
-let _timerStartMs=0,_timerTotalMs=0,_timerRemainingMsOnPause=0;
-let _timerExpired=false,_isPaused=false;
-
-function getTimerSeconds(){
-  const v=parseInt(document.getElementById('timerValue').value)||30;
-  return timerUnit==='min'?v*60:v;
-}
-function setPillState(remainSec,totalSec){
-  const pill=document.getElementById('timerPill');
-  const txt=document.getElementById('timerText');
-  pill.style.display='inline-flex';
-  txt.textContent=fmtTimerDisplay(Math.max(0,remainSec));
-  const pct=totalSec>0?remainSec/totalSec:1;
-  const cls='timer-pill'+(pct<=0.15?' danger':pct<=0.50?' warn':'');
-  if(pill.className!==cls)pill.className=cls;
-}
-function fmtTimerDisplay(s){
-  s=Math.ceil(s);
-  if(s>=60)return Math.floor(s/60)+':'+(s%60<10?'0':'')+(s%60);
-  return s+"''";
-}
-function stopTimer(){
-  clearInterval(timerInterval);timerInterval=null;
-  _isPaused=false;
-  const pill=document.getElementById('timerPill');
-  if(pill)pill.style.display='none';
-  const bw=document.getElementById('qTimerBarWrap');
-  if(bw)bw.style.display='none';
-}
-
-// Fill timer bar to 100% when answer selected
-function fillTimerBarComplete(){
-  const bar=document.getElementById('qTimerBar');
-  if(!bar)return;
-  clearInterval(timerInterval);timerInterval=null;
-  bar.className='q-timer-bar fill';
-  bar.style.width='100%';
-}
-
-// Single tick function for total mode — used by both start and resume
-function _runTotalTick(){
-  const totalSec=_timerTotalMs/1000;
-  timerInterval=setInterval(()=>{
-    const remainMs=_timerTotalMs-(Date.now()-_timerStartMs);
-    setPillState(remainMs/1000,totalSec);
-    if(remainMs<=0&&!_timerExpired){
-      _timerExpired=true;
-      stopTimer();
-      showToast('Vaqt tugadi!','error',4000);
-      showResults();
-    }
-  },100);
-}
-
-// Single tick function for per-question mode — used by both start and resume
-function _runPerQTick(){
-  const totalSec=_timerTotalMs/1000;
-  const bar=document.getElementById('qTimerBar');
-  timerInterval=setInterval(()=>{
-    const remainMs=Math.max(0,_timerTotalMs-(Date.now()-_timerStartMs));
-    const remainSec=remainMs/1000;
-    const ratio=remainMs/_timerTotalMs;
-    bar.style.width=(ratio*100)+'%';
-    const cls='q-timer-bar'+(ratio<=0.15?' danger':ratio<=0.50?' warn':'');
-    if(bar.className!==cls)bar.className=cls;
-    setPillState(remainSec,totalSec);
-    if(remainMs<=0&&!_timerExpired){
-      _timerExpired=true;
-      clearInterval(timerInterval);timerInterval=null;
-      showToast("Vaqt o'tdi! Keyingi savol...",'warning',2000);
-      if(phase==='selecting'||phase==='idle'){
-        selectedAnswer=null;revealAnswerForced();setTimeout(()=>advance(),900);
-      }else if(phase==='revealed'){advance();}
-    }
-  },100);
-}
-function startTotalTimer(){
-  stopTimer();
-  _timerExpired=false;
-  const totalSec=getTimerSeconds();
-  _timerTotalMs=totalSec*1000;
-  _timerStartMs=Date.now();
-  document.getElementById('qTimerBarWrap').style.display='none';
-  setPillState(totalSec,totalSec);
-  _runTotalTick();
-}
-function startQTimer(){
-  clearInterval(timerInterval);timerInterval=null;
-  _timerExpired=false;
-  const totalSec=getTimerSeconds();
-  _timerTotalMs=totalSec*1000;
-  _timerStartMs=Date.now();
-  const barWrap=document.getElementById('qTimerBarWrap');
-  const bar=document.getElementById('qTimerBar');
-  barWrap.style.display='block';
-  bar.className='q-timer-bar';
-  bar.style.width='100%';
-  setPillState(totalSec,totalSec);
-  _runPerQTick();
-}
-
-function startTimer(){
-  if(timerMode==='total')startTotalTimer();
-  else startQTimer();
-}
-function restartQTimer(){
-  if(timerEnabled&&timerMode==='perq')startQTimer();
-}
-
-function pauseQuiz(msg){
-  if(_isPaused)return;
-  _isPaused=true;
-  clearInterval(timerInterval);timerInterval=null;
-  if(timerEnabled){
-    _timerRemainingMsOnPause=Math.max(0,_timerTotalMs-(Date.now()-_timerStartMs));
-  }
-  document.getElementById('pauseModalSub').textContent=msg||"Siz oynadan chiqdingiz. Tayyor bo'lganingizda davom eting — vaqt to'xtatilgan.";
-  document.getElementById('pauseModal').style.display='flex';
-}
-
-function resumeQuiz(){
-  document.getElementById('pauseModal').style.display='none';
-  if(!_isPaused)return;
-  _isPaused=false;
-  if(timerEnabled){
-    // Shift _timerStartMs so that remaining time equals _timerRemainingMsOnPause
-    _timerStartMs=Date.now()-(_timerTotalMs-_timerRemainingMsOnPause);
-    if(timerMode==='total') _runTotalTick();
-    else _runPerQTick();
-  }
-}
-
-document.addEventListener('visibilitychange',function(){
-  if(document.hidden){
-    const qs=document.getElementById('quizSection');
-    if(qs&&qs.style.display!=='none'&&!_isPaused){
-      pauseQuiz();
-    }
-  }
-});
-function revealAnswerForced(){
-  phase='revealed';
-  document.querySelectorAll('.option-btn').forEach(b=>b.classList.add('locked'));
-  const c=questions[curIdx].shuffledAnswer;
-  document.querySelectorAll('.option-btn')[c].classList.add('correct');
-}
 function applyCtrlVis(){const ctrl=document.getElementById('controlsDiv');if(!ctrl)return;const force=(phase==='revealed'&&stayOnQuestion);ctrl.classList.toggle('hidden',!showNextButton&&!force)}
 const uploadArea=document.getElementById('uploadArea'),fileInput=document.getElementById('fileInput');
 ['dragenter','dragover','dragleave','drop'].forEach(ev=>uploadArea.addEventListener(ev,e=>{e.preventDefault();e.stopPropagation()}));
@@ -787,7 +498,7 @@ function parseQuestions(text){
     else{curQ=ln;opts=[]}
   }
   if(!questions.length)throw new Error('Savollar topilmadi!');
-  // Don't shuffle here — respect randomEnabled setting at start
+  questions=shuffle(questions);
   showToast(`Test yuklandi! ${questions.length} ta savol tayyor.`,'success');
   showInfoSection();
 }
@@ -795,14 +506,12 @@ function showBreadcrumb(v){document.getElementById('breadcrumbWrapper').style.di
 function showInfoSection(){showBreadcrumb(false);document.getElementById('uploadSection').style.display='none';document.getElementById('infoSection').style.display='block';document.getElementById('infoQuestionCount').textContent=questions.length}
 function resetPhase(){phase='idle';selectedAnswer=null;lastKeyPressed=null}
 function startQuizFromInfo(){
-  if(randomEnabled)questions=shuffle(questions);
   document.getElementById('infoSection').style.display='none';
   document.getElementById('quizSection').style.display='block';
   document.getElementById('totalQuestions').textContent=questions.length;
-  curIdx=0;userAnswers=[];score=0;unansweredCount=0;consecutiveUnanswered=0;comboCount=0;comboShownCount=0;
+  curIdx=0;userAnswers=[];score=0;comboCount=0;comboShownCount=0;
   resetPhase();applyCtrlVis();
   startTime=new Date();
-  if(timerEnabled)startTimer();else stopTimer();
   showToast('Test boshlandi! Muvaffaqiyat!','success');
   showQuestion();
 }
@@ -825,7 +534,6 @@ function showQuestion(){
     resetPhase();applyCtrlVis();
     slide.classList.remove('exit');slide.classList.add('active');
     setTimeout(()=>cont.querySelectorAll('.option-btn').forEach((b,i)=>setTimeout(()=>b.classList.add('animate-bounce'),i*80)),120);
-    restartQTimer();
   },200);
 }
 function selectAnswer(idx){
@@ -845,10 +553,6 @@ function selectAnswer(idx){
 }
 function startChecking(){
   phase='checking';
-  if(timerEnabled&&timerMode==='perq'){
-    clearInterval(timerInterval);timerInterval=null;
-    fillTimerBarComplete();
-  }
   document.querySelectorAll('.option-btn').forEach(b=>b.classList.add('locked'));
   document.getElementById('nextBtn').disabled=true;
   setTimeout(()=>{
@@ -880,38 +584,18 @@ function revealAnswer(){
 }
 function advance(){
   userAnswers.push(selectedAnswer);
-  if(selectedAnswer===null){
-    unansweredCount++;
-    consecutiveUnanswered++;
-    if(consecutiveUnanswered>=3){
-      consecutiveUnanswered=0;
-      curIdx++;
-      if(curIdx<questions.length){
-        showQuestion();
-        pauseQuiz("Ketma-ket 3 ta savol javobsiz o'tkazildi. Diqqatingizni qarating va davom eting!");
-      } else showResults();
-      return;
-    }
-  } else {
-    consecutiveUnanswered=0;
-    if(selectedAnswer===questions[curIdx].shuffledAnswer)score++;
-  }
+  if(selectedAnswer===questions[curIdx].shuffledAnswer)score++;
   curIdx++;
   if(curIdx<questions.length)showQuestion();else showResults();
 }
 function showResults(){
-  stopTimer();
   document.getElementById('quizSection').style.display='none';
   document.getElementById('resultSection').style.display='block';
   const elapsed=Math.round((new Date()-startTime)/1000);
-  const total=questions.length;
-  const unanswered=unansweredCount;
-  const incorrect=total-score-unanswered;
-  const pct=Math.round(score/total*100);
+  const pct=Math.round(score/questions.length*100);
   const cfg=getCfg(pct);
   document.getElementById('correctCount').textContent=score;
-  document.getElementById('incorrectCount').textContent=incorrect;
-  document.getElementById('unansweredCount').textContent=unanswered;
+  document.getElementById('incorrectCount').textContent=questions.length-score;
   document.getElementById('totalTime').textContent=fmtTime(elapsed);
   document.getElementById('resultBigTitle').textContent=cfg.title;
   document.getElementById('resultBigSub').textContent=cfg.sub;
@@ -920,38 +604,22 @@ function showResults(){
   document.getElementById('resultIconInner').style.background=cfg.bg;
   const pctEl=document.getElementById('scoreBarPct');
   pctEl.className='score-bar-pct '+cfg.pct;
+  document.getElementById('scoreBarFill').className='score-bar-fill '+cfg.bar;
   requestAnimationFrame(()=>{
     document.getElementById('resultHeader').classList.add('animate');
     setTimeout(()=>document.getElementById('resultIconCard').classList.add('animate'),200);
     setTimeout(()=>document.getElementById('resultTitleBlock').classList.add('animate'),450);
     setTimeout(()=>{
       document.getElementById('scoreBarWrap').classList.add('animate');
-      // Animate score % counter (correct only)
       let cur=0;
       const step=()=>{cur=Math.min(cur+2,pct);pctEl.textContent=cur+'%';if(cur<pct)requestAnimationFrame(step)};
       setTimeout(step,300);
-      // Animate segmented bar
-      setTimeout(()=>{
-        const correctPct=score/total*100;
-        const incorrectPct=incorrect/total*100;
-        const unansweredPct=unanswered/total*100;
-        const wrap=document.getElementById('scoreBarFillWrap');
-        wrap.style.width='100%';
-        setTimeout(()=>{
-          document.getElementById('scoreSegCorrect').style.width=correctPct+'%';
-          document.getElementById('scoreSegIncorrect').style.width=incorrectPct+'%';
-          document.getElementById('scoreSegUnanswered').style.width=unansweredPct+'%';
-          document.getElementById('sblCorrectPct').textContent=Math.round(correctPct)+'%';
-          document.getElementById('sblIncorrectPct').textContent=Math.round(incorrectPct)+'%';
-          document.getElementById('sblUnansweredPct').textContent=Math.round(unansweredPct)+'%';
-        },150);
-      },400);
+      setTimeout(()=>document.getElementById('scoreBarFill').style.width=pct+'%',400);
     },650);
     setTimeout(()=>{
       document.getElementById('rstatCorrect').classList.add('animate');
       setTimeout(()=>document.getElementById('rstatIncorrect').classList.add('animate'),100);
-      setTimeout(()=>document.getElementById('rstatUnanswered').classList.add('animate'),200);
-      setTimeout(()=>document.getElementById('rstatTime').classList.add('animate'),300);
+      setTimeout(()=>document.getElementById('rstatTime').classList.add('animate'),200);
     },800);
     setTimeout(()=>document.getElementById('resultActions').classList.add('animate'),1050);
   });
@@ -963,37 +631,30 @@ function resetResultAnimations(){
     const el=document.getElementById(id);if(el)el.classList.remove('animate');
   });
   document.getElementById('resultIconCard').classList.remove('animate');
-  ['rstatCorrect','rstatIncorrect','rstatUnanswered','rstatTime'].forEach(id=>{
+  ['rstatCorrect','rstatIncorrect','rstatTime'].forEach(id=>{
     const el=document.getElementById(id);if(el)el.classList.remove('animate');
   });
-  const wrap=document.getElementById('scoreBarFillWrap');
-  wrap.style.width='0%';
-  document.getElementById('scoreSegCorrect').style.width='0%';
-  document.getElementById('scoreSegIncorrect').style.width='0%';
-  document.getElementById('scoreSegUnanswered').style.width='0%';
+  document.getElementById('scoreBarFill').style.width='0%';
   document.getElementById('scoreBarPct').textContent='0%';
 }
 function fmtTime(s){return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`}
 function restartQuiz(){
   resetResultAnimations();
-  if(randomEnabled)questions=shuffle(questions);
-  curIdx=0;userAnswers=[];score=0;unansweredCount=0;consecutiveUnanswered=0;comboCount=0;comboShownCount=0;
+  questions=shuffle(questions);curIdx=0;userAnswers=[];score=0;comboCount=0;comboShownCount=0;
   resetPhase();
   document.getElementById('resultSection').style.display='none';
   document.getElementById('quizSection').style.display='block';
   applyCtrlVis();startTime=new Date();
-  if(timerEnabled)startTimer();else stopTimer();
   showToast('Test qayta boshlandi!','info');
   showQuestion();
 }
 function newQuiz(){
-  stopTimer();
   resetResultAnimations();
   document.getElementById('resultSection').style.display='none';
   document.getElementById('uploadSection').style.display='block';
   showBreadcrumb(true);
   fileInput.value='';
-  questions=[];curIdx=0;userAnswers=[];score=0;unansweredCount=0;consecutiveUnanswered=0;comboCount=0;comboShownCount=0;
+  questions=[];curIdx=0;userAnswers=[];score=0;comboCount=0;comboShownCount=0;
   resetPhase();
   showToast('Yangi fayl tanlang!','info');
 }
