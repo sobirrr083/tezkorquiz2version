@@ -342,6 +342,35 @@
             margin: 4px 0 0;
         }
 
+        /* Tahrirlash va Donat tugmalari */
+        .profile-action {
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--dark-color);
+        }
+
+        .profile-action:hover {
+            background: rgba(67, 97, 238, 0.08);
+            color: var(--primary-color);
+        }
+
+        .profile-action i {
+            font-size: 18px;
+        }
+
+        .profile-action.donate {
+            color: #e53935;
+        }
+
+        .profile-action.donate:hover {
+            background: #ffebee;
+        }
+
         .profile-logout {
             padding: 14px 16px;
             display: flex;
@@ -645,7 +674,7 @@
             }
 
             .navbar-collapse {
-                position: fixed;
+                position: fixed !important;
                 top: 50px;
                 left: 0;
                 width: 100vw;
@@ -655,11 +684,13 @@
                 border-radius: 0;
                 margin-top: 0;
                 box-shadow: none;
-                transform: translateX(-100%);
-                opacity: 0;
-                visibility: hidden;
-                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-                display: flex;
+                transform: translateX(-100%) !important;
+                opacity: 0 !important;
+                visibility: hidden !important;
+                transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                            opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                            visibility 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                display: flex !important;
                 flex-direction: column;
                 justify-content: flex-start;
                 align-items: flex-start;
@@ -670,9 +701,9 @@
             }
 
             .navbar-collapse.show {
-                transform: translateX(0);
-                opacity: 1;
-                visibility: visible;
+                transform: translateX(0) !important;
+                opacity: 1 !important;
+                visibility: visible !important;
             }
 
             .navbar-nav {
@@ -1035,6 +1066,7 @@
             align-items: center;
             justify-content: center;
             text-align: center;
+            overflow: hidden;
         }
 
         .book-cover {
@@ -1061,28 +1093,81 @@
             transform: rotatey(-80deg);
         }
 
+        /* Spacer - equal above and below the text group */
+        .book-cover-spacer {
+            flex: 1;
+        }
+
+        .book-cover-center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 auto;
+        }
+
+        .book-cover-bigtext {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 900;
+            font-size: 4rem;
+            color: #4460ef;
+            text-align: center;
+            letter-spacing: 4px;
+            line-height: 1;
+            text-transform: uppercase;
+            padding: 0 16px;
+        }
+
+        .book-cover-tagline {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 600;
+            font-size: 0.82rem;
+            color: #7a90f5;
+            text-align: center;
+            letter-spacing: 1.5px;
+            text-transform: lowercase;
+            margin-top: 6px;
+            padding: 0 16px;
+        }
+
         .book-cover img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            transition: transform 0.5s ease;
+            display: none;
         }
 
         .book-cover-content {
-            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 0 20px 20px;
             text-align: center;
+            width: 100%;
         }
 
         .book-card-title {
             font-weight: 600;
             color: #333;
-            margin-top: 10px;
-            font-size: 1.5rem;
+            margin: 0 0 6px;
+            font-size: 1.2rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .book-card-text {
             color: #666;
+            font-size: 0.875rem;
+            margin: 0;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
         }
+
+        
+
+        
 
         .card-badge {
             position: absolute;
@@ -1096,21 +1181,20 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            align-content: center;
-            flex-wrap: wrap;
-            margin: 20px auto 10px;
-            padding: .5em;
+            flex-shrink: 0;
+            padding: 0;
+            margin-top: 8px;
             line-height: normal;
             opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
+            transform: translateY(12px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
             transition-delay: 0s;
         }
 
         .book-card:hover .container-eg-btn-3 {
             opacity: 1;
             transform: translateY(0);
-            transition-delay: 0.3s;
+            transition-delay: 0.25s;
         }
 
         .container-eg-btn-3 .button {
@@ -1175,6 +1259,42 @@
         }
 
         /* Animation for book content */
+        .book-card .book-content {
+            justify-content: center;
+            gap: 12px;
+            padding: 24px 20px;
+        }
+
+        .book-content-top {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .book-card .book-content h5 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #222;
+            margin-bottom: 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+
+        .book-card .book-content p {
+            font-size: 0.875rem;
+            color: #555;
+            text-align: center;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            margin-bottom: 0;
+        }
+
         .book-card .book-content h5,
         .book-card .book-content p {
             opacity: 0;
@@ -1518,8 +1638,7 @@
                 </div>
             </div>
 
-            <!-- PROFIL DROPDOWN -->
-            <div class="profile-dropdown" id="profileDropdown">
+                <div class="profile-dropdown" id="profileDropdown">
                 <div class="profile-user">
                     <div class="profile-user-avatar" id="dropdownAvatar">
                         <svg viewBox="0 0 24 24">
@@ -1530,6 +1649,14 @@
                         <h4 id="userDisplayName">Foydalanuvchi</h4>
                         <p id="userEmail">yuklanmoqda...</p>
                     </div>
+                </div>
+                <div class="profile-action" onclick="window.location.href='profile_edit'">
+                    <i class="fas fa-user-edit"></i>
+                    <span>Tahrirlash</span>
+                </div>
+                <div class="profile-action donate" onclick="window.location.href='donate'">
+                    <i class="fas fa-heart"></i>
+                    <span>Donat qilish</span>
                 </div>
                 <div class="profile-logout" id="logoutTrigger">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -1580,14 +1707,20 @@
             <div class="col-lg-4 col-md-6 mb-4">
                 <div class="book-card" data-aos="fade-up" data-aos-delay="300">
                     <div class="book-content">
-                        <h5 class="book-card-title">O'qish Rejimi</h5>
-                        <p class="book-card-text">Test faylni yuklagan holda o'qish imkoni sizda mavjud</p>
+                        <div class="book-content-top">
+                            <h5 class="book-card-title">O'qish Rejimi</h5>
+                            <p class="book-card-text">Test faylni yuklagan holda o'qish imkoni sizda mavjud</p>
+                        </div>
                         <div class="container-eg-btn-3">
                             <a href="testni_boshlash/oqishrejimi" class="button button-8">Boshlash</a>
                         </div>
                     </div>
                     <div class="book-cover">
-                        <img src="aga/rejimi.png" alt="O'qish rejimi">
+                        <div class="book-cover-spacer"></div>
+                        <div class="book-cover-center">
+                            <div class="book-cover-bigtext">O'QISH</div>
+                            <div class="book-cover-tagline">testlarni o'qish</div>
+                        </div>
                         <div class="book-cover-content">
                             <h5 class="book-card-title">O'qish Rejimi</h5>
                             <p class="book-card-text">Ochish uchun ustiga bosing</p>
@@ -1599,14 +1732,20 @@
             <div class="col-lg-4 col-md-6 mb-4">
                 <div class="book-card" data-aos="fade-up" data-aos-delay="100">
                     <div class="book-content">
-                        <h5 class="book-card-title">Tezkor Quiz</h5>
-                        <p class="book-card-text">Testning bazasini .txt formatda menga yuboring va darhol shu testni boshlang!</p>
+                        <div class="book-content-top">
+                            <h5 class="book-card-title">Tezkor Quiz</h5>
+                            <p class="book-card-text">Testning bazasini .txt formatda menga yuboring va darhol shu testni boshlang!</p>
+                        </div>
                         <div class="container-eg-btn-3">
                             <a href="testni_boshlash/tezkorquiz" class="button button-8">Boshlash</a>
                         </div>
                     </div>
                     <div class="book-cover">
-                        <img src="aga/asosiy (1).png" alt="Tezkor Quiz">
+                        <div class="book-cover-spacer"></div>
+                        <div class="book-cover-center">
+                            <div class="book-cover-bigtext">TEZKOR</div>
+                            <div class="book-cover-tagline">tezkor ishlash</div>
+                        </div>
                         <div class="book-cover-content">
                             <h5 class="book-card-title">Tezkor Quiz</h5>
                             <p class="book-card-text">Ochish uchun ustiga bosing</p>
@@ -1618,14 +1757,20 @@
             <div class="col-lg-4 col-md-6 mb-4">
                 <div class="book-card" data-aos="fade-up" data-aos-delay="200">
                     <div class="book-content">
-                        <h5 class="book-card-title">Bilim Quiz</h5>
-                        <p class="book-card-text">Testga tayyorlangan holda bu testni boshlash tavsiya etiladi.</p>
+                        <div class="book-content-top">
+                            <h5 class="book-card-title">Bilim Quiz</h5>
+                            <p class="book-card-text">Testga tayyorlangan holda bu testni boshlash tavsiya etiladi.</p>
+                        </div>
                         <div class="container-eg-btn-3">
                             <a href="testni_boshlash/bilim" class="button button-8">Boshlash</a>
                         </div>
                     </div>
                     <div class="book-cover">
-                        <img src="aga/bilim.webp" alt="Bilim Quiz">
+                        <div class="book-cover-spacer"></div>
+                        <div class="book-cover-center">
+                            <div class="book-cover-bigtext">BILIM</div>
+                            <div class="book-cover-tagline">tayyorgarlik bilan</div>
+                        </div>
                         <div class="book-cover-content">
                             <h5 class="book-card-title">Bilim Quiz</h5>
                             <p class="book-card-text">Ochish uchun ustiga bosing</p>
@@ -1637,14 +1782,20 @@
             <div class="col-lg-4 col-md-6 mb-4">
                 <div class="book-card" data-aos="fade-up" data-aos-delay="300">
                     <div class="book-content">
-                        <h5 class="book-card-title">Smart Quiz</h5>
-                        <p class="book-card-text">Mobil telefonlarda judayam uzun savol va variantlar uchun moslashtirilgan.</p>
+                        <div class="book-content-top">
+                            <h5 class="book-card-title">Smart Quiz</h5>
+                            <p class="book-card-text">Mobil telefonlarda judayam uzun savol va variantlar uchun moslashtirilgan.</p>
+                        </div>
                         <div class="container-eg-btn-3">
                             <a href="testni_boshlash/smart" class="button button-8">Boshlash</a>
                         </div>
                     </div>
                     <div class="book-cover">
-                        <img src="aga/smart.webp" alt="Smart Quiz">
+                        <div class="book-cover-spacer"></div>
+                        <div class="book-cover-center">
+                            <div class="book-cover-bigtext">SMART</div>
+                            <div class="book-cover-tagline">ixcham ko'rinish</div>
+                        </div>
                         <div class="book-cover-content">
                             <h5 class="book-card-title">Smart Quiz</h5>
                             <p class="book-card-text">Ochish uchun ustiga bosing</p>
@@ -1657,14 +1808,20 @@
                 <div class="book-card" data-aos="fade-up" data-aos-delay="300">
                     <span class="badge bg-success card-badge">tavsiya</span>
                     <div class="book-content">
-                        <h5 class="book-card-title">Pro Quiz</h5>
-                        <p class="book-card-text">Kampyuter va telefon uchun keng, optimallashtirilgan qulayliklar.</p>
+                        <div class="book-content-top">
+                            <h5 class="book-card-title">Pro Quiz</h5>
+                            <p class="book-card-text">Kompyuter va telefon uchun keng, optimallashtirilgan qulayliklar.</p>
+                        </div>
                         <div class="container-eg-btn-3">
                             <a href="testni_boshlash/pro" class="button button-8">Boshlash</a>
                         </div>
                     </div>
                     <div class="book-cover">
-                        <img src="aga/pro.webp" alt="Pro Quiz">
+                        <div class="book-cover-spacer"></div>
+                        <div class="book-cover-center">
+                            <div class="book-cover-bigtext">PRO</div>
+                            <div class="book-cover-tagline">professional va qulay</div>
+                        </div>
                         <div class="book-cover-content">
                             <h5 class="book-card-title">Pro Quiz</h5>
                             <p class="book-card-text">Ochish uchun ustiga bosing</p>
@@ -1676,14 +1833,20 @@
             <div class="col-lg-4 col-md-6 mb-4">
                 <div class="book-card" data-aos="fade-up" data-aos-delay="400">
                     <div class="book-content">
-                        <h5 class="book-card-title">Imtihon Quiz</h5>
-                        <p class="book-card-text">Imtihon ko'rinishidagi testlar, tasdiqlaganingizdan keyin natija chiqadi!</p>
+                        <div class="book-content-top">
+                            <h5 class="book-card-title">Imtihon Quiz</h5>
+                            <p class="book-card-text">Imtihon ko'rinishidagi testlar, tasdiqlaganingizdan keyin natija chiqadi!</p>
+                        </div>
                         <div class="container-eg-btn-3">
                             <a href="testni_boshlash/imtihon" class="button button-8">Boshlash</a>
                         </div>
                     </div>
                     <div class="book-cover">
-                        <img src="aga/asosiy (3).png" alt="Imtihon Quiz">
+                        <div class="book-cover-spacer"></div>
+                        <div class="book-cover-center">
+                            <div class="book-cover-bigtext">IMTIHON</div>
+                            <div class="book-cover-tagline">haqiqiy imtihon</div>
+                        </div>
                         <div class="book-cover-content">
                             <h5 class="book-card-title">Imtihon Quiz</h5>
                             <p class="book-card-text">Ochish uchun ustiga bosing</p>
@@ -1781,48 +1944,73 @@
                 
                 // Dropdown ichini mehmon uchun chiroyli dizayn bilan to'ldirish
                 profileDropdown.innerHTML = `
-                    <div style="padding: 40px 24px; text-align: center; background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);">
-                        <!-- Dekorativ icon -->
-                        <div style="width: 64px; height: 64px; margin: 0 auto 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 24px rgba(102, 126, 234, 0.25);">
-                            <svg width="32" height="32" viewBox="0 0 24 24" fill="white">
-                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+                    <div style="
+                        padding: 40px 24px;
+                        text-align: center;
+                        background: linear-gradient(135deg, #ecf2ff 0%, #ffffff 100%);
+                    ">
+                        <div style="
+                            width: 64px;
+                            height: 64px;
+                            margin: 0 auto 20px;
+                            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+                            border-radius: 20px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            box-shadow: 0 8px 24px rgba(67, 97, 238, 0.3);
+                        ">
+                            <svg viewBox="0 0 24 24" width="32" height="32" fill="white" aria-hidden="true">
+                                <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                             </svg>
                         </div>
-                        
-                        <!-- Asosiy matn -->
-                        <h3 style="font-size: 20px; font-weight: 700; color: #1a202c; margin-bottom: 10px; line-height: 1.3;">
+                        <h3 style="
+                            font-size: 20px;
+                            font-weight: 700;
+                            color: #1a202c;
+                            margin-bottom: 10px;
+                            line-height: 1.3;
+                        ">
                             Hisobingizga kiring
                         </h3>
-                        <p style="font-size: 14px; color: #718096; margin-bottom: 28px; line-height: 1.6;">
-                            Shaxsiy profil, saqlangan ma'lumotlar va boshqa imkoniyatlardan foydalaning
+                        <p style="
+                            font-size: 14px;
+                            color: #64748b;
+                            margin-bottom: 28px;
+                            line-height: 1.6;
+                        ">
+                            Shaxsiy profil, saqlangan ma'lumotlar va barcha imkoniyatlardan foydalaning
                         </p>
-                        
-                        <!-- CTA tugma -->
-                        <button onclick="window.location.href='../kirish'" 
-                                style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-                                       color: white; 
-                                       border: none; 
-                                       padding: 16px 32px; 
-                                       border-radius: 14px; 
-                                       font-size: 16px; 
-                                       font-weight: 600; 
-                                       width: 100%; 
-                                       cursor: pointer; 
-                                       transition: all 0.3s ease;
-                                       box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
-                                       display: flex;
-                                       align-items: center;
-                                       justify-content: center;
-                                       gap: 10px;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M11 7L9.6 8.4l2.6 2.6H2v2h10.2l-2.6 2.6L11 17l5-5-5-5zm9 12h-8v2h8c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-8v2h8v14z"/>
-                            </svg>
+                        <button
+                            onclick="window.location.href='kirish'"
+                            style="
+                                background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+                                color: #ffffff;
+                                border: none;
+                                padding: 16px 32px;
+                                border-radius: 14px;
+                                font-size: 16px;
+                                font-weight: 600;
+                                width: 100%;
+                                cursor: pointer;
+                                transition: all 0.3s ease;
+                                box-shadow: 0 8px 20px rgba(67, 97, 238, 0.35);
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                gap: 10px;
+                            "
+                            onmouseover="this.style.transform='translateY(-2px)'"
+                            onmouseout="this.style.transform='translateY(0)'"
+                        >
                             <span>Tizimga kirish</span>
                         </button>
-                        
-                        <!-- Qo'shimcha info -->
-                        <p style="margin-top: 20px; font-size: 13px; color: #a0aec0;">
-                            Xavfsiz va oson kirish
+                        <p style="
+                            margin-top: 20px;
+                            font-size: 13px;
+                            color: #94a3b8;
+                        ">
+                            Xavfsiz va tezkor kirish
                         </p>
                     </div>
                 `;
