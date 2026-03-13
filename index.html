@@ -892,7 +892,7 @@
         .section-one .hero-section {
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             padding: 70px 0;
-            border-radius: 15px;
+            border-radius: 30px;
             margin-bottom: 50px;
             position: relative;
             overflow: hidden;
@@ -974,6 +974,7 @@
             background-color: var(--dark-color);
             color: white;
             margin-top: 50px;
+            border-radius: 30px 30px 0 0;
         }
 
         .section-one .footer-title {
@@ -1242,7 +1243,7 @@
         @media (max-width: 767px) {
             .section-one .hero-section {
                 padding: 70px 0;
-                border-radius: 15px;
+                border-radius: 30px;
                 margin-bottom: 50px;
                 display: flex;
                 align-items: center;
@@ -1506,7 +1507,7 @@
         }
 
         .three-section-subtitle {
-            text-align: center;
+            text-align: left;
             color: #4361ee;
             font-size: 0.9rem;
             font-weight: 600;
@@ -1517,7 +1518,7 @@
         }
 
         .three-section-step-title {
-            text-align: center;
+            text-align: left;
             color: #2c3e50;
             font-size: 1.5rem;
             font-weight: 700;
@@ -1526,7 +1527,7 @@
         }
 
         .three-section-description {
-            text-align: center;
+            text-align: left;
             color: #7f8c8d;
             font-size: 1rem;
             line-height: 1.6;
@@ -1829,7 +1830,7 @@
 
             .cta-section .container-fluid {
                 padding: 40px 30px;
-                border-radius: 20px;
+                border-radius: 30px;
             }
 
             .cta-heading {
@@ -1847,6 +1848,107 @@
             }
         }
 
+        /* ========== USER SELECT NONE ========== */
+        a, button, .nav-link, .dropdown-item, .profile-btn,
+        .avz-cta-btn, .cta-btn, .cta-button, .card-btn-8-wrap .button,
+        .hero-btn, .learn-more-button, .help-button, .social-link,
+        .burger, .profile-logout, .profile-action, .avz-card-title,
+        .three-section-subtitle, .three-section-step-title,
+        .avzalliklar-title, .avzalliklar-badge, .cta-badge, .cta-heading,
+        .cta-button, .scrollToTop {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* ========== AVZALLIKLAR SECTION STYLES ========== */
+        .avzalliklar-section { padding: 90px 20px 0; }
+        .avzalliklar-inner { max-width: 1140px; margin: 0 auto; }
+
+        .avzalliklar-title {
+            font-family: 'Nunito', sans-serif;
+            font-size: clamp(1.9rem, 4vw, 2.8rem); font-weight: 800;
+            color: #2c3e50; margin-bottom: 16px; line-height: 1.2;
+        }
+        .avzalliklar-title span { color: #4361ee; }
+        .avzalliklar-subtitle {
+            font-size: 1.05rem; color: #7f8c8d;
+            max-width: 520px; line-height: 1.7; margin-bottom: 0;
+        }
+
+        .avzalliklar-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 28px; margin-top: 56px;
+            align-items: stretch;
+        }
+
+        .avz-card {
+            background: #ffffff; border-radius: 20px; padding: 36px 30px 32px;
+            box-shadow: 0 10px 40px rgba(68, 96, 239, 0.07);
+            transition: box-shadow 0.35s ease, transform 0.35s ease;
+            position: relative; overflow: hidden;
+            display: flex; flex-direction: column;
+        }
+        .avz-card:hover { box-shadow: 0 20px 60px rgba(68, 96, 239, 0.14); }
+
+        .avz-icon-wrap {
+            width: 58px; height: 58px; border-radius: 16px;
+            background: #ebf1ff; display: flex;
+            align-items: center; justify-content: center;
+            margin-bottom: 22px; transition: background 0.3s ease;
+        }
+        .avz-card:hover .avz-icon-wrap { background: #4361ee; }
+        .avz-icon-wrap i { font-size: 1.5rem; color: #4361ee; transition: color 0.3s ease; }
+        .avz-card:hover .avz-icon-wrap i { color: #fff; }
+
+        .avz-card-title { font-size: 1.15rem; font-weight: 700; color: #2c3e50; margin-bottom: 10px; line-height: 1.3; }
+        .avz-card-body { font-size: 0.93rem; color: #7f8c8d; line-height: 1.65; flex: 1; }
+
+        .avz-card.avz-cta {
+            background: #4460ef;
+            display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .avz-card.avz-cta::before {
+            content: ''; position: absolute;
+            width: 200px; height: 200px;
+            background: rgba(255,255,255,0.07); border-radius: 50%;
+            top: -60px; right: -40px; pointer-events: none;
+        }
+        .avz-card.avz-cta::after {
+            content: ''; position: absolute;
+            width: 120px; height: 120px;
+            background: rgba(255,255,255,0.05); border-radius: 50%;
+            bottom: -30px; right: 30px; pointer-events: none;
+        }
+        .avz-card.avz-cta .avz-icon-wrap { background: rgba(255,255,255,0.15); }
+        .avz-card.avz-cta .avz-icon-wrap i { color: #fff; }
+        .avz-card.avz-cta:hover .avz-icon-wrap { background: rgba(255,255,255,0.25); }
+        .avz-card.avz-cta:hover .avz-icon-wrap i { color: #fff; }
+        .avz-card.avz-cta .avz-card-title { color: #fff; }
+        .avz-card.avz-cta .avz-card-body { color: rgba(255,255,255,0.72); }
+
+        .avz-cta-btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            gap: 10px; background: #ffffff; color: #4460ef;
+            font-family: 'Nunito', sans-serif; font-size: 0.97rem; font-weight: 800;
+            padding: 13px 24px; border-radius: 12px; text-decoration: none;
+            border: none; cursor: pointer; margin-top: 24px;
+            position: relative; z-index: 1;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.18); width: 100%;
+        }
+        .avz-cta-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(0,0,0,0.22); background: #f0f4ff; }
+
+        @media (max-width: 992px) {
+            .avzalliklar-grid { grid-template-columns: repeat(2, 1fr); gap: 22px; }
+        }
+        @media (max-width: 600px) {
+            .avzalliklar-section { padding: 60px 16px 0; }
+            .avzalliklar-grid { grid-template-columns: 1fr; gap: 18px; margin-top: 40px; }
+            .avz-card { padding: 28px 22px 24px; }
+        }
+
         @media (max-width: 480px) {
             .cta-section {
                 padding: 40px 10px;
@@ -1854,7 +1956,7 @@
 
             .cta-section .container-fluid {
                 padding: 30px 20px;
-                border-radius: 15px;
+                border-radius: 30px;
             }
 
             .cta-icon {
@@ -2009,6 +2111,7 @@
                                 </li>
                             </ul>
                         </li>                                         
+                    </ul><!-- /navbar-nav -->
 
                     <!-- DESKTOP PROFIL -->
                     <div class="desktop-profile">
@@ -2167,6 +2270,55 @@
             </div>
         </div>
 
+        <!-- Avzalliklar Section -->
+        <section class="avzalliklar-section">
+            <div class="avzalliklar-inner">
+                <div class="text-center">
+                    <h2 class="avzalliklar-title">
+                        Saytning <span>asosiy avzalliklari</span>
+                    </h2>
+                    <p class="avzalliklar-subtitle mx-auto">
+                        Tezkor Quiz faqat test emas — bu sizning bilimingizni tizimli ravishda oshirish uchun yaratilgan qulay sayt.
+                    </p>
+                </div>
+                <div class="avzalliklar-grid">
+                    <div class="avz-card">
+                        <div class="avz-icon-wrap"><i class="fa-solid fa-bolt"></i></div>
+                        <h3 class="avz-card-title">Tez va qulay ishlash</h3>
+                        <p class="avz-card-body">Faylni yuklang va bir zumda test boshlang. Hech qanday ortiqcha sozlash kerak emas — vaqtingizni tejang.</p>
+                    </div>
+                    <div class="avz-card">
+                        <div class="avz-icon-wrap"><i class="fa-solid fa-sliders"></i></div>
+                        <h3 class="avz-card-title">Moslashuvchan test rejimlari</h3>
+                        <p class="avz-card-body">Har xil test ishlash rejimlaridan foydalaning. Har bir o'quv uslubiga mos variant mavjud.</p>
+                    </div>
+                    <div class="avz-card">
+                        <div class="avz-icon-wrap"><i class="fa-solid fa-mobile-screen"></i></div>
+                        <h3 class="avz-card-title">Barcha qurilmalarda ishlaydi</h3>
+                        <p class="avz-card-body">Telefon, planshet yoki kompyuter — farqi yo'q. Sayt barcha ekran o'lchamlariga to'liq moslashgan.</p>
+                    </div>
+                    <div class="avz-card">
+                        <div class="avz-icon-wrap"><i class="fa-solid fa-chart-line"></i></div>
+                        <h3 class="avz-card-title">Natijalarni kuzatish</h3>
+                        <p class="avz-card-body">Har bir test oxirida batafsil natijani ko'ring. To'g'ri, noto'g'ri va o'tkazib yuborilgan savollar alohida ko'rsatiladi.</p>
+                    </div>
+                    <div class="avz-card">
+                        <div class="avz-icon-wrap"><i class="fa-solid fa-lock-open"></i></div>
+                        <h3 class="avz-card-title">Bepul yuklash va limitsiz</h3>
+                        <p class="avz-card-body">Fayl yuklash va testni boshlash uchun to'lov talab etilmaydi. Istalgan vaqt, istalgan joydan kirish imkoniyati.</p>
+                    </div>
+                    <div class="avz-card avz-cta">
+                        <div style="position:relative; z-index:1;">
+                            <div class="avz-icon-wrap"><i class="fa-solid fa-rocket"></i></div>
+                            <h3 class="avz-card-title">Bilimingizni sinab ko'ring!</h3>
+                            <p class="avz-card-body">Faylingizni yuklang va bir zumda testni ishga tushiring. Ro'yxatdan o'tish shart emas.</p>
+                        </div>
+                        <a href="testni_boshlash" class="avz-cta-btn">Testni boshlash</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Three Steps Section -->
         <div class="three-section">
             <div class="three-section-container">
@@ -2179,7 +2331,6 @@
                             <img src="aga/document.webp" alt="Research" class="three-section-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                             <div class="three-section-placeholder" style="display: none;"></div>
                             <div class="three-section-overlay"></div>
-                            <div class="three-section-number">1</div>
                         </div>
                         <div class="three-section-content">
                             <div class="three-section-subtitle">1-qadam</div>
@@ -2194,7 +2345,6 @@
                             <img src="aga/shuttle.webp" alt="Design" class="three-section-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                             <div class="three-section-placeholder" style="display: none;"></div>
                             <div class="three-section-overlay"></div>
-                            <div class="three-section-number">2</div>
                         </div>
                         <div class="three-section-content">
                             <div class="three-section-subtitle">2-qadam</div>
@@ -2209,7 +2359,6 @@
                             <img src="aga/inbox.webp" alt="Launch" class="three-section-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                             <div class="three-section-placeholder" style="display: none;"></div>
                             <div class="three-section-overlay"></div>
-                            <div class="three-section-number">3</div>
                         </div>
                         <div class="three-section-content">
                             <div class="three-section-subtitle">3-qadam</div>
@@ -2300,7 +2449,7 @@
                     </div>
                     <div class="col-lg-4 col-md-4">
                         <h5 class="footer-title">Biz bilan bog'laning</h5>
-                        <p class="mb-2"><i class="fas fa-envelope me-2"></i> tezkorquiz@gmail.com </p>
+                        <p class="mb-2"><i class="fas fa-envelope me-2"></i> tezkorquiz@gmail.com</p>
                         <p class="mb-2"><i class="fas fa-phone me-2"></i> +998 90 577 08 32</p>
                         <p><i class="fas fa-map-marker-alt me-2"></i>O'zbekiston</p>
                     </div>
@@ -2337,7 +2486,7 @@
             </div>
         </footer>
     </div>
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="application/ld+json">
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
@@ -2806,5 +2955,3 @@
     </script>
 </body>
 </html>
-
-
