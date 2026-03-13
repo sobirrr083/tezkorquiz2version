@@ -1848,6 +1848,20 @@
             }
         }
 
+        /* ========== USER SELECT NONE ========== */
+        a, button, .nav-link, .dropdown-item, .profile-btn,
+        .avz-cta-btn, .cta-btn, .cta-button, .card-btn-8-wrap .button,
+        .hero-btn, .learn-more-button, .help-button, .social-link,
+        .burger, .profile-logout, .profile-action, .avz-card-title,
+        .three-section-subtitle, .three-section-step-title,
+        .avzalliklar-title, .avzalliklar-badge, .cta-badge, .cta-heading,
+        .cta-button, .scrollToTop {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
         /* ========== AVZALLIKLAR SECTION STYLES ========== */
         .avzalliklar-section { padding: 90px 20px 0; }
         .avzalliklar-inner { max-width: 1140px; margin: 0 auto; }
@@ -2097,6 +2111,7 @@
                                 </li>
                             </ul>
                         </li>                                         
+                    </ul><!-- /navbar-nav -->
 
                     <!-- DESKTOP PROFIL -->
                     <div class="desktop-profile">
@@ -2434,7 +2449,7 @@
                     </div>
                     <div class="col-lg-4 col-md-4">
                         <h5 class="footer-title">Biz bilan bog'laning</h5>
-                        <p class="mb-2"><i class="fas fa-envelope me-2"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6f1b0a1504001d1e1a06152f08020e0603410c0002">[email&#160;protected]</a> </p>
+                        <p class="mb-2"><i class="fas fa-envelope me-2"></i> tezkorquiz@gmail.com</p>
                         <p class="mb-2"><i class="fas fa-phone me-2"></i> +998 90 577 08 32</p>
                         <p><i class="fas fa-map-marker-alt me-2"></i>O'zbekiston</p>
                     </div>
@@ -2931,4 +2946,12 @@
             clearTimeout(resizeTimeout);
             resizeTimeout = setTimeout(function() {
                 if (window.innerWidth >= 992 && navbarCollapse.classList.contains('show')) {
-                    burgerInput.checked 
+                    burgerInput.checked = false;
+                    navbarCollapse.classList.remove('show');
+                    document.body.style.overflow = 'auto';
+                }
+            }, 150);
+        }, { passive: true });
+    </script>
+</body>
+</html>
