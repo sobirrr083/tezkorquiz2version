@@ -46,6 +46,62 @@
       margin: 0;
       padding: 0;
     }
+
+    /* ── Toast tizimi ── */
+    #toast-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 99999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+      max-width: 320px;
+      width: calc(100vw - 40px);
+    }
+    .toast-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #fff;
+      border-radius: 14px;
+      padding: 13px 16px;
+      box-shadow: 0 8px 28px rgba(0,0,0,.13);
+      border-left: 4px solid var(--primary-color);
+      pointer-events: all;
+      transform: translateX(110%);
+      opacity: 0;
+      transition: transform .35s cubic-bezier(.4,0,.2,1), opacity .35s ease;
+    }
+    .toast-item.show { transform: translateX(0); opacity: 1; }
+    .toast-item.hide { transform: translateX(110%); opacity: 0; }
+    .toast-item.success { border-left-color: #10b981; }
+    .toast-item.error   { border-left-color: #ef4444; }
+    .toast-item.info    { border-left-color: var(--primary-color); }
+    .toast-item.warning { border-left-color: #f59e0b; }
+    .toast-icon {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; flex-shrink: 0;
+    }
+    .toast-item.success .toast-icon { background: #d1fae5; color: #059669; }
+    .toast-item.error   .toast-icon { background: #fee2e2; color: #dc2626; }
+    .toast-item.info    .toast-icon { background: #e8ebff; color: var(--primary-color); }
+    .toast-item.warning .toast-icon { background: #fef3c7; color: #d97706; }
+    .toast-body { flex: 1; min-width: 0; }
+    .toast-title { font-size: .82rem; font-weight: 700; color: #1e293b; }
+    .toast-msg   { font-size: .78rem; color: #64748b; margin-top: 2px; line-height: 1.4; }
+    .toast-close {
+      background: none; border: none; cursor: pointer;
+      color: #94a3b8; font-size: 14px; padding: 2px;
+      flex-shrink: 0; transition: color .2s;
+    }
+    .toast-close:hover { color: #475569; }
+    @media (max-width: 480px) {
+      #toast-container { top: 10px; right: 10px; left: 10px; width: auto; max-width: none; }
+    }
     
     .container {
       max-width: 900px;
@@ -110,8 +166,12 @@
     }
     
     .check-icon {
-      font-weight: bold;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       margin-left: 8px;
+      vertical-align: middle;
+      flex-shrink: 0;
     }
     
     .score-container {
@@ -148,24 +208,48 @@
       align-items: center;
       gap: 10px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.08);
-      transition: all 0.3s ease;
     }
-    
-    .timer-container.compact-timer {
-      position: fixed !important;
-      top: 15px !important;
-      right: 15px !important;
-      width: auto !important;
-      padding: 8px 12px !important;
+
+    /* Fixed top-right mini timer */
+    .floating-timer {
+      position: fixed;
+      top: 14px;
+      right: 14px;
       z-index: 2000;
-      background-color: white !important;
-      border: 1px solid #ddd;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-      animation: fadeIn 0.5s forwards;
+      background-color: white;
+      border: 1.5px solid #dde1f5;
+      border-radius: 10px;
+      padding: 6px 13px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
     }
-    
-    .timer-container.compact-timer .timer-text span {
-      display: none;
+
+    .floating-timer.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .floating-timer i {
+      font-size: 0.78rem;
+      color: var(--primary-color);
+    }
+
+    .floating-timer .ft-time {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #333;
+      letter-spacing: 0.5px;
+    }
+
+    .floating-timer .ft-time.warning {
+      color: #dc3545;
+      animation: pulse 1s infinite;
     }
     
     .timer {
@@ -316,27 +400,218 @@
     
     .time-settings {
       margin: 15px 0;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      transition: all 0.35s ease;
+    }
+
+    /* Expand panel */
+    .settings-panel {
       padding: 20px;
       border: 1px solid #ddd;
       border-radius: var(--border-radius);
       background-color: #f8f9fa;
+      transition: all 0.35s ease;
+    }
+
+    .settings-panel.edit-mode {
+      border-color: var(--primary-color);
+      background-color: #f0f3ff;
+      box-shadow: 0 0 0 3px rgba(67,97,238,0.08);
     }
 
     .settings-header {
       display: flex;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 15px;
+      gap: 8px;
+      margin-bottom: 12px;
       color: var(--primary-color);
     }
 
     .settings-header i {
-      font-size: 1.5rem;
+      font-size: 1rem;
     }
 
     .settings-header h5 {
       margin: 0;
       font-weight: 600;
+      font-size: 0.92rem;
+    }
+
+    /* Collapsed summary card */
+    .settings-summary-card {
+      display: none;
+      margin: 15px 0;
+      border: 1.5px solid #e0e4f7;
+      border-radius: var(--border-radius);
+      background: linear-gradient(135deg, #f8f9ff 0%, #eef1ff 100%);
+      padding: 10px 14px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: nowrap;
+    }
+
+    .settings-summary-card.visible {
+      display: flex;
+    }
+
+    .settings-summary-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .settings-summary-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background-color: var(--primary-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary-color);
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+
+    .settings-summary-chips {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      min-width: 0;
+    }
+
+    .summary-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background-color: white;
+      border: 1.5px solid #c5ccf5;
+      border-radius: 20px;
+      padding: 3px 10px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--primary-color);
+      white-space: nowrap;
+    }
+
+    .summary-chip i {
+      font-size: 0.72rem;
+      opacity: 0.75;
+    }
+
+    .settings-edit-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background-color: white;
+      border: 1.5px solid var(--primary-color);
+      color: var(--primary-color);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .settings-edit-btn:hover {
+      background-color: var(--primary-color);
+      color: white;
+      transform: translateY(-1px);
+      box-shadow: 0 3px 10px rgba(67,97,238,0.25);
+    }
+
+    @media (max-width: 400px) {
+      .settings-summary-card {
+        flex-wrap: wrap;
+      }
+      .settings-edit-btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    /* Edit mode save/cancel actions */
+    .settings-actions {
+      display: none;
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1.5px solid #d0d7f5;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    .settings-actions.visible {
+      display: flex;
+    }
+
+    .btn-settings-save {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 9px 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 3px 10px rgba(67,97,238,0.3);
+    }
+
+    .btn-settings-save:hover {
+      background-color: var(--primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 5px 15px rgba(67,97,238,0.4);
+    }
+
+    .btn-settings-cancel {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background-color: white;
+      color: #666;
+      border: 1.5px solid #ccc;
+      border-radius: 8px;
+      padding: 9px 18px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-settings-cancel:hover {
+      background-color: #f5f5f5;
+      border-color: #aaa;
+      color: #333;
+    }
+
+    /* Edit mode label badge */
+    .edit-mode-badge {
+      display: none;
+      font-size: 0.72rem;
+      font-weight: 600;
+      background-color: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffc107;
+      border-radius: 20px;
+      padding: 2px 10px;
+      margin-left: auto;
+    }
+
+    .edit-mode-badge.visible {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
     }
     
     .btn-group {
@@ -355,7 +630,7 @@
       color: var(--primary-color);
       background-color: white;
       transition: all 0.2s ease;
-      border-radius: 25px;
+      border-radius: 8px;
       padding: 8px 16px;
       font-weight: 500;
     }
@@ -424,27 +699,36 @@
     }
     
     .new-test-btn {
-      margin: 20px auto;
-      max-width: 200px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      background-color: var(--primary-light);
-      color: var(--primary-color);
-      border: 1.5px solid var(--primary-color);
-      padding: 10px 20px;
+      gap: 10px;
+      width: calc(100% - 80px);
+      max-width: 340px;
+      margin: 24px auto 8px;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 15px 40px;
+      font-size: 1.1rem;
       font-weight: 600;
-      border-radius: var(--border-radius);
-      transition: all 0.2s ease;
+      border-radius: 50px;
       cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
     }
     
     .new-test-btn:hover {
-      background-color: var(--primary-color);
+      background-color: var(--primary-hover);
       color: white;
+      border-color: var(--primary-hover);
       transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(91, 155, 213, 0.3);
+      box-shadow: 0 8px 24px rgba(67, 97, 238, 0.45);
+    }
+
+    .new-test-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
     }
     
     .results-card {
@@ -524,20 +808,22 @@
     .gif-container {
       margin: 20px auto;
       text-align: center;
-      max-width: 350px;
-      height: 250px;
+      max-width: 340px;
       overflow: hidden;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      border-radius: var(--border-radius);
       display: flex;
       align-items: center;
       justify-content: center;
+      background: transparent;
     }
 
     .gif-container img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+      max-width: 100%;
+      height: auto;
+      width: auto;
+      object-fit: contain;
+      border-radius: var(--border-radius);
+      box-shadow: none;
     }
     
     .salute {
@@ -690,11 +976,20 @@
     
     #emojiPlaceholder {
       text-align: center;
-      min-height: 48px;
+      min-height: 64px;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 2rem;
+    }
+
+    #emojiPlaceholder .result-icon-wrap {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
     }
     
     #infoRow {
@@ -767,12 +1062,6 @@
         padding: 10px;
       }
       
-      .timer-container.compact-timer {
-        width: 85px !important;
-        padding: 6px 10px !important;
-        font-size: 0.9rem !important;
-      }
-      
       .timer {
         font-size: 1.2rem;
       }
@@ -793,9 +1082,9 @@
       }
       
       .new-test-btn {
-        max-width: 180px;
-        padding: 10px 16px;
-        font-size: 0.9rem;
+        max-width: 100%;
+        padding: 13px 30px;
+        font-size: 1rem;
       }
       
       #finishBtn {
@@ -804,8 +1093,7 @@
       }
 
       .gif-container {
-        max-width: 300px;
-        height: 200px;
+        max-width: 280px;
       }
 
       .start-exam-btn {
@@ -861,9 +1149,45 @@
         max-width: 400px;
       }
     }
+
+    /* ── Natija ko'rinishi (result view) ── */
+    .result-option-row {
+      display: flex;
+      align-items: center;
+      padding: 8px 12px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      gap: 10px;
+      cursor: default;
+    }
+    .result-icon-cell {
+      width: 26px;
+      height: 26px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .result-option-text {
+      flex: 1;
+      word-wrap: break-word;
+      white-space: normal;
+      font-size: inherit;
+      line-height: 1.5;
+    }
+    .result-option-row.correct {
+      background-color: #d1e7dd !important;
+    }
+    .result-option-row.incorrect {
+      background-color: #f8d7da !important;
+    }
+    .result-option-row.unanswered-correct {
+      background-color: #fff3e0 !important;
+    }
   </style>
 </head>
 <body>
+<div id="toast-container"></div>
 <div class="container">
   <h1 class="text-center mb-4">Imtihon Quiz</h1>
 
@@ -874,47 +1198,85 @@
     <div id="emojiPlaceholder"></div>
   </div>
 
-  <div id="timeSettings" class="time-settings">
-    <div class="settings-header">
-      <i class="fas fa-clock"></i>
-      <h5>Imtihon sozlamalari</h5>
-    </div>
-
-    <h6 class="mb-2">Imtihon vaqti:</h6>
-    <div class="btn-group mb-3" role="group" id="timeButtonGroup">
-      <button type="button" class="btn btn-outline-primary" data-time="10">10 daq</button>
-      <button type="button" class="btn btn-outline-primary" data-time="15">15 daq</button>
-      <button type="button" class="btn btn-outline-primary" data-time="20">20 daq</button>
-      <button type="button" class="btn btn-outline-primary active" data-time="25">25 daq</button>
-      <button type="button" class="btn btn-outline-primary" data-time="30">30 daq</button>
-    </div>
-
-    <div class="custom-option">
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" id="customTimeCheck">
-        <label class="form-check-label" for="customTimeCheck">Boshqa vaqt</label>
+  <!-- Settings Summary Card (collapsed state) -->
+  <div id="settingsSummaryCard" class="settings-summary-card">
+    <div class="settings-summary-left">
+      <div class="settings-summary-icon">
+        <i class="fas fa-sliders"></i>
       </div>
-      <div id="customTimeInput" class="custom-option-content">
-        <div class="input-group" style="max-width: 200px;">
-          <input type="number" class="form-control" id="minutesInput" min="1" max="180" value="25">
-          <span class="input-group-text">daqiqa</span>
+      <div class="settings-summary-chips">
+        <span class="summary-chip" id="summaryTime"><i class="fas fa-clock"></i><span id="summaryTimeText">25 daqiqa</span></span>
+        <span class="summary-chip" id="summaryCount"><i class="fas fa-list-check"></i><span id="summaryCountText">25 ta test</span></span>
+      </div>
+    </div>
+    <button id="settingsEditBtn" class="settings-edit-btn">
+      <i class="fas fa-pen-to-square"></i> Tahrirlash
+    </button>
+  </div>
+
+  <div id="timeSettings" class="time-settings">
+    <div class="settings-panel" id="settingsPanel">
+      <div class="settings-header">
+        <i class="fas fa-sliders"></i>
+        <h5>Imtihon sozlamalari</h5>
+      </div>
+
+      <h6 class="mb-2">Imtihon vaqti:</h6>
+      <div class="btn-group mb-3" role="group" id="timeButtonGroup">
+        <button type="button" class="btn btn-outline-primary" data-time="10">10 daq</button>
+        <button type="button" class="btn btn-outline-primary" data-time="15">15 daq</button>
+        <button type="button" class="btn btn-outline-primary" data-time="20">20 daq</button>
+        <button type="button" class="btn btn-outline-primary active" data-time="25">25 daq</button>
+        <button type="button" class="btn btn-outline-primary" data-time="30">30 daq</button>
+      </div>
+
+      <div class="custom-option">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="customTimeCheck">
+          <label class="form-check-label" for="customTimeCheck">Boshqa vaqt</label>
+        </div>
+        <div id="customTimeInput" class="custom-option-content">
+          <div class="input-group" style="max-width: 200px;">
+            <input type="number" class="form-control" id="minutesInput" min="1" max="180" value="25">
+            <span class="input-group-text">daqiqa</span>
+          </div>
         </div>
       </div>
-    </div>
 
-    <h6 class="mb-2 mt-3">Testlar soni:</h6>
-    <div class="btn-group mb-3" role="group" id="testCountButtonGroup">
-      <button type="button" class="btn btn-outline-primary" data-count="10">10 ta</button>
-      <button type="button" class="btn btn-outline-primary" data-count="15">15 ta</button>
-      <button type="button" class="btn btn-outline-primary" data-count="20">20 ta</button>
-      <button type="button" class="btn btn-outline-primary active" data-count="25">25 ta</button>
-      <button type="button" class="btn btn-outline-primary" data-count="30">30 ta</button>
-    </div>
+      <h6 class="mb-2 mt-3">Testlar soni:</h6>
+      <div class="btn-group mb-3" role="group" id="testCountButtonGroup">
+        <button type="button" class="btn btn-outline-primary" data-count="10">10 ta</button>
+        <button type="button" class="btn btn-outline-primary" data-count="15">15 ta</button>
+        <button type="button" class="btn btn-outline-primary" data-count="20">20 ta</button>
+        <button type="button" class="btn btn-outline-primary active" data-count="25">25 ta</button>
+        <button type="button" class="btn btn-outline-primary" data-count="30">30 ta</button>
+      </div>
 
-    <div class="custom-option">
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" id="allTestsCheck">
-        <label class="form-check-label" for="allTestsCheck">Barcha testlarni ko'rsatish</label>
+      <div class="custom-option">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="allTestsCheck">
+          <label class="form-check-label" for="allTestsCheck">Barcha testlarni ko'rsatish</label>
+        </div>
+        <div class="form-check mt-2">
+          <input class="form-check-input" type="checkbox" id="customCountCheck">
+          <label class="form-check-label" for="customCountCheck">N ta o'zingiz kiriting</label>
+        </div>
+        <div id="customCountInput" class="custom-option-content">
+          <div class="input-group" style="max-width: 200px; margin-top: 8px;">
+            <input type="number" class="form-control" id="countInput" min="1" max="500" value="25">
+            <span class="input-group-text">ta test</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Save / Cancel (edit mode only) -->
+      <div id="settingsActions" class="settings-actions">
+        <button id="settingsCancelBtn" class="btn-settings-cancel">
+        Bekor qilish
+        </button>
+        <button id="settingsSaveBtn" class="btn-settings-save">
+        Saqlash
+        </button>
       </div>
     </div>
   </div>
@@ -933,10 +1295,10 @@
     <div id="uploadStatus"></div>
     
     <div id="successMessage" class="success-message">
-      <h4>✅ Fayl muvaffaqiyatli yuklandi!</h4>
+      <h4>Fayl muvaffaqiyatli yuklandi!</h4>
       <p id="loadedTestsInfo"></p>
       <button id="startExamBtn" class="start-exam-btn">
-        <i class="fas fa-play-circle me-2"></i>Imtihonni boshlash
+      Imtihonni boshlash
       </button>
     </div>
   </div>
@@ -991,11 +1353,17 @@
   </div>
 
   <button id="newTestBtn" class="btn new-test-btn" style="display: none;">
-    <i class="fas fa-plus"></i> Yangi test
+  Yangi testni boshlash
   </button>
 
   <div id="confettiContainer" class="confetti-container"></div>
   <div id="saluteContainer"></div>
+
+  <!-- Floating top-right timer (shown on scroll during exam) -->
+  <div id="floatingTimer" class="floating-timer">
+    <i class="fas fa-clock"></i>
+    <span class="ft-time" id="floatingTime">00:00</span>
+  </div>
   
   <div id="countdownOverlay" class="countdown-overlay">
     <div class="countdown-content">
@@ -1034,7 +1402,8 @@
         <p>
           Testlarni boshlash uchun yuqoridagi "Fayl tanlash" orqali .txt faylini yuklang. Fayl quyidagi formatda bo'lishi kerak:
         </p>
-        <pre>O'zbekiston poytaxti qayer?
+        <pre>
+        O'zbekiston poytaxti qayer?
         A. Toshkent
         B. Samarqand
         C. Namangan
@@ -1082,12 +1451,52 @@
   </script>
 
   <script>
+  // ── Toast tizimi ──────────────────────────────────────────────
+  const T_ICONS  = {
+    success: '<i class="fas fa-check"></i>',
+    error:   '<i class="fas fa-xmark"></i>',
+    info:    '<i class="fas fa-circle-info"></i>',
+    warning: '<i class="fas fa-triangle-exclamation"></i>'
+  };
+  const T_TITLES = {
+    success: "Muvaffaqiyat",
+    error:   "Xatolik",
+    info:    "Ma'lumot",
+    warning: "Diqqat"
+  };
+  function showToast(msg, type='info', dur=3500) {
+    const c = document.getElementById('toast-container');
+    const t = document.createElement('div');
+    t.className = `toast-item ${type}`;
+    t.innerHTML = `<div class="toast-icon">${T_ICONS[type]}</div><div class="toast-body"><div class="toast-title">${T_TITLES[type]}</div><div class="toast-msg">${msg}</div></div><button class="toast-close" onclick="dismissToast(this.parentElement)"><i class="fas fa-xmark"></i></button>`;
+    c.appendChild(t);
+    requestAnimationFrame(() => requestAnimationFrame(() => t.classList.add('show')));
+    t._tmr = setTimeout(() => dismissToast(t), dur);
+  }
+  function dismissToast(t) {
+    if (!t || !t.parentElement) return;
+    clearTimeout(t._tmr);
+    t.classList.add('hide');
+    setTimeout(() => t.remove(), 380);
+  }
   let originalTests = [];
   let randomizedTests = [];
   let timerInterval;
   let totalSeconds = 25 * 60;
   let examStarted = false;
   let selectedTestCount = 25;
+
+  let settingsCollapsed = false;
+  let settingsEditMode = false; 
+  let savedSettings = {
+    totalSeconds: 25 * 60,
+    selectedTestCount: 25,
+    customTime: false,
+    customMinutes: 25,
+    customCount: false,
+    customN: 25,
+    allTests: false
+  };
 
   const gifGroups = {
     veryLow: [
@@ -1167,6 +1576,18 @@
   const loadedTestsInfo = document.getElementById("loadedTestsInfo");
   const countdownOverlay = document.getElementById("countdownOverlay");
   const countdownNumber = document.getElementById("countdownNumber");
+  const floatingTimer = document.getElementById("floatingTimer");
+  const floatingTime = document.getElementById("floatingTime");
+
+  // Settings UI elements
+  const settingsSummaryCard = document.getElementById("settingsSummaryCard");
+  const settingsEditBtn = document.getElementById("settingsEditBtn");
+  const settingsSaveBtn = document.getElementById("settingsSaveBtn");
+  const settingsCancelBtn = document.getElementById("settingsCancelBtn");
+  const settingsActions = document.getElementById("settingsActions");
+  const settingsPanel = document.getElementById("settingsPanel");
+  const summaryTimeText = document.getElementById("summaryTimeText");
+  const summaryCountText = document.getElementById("summaryCountText");
 
   // Info modal
   infoBtn.addEventListener("click", () => {
@@ -1179,25 +1600,191 @@
     infoModal.classList.remove("show");
   });
 
-  // Scroll behavior for timer
-  window.addEventListener('scroll', () => {
-    if (examStarted) {
-      const scrollY = window.scrollY;
-      if (scrollY > 100) {
-        timerContainer.classList.add('compact-timer');
-      } else {
-        timerContainer.classList.remove('compact-timer');
+  function getSummaryLabel() {
+    // Time label
+    let timeLabel;
+    if (customTimeCheck.checked) {
+      timeLabel = `${minutesInput.value || 25} daqiqa`;
+    } else {
+      const activeTimeBtn = document.querySelector('#timeButtonGroup button.active');
+      timeLabel = activeTimeBtn ? `${activeTimeBtn.getAttribute('data-time')} daqiqa` : '25 daqiqa';
+    }
+    // Count label
+    let countLabel;
+    if (allTestsCheck.checked) {
+      countLabel = 'Barcha testlar';
+    } else if (customCountCheck.checked) {
+      countLabel = `${countInput.value || 25} ta test`;
+    } else {
+      const activeCountBtn = document.querySelector('#testCountButtonGroup button.active');
+      countLabel = activeCountBtn ? `${activeCountBtn.getAttribute('data-count')} ta test` : '25 ta test';
+    }
+    return { timeLabel, countLabel };
+  }
+
+  function updateSummaryChips() {
+    const { timeLabel, countLabel } = getSummaryLabel();
+    summaryTimeText.textContent = timeLabel;
+    summaryCountText.textContent = countLabel;
+  }
+
+  function collapseSettings() {
+    settingsCollapsed = true;
+    settingsEditMode = false;
+    timeSettings.style.display = 'none';
+    settingsSummaryCard.classList.add('visible');
+    settingsActions.classList.remove('visible');
+    settingsPanel.classList.remove('edit-mode');
+    updateSummaryChips();
+  }
+
+  function expandSettingsInitial() {
+    settingsCollapsed = false;
+    settingsEditMode = false;
+    timeSettings.style.display = 'block';
+    settingsSummaryCard.classList.remove('visible');
+    settingsActions.classList.remove('visible');
+    settingsPanel.classList.remove('edit-mode');
+  }
+
+  function enterEditMode() {
+    // Snapshot current applied settings
+    savedSettings = {
+      totalSeconds,
+      selectedTestCount,
+      customTime: customTimeCheck.checked,
+      customMinutes: parseInt(minutesInput.value) || 25,
+      customCount: customCountCheck.checked,
+      customN: parseInt(countInput.value) || 25,
+      allTests: allTestsCheck.checked
+    };
+    settingsCollapsed = false;
+    settingsEditMode = true;
+    timeSettings.style.display = 'block';
+    settingsSummaryCard.classList.remove('visible');
+    settingsActions.classList.add('visible');
+    settingsPanel.classList.add('edit-mode');
+    timeSettings.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function applySettingsFromUI() {
+    // Read current UI state and apply to live variables
+    if (customTimeCheck.checked) {
+      totalSeconds = (parseInt(minutesInput.value) || 25) * 60;
+    } else {
+      const activeTimeBtn = document.querySelector('#timeButtonGroup button.active');
+      totalSeconds = activeTimeBtn ? parseInt(activeTimeBtn.getAttribute('data-time')) * 60 : 25 * 60;
+    }
+    if (allTestsCheck.checked) {
+      selectedTestCount = -1;
+    } else if (customCountCheck.checked) {
+      selectedTestCount = parseInt(countInput.value) || 25;
+    } else {
+      const activeCountBtn = document.querySelector('#testCountButtonGroup button.active');
+      selectedTestCount = activeCountBtn ? parseInt(activeCountBtn.getAttribute('data-count')) : 25;
+    }
+  }
+
+  function revertUIToSavedSettings() {
+    // Revert time
+    totalSeconds = savedSettings.totalSeconds;
+    timeButtons.forEach(btn => btn.classList.remove('active'));
+    customTimeCheck.checked = savedSettings.customTime;
+    minutesInput.value = savedSettings.customMinutes;
+    if (savedSettings.customTime) {
+      customTimeInput.classList.add('show');
+    } else {
+      customTimeInput.classList.remove('show');
+      const mins = Math.round(savedSettings.totalSeconds / 60);
+      const matchBtn = document.querySelector(`#timeButtonGroup button[data-time="${mins}"]`);
+      if (matchBtn) matchBtn.classList.add('active');
+      else {
+        document.querySelector('#timeButtonGroup button[data-time="25"]').classList.add('active');
       }
     }
+    // Revert count
+    selectedTestCount = savedSettings.selectedTestCount;
+    testCountButtons.forEach(btn => btn.classList.remove('active'));
+    allTestsCheck.checked = savedSettings.allTests;
+    customCountCheck.checked = savedSettings.customCount;
+    countInput.value = savedSettings.customN;
+    if (savedSettings.allTests) {
+      customCountInput.classList.remove('show');
+    } else if (savedSettings.customCount) {
+      customCountInput.classList.add('show');
+    } else {
+      customCountInput.classList.remove('show');
+      const matchBtn = document.querySelector(`#testCountButtonGroup button[data-count="${savedSettings.selectedTestCount}"]`);
+      if (matchBtn) matchBtn.classList.add('active');
+      else document.querySelector('#testCountButtonGroup button[data-count="25"]').classList.add('active');
+    }
+  }
+
+  // Settings Edit button
+  settingsEditBtn.addEventListener('click', () => {
+    enterEditMode();
   });
+
+  // Settings Save button
+  settingsSaveBtn.addEventListener('click', () => {
+    applySettingsFromUI();
+    // If file already loaded, re-randomize with new settings
+    if (originalTests.length > 0) {
+      randomizeTests();
+      updateLoadedTestsInfo();
+    }
+    collapseSettings();
+    showToast("Sozlamalar saqlandi!", 'success', 3000);
+  });
+
+  // Settings Cancel button
+  settingsCancelBtn.addEventListener('click', () => {
+    revertUIToSavedSettings();
+    collapseSettings();
+  });
+
+  function updateLoadedTestsInfo() {
+    const testsCount = randomizedTests.length;
+    if (selectedTestCount === -1 || selectedTestCount >= originalTests.length) {
+      loadedTestsInfo.textContent = `${testsCount} ta test yuklandi (Barcha testlar)`;
+    } else {
+      loadedTestsInfo.textContent = `${testsCount} ta test ${originalTests.length} tadan tasodifiy tanlandi`;
+    }
+  }
+  
+  // Scroll behavior — show floating timer when main timer scrolls out of view
+  let scrollTimeout = null;
+  window.addEventListener('scroll', () => {
+    if (!examStarted) return;
+    if (scrollTimeout) return; // throttle
+    scrollTimeout = setTimeout(() => {
+      scrollTimeout = null;
+      const rect = timerContainer.getBoundingClientRect();
+      const isOutOfView = rect.bottom < 0;
+      if (isOutOfView) {
+        floatingTimer.classList.add('visible');
+      } else {
+        floatingTimer.classList.remove('visible');
+      }
+    }, 50);
+  }, { passive: true });
 
   // Time buttons
   timeButtons.forEach(button => {
     button.addEventListener("click", () => {
-      timeButtons.forEach(btn => btn.classList.remove("active"));
-      button.classList.add("active");
-      const minutes = parseInt(button.getAttribute("data-time"));
-      totalSeconds = minutes * 60;
+      const isActive = button.classList.contains("active");
+      if (isActive) {
+        // Clicking active button → go back to default 25
+        timeButtons.forEach(btn => btn.classList.remove("active"));
+        const defaultBtn = document.querySelector('#timeButtonGroup button[data-time="25"]');
+        defaultBtn.classList.add("active");
+        totalSeconds = 25 * 60;
+      } else {
+        timeButtons.forEach(btn => btn.classList.remove("active"));
+        button.classList.add("active");
+        const minutes = parseInt(button.getAttribute("data-time"));
+        totalSeconds = minutes * 60;
+      }
       customTimeCheck.checked = false;
       customTimeInput.classList.remove("show");
     });
@@ -1211,6 +1798,12 @@
       totalSeconds = parseInt(minutesInput.value) * 60;
     } else {
       customTimeInput.classList.remove("show");
+      // Default 25 daqiqaga qaytish
+      timeButtons.forEach(btn => btn.classList.remove("active"));
+      const defaultBtn = document.querySelector('#timeButtonGroup button[data-time="25"]');
+      defaultBtn.classList.add("active");
+      totalSeconds = 25 * 60;
+      minutesInput.value = "25";
     }
   });
 
@@ -1223,26 +1816,62 @@
   // Test count buttons
   testCountButtons.forEach(button => {
     button.addEventListener("click", () => {
-      testCountButtons.forEach(btn => btn.classList.remove("active"));
-      button.classList.add("active");
-      selectedTestCount = parseInt(button.getAttribute("data-count"));
+      const isActive = button.classList.contains("active");
+      if (isActive) {
+        // Clicking active button → go back to default 25
+        testCountButtons.forEach(btn => btn.classList.remove("active"));
+        const defaultBtn = document.querySelector('#testCountButtonGroup button[data-count="25"]');
+        defaultBtn.classList.add("active");
+        selectedTestCount = 25;
+      } else {
+        testCountButtons.forEach(btn => btn.classList.remove("active"));
+        button.classList.add("active");
+        selectedTestCount = parseInt(button.getAttribute("data-count"));
+      }
       allTestsCheck.checked = false;
+      customCountCheck.checked = false;
+      customCountInput.classList.remove("show");
     });
   });
+
+  // Custom count checkbox (N ta)
+  const customCountCheck = document.getElementById("customCountCheck");
+  const customCountInput = document.getElementById("customCountInput");
+  const countInput = document.getElementById("countInput");
 
   // All tests checkbox
   allTestsCheck.addEventListener("change", () => {
     if (allTestsCheck.checked) {
       testCountButtons.forEach(btn => btn.classList.remove("active"));
+      customCountCheck.checked = false;
+      customCountInput.classList.remove("show");
       selectedTestCount = -1; // -1 means all tests
     } else {
       // Reset to default
-      testCountButtons.forEach(btn => {
-        if (btn.getAttribute("data-count") === "25") {
-          btn.classList.add("active");
-        }
-      });
+      const defaultBtn = document.querySelector('#testCountButtonGroup button[data-count="25"]');
+      defaultBtn.classList.add("active");
       selectedTestCount = 25;
+    }
+  });
+
+  customCountCheck.addEventListener("change", () => {
+    if (customCountCheck.checked) {
+      customCountInput.classList.add("show");
+      testCountButtons.forEach(btn => btn.classList.remove("active"));
+      allTestsCheck.checked = false;
+      selectedTestCount = parseInt(countInput.value) || 25;
+    } else {
+      customCountInput.classList.remove("show");
+      // Reset to default
+      const defaultBtn = document.querySelector('#testCountButtonGroup button[data-count="25"]');
+      defaultBtn.classList.add("active");
+      selectedTestCount = 25;
+    }
+  });
+
+  countInput.addEventListener("change", () => {
+    if (customCountCheck.checked) {
+      selectedTestCount = parseInt(countInput.value) || 25;
     }
   });
 
@@ -1308,6 +1937,7 @@
       uploadStatus.textContent = "Fayl muvaffaqiyatli yuklandi!";
       uploadStatus.style.color = "#4361ee";
       uploadStatus.style.fontWeight = "bold";
+      showToast(`${originalTests.length} ta savol yuklandi! Imtihonga tayyormisiz?`, 'success', 4000);
       
       // File input ni disable qilish
       fileInput.disabled = true;
@@ -1317,12 +1947,10 @@
       console.log("✅ Tests randomized:", randomizedTests.length);
       
       // Success message ma'lumotlarini yangilash
-      let testsCount = randomizedTests.length;
-      if (selectedTestCount === -1 || selectedTestCount >= originalTests.length) {
-        loadedTestsInfo.textContent = `${testsCount} ta test yuklandi (Barcha testlar)`;
-      } else {
-        loadedTestsInfo.textContent = `${testsCount} ta test ${originalTests.length} tadan tasodifiy tanlandi`;
-      }
+      updateLoadedTestsInfo();
+
+      // Sozlamalarni yig'ish (collapse)
+      collapseSettings();
       
       // Success message ni darhol ko'rsatish
       successMessage.style.display = 'block';
@@ -1346,7 +1974,7 @@
         console.log("Button visibility check:", btnVisible);
         
         if (!btnVisible) {
-          uploadStatus.textContent = "⚠️ Xatolik yuz berdi. Iltimos, qayta faylni yuklang!";
+          uploadStatus.textContent = "Xatolik yuz berdi. Iltimos, qayta faylni yuklang!";
           uploadStatus.style.color = "#ff6b6b";
           uploadStatus.style.fontWeight = "bold";
           
@@ -1366,6 +1994,7 @@
       fileInput.disabled = false;
       successMessage.style.display = 'none';
       successMessage.classList.remove("show");
+      showToast("Xatolik: Noto'g'ri fayl formati. .txt faylni tekshiring!", 'error', 5000);
     }
   }
 
@@ -1487,6 +2116,7 @@
     quizList.style.top = "auto";
     quizList.style.left = "auto";
     startExam();
+    showToast(`Imtihon boshlandi! ${randomizedTests.length} ta savol. Omad!`, 'success', 4000);
   }
 
   function randomizeTests() {
@@ -1509,11 +2139,13 @@
   function startExam() {
     examStarted = true;
     timeSettings.style.display = "none";
+    settingsSummaryCard.classList.remove("visible");
     successMessage.style.display = "none";
     fileSection.style.display = "none";
     infoBtn.style.display = "none";
     fileInput.disabled = true;
     timerContainer.style.display = "flex";
+    floatingTimer.classList.remove('visible');
     updateTimerDisplay();
     startTimer();
   }
@@ -1562,13 +2194,24 @@
   }
 
   function startTimer() {
+    let warned60 = false;
+    let warned30 = false;
     timerInterval = setInterval(() => {
       if (totalSeconds > 0) {
         totalSeconds--;
         updateTimerDisplay();
         if (totalSeconds < 60) timerElement.classList.add("warning");
+        if (totalSeconds === 60 && !warned60) {
+          warned60 = true;
+          showToast("Diqqat! 1 daqiqa qoldi!", 'warning', 4000);
+        }
+        if (totalSeconds === 30 && !warned30) {
+          warned30 = true;
+          showToast("30 soniya qoldi! Tezroq javob bering!", 'warning', 4000);
+        }
       } else {
         clearInterval(timerInterval);
+        showToast("Vaqt tugadi! Natijalaringiz hisoblanmoqda...", 'error', 5000);
         endExam("Vaqt tugadi!");
       }
     }, 1000);
@@ -1577,7 +2220,15 @@
   function updateTimerDisplay() {
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
-    timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    const timeStr = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    timerElement.textContent = timeStr;
+    floatingTime.textContent = timeStr;
+    // Sync warning class
+    if (totalSeconds < 60) {
+      floatingTime.classList.add('warning');
+    } else {
+      floatingTime.classList.remove('warning');
+    }
   }
 
   function stopTimer() {
@@ -1620,6 +2271,7 @@
   
   confirmFinish.addEventListener("click", () => {
     confirmModal.classList.remove("show");
+    showToast("Test yakunlandi! Natijalar hisoblanmoqda...", 'info', 3500);
     endExam("Test yakunlandi!");
   });
 
@@ -1636,6 +2288,7 @@
   confirmNewTest.addEventListener("click", () => {
     newTestModal.classList.remove("show");
     resetTest();
+    showToast("Yangi test uchun fayl yuklang!", 'info', 3500);
   });
 
   function checkAnswers() {
@@ -1648,39 +2301,41 @@
       const correctOptionIndex = test.correctOptionIndex;
       const radios = document.querySelectorAll(`input[name="question_${index}"]`);
       
-      // Barcha labellarni tozalash
-      radios.forEach(radio => {
-        const label = document.querySelector(`label[for="${radio.id}"]`);
-        label.classList.remove("correct", "incorrect", "unanswered-correct");
-        const checkIcon = label.querySelector(".check-icon");
-        if (checkIcon) checkIcon.remove();
-      });
-
       let selectedOptionIndex = -1;
-      radios.forEach((radio, idx) => { 
-        if (radio.checked) selectedOptionIndex = idx; 
-      });
+      radios.forEach((radio, idx) => { if (radio.checked) selectedOptionIndex = idx; });
 
+      // Statistika
       if (selectedOptionIndex >= 0) {
-        const chosenLabel = document.querySelector(`label[for="question_${index}_option_${selectedOptionIndex}"]`);
-        if (selectedOptionIndex === correctOptionIndex) {
-          chosenLabel.classList.add("correct");
-          chosenLabel.innerHTML += '<span class="check-icon">✅</span>';
-          correctCount++;
-        } else {
-          chosenLabel.classList.add("incorrect");
-          chosenLabel.innerHTML += '<span class="check-icon">❌</span>';
-          incorrectCount++;
-          const correctLabel = document.querySelector(`label[for="question_${index}_option_${correctOptionIndex}"]`);
-          correctLabel.classList.add("correct");
-          correctLabel.innerHTML += '<span class="check-icon">✅</span>';
-        }
+        if (selectedOptionIndex === correctOptionIndex) correctCount++;
+        else incorrectCount++;
       } else {
         unansweredCount++;
-        const correctLabel = document.querySelector(`label[for="question_${index}_option_${correctOptionIndex}"]`);
-        correctLabel.classList.add("unanswered-correct");
-        correctLabel.innerHTML += '<span class="check-icon">✅</span>';
       }
+
+      // Har bir variant uchun natija ko'rinishi (icon matn oldida)
+      const icoCorrect   = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#198754" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="9,12 11,14.2 15,10"/></svg>';
+      const icoIncorrect = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>';
+      const icoUnanswered= '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f57c00" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="9,12 11,14.2 15,10"/></svg>';
+      const icoNeutral   = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/></svg>';
+
+      radios.forEach((radio, optIdx) => {
+        const formCheck = radio.parentElement;
+        const optionText = test.options[optIdx].text;
+        let iconHtml = icoNeutral;
+        let rowClass = 'result-option-row';
+
+        if (optIdx === selectedOptionIndex && optIdx === correctOptionIndex) {
+          iconHtml = icoCorrect; rowClass += ' correct';
+        } else if (optIdx === selectedOptionIndex && optIdx !== correctOptionIndex) {
+          iconHtml = icoIncorrect; rowClass += ' incorrect';
+        } else if (optIdx === correctOptionIndex && selectedOptionIndex !== correctOptionIndex) {
+          iconHtml = (selectedOptionIndex === -1) ? icoUnanswered : icoCorrect;
+          rowClass += (selectedOptionIndex === -1) ? ' unanswered-correct' : ' correct';
+        }
+
+        formCheck.className = rowClass;
+        formCheck.innerHTML = '<span class="result-icon-cell">' + iconHtml + '</span><span class="result-option-text">' + optionText + '</span>';
+      });
     });
 
     const ratio = correctCount / totalQuestions;
@@ -1699,31 +2354,31 @@
     incorrectAnswersEl.textContent = incorrectCount;
     unansweredEl.textContent = unansweredCount;
     
-    // GIF va emoji tanlash
-    let gifGroupKey, emoji;
+    // Professional iconka va rang tanlash
+    let gifGroupKey, resultIcon;
     if (percentage <= 29) {
       gifGroupKey = "veryLow";
-      emoji = "😔 😢 📚";
+      resultIcon = `<div class="result-icon-wrap" style="background:#fee2e2;"><i class="fas fa-book-open" style="color:#dc2626;"></i></div>`;
     } else if (percentage <= 59) {
       gifGroupKey = "low";
-      emoji = "😐 📖";
+      resultIcon = `<div class="result-icon-wrap" style="background:#fef3c7;"><i class="fas fa-chart-line" style="color:#d97706;"></i></div>`;
     } else if (percentage <= 70) {
       gifGroupKey = "medium";
-      emoji = "🙂 👍";
+      resultIcon = `<div class="result-icon-wrap" style="background:#dbeafe;"><i class="fas fa-thumbs-up" style="color:#2563eb;"></i></div>`;
     } else if (percentage <= 81) {
       gifGroupKey = "high";
-      emoji = "😊 🎉";
+      resultIcon = `<div class="result-icon-wrap" style="background:#d1fae5;"><i class="fas fa-medal" style="color:#059669;"></i></div>`;
     } else {
       gifGroupKey = "excellent";
-      emoji = "🎉 🥳 🎊";
+      resultIcon = `<div class="result-icon-wrap" style="background:#fef3c7;"><i class="fas fa-trophy" style="color:#d97706;"></i></div>`;
     }
 
-    emojiPlaceholder.textContent = emoji;
+    emojiPlaceholder.innerHTML = resultIcon;
 
     const currentIndex = gifIndices[gifGroupKey];
     const selectedGif = gifGroups[gifGroupKey][currentIndex];
     gifContainer.innerHTML = `
-      <img src="${selectedGif.url}" alt="${selectedGif.alt}" style="width: 100%; height: 100%; object-fit: cover;">
+      <img src="${selectedGif.url}" alt="${selectedGif.alt}" style="max-width:100%; height:auto; display:block;">
     `;
     
     gifIndices[gifGroupKey] = (currentIndex + 1) % gifGroups[gifGroupKey].length;
@@ -1748,6 +2403,26 @@
     }
 
     feedbackText.innerHTML = feedback;
+    
+    // Natija toast
+    let toastMsg, toastType;
+    if (percentage >= 86) {
+      toastMsg = "A'lo! Siz mavzuni chuqur o'rgangansiz!";
+      toastType = 'success';
+    } else if (percentage >= 71) {
+      toastMsg = "Juda yaxshi natija! Tabriklaymiz!";
+      toastType = 'success';
+    } else if (percentage >= 60) {
+      toastMsg = "Yaxshi! Yana bir oz harakat qiling!";
+      toastType = 'info';
+    } else if (percentage >= 30) {
+      toastMsg = "Ko'proq o'qish kerak. Qayta urining!";
+      toastType = 'warning';
+    } else {
+      toastMsg = "Natija past. Tushkunlikka tushmang, yana urining!";
+      toastType = 'error';
+    }
+    setTimeout(() => showToast(`${toastMsg} (${percentage}%)`, toastType, 5000), 800);
     
     // Natijalar containerini ko'rsatish
     scoreContainer.style.opacity = "1";
@@ -1779,10 +2454,10 @@
     scoreContainer.classList.remove("show-feedback");
     timerElement.classList.remove("warning");
     timerContainer.style.display = "none";
-    timerContainer.classList.remove("compact-timer");
+    floatingTimer.classList.remove('visible');
     newTestBtn.style.display = "none";
     finishBtn.style.display = "block";
-    timeSettings.style.display = "block";
+    expandSettingsInitial();
     fileSection.style.display = "block";
     infoBtn.style.display = "block";
     
@@ -1798,13 +2473,26 @@
     testCountButtons.forEach(btn => btn.classList.remove("active"));
     document.querySelector('#testCountButtonGroup button[data-count="25"]').classList.add("active");
     allTestsCheck.checked = false;
+    customCountCheck.checked = false;
+    customCountInput.classList.remove("show");
     selectedTestCount = 25;
     
     // Reset tests array
     originalTests = [];
     randomizedTests = [];
+
+    // Reset savedSettings snapshot
+    savedSettings = {
+      totalSeconds: 25 * 60,
+      selectedTestCount: 25,
+      customTime: false,
+      customMinutes: 25,
+      customCount: false,
+      customN: 25,
+      allTests: false
+    };
     
-    emojiPlaceholder.textContent = "";
+    emojiPlaceholder.innerHTML = "";
     
     // Statistikalarni reset qilish
     progressFill.style.width = "0%";
@@ -1863,8 +2551,3 @@
 </script>
 </body>
 </html>
-
-
-
-
-
