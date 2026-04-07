@@ -546,7 +546,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
 <script>
 const T_ICONS  = {success:'<i class="fas fa-check"></i>',error:'<i class="fas fa-xmark"></i>',info:'<i class="fas fa-circle-info"></i>',warning:'<i class="fas fa-triangle-exclamation"></i>',combo:'<i class="fas fa-fire"></i>'};
-const T_TITLES = {success:"Muvaffaqiyatli",error:"Xatolik",info:"Ma'lumot",warning:"Diqqat",combo:"Kombo!"};
+const T_TITLES = {success:"Muvaffaqiyat",error:"Xatolik",info:"Ma'lumot",warning:"Diqqat",combo:"Kombo!"};
 function showToast(msg,type='info',dur=3000){
   const c=document.getElementById('toast-container'),t=document.createElement('div');
   t.className=`toast-item ${type}`;
@@ -719,8 +719,6 @@ function _runTotalTick(){
       _totalExpired=true;
       clearInterval(totalTimerInterval);totalTimerInterval=null;
       clearInterval(perqTimerInterval);perqTimerInterval=null;
-      // Count all questions from curIdx onwards as unanswered (current + remaining)
-      // curIdx is the current question (not yet answered), so remaining = questions.length - curIdx
       const remaining=questions.length-curIdx;
       if(remaining>0) unansweredCount+=remaining;
       showToast('Vaqt tugadi!','error',4000);
@@ -729,7 +727,6 @@ function _runTotalTick(){
   },100);
 }
 
-// ---- PER-QUESTION timer tick ----
 function _runPerqTick(){
   clearInterval(perqTimerInterval);
   const totalSec=_perqTotalMs/1000;
@@ -758,7 +755,6 @@ function _runPerqTick(){
   },100);
 }
 
-// Start total timer (once per quiz)
 function startTotalTimer(){
   _totalExpired=false;
   const totalSec=getTimerSeconds();
@@ -799,7 +795,6 @@ function restartQTimer(){
   if(timerEnabled&&timerMode==='perq') startQTimer();
 }
 
-// ---- Pause / Resume ----
 function pauseQuiz(msg){
   if(_isPaused)return;
   if(timerEnabled){
