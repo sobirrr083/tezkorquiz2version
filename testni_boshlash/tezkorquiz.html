@@ -340,7 +340,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
         </div>
         <div class="sample-section">
           <button class="sample-toggle" id="sampleToggle">
-            <i class="fas fa-download"></i> Namuna test yuklab olish
+            <i class="fas fa-download"></i> Namuna testni yuklab olish
           </button>
           <p style="margin-top:10px;color:#94a3b8;font-size:.84rem">Kichik namuna test faylini yuklab oling.</p>
         </div>
@@ -372,7 +372,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
         </div>
         <div class="info-card animate-fade-in" style="animation-delay:.1s">
           <div class="info-icon" style="background:linear-gradient(135deg,#10b981,#059669)"><i class="fas fa-mouse-pointer"></i></div>
-          <h3 class="info-title">Sichqoncha bilan ishlash</h3>
+          <h3 class="info-title">Sichqoncha, sensor bilan ishlash</h3>
           <div class="info-items">
             <div class="info-item">
               <div class="info-number"><i class="fas fa-hand-pointer"></i></div>
@@ -389,8 +389,6 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
           <div class="info-stat"><i class="fas fa-shuffle"></i><span id="infoRandomLabel">Random</span><p>Savollar tartibi</p></div>
           <div class="info-stat"><i class="fas fa-clock"></i><span id="infoTimeLabel">Cheksiz</span><p>Vaqt</p></div>
         </div>
-
-        <!-- Settings card: Random & Timer -->
         <div class="settings-card" style="margin-top:18px">
           <div class="settings-card-title"><i class="fas fa-sliders-h"></i> Test sozlamalari</div>
           <div class="setting-row" id="randomToggleRow">
@@ -455,11 +453,9 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
     </div>
     <div id="resultSection" style="display:none">
       <div class="result-wrapper">
-        <!-- Header with floating icon -->
         <div class="result-header" id="resultHeader">
           <div class="result-header-title" id="resultHeaderTitle">Test yakunlandi!</div>
           <div class="result-header-sub" id="resultHeaderSub">Mana sizning natijangiz</div>
-          <!-- Floating icon -->
           <div class="result-icon-card" id="resultIconCard">
             <div class="result-icon-inner" id="resultIconInner">
               <i id="resultIconI" class="fas fa-trophy"></i>
@@ -468,7 +464,6 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
         </div>
 
         <div class="result-body">
-          <!-- Title block -->
           <div class="result-title-block" id="resultTitleBlock">
             <div class="result-big-title" id="resultBigTitle"></div>
             <div class="result-big-sub" id="resultBigSub"></div>
@@ -540,8 +535,8 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
 <div class="pause-modal" id="pauseModal">
   <div class="pause-modal-box">
     <div class="pause-icon-wrap"><i class="fas fa-pause"></i></div>
-    <div class="pause-modal-title">Test pauza qilindi</div>
-    <div class="pause-modal-sub" id="pauseModalSub">Siz oynadan chiqdingiz. Tayyor bo'lganingizda davom eting — vaqt to'xtatilgan.</div>
+    <div class="pause-modal-title">Test muzlatildi</div>
+    <div class="pause-modal-sub" id="pauseModalSub">Tayyor bo'lganingizda davom eting — vaqt to'xtatilgan.</div>
     <button class="pause-resume-btn" onclick="resumeQuiz()"><i class="fas fa-play"></i> Davom etish</button>
   </div>
 </div>
@@ -551,7 +546,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
 <script>
 const T_ICONS  = {success:'<i class="fas fa-check"></i>',error:'<i class="fas fa-xmark"></i>',info:'<i class="fas fa-circle-info"></i>',warning:'<i class="fas fa-triangle-exclamation"></i>',combo:'<i class="fas fa-fire"></i>'};
-const T_TITLES = {success:"Muvaffaqiyat",error:"Xatolik",info:"Ma'lumot",warning:"Diqqat",combo:"Kombo!"};
+const T_TITLES = {success:"Muvaffaqiyatli",error:"Xatolik",info:"Ma'lumot",warning:"Diqqat",combo:"Kombo!"};
 function showToast(msg,type='info',dur=3000){
   const c=document.getElementById('toast-container'),t=document.createElement('div');
   t.className=`toast-item ${type}`;
