@@ -161,6 +161,7 @@
             display: none;
         }
 
+        /* Desktop rejimda iconlarni yashirish */
         .nav-icon {
             display: none;
         }
@@ -195,6 +196,8 @@
             display: block;
             position: absolute;
             right: 0;
+            z-index: 1031;
+            top: calc(100% + 8px);
         }
 
         .dropdown.show .dropdown-menu {
@@ -226,7 +229,7 @@
             color: var(--primary-color);
         }
 
-
+        /* PROFIL TUGMASI */
         .profile-btn {
             width: 40px;
             height: 40px;
@@ -308,7 +311,7 @@
             height: 48px;
             border-radius: 50%;
             background: var(--gradient-1);
-            display: flex;
+            display: none;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
@@ -341,7 +344,7 @@
             margin: 4px 0 0;
         }
 
-
+        /* Tahrirlash va Donat tugmalari */
         .profile-action {
             padding: 14px 16px;
             display: flex;
@@ -734,6 +737,7 @@
                 color: white !important;
             }
 
+            /* Mobile rejimda iconlarni ko'rsatish */
             .nav-icon {
                 display: inline-block;
                 width: 24px;
@@ -1034,7 +1038,7 @@
             }
         }
 
-
+        /* Kontent uchun scoped CSS - global elementlarni qayta belgilash orqali ajratish */
         .main-content {
             margin-top: 0;
         }
@@ -1091,6 +1095,7 @@
             transform: rotatey(-80deg);
         }
 
+        /* Spacer - equal above and below the text group */
         .book-cover-spacer {
             flex: 1;
         }
@@ -1162,6 +1167,10 @@
             -webkit-box-orient: vertical;
         }
 
+        
+
+        
+
         .card-badge {
             position: absolute;
             top: 10px;
@@ -1195,7 +1204,7 @@
             margin: 10px 0;
             padding: 12px 15px;
             text-align: center;
-            text-transform: uppercase;
+            text-transform: none;
             position: relative;
             transition: .3s;
             z-index: 1;
@@ -1251,6 +1260,7 @@
             100% { background-position: 0 0; }
         }
 
+        /* Animation for book content */
         .book-card .book-content {
             justify-content: center;
             gap: 12px;
@@ -1312,7 +1322,7 @@
                 padding-top: 60px;
             }
         }
-
+        /* Faqat yuqoridagi iconkani desktopda yashirish */
         @media (min-width: 992px) {
         #quizDropdown svg {
             display: none !important;
@@ -1752,7 +1762,7 @@
                     <div class="book-content">
                         <div class="book-content-top">
                             <h5 class="book-card-title">Smart Quiz</h5>
-                            <p class="book-card-text">mobil telefonlarda ixcham ko'rinish</p>
+                            <p class="book-card-text">mobil telefonlarda ixcham </br> ko'rinish</p>
                         </div>
                         <div class="container-eg-btn-3">
                             <a href="testni_boshlash/smart" class="button button-8">Boshlash</a>
@@ -1803,7 +1813,7 @@
                     <div class="book-content">
                         <div class="book-content-top">
                             <h5 class="book-card-title">Imtihon Quiz</h5>
-                            <p class="book-card-text">haqiqiy imtihon tizimiga tayyormisiz?</p>
+                            <p class="book-card-text">haqiqiy imtihon tizimiga </br> tayyormisiz?</p>
                         </div>
                         <div class="container-eg-btn-3">
                             <a href="testni_boshlash/imtihon" class="button button-8">Boshlash</a>
@@ -1828,7 +1838,7 @@
                     <div class="book-content">
                         <div class="book-content-top">
                             <h5 class="book-card-title">Testlarni O'qish</h5>
-                            <p class="book-card-text">testlarni o'qish uchun maxsus sahifa</p>
+                            <p class="book-card-text">testlarni o'qish uchun maxsus </br> sahifa</p>
                         </div>
                         <div class="container-eg-btn-3">
                             <a href="testni_boshlash/oqishrejimi" class="button button-8">Boshlash</a>
@@ -2193,7 +2203,3 @@
     </script>
 </body>
 </html>
-
-
-
-
