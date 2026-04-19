@@ -669,7 +669,7 @@
                 align-items: stretch;
             }
             .progress-info {
-                justify-content: center;
+                justify-content: space-between;
             }
             .file-upload-area {
                 padding: 2rem 1rem;
@@ -908,13 +908,62 @@
             }
         }
 
+        /* === SETTINGS ACCORDION === */
+        .settings-acc-wrapper { margin-top: 14px; text-align: left; }
+        .settings-acc-btn {
+            display: flex; align-items: center; justify-content: space-between;
+            width: 100%; background: #f0f4ff; color: #2c2c2c;
+            border: 1px solid #e0e7ff; border-radius: 10px; padding: 11px 16px;
+            font-size: 14px; font-weight: 600; cursor: pointer;
+            transition: background .25s, border-radius .3s; user-select: none;
+        }
+        .settings-acc-btn:hover { background: #e4ecff; }
+        .settings-acc-btn .acc-left { display: flex; align-items: center; gap: 8px; }
+        .settings-acc-btn .acc-arrow { font-size: 13px; transition: transform .3s ease; color: #6c757d; }
+        .settings-acc-btn.open { border-radius: 10px 10px 0 0; }
+        .settings-acc-btn.open .acc-arrow { transform: rotate(180deg); }
+        .settings-acc-content {
+            max-height: 0; overflow: hidden;
+            transition: max-height .4s cubic-bezier(.4,0,.2,1);
+            background: #fafafa; border-radius: 0 0 10px 10px;
+            border: 1px solid #e8e8e8; border-top: none;
+        }
+        .settings-acc-content.open { max-height: 400px; }
+        .settings-acc-inner { padding: 10px 10px 6px; }
+        .setting-card {
+            display: flex; align-items: center; justify-content: space-between;
+            background: white; border-radius: 8px; padding: 11px 14px;
+            margin-bottom: 8px; cursor: pointer;
+            transition: background .2s ease, box-shadow .2s ease; user-select: none;
+            border: 1px solid #e8e8e8;
+        }
+        .setting-card:last-child { margin-bottom: 0; }
+        .setting-card:hover { box-shadow: 0 2px 8px rgba(44,44,44,.08); }
+        .setting-card-left { flex: 1; margin-right: 12px; }
+        .setting-card-label { font-size: 14px; font-weight: 600; color: #2c2c2c; display: block; margin-bottom: 2px; }
+        .setting-card-desc { font-size: 12px; color: #999; line-height: 1.4; margin-top: 2px; }
+
+        /* Toggle switch for settings */
+        .acc-toggle-switch { position: relative; display: inline-block; width: 48px; height: 24px; flex-shrink: 0; }
+        .acc-toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .acc-toggle-slider {
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #ccc; transition: .4s; border-radius: 24px;
+        }
+        .acc-toggle-slider:before {
+            position: absolute; content: ""; height: 18px; width: 18px;
+            left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%;
+        }
+        .acc-toggle-switch input:checked + .acc-toggle-slider { background-color: #2c2c2c; }
+        .acc-toggle-switch input:checked + .acc-toggle-slider:before { transform: translateX(24px); }
+
     </style>
 </head>
 <body>
     <div class="toast-container" id="toastContainer"></div>
     
     <div class="quiz-container">
-        <div class="container mt-4">
+        <div class="container mt-4" id="breadcrumbWrapper">
         <div class="breadcrumb-container">
             <nav aria-label="Yo'lni ko'rsatuvchi navigatsiya">
                 <ol class="breadcrumb">
@@ -999,6 +1048,28 @@
                     D. Variant 4<br>
                     ANSWER: A
                 </p>
+            </div>
+
+            <!-- SETTINGS ACCORDION -->
+            <div class="settings-acc-wrapper">
+                <button class="settings-acc-btn open" id="settingsAccBtn" onclick="toggleSettingsAcc()">
+                    <span class="acc-left"><i class="fas fa-sliders-h"></i> Test sozlamalari</span>
+                    <i class="fas fa-chevron-down acc-arrow"></i>
+                </button>
+                <div class="settings-acc-content open" id="settingsAccContent">
+                    <div class="settings-acc-inner">
+                        <div class="setting-card" onclick="toggleAccCard('shuffleToggle')">
+                            <div class="setting-card-left">
+                                <span class="setting-card-label">Savollarni aralashtirib yuborish</span>
+                                <div class="setting-card-desc">Har safar test boshlanganda savollar tartibi tasodifiy o'zgaradi.</div>
+                            </div>
+                            <label class="acc-toggle-switch" onclick="event.stopPropagation()">
+                                <input type="checkbox" id="shuffleToggle" checked>
+                                <span class="acc-toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -1088,6 +1159,16 @@
       </script>
 
     <script>
+        function toggleSettingsAcc() {
+            document.getElementById('settingsAccBtn').classList.toggle('open');
+            document.getElementById('settingsAccContent').classList.toggle('open');
+        }
+
+        function toggleAccCard(id) {
+            const el = document.getElementById(id);
+            el.checked = !el.checked;
+            el.dispatchEvent(new Event('change'));
+        }
         class QuizApp {
             constructor() {
                 this.questions = [];
@@ -1272,13 +1353,19 @@
                 
                 if (questions.length > 0) {
                     this.originalQuestions = originalQuestions;
+                    const doShuffle = document.getElementById('shuffleToggle')
+                        ? document.getElementById('shuffleToggle').checked
+                        : true;
+
                     this.questionOrder = Array.from({length: questions.length}, (_, i) => i);
-                    this.questionOrder = this.shuffleArray(this.questionOrder);
+                    if (doShuffle) {
+                        this.questionOrder = this.shuffleArray(this.questionOrder);
+                    }
                     
                     this.shuffledIndices = [];
                     this.questions = questions.map((q, idx) => {
                         const indices = [0,1,2,3];
-                        const shuffled = this.shuffleArray([...indices]);
+                        const shuffled = doShuffle ? this.shuffleArray([...indices]) : [...indices];
                         this.shuffledIndices[idx] = shuffled;
                         const shuffledOpts = shuffled.map(i => q.options[i]);
                         const newCorrect = shuffled.indexOf(q.correct);
@@ -1324,6 +1411,9 @@
                 this.quizScreen.style.display = 'block';
                 this.timeUpShown = false;
                 this.timeUpMessage.style.display = 'none';
+                // breadcrumb yashirish
+                const bc = document.getElementById('breadcrumbWrapper');
+                if (bc) bc.style.display = 'none';
                 this.startTimer();
                 this.showQuestion();
             }
@@ -1578,12 +1668,18 @@
                 this.score = 0;
                 this.userAnswers = [];
                 this.timeLeft = this.totalTime;
-                this.questionOrder = this.shuffleArray([...this.questionOrder]);
+                const doShuffle = document.getElementById('shuffleToggle')
+                    ? document.getElementById('shuffleToggle').checked
+                    : true;
+
+                if (doShuffle) {
+                    this.questionOrder = this.shuffleArray([...this.questionOrder]);
+                }
                 this.shuffledIndices = [];
                 
                 this.questions = this.originalQuestions.map((q, idx) => {
                     const indices = [0,1,2,3];
-                    const shuffled = this.shuffleArray([...indices]);
+                    const shuffled = doShuffle ? this.shuffleArray([...indices]) : [...indices];
                     this.shuffledIndices[idx] = shuffled;
                     const shuffledOpts = shuffled.map(i => q.options[i]);
                     const newCorrect = shuffled.indexOf(q.correct);
@@ -1622,6 +1718,17 @@
                 document.getElementById('reviewList').style.display = 'none';
                 this.showMoreBtn.innerHTML = 'Batafsil ko\'rish <i class="fas fa-chevron-down"></i>';
                 this.fileInput.value = '';
+
+                // breadcrumb qaytarish
+                const bc = document.getElementById('breadcrumbWrapper');
+                if (bc) bc.style.display = '';
+                // accordion ochish
+                const accBtn = document.getElementById('settingsAccBtn');
+                const accContent = document.getElementById('settingsAccContent');
+                if (accBtn && !accBtn.classList.contains('open')) {
+                    accBtn.classList.add('open');
+                    accContent.classList.add('open');
+                }
             }
         }
         
