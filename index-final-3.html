@@ -119,18 +119,18 @@
             justify-content: center;
             flex-shrink: 0;
         }
-        /* ── SVG ── */
+
         .section-two .navbar-logo {
             width: 28px;
             height: 26px;
             fill: #4460ef;
             display: block;
         }
-        /* JS class qo'shilganda — 3s animatsiya, keyin default rang qaytadi */
+
         .section-two .logo-bolt.bolt-active {
             animation: logoPulse 3s ease-in-out forwards !important;
         }
-        /* ── Mobile navbar shaffof ── */
+
         @media (max-width: 991px) {
             .section-two .navbar {
                 background: rgba(255, 255, 255, 1) !important;
@@ -148,7 +148,6 @@
                 -webkit-backdrop-filter: none;
             }
         }
-        /* ── Yordam tugmasi — ijtimoiy tarmoqlar kabi ── */
         .section-two .help-button {
             width: 45px;
             height: 45px;
@@ -376,7 +375,7 @@
             width: 20px;
             height: 20px;
         }
-        /* LOGOUT MODAL */
+
         .section-two .logout-modal {
             position: fixed;
             inset: 0;
@@ -560,7 +559,6 @@
         .section-two .social-link:hover i {
             color: white;
         }
-        /* Mobile menu bottom action buttons */
         .section-two .mob-action-btn {
             flex: 1;
             min-width: 0;
@@ -949,7 +947,6 @@
                 background: rgba(102, 126, 234, 0.5);
             }
             }
-              /* yangi tahrirlash va donat uchun css kodlari boshlandi */
             .section-two .profile-action {
                 padding: 14px 16px;
                 display: flex;
@@ -978,9 +975,6 @@
                 background: #ffebee;
             }
 
-            /* yangi tahrirlash va donat uchun css kodlari tugadi */
-
-        /* Birinchi HTML stillari (asosiy kontent uchun) */
         .section-one .hero-section {
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             padding: 70px 0;
@@ -1059,8 +1053,6 @@
             justify-content: flex-start;
             margin-bottom: 20px;
         }
-
-        /* Footer */
         .section-one .footer {
             padding: 50px 0 20px;
             background-color: #000000;
@@ -1114,8 +1106,6 @@
             padding-top: 20px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
-
-        /* Cards CSS */
         .section-one .card-container {
             margin-bottom: 40px;
             transition: all 0.3s ease;
@@ -1326,7 +1316,6 @@
             }
         }
 
-        /* Qolgan responsive stillar (hero, cards va h.k.) */
         @media (max-width: 767px) {
             .section-one .hero-section {
                 padding: 50px 0;
@@ -1373,7 +1362,6 @@
                 justify-content: center;
                 align-items: center;
             }
-            /* Inner container mobileda padding qo'shish */
             .section-one .hero-section > .container {
                 padding-left: 20px;
                 padding-right: 20px;
@@ -1395,13 +1383,13 @@
                 margin-bottom: 50px;
             }
         }
-            /* Faqat yuqoridagi iconkani desktopda yashirish */
+
         @media (min-width: 992px) {
             #quizDropdown svg {
                 display: none !important;
             }
         }
-        /* yuqorga qaytish tugmasi kodi — faqat #scrollToTop ga tegishli */
+
         #scrollToTop {
           width: 140px;
           height: 56px;
@@ -1487,7 +1475,6 @@
           transform: translateY(-50%) rotate(-90deg);
         }
 
-        /* ========== THREE SECTION STYLES ========== */
         .three-section * {
             margin: 0;
             padding: 0;
@@ -1699,8 +1686,6 @@
                 right: 15px;
             }
         }
-
-        /* ========== CTA SECTION STYLES ========== */
         .cta-section {
             background: #ECF2FF;
             padding: 80px 20px;
@@ -2068,7 +2053,6 @@
                 align-items: flex-start;
             }
         }
-        /* ========== CTA MOBILE LAYOUT ========== */
         @media (max-width: 767px) {
             .cta-section .container-fluid {
                 text-align: left !important;
@@ -2101,7 +2085,6 @@
             .cta-note {
                 text-align: center !important;
             }
-            /* "Hoziroq yuborish" tugmasi avz-cta-btn kabi */
             .cta-button-mobile-wrap {
                 display: block;
                 width: 100%;
@@ -2149,15 +2132,12 @@
     </style>
 </head>
 <body>
-    <!-- Ikkinchi HTML (Navbar) -->
     <div class="section-two">
         <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNavbar">
             <div class="container">
                 <a class="navbar-brand" href="index">
                     Tezkor Quiz
                 </a>
-
-                <!-- MOBILE PROFIL (Burger chapida) -->
                 <div class="mobile-profile">
                     <div class="profile-btn" id="mobileProfileBtn">
                         <svg viewBox="0 0 24 24">
@@ -2264,9 +2244,7 @@
                                 </li>
                             </ul>
                         </li>                                         
-                    </ul><!-- /navbar-nav -->
-
-                    <!-- DESKTOP PROFIL -->
+                    </ul>
                     <div class="desktop-profile">
                         <div class="profile-btn" id="desktopProfileBtn">
                             <svg viewBox="0 0 24 24">
@@ -2281,7 +2259,6 @@
                     </div>
                 </div>
 
-                <!-- PROFIL DROPDOWN -->
                 <div class="profile-dropdown" id="profileDropdown">
                     <div class="profile-user">
                         <div>
@@ -2306,8 +2283,6 @@
                 </div>
             </div>
         </nav>
-
-        <!-- LOGOUT MODAL -->
         <div class="logout-modal" id="logoutModal">
             <div class="modal-content">
                 <h3>Tizimdan chiqish</h3>
@@ -2336,7 +2311,7 @@
                 line-height: 1.25;
                 word-break: break-word;
             }
-            /* MUHIM: block — cursor matn so'nggi harfi yonida bo'ladi */
+
             #heroTitle .hero-dynamic-line {
                 display: block;
                 line-height: 1.25;
@@ -2345,7 +2320,7 @@
                 overflow-wrap: break-word;
             }
             #heroTitle #heroDynamic { display: inline; }
-            /* Cursor: inline-block, text oxirida, vertical-align text-bottom */
+
             .tw-cursor {
                 display: inline-block;
                 width: 3px;
@@ -2494,7 +2469,7 @@
             .tqh-next.show { display: block; }
         </style>
 
-        <!-- Hero Section -->
+        
         <section class="container mt-5 hero-anim" id="heroAnim">
             <div class="hero-section">
                 <div class="container">
@@ -2520,7 +2495,7 @@
                             </a>
                         </div>
 
-                        <!-- Tezkor Quiz style card -->
+                        
                         <div class="col-md-5 d-none d-md-flex justify-content-center align-items-center">
                             <div class="tq-hero-card" id="tqHeroCard">
                                 <div class="tqh-body">
@@ -2552,10 +2527,10 @@
                 "natijangizni hoziroq bilib oling",
                 "sessiyaga 2 barobar tezroq tayyorlaning",
                 "konspektlaringizni testlarga aylantiring",
-                "maktab imtihonlaridan oson o'ting va a'lochi bo'ling",
+                "imtihonlaridan oson o'ting",
                 "natijangizni soniyalarda biling",
-                "bepul testlar bilan bilimingizni tekshiring",
-                "faylingizni yuklang va bilimingizni tekshiring"
+                "bepul testlar orqali bilimingizni tekshiring",
+                "faylingizni yuklang va testni boshlang"
             ];
 
             let phraseIndex = 0;
@@ -2589,7 +2564,6 @@
 
             setTimeout(tick, 400);
 
-            // Pause/resume typewriter when hero scrolls out/into view
             const _heroSection = document.querySelector('.section-one .hero-section');
             if (_heroSection && 'IntersectionObserver' in window) {
                 let _heroVisible = true;
@@ -2623,7 +2597,7 @@
         }
         </script>
 
-        <!-- Cards Section -->
+        
         <style>
         .tq-cards-grid {
             display: grid;
@@ -2708,7 +2682,6 @@
         }
         .tq-card-right img.tq-img-loaded { opacity: 1; }
 
-        /* Card-specific image positions */
         .tq-card-yaratish .tq-card-right  { right: -22px; bottom: -10px; }
         .tq-card-yaratish .tq-card-right img { transform: rotate(-8deg); }
         .tq-card-boshlash .tq-card-right  { right: -10px; bottom: -10px; }
@@ -2718,7 +2691,7 @@
         .tq-card-segumm .tq-card-right   { right: -28px; bottom: -24px; }
         .tq-card-segumm .tq-card-right img { transform: scale(1.05); }
 
-        /* Themes */
+
         .tq-card-yaratish {
             background: linear-gradient(145deg,#ede9fe 0%,#ddd6fe 40%,#e0e7ff 100%);
             box-shadow: 0 18px 45px rgba(124,58,237,0.1);
@@ -2755,7 +2728,7 @@
         .tq-card-segumm::before { content:'';position:absolute;inset:0;border-radius:28px;background:linear-gradient(145deg,rgba(255,255,255,0.6),rgba(255,255,255,0.2));pointer-events:none;z-index:1; }
         .tq-card-segumm .tq-card-title { color:#78350f; }
 
-        /* Responsive */
+
         @media (max-width: 1024px) {
             .tq-cards-grid { gap: 22px; }
             .tq-card-title { font-size: 2.3rem; }
@@ -2879,7 +2852,7 @@
         })();
         </script>
 
-        <!-- Avzalliklar Section -->
+        
         <section class="avzalliklar-section">
             <div class="avzalliklar-inner">
                 <div class="text-center" data-aos="fade-up" data-aos-delay="0">
@@ -2927,8 +2900,6 @@
                 </div>
             </div>
         </section>
-
-        <!-- Three Steps Section -->
         <div class="three-section">
             <div class="three-section-container">
                 <h1 class="three-section-title" data-aos="fade-up" data-aos-delay="0">Tezkor Quizda testni boshlash</h1>
@@ -3121,9 +3092,7 @@
       });
     });
     </script>
-
-
-    <!-- google analiz kodi -->
+        
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-6HJZ457YMB"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -3152,7 +3121,7 @@
         document.addEventListener('scroll', () => {}, { passive: true });
         document.addEventListener('touchstart', () => {}, { passive: true });
 
-        // Hero fade-in — barcha qurilmalar, sahifa yuklanganda
+
         (function() {
             var heroEl = document.getElementById('heroAnim');
             if (!heroEl) return;
@@ -3180,7 +3149,6 @@
         }
     </script>
 
-    <!-- Navbar UI event listeners — Firebase dan mustaqil -->
     <script>
     (function() {
         var navbar        = document.getElementById('mainNavbar');
@@ -3194,7 +3162,7 @@
         var mobileBtn     = document.getElementById('mobileProfileBtn');
         var profileDropdown = document.getElementById('profileDropdown');
 
-        // --- Scroll: navbar scrolled class ---
+
         var scrollTimeout;
         (function(){ if ((window.pageYOffset||document.documentElement.scrollTop) > 30) navbar.classList.add('scrolled'); })();
         window.addEventListener('scroll', function() {
@@ -3205,7 +3173,6 @@
             });
         }, { passive: true });
 
-        // --- Burger ---
         if (burgerInput) {
             burgerInput.addEventListener('change', function() {
                 if (this.checked) {
@@ -3228,7 +3195,6 @@
             });
         }
 
-        // Hamburger yopish funksiyasi
         function closeMobileMenu() {
             burgerInput.checked = false;
             navbarCollapse.classList.remove('show');
@@ -3238,8 +3204,6 @@
             document.body.style.overflow = 'auto';
         }
 
-        // Barcha linklar (nav, dropdown itemlar, mob-action-btn) burger ni yopadi
-        // Dropdown toggle (Testni boshlash tugmasi) bundan mustasno
         document.querySelectorAll(
             '.section-two .navbar-nav a:not(.dropdown-toggle), .section-two .mob-action-btn'
         ).forEach(function(link) {
@@ -3250,14 +3214,12 @@
             });
         });
 
-        // Orqaga qaytganda (bfcache) ham menu yopiladi
         window.addEventListener('pageshow', function(e) {
             if (navbarCollapse && navbarCollapse.classList.contains('show')) {
                 closeMobileMenu();
             }
         });
 
-        // --- Dropdown (Testni boshlash) ---
         if (dropdownToggle) {
             dropdownToggle.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -3284,7 +3246,7 @@
             dropdownMenu.addEventListener('click', function(e) { e.stopPropagation(); });
         }
 
-        // --- Profile dropdown ---
+
         [desktopBtn, mobileBtn].forEach(function(btn) {
             if (!btn) return;
             btn.style.cursor = 'pointer';
@@ -3310,7 +3272,6 @@
             });
         });
 
-        // --- Resize: burger yopish ---
         var resizeTimeout;
         window.addEventListener('resize', function() {
             clearTimeout(resizeTimeout);
@@ -3328,7 +3289,7 @@
             }, 150);
         });
 
-        // --- Logo bolt animation ---
+
         (function() {
             var brand = document.querySelector('.section-two .navbar-brand');
             var bolt  = document.querySelector('.logo-bolt');
@@ -3347,7 +3308,6 @@
     })();
     </script>
 
-    <!-- Firebase auth: profil ko'rsatish -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
         import { getAuth, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
