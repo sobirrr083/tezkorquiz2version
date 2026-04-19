@@ -1369,7 +1369,9 @@
       transition: background .2s, border-color .2s;
       text-align: left;
       margin-bottom: 0;
+      outline: none;
     }
+    .settings-accordion-trigger:focus { outline: none; box-shadow: none; }
     .settings-accordion-trigger:hover {
       background: #eef1ff;
       border-color: var(--primary-color);
@@ -1383,7 +1385,7 @@
       border-bottom-right-radius: 0;
       border-bottom-color: transparent;
       background: #eef1ff;
-      border-color: var(--primary-color);
+      border-color: #dde1f5;
     }
     .sacc-left {
       display: flex;
@@ -1456,7 +1458,7 @@
       max-height: 1000px;
     }
     .settings-accordion-body .time-settings {
-      border: 1.5px solid var(--primary-color);
+      border: 1.5px solid #dde1f5;
       border-top: none;
       border-radius: 0 0 var(--border-radius) var(--border-radius);
       overflow: hidden;
@@ -1675,22 +1677,6 @@
   </div>
 
   <!-- ── SETTINGS ACCORDION ── -->
-  <!-- Settings Summary Card (collapsed state) -->
-  <div id="settingsSummaryCard" class="settings-summary-card">
-    <div class="settings-summary-left">
-      <div class="settings-summary-icon">
-        <i class="fas fa-sliders"></i>
-      </div>
-      <div class="settings-summary-chips">
-        <span class="summary-chip" id="summaryTime"><i class="fas fa-clock"></i><span id="summaryTimeText">25 daqiqa</span></span>
-        <span class="summary-chip" id="summaryCount"><i class="fas fa-list-check"></i><span id="summaryCountText">25 ta test</span></span>
-      </div>
-    </div>
-    <button id="settingsEditBtn" class="settings-edit-btn">
-      <i class="fas fa-pen-to-square"></i> Tahrirlash
-    </button>
-  </div>
-
   <!-- Settings Accordion wrapper -->
   <div id="settingsAccordionWrap" class="settings-accordion-wrap">
     <!-- Accordion trigger -->
@@ -2320,7 +2306,7 @@ ANSWER: A</div>
       settingsAccordionBody.classList.remove('open');
       settingsAccordionTrigger.setAttribute('aria-expanded', 'false');
     }
-    settingsSummaryCard.classList.add('visible');
+    if (settingsSummaryCard) settingsSummaryCard.classList.add('visible');
     settingsPanel.classList.remove('edit-mode');
     updateSummaryChips();
   }
@@ -2334,7 +2320,7 @@ ANSWER: A</div>
       settingsAccordionBody.classList.add('open');
       settingsAccordionTrigger.setAttribute('aria-expanded', 'true');
     }
-    settingsSummaryCard.classList.remove('visible');
+    if (settingsSummaryCard) settingsSummaryCard.classList.remove('visible');
     settingsPanel.classList.remove('edit-mode');
     updateAccordionChips();
   }
@@ -2355,7 +2341,7 @@ ANSWER: A</div>
       settingsAccordionBody.classList.add('open');
       settingsAccordionTrigger.setAttribute('aria-expanded', 'true');
     }
-    settingsSummaryCard.classList.remove('visible');
+    if (settingsSummaryCard) settingsSummaryCard.classList.remove('visible');
     settingsPanel.classList.add('edit-mode');
     timeSettings.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
@@ -2414,7 +2400,7 @@ ANSWER: A</div>
   }
 
   // Settings Edit button
-  settingsEditBtn.addEventListener('click', () => {
+  if (settingsEditBtn) settingsEditBtn.addEventListener('click', () => {
     enterEditMode();
   });
 
@@ -2652,8 +2638,7 @@ ANSWER: A</div>
       
       fileInput.disabled = true;
       fileInputLarge.disabled = true;
-      uploadAreaLarge.style.opacity = '0.5';
-      uploadAreaLarge.style.pointerEvents = 'none';
+      uploadAreaLarge.style.display = 'none';
       
       randomizeTests();
       updateLoadedTestsInfo();
@@ -2832,7 +2817,7 @@ ANSWER: A</div>
     examStarted = true;
     const accWrap = document.getElementById("settingsAccordionWrap");
     if (accWrap) accWrap.style.display = "none";
-    settingsSummaryCard.classList.remove("visible");
+    if (settingsSummaryCard) settingsSummaryCard.classList.remove("visible");
     successMessage.style.display = "none";
     const startExamWrap = document.getElementById('startExamWrap');
     if (startExamWrap) startExamWrap.style.display = 'none';
@@ -3140,6 +3125,7 @@ ANSWER: A</div>
     fileInput.value = "";
     fileInputLarge.disabled = false;
     fileInputLarge.value = "";
+    uploadAreaLarge.style.display = '';
     uploadAreaLarge.style.opacity = '';
     uploadAreaLarge.style.pointerEvents = '';
     hideFileNameBadge();
