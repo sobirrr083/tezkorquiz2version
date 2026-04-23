@@ -3176,7 +3176,7 @@
         if (burgerInput) {
             burgerInput.addEventListener('change', function() {
                 if (this.checked) {
-                    // Navbar haqiqiy balandligini olib menu shu joydan boshlansin
+
                     var navH = navbar.offsetHeight;
                     navbarCollapse.style.top    = navH + 'px';
                     navbarCollapse.style.height = 'calc(100vh - ' + navH + 'px)';
@@ -3429,9 +3429,7 @@
             function equalizeAvzCards() {
                 var cards = document.querySelectorAll('.avz-card');
                 if (!cards.length) return;
-                // min-height ni tiklash
                 cards.forEach(function(c) { c.style.minHeight = ''; });
-                // eng baland cardni topish
                 var max = 0;
                 cards.forEach(function(c) {
                     var h = c.getBoundingClientRect().height;
