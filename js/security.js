@@ -1,8 +1,18 @@
 (function () {
 
-  function xavfsizlikXatosi(kod, xabar) {
-    alert('⚠️ Tizim xavfsizligi [' + kod + ']: ' + xabar);
-    location.replace('about:blank');
+  const _isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  if (_isMobile) return; // Faqat desktop uchun ishlaydi
+
+  let warned = false;
+
+  function ogohlantirVaYop(kod, xabar) {
+    if (!warned) {
+      warned = true;
+      alert('⚠️ Tizim xavfsizligi [' + kod + ']: ' + xabar);
+      setTimeout(function () {
+        location.replace('about:blank');
+      }, 5000);
+    }
   }
 
   document.addEventListener('keydown', function (e) {
@@ -10,30 +20,50 @@
 
     if (e.ctrlKey && e.shiftKey && k === 'i') {
       e.preventDefault();
-      xavfsizlikXatosi('001', 'Ctrl+Shift+I bosildi — DevTools Inspector blok.');
+      ogohlantirVaYop('001', 'Ctrl+Shift+I bosildi — DevTools Inspector blok.');
     }
 
     if (e.ctrlKey && e.shiftKey && k === 'j') {
       e.preventDefault();
-      xavfsizlikXatosi('002', 'Ctrl+Shift+J bosildi — DevTools Console blok.');
+      ogohlantirVaYop('002', 'Ctrl+Shift+J bosildi — DevTools Console blok.');
     }
 
     if (e.ctrlKey && e.shiftKey && k === 'c') {
       e.preventDefault();
-      xavfsizlikXatosi('003', 'Ctrl+Shift+C bosildi — Element Inspect blok.');
+      ogohlantirVaYop('003', 'Ctrl+Shift+C bosildi — Element Inspect blok.');
     }
 
     if (e.ctrlKey && e.shiftKey && k === 'k') {
       e.preventDefault();
-      xavfsizlikXatosi('004', 'Ctrl+Shift+K bosildi — Firefox Console blok.');
+      ogohlantirVaYop('004', 'Ctrl+Shift+K bosildi — Firefox Console blok.');
     }
 
     if (e.key === 'F12') {
       e.preventDefault();
-      xavfsizlikXatosi('005', 'F12 bosildi — DevTools blok.');
+      ogohlantirVaYop('005', 'F12 bosildi — DevTools blok.');
     }
 
     if (e.ctrlKey && k === 'u') {
+      e.preventDefault();
+      ogohlantirVaYop('006', 'Ctrl+U bosildi — Sahifa manbasini ko\'rish blok.');
+    }
+  });
+
+  document.addEventListener('contextmenu', function (e) {
+    e.preventDefault();
+    ogohlantirVaYop('007', 'O\'ng klik bosildi — Context menu blok.');
+  });
+
+  const LIMIT = 160;
+  setInterval(function () {
+    const dw = window.outerWidth - window.innerWidth;
+    const dh = window.outerHeight - window.innerHeight;
+    if (dw > LIMIT || dh > LIMIT) {
+      ogohlantirVaYop('008', 'DevTools oynasi aniqlandi — o\'lcham farqi ' + Math.max(dw, dh) + 'px.');
+    }
+  }, 700);
+
+})();
       e.preventDefault();
       xavfsizlikXatosi('006', 'Ctrl+U bosildi — Sahifa manbasini ko\'rish blok.');
     }
