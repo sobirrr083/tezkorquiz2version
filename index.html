@@ -1121,11 +1121,11 @@
         }
 
         .section-one .hero-btn {
-            padding: 10px 20px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            border-radius: 50px;
-            transition: all 0.3s ease;
+            padding: 14px 24px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            border-radius: 13px;
+            transition: all 0.25s ease;
             width: 100%;
             max-width: 200px;
             text-align: center;
@@ -1133,28 +1133,31 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            font-family: 'Nunito', 'Roboto', sans-serif;
         }
 
         .section-one .btn-light {
             background: white;
-            color: var(--primary-color);
+            color: #1a1a2e;
             border: none;
         }
 
         .section-one .btn-light:hover {
-            background: rgba(255, 255, 255, 0.9);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.92);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            color: #1a1a2e;
         }
 
         .section-one .btn-outline-light {
             border: 2px solid white;
             color: white;
+            background: transparent;
         }
 
         .section-one .btn-outline-light:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            color: white;
         }
 
         .section-one .hero-buttons-container {
@@ -1896,7 +1899,7 @@
         .cta-button {
             display: inline-block;
             background: #ffffff;
-            color: #4460ef;
+            color: #1a1a2e;
             padding: 13px 36px;
             border-radius: 8px;
             font-size: 1rem;
@@ -1912,7 +1915,7 @@
 
         .cta-button:hover {
             background: #fafaff;
-            color: #4460ef;
+            color: #1a1a2e;
         }
 
         .cta-button:active {
@@ -2102,7 +2105,7 @@
 
         .avz-cta-btn {
             display: inline-flex; align-items: center; justify-content: center;
-            gap: 10px; background: #ffffff; color: #4460ef;
+            gap: 10px; background: #ffffff; color: #1a1a2e;
             font-family: 'Nunito', sans-serif; font-size: 0.97rem; font-weight: 800;
             padding: 13px 24px; border-radius: 12px; text-decoration: none;
             border: none; cursor: pointer; margin-top: 24px;
@@ -2110,7 +2113,7 @@
             transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
             box-shadow: 0 6px 20px rgba(0,0,0,0.18); width: 100%;
         }
-        .avz-cta-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(0,0,0,0.22); background: #f0f4ff; }
+        .avz-cta-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(0,0,0,0.22); background: #f0f4ff; color: #1a1a2e; }
 
         @media (max-width: 992px) {
             .avzalliklar-grid { grid-template-columns: repeat(2, 1fr); gap: 22px; }
@@ -2712,7 +2715,7 @@
             position: relative;
             overflow: hidden;
             min-height: 300px;
-            transition: box-shadow 0.35s ease, transform 0.25s ease, opacity 0.55s cubic-bezier(0.22,1,0.36,1);
+            transition: box-shadow 0.35s ease, opacity 0.55s cubic-bezier(0.22,1,0.36,1);
             opacity: 0;
             transform: translateY(32px);
         }
@@ -2776,7 +2779,7 @@
         }
         .tq-card-right img.tq-img-loaded { opacity: 1; }
 
-        .tq-card-yaratish .tq-card-right  { right: -22px; bottom: -10px; }
+        .tq-card-yaratish .tq-card-right  { right: -10px; bottom: -10px; }
         .tq-card-yaratish .tq-card-right img { transform: rotate(-8deg); }
         .tq-card-boshlash .tq-card-right  { right: -10px; bottom: -10px; }
         .tq-card-boshlash .tq-card-right img { transform: rotate(12deg); }
@@ -2790,7 +2793,7 @@
             background: linear-gradient(145deg,#ede9fe 0%,#ddd6fe 40%,#e0e7ff 100%);
             box-shadow: 0 18px 45px rgba(124,58,237,0.1);
         }
-        .tq-card-yaratish:hover { box-shadow: 0 26px 64px rgba(124,58,237,0.18); transform: translateY(-3px); }
+        .tq-card-yaratish:hover { box-shadow: 0 26px 64px rgba(124,58,237,0.18); }
         .tq-card-yaratish .tq-blob { width:280px;height:280px;background:rgba(167,139,250,0.35);top:-80px;right:-80px;filter:blur(60px); }
         .tq-card-yaratish::before { content:'';position:absolute;inset:0;border-radius:28px;background:linear-gradient(145deg,rgba(255,255,255,0.6),rgba(255,255,255,0.2));pointer-events:none;z-index:1; }
         .tq-card-yaratish .tq-card-title { color:#4c1d95; }
@@ -2799,7 +2802,7 @@
             background: linear-gradient(145deg,#dbeafe 0%,#bfdbfe 40%,#e0f2fe 100%);
             box-shadow: 0 18px 45px rgba(29,78,216,0.1);
         }
-        .tq-card-boshlash:hover { box-shadow: 0 26px 64px rgba(29,78,216,0.18); transform: translateY(-3px); }
+        .tq-card-boshlash:hover { box-shadow: 0 26px 64px rgba(29,78,216,0.18); }
         .tq-card-boshlash .tq-blob { width:300px;height:300px;background:rgba(96,165,250,0.3);bottom:-90px;right:-80px;filter:blur(65px); }
         .tq-card-boshlash::before { content:'';position:absolute;inset:0;border-radius:28px;background:linear-gradient(145deg,rgba(255,255,255,0.6),rgba(255,255,255,0.2));pointer-events:none;z-index:1; }
         .tq-card-boshlash .tq-card-title { color:#1e3a8a; }
@@ -2808,7 +2811,7 @@
             background: linear-gradient(145deg,#d1fae5 0%,#a7f3d0 40%,#ccfbf1 100%);
             box-shadow: 0 18px 45px rgba(6,95,70,0.1);
         }
-        .tq-card-seg25:hover { box-shadow: 0 26px 64px rgba(6,95,70,0.18); transform: translateY(-3px); }
+        .tq-card-seg25:hover { box-shadow: 0 26px 64px rgba(6,95,70,0.18); }
         .tq-card-seg25 .tq-blob { width:270px;height:270px;background:rgba(52,211,153,0.3);top:-70px;right:-60px;filter:blur(60px); }
         .tq-card-seg25::before { content:'';position:absolute;inset:0;border-radius:28px;background:linear-gradient(145deg,rgba(255,255,255,0.6),rgba(255,255,255,0.2));pointer-events:none;z-index:1; }
         .tq-card-seg25 .tq-card-title { color:#064e3b; }
@@ -2817,7 +2820,7 @@
             background: linear-gradient(145deg,#fef3c7 0%,#fde68a 40%,#ffedd5 100%);
             box-shadow: 0 18px 45px rgba(180,83,9,0.1);
         }
-        .tq-card-segumm:hover { box-shadow: 0 26px 64px rgba(180,83,9,0.18); transform: translateY(-3px); }
+        .tq-card-segumm:hover { box-shadow: 0 26px 64px rgba(180,83,9,0.18); }
         .tq-card-segumm .tq-blob { width:290px;height:290px;background:rgba(251,191,36,0.3);bottom:-80px;left:-80px;filter:blur(65px); }
         .tq-card-segumm::before { content:'';position:absolute;inset:0;border-radius:28px;background:linear-gradient(145deg,rgba(255,255,255,0.6),rgba(255,255,255,0.2));pointer-events:none;z-index:1; }
         .tq-card-segumm .tq-card-title { color:#78350f; }
@@ -2832,7 +2835,7 @@
             .tq-card-title { font-size: 2rem; }
             .tq-card { min-height: 280px; padding: 44px 0 0 40px; }
             .tq-card-right img { width: 210px; height: 210px; }
-            .tq-card-yaratish .tq-card-right { right: -18px; bottom: -8px; }
+            .tq-card-yaratish .tq-card-right { right: -10px; bottom: -8px; }
             .tq-card-seg25 .tq-card-right    { right: -22px; bottom: -20px; }
             .tq-card-segumm .tq-card-right   { right: -22px; bottom: -20px; }
         }
@@ -2843,7 +2846,7 @@
             .tq-card-left { flex: 0 0 52%; }
             .tq-card-right { width: 48%; }
             .tq-card-right img { width: 215px; height: 215px; }
-            .tq-card-yaratish .tq-card-right { right: -16px; bottom: -10px; }
+            .tq-card-yaratish .tq-card-right { right: -10px; bottom: -10px; }
             .tq-card-seg25 .tq-card-right    { right: -20px; bottom: -20px; }
             .tq-card-segumm .tq-card-right   { right: -20px; bottom: -20px; }
             .tq-card-boshlash .tq-card-right { right: -10px; bottom: -10px; }
@@ -2855,7 +2858,7 @@
             .tq-card-left { flex: 0 0 50%; }
             .tq-card-right { width: 50%; }
             .tq-card-right img { width: 188px; height: 188px; }
-            .tq-card-yaratish .tq-card-right { right: -12px; bottom: -8px; }
+            .tq-card-yaratish .tq-card-right { right: -8px; bottom: -8px; }
             .tq-card-seg25 .tq-card-right    { right: -16px; bottom: -16px; }
             .tq-card-segumm .tq-card-right   { right: -16px; bottom: -16px; }
             .tq-card-boshlash .tq-card-right { right: -8px;  bottom: -8px; }
@@ -2865,7 +2868,7 @@
             .tq-card { padding: 26px 0 0 20px; min-height: 210px; }
             .tq-card-left { flex: 0 0 50%; }
             .tq-card-right img { width: 162px; height: 162px; }
-            .tq-card-yaratish .tq-card-right { right: -10px; bottom: -6px; }
+            .tq-card-yaratish .tq-card-right { right: -6px; bottom: -6px; }
             .tq-card-seg25 .tq-card-right    { right: -12px; bottom: -12px; }
             .tq-card-segumm .tq-card-right   { right: -12px; bottom: -12px; }
             .tq-card-boshlash .tq-card-right { right: -6px;  bottom: -6px; }
@@ -2879,7 +2882,7 @@
                 <a class="tq-card tq-card-yaratish" href="testyaratish">
                     <div class="tq-blob"></div>
                     <div class="tq-card-left">
-                        <h2 class="tq-card-title">Test Yaratish</h2>
+                        <h2 class="tq-card-title">Test yaratish</h2>
                     </div>
                     <div class="tq-card-right">
                         <img src="https://i.ibb.co/vW07PqT/28918018198981.png" alt="Test Yaratish" loading="lazy" decoding="async">
@@ -2890,7 +2893,7 @@
                 <a class="tq-card tq-card-boshlash" href="testni_boshlash">
                     <div class="tq-blob"></div>
                     <div class="tq-card-left">
-                        <h2 class="tq-card-title">Testni Boshlash</h2>
+                        <h2 class="tq-card-title">Testni boshlash</h2>
                     </div>
                     <div class="tq-card-right">
                         <img src="https://i.ibb.co/dHD1rN5/1861868168166.png" alt="Testni Boshlash" loading="lazy" decoding="async">
@@ -2912,7 +2915,7 @@
                 <a class="tq-card tq-card-segumm" href="segmentumumiy">
                     <div class="tq-blob"></div>
                     <div class="tq-card-left">
-                        <h2 class="tq-card-title">Segment Umumiy</h2>
+                        <h2 class="tq-card-title">Segment umumiy</h2>
                     </div>
                     <div class="tq-card-right">
                         <img src="https://i.ibb.co/QvqQfRtb/188282828181.png" alt="Segment Umumiy" loading="lazy" decoding="async">
