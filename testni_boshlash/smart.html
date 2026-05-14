@@ -27,6 +27,7 @@
 
   <link rel="icon" href="tg.png">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.10.0/lottie.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
@@ -42,6 +43,8 @@
       --incorrect-border: #dc3545;
       --progress-bg: #e9ecef;
       --stats-bg: #f8f9fa;
+      --new-test-bg: #eff6ff;
+      --new-test-hover: #dbe9ff;
       --toggle-bg: #ccc;
       --button-bg: #506eec;
       --button-hover: #3a5ad9;
@@ -63,6 +66,8 @@
       --incorrect-border: #ff5555;
       --progress-bg: #444444;
       --stats-bg: #3a3a3a;
+      --new-test-bg: #2d3a5e;
+      --new-test-hover: #3a4a72;
       --toggle-bg: #666;
       --button-bg: #5a74e8;
       --button-hover: #4a64d8;
@@ -77,7 +82,8 @@
       color: var(--text-color);
       overflow-x: hidden;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
+      align-items: center;
       min-height: 100vh;
       transition: all 0.3s ease;
       position: relative;
@@ -86,7 +92,7 @@
     .container {
       width: 90%;
       min-width: 320px;
-      margin: 20px auto;
+      margin: 10px auto 20px;
       background-color: var(--container-bg);
       padding: 20px;
       border-radius: 6px;
@@ -112,13 +118,14 @@
       min-height: 150px;
     }
     .question-text { font-weight: bold; margin-bottom: 10px; font-size: 16px; }
-    .options-container .option-item { margin-bottom: 8px; padding: 8px; border-radius: 4px; display: flex; align-items: flex-start; cursor: pointer; transition: all 0.2s ease; font-size: 14px; }
+    .options-container .option-item { margin-bottom: 8px; padding: 8px 10px; border-radius: 4px; display: flex; align-items: center; cursor: pointer; transition: all 0.2s ease; font-size: 14px; min-width: 0; word-break: break-word; }
+    .option-text { flex: 1; min-width: 0; word-break: break-word; line-height: 1.4; }
     .options-container .option-item:hover { background-color: var(--option-hover); }
     .options-container .option-item.correct { background-color: var(--correct-bg); border-left: 4px solid var(--correct-border); }
     .options-container .option-item.incorrect { background-color: var(--incorrect-bg); border-left: 4px solid var(--incorrect-border); }
     .option-checkbox { margin-right: 8px; flex-shrink: 0; }
     .option-text { flex-grow: 1; }
-    .check-icon { margin-right: 6px; font-weight: bold; margin-left: 6px; }
+    .check-icon { margin-left: 8px; flex-shrink: 0; display: flex; align-items: center; }
     @keyframes correctPulse {
       0% { transform: scale(1); }
       50% { transform: scale(1.005); }
@@ -176,33 +183,102 @@
     p { font-size: 14px; }
     #testCount { font-size: 16px; margin-bottom: 15px; }
     .toggle-container { display: flex; align-items: center; margin-top: 10px; }
-    .toggle-switch { position: relative; display: inline-block; width: 48px; height: 24px; margin-right: 8px; }
+    .toggle-switch { position: relative; display: inline-block; width: 48px; height: 24px; flex-shrink: 0; }
     .toggle-switch input { opacity: 0; width: 0; height: 0; }
     .toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--toggle-bg); transition: .4s; border-radius: 24px; }
     .toggle-slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
     input:checked + .toggle-slider { background-color: var(--button-bg); }
     input:checked + .toggle-slider:before { transform: translateX(24px); }
     .toggle-label { font-size: 14px; color: var(--text-color); }
-    .history-section { margin-top: 15px; width: 100%; }
-    .history-toggle { background-color: var(--button-bg); color: white; border: none; padding: 8px 12px; border-radius: 5px; font-size: 14px; cursor: pointer; width: 100%; text-align: left; transition: all 0.3s ease; }
-    .history-toggle:hover { background-color: var(--button-hover); }
-    .history-toggle.collapsed::after { content: " ▸"; }
-    .history-toggle:not(.collapsed)::after { content: " ▾"; }
-    .history-list { max-height: 0; overflow-y: auto; overflow-x: hidden; transition: max-height 0.3s ease-out; background-color: var(--history-bg); border-radius: 5px; margin-top: 5px; padding: 0; scrollbar-width: thin; scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track); }
-    .history-list::-webkit-scrollbar { width: 8px; }
+    .setting-card { display: flex; align-items: center; justify-content: space-between; background-color: #f0f0f0; border-radius: 8px; padding: 10px 14px; margin-top: 10px; cursor: pointer; transition: background 0.2s ease; user-select: none; }
+    [data-theme="dark"] .setting-card { background-color: #3e3e3e; }
+    .setting-card:hover { filter: brightness(0.97); }
+    .setting-card .toggle-label { flex: 1; margin-right: 10px; display: block; }
+    .setting-card .toggle-switch { margin: 0; flex-shrink: 0; }
+    .setting-info { font-size: 12px; color: #999; margin: 4px 2px 8px 2px; line-height: 1.4; }
+    /* === HISTORY ACCORDION (same style as settings) === */
+    .history-section { margin-top: 10px; width: 100%; }
+    .history-acc-btn {
+      display: flex; align-items: center; justify-content: space-between;
+      width: 100%; background: var(--new-test-bg); color: var(--text-color);
+      border: none; border-radius: 8px; padding: 11px 16px;
+      font-size: 14px; font-weight: 600; cursor: pointer;
+      transition: background .25s, border-radius .3s; user-select: none;
+    }
+    .history-acc-btn:hover { background: var(--new-test-hover); }
+    [data-theme="dark"] .history-acc-btn { background: var(--new-test-bg); }
+    [data-theme="dark"] .history-acc-btn:hover { background: var(--new-test-hover); }
+    .history-acc-btn .acc-left { display: flex; align-items: center; gap: 8px; }
+    .history-acc-btn .acc-arrow { font-size: 13px; transition: transform .3s ease; }
+    .history-acc-btn.open { border-radius: 8px 8px 0 0; }
+    .history-acc-btn.open .acc-arrow { transform: rotate(180deg); }
+    .history-acc-content {
+      max-height: 0; overflow: hidden;
+      transition: max-height .4s cubic-bezier(.4,0,.2,1);
+      background: var(--stats-bg); border-radius: 0 0 8px 8px;
+      border: 1px solid var(--progress-bg); border-top: none;
+    }
+    .history-acc-content.open { max-height: 250px; }
+    .history-list {
+      overflow-y: auto; overflow-x: hidden; max-height: 220px;
+      padding: 6px 10px; scrollbar-width: thin;
+      scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+    }
+    .history-list::-webkit-scrollbar { width: 6px; }
     .history-list::-webkit-scrollbar-track { background: var(--scrollbar-track); border-radius: 5px; }
     .history-list::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 5px; }
-    .history-list::-webkit-scrollbar-thumb:hover { background: var(--button-hover); }
-    .history-list.visible { max-height: 150px; padding: 10px; transition: max-height 0.3s ease-in; }
-    .history-item { padding: 5px 10px; font-size: 13px; color: var(--text-color); border-bottom: 1px solid var(--progress-bg); display: flex; justify-content: space-between; align-items: center; opacity: 0; animation: fadeIn 0.3s ease forwards; transition: all 0.3s ease; }
+    .history-item { padding: 7px 8px; font-size: 13px; color: var(--text-color); border-bottom: 1px solid var(--progress-bg); display: flex; flex-direction: column; align-items: flex-start; gap: 2px; opacity: 0; animation: fadeIn 0.3s ease forwards; transition: background 0.2s ease; border-radius: 5px; }
     .history-item:last-child { border-bottom: none; }
-    .history-item:hover { background-color: var(--history-hover); transform: translateX(5px); }
+    .history-item:hover { background-color: var(--history-hover); }
+    .history-item-name { font-size: 13px; color: var(--text-color); word-break: break-word; line-height: 1.4; }
+    .history-item-date { font-size: 11px; color: #999; }
+
+    /* === TOAST === */
+    #toast-container { position:fixed; bottom:16px; left:16px; z-index:99999; display:flex; flex-direction:column; gap:9px; pointer-events:none; max-width:300px; width:calc(100vw - 32px); }
+    .toast-item { display:flex; align-items:center; gap:10px; background:var(--container-bg); border-radius:13px; padding:11px 14px; box-shadow:0 8px 24px rgba(0,0,0,.14); border-left:4px solid var(--button-bg); pointer-events:all; transform:translateX(-110%); opacity:0; transition:transform .32s cubic-bezier(.4,0,.2,1),opacity .32s ease; }
+    .toast-item.show { transform:translateX(0); opacity:1; }
+    .toast-item.hide { transform:translateX(-110%); opacity:0; }
+    .toast-item.t-success { border-left-color:#10b981; }
+    .toast-item.t-error { border-left-color:#ef4444; }
+    .toast-item.t-info { border-left-color:var(--button-bg); }
+    .toast-item.t-warning { border-left-color:#f59e0b; }
+    .toast-item.t-combo { border-left-color:#f59e0b; background:linear-gradient(135deg,var(--stats-bg),var(--container-bg)); }
+    .toast-icon { width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; }
+    .t-success .toast-icon { background:#d1fae5; color:#059669; }
+    .t-error .toast-icon { background:#fee2e2; color:#dc2626; }
+    .t-info .toast-icon { background:#e0e7ff; color:var(--button-bg); }
+    .t-warning .toast-icon { background:#fef3c7; color:#d97706; }
+    .t-combo .toast-icon { background:#fef3c7; color:#f59e0b; font-size:17px; }
+    .toast-body { flex:1; min-width:0; }
+    .toast-title { font-size:.8rem; font-weight:700; color:var(--text-color); }
+    .toast-msg { font-size:.76rem; color:#94a3b8; margin-top:2px; line-height:1.4; }
+    .toast-close { background:none; border:none; cursor:pointer; color:#94a3b8; font-size:13px; padding:2px; flex-shrink:0; transition:color .2s; }
+    .toast-close:hover { color:#475569; }
+
+    /* === LOAD MORE BANNER === */
+    .load-more-banner {
+      background: linear-gradient(135deg, var(--stats-bg), var(--container-bg));
+      border: 1.5px solid var(--progress-bg);
+      border-radius: 12px; padding: 18px 16px; text-align: center;
+      margin: 10px 0 18px; position: relative;
+    }
+    .load-more-banner .lmb-stats {
+      font-size: 13px; color: var(--text-color); margin-bottom: 10px; line-height: 1.6;
+    }
+    .load-more-banner .lmb-stats strong { color: var(--button-bg); }
+    .load-more-btn {
+      background: var(--button-bg); color: white; border: none;
+      padding: 9px 22px; border-radius: 20px; font-size: 14px; font-weight: 600;
+      cursor: pointer; transition: background .25s, transform .2s;
+      display: inline-flex; align-items: center; gap: 7px;
+    }
+    .load-more-btn:hover { background: var(--button-hover); transform: translateY(-1px); }
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(-5px); }
       to { opacity: 1; transform: translateY(0); }
     }
     .option-letter { display: none; }
-    .theme-toggle-container { display: flex; align-items: center; justify-content: flex-end; margin-bottom: 20px; }
+    .ux-description { font-size: 13px; color: #888; margin-top: 4px; margin-bottom: 0; line-height: 1.5; }
     #fireworksCanvas {
       position: fixed;
       top: 0;
@@ -212,35 +288,314 @@
       pointer-events: none;
       z-index: 999; /* Below backToTop but above content */
     }
+    /* === BREADCRUMB === */
+    .breadcrumb-wrapper { padding: 0 0 0; }
+    .breadcrumb-nav-container {
+      background: var(--container-bg);
+      padding: .55rem 1.1rem;
+      border-radius: 10px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.08);
+      margin-bottom: 1rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s ease;
+    }
+    .breadcrumb-nav-container::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg,rgba(80,110,236,0) 0%,rgba(80,110,236,0) 44%,rgba(80,110,236,.5) 48%,rgba(80,110,236,1) 50%,rgba(80,110,236,.5) 52%,rgba(80,110,236,0) 56%,rgba(80,110,236,0) 100%);
+      background-size: 200% 100%;
+      animation: bcshimmer 5s linear infinite;
+      border-radius: 0 0 10px 10px;
+    }
+    @keyframes bcshimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+    .bc-list {
+      margin: 0; padding: 0;
+      display: flex; flex-wrap: nowrap;
+      align-items: center; list-style: none;
+      overflow-x: auto; scrollbar-width: none;
+    }
+    .bc-list::-webkit-scrollbar { display: none; }
+    .bc-item { display: inline-flex; align-items: center; white-space: nowrap; }
+    .bc-item a {
+      color: #555;
+      text-decoration: none;
+      padding: .28rem .52rem;
+      border-radius: 6px;
+      font-size: .83rem;
+      font-weight: 500;
+      transition: background .2s, color .2s;
+    }
+    [data-theme="dark"] .bc-item a { color: #aaa; }
+    .bc-item a:hover { background: #e7f0ff; color: #506eec; }
+    [data-theme="dark"] .bc-item a:hover { background: #444; color: #7a9af7; }
+    .bc-item + .bc-item::before {
+      content: "/";
+      color: #cbd5e0;
+      padding: 0 .28rem;
+      font-size: .83rem;
+    }
+    [data-theme="dark"] .bc-item + .bc-item::before { color: #555; }
+
+    /* === SETTINGS ACCORDION === */
+    .settings-acc-wrapper { margin-top: 14px; }
+    .settings-acc-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      background: var(--new-test-bg);
+      color: var(--text-color);
+      border: none;
+      border-radius: 8px;
+      padding: 11px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .25s, border-radius .3s;
+      user-select: none;
+    }
+    .settings-acc-btn:hover { background: var(--new-test-hover); }
+    [data-theme="dark"] .settings-acc-btn { background: var(--new-test-bg); }
+    [data-theme="dark"] .settings-acc-btn:hover { background: var(--new-test-hover); }
+    .settings-acc-btn .acc-left { display: flex; align-items: center; gap: 8px; }
+    .settings-acc-btn .acc-arrow {
+      font-size: 13px;
+      transition: transform .3s ease;
+    }
+    .settings-acc-btn.open { border-radius: 8px 8px 0 0; }
+    .settings-acc-btn.open .acc-arrow { transform: rotate(180deg); }
+    .settings-acc-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .4s cubic-bezier(.4,0,.2,1);
+      background: var(--stats-bg);
+      border-radius: 0 0 8px 8px;
+      border: 1px solid var(--progress-bg);
+      border-top: none;
+    }
+    .settings-acc-content.open { max-height: 700px; }
+    .settings-acc-inner { padding: 10px 10px 4px; }
+
+    /* === UPLOAD AREA (Drag & Drop) === */
+    .upload-area {
+      border: 2px dashed #b8c4d8;
+      border-radius: 16px;
+      padding: 42px 20px;
+      cursor: pointer;
+      transition: border-color .25s, background .25s;
+      background: var(--stats-bg);
+      text-align: center;
+      margin-bottom: 6px;
+    }
+    .upload-area:hover { border-color: var(--button-bg); background: rgba(80,110,236,.05); }
+    .upload-area.dragover { border-color: var(--button-bg); background: rgba(80,110,236,.10); }
+    [data-theme="dark"] .upload-area { background: var(--stats-bg); border-color: #555; }
+    [data-theme="dark"] .upload-area:hover { border-color: var(--button-bg); background: rgba(90,116,232,.08); }
+    .upload-icon { font-size: 3rem; color: #94a3b8; margin-bottom: 14px; display: block; }
+    .upload-text { font-size: 1.05rem; font-weight: 600; color: #475569; margin-bottom: 6px; }
+    [data-theme="dark"] .upload-text { color: #94a3b8; }
+    .upload-subtext { color: #94a3b8; font-size: .875rem; }
+
+    /* === CLEAR DATA CARD === */
+    .clear-data-card {
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--container-bg); border: 1px solid var(--progress-bg); border-radius: 8px;
+      padding: 11px 14px; margin-top: 8px; cursor: pointer;
+      transition: background .2s ease; user-select: none;
+    }
+    [data-theme="dark"] .clear-data-card { background: var(--container-bg); border-color: var(--progress-bg); }
+    .clear-data-card:hover { background: var(--stats-bg); }
+    [data-theme="dark"] .clear-data-card:hover { background: var(--stats-bg); }
+    .clear-data-card-left { flex: 1; margin-right: 12px; }
+    .clear-data-card-label { font-size: 14px; font-weight: 600; color: #dc2626; display: block; margin-bottom: 2px; }
+    [data-theme="dark"] .clear-data-card-label { color: #f87171; }
+    .clear-data-card-desc { font-size: 12px; color: #f87171; line-height: 1.4; }
+    [data-theme="dark"] .clear-data-card-desc { color: #fca5a5; }
+    .clear-data-icon { color: #dc2626; font-size: 16px; flex-shrink: 0; }
+    [data-theme="dark"] .clear-data-icon { color: #f87171; }
+
+    /* === CLEAR CONFIRM MODAL === */
+    .clear-modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,.45); z-index: 99998;
+      justify-content: center; align-items: center;
+    }
+    .clear-modal-overlay.active { display: flex; }
+    .clear-modal-box {
+      background: var(--container-bg); border-radius: 16px;
+      padding: 28px 24px; max-width: 340px; width: 90%;
+      text-align: center; box-shadow: 0 12px 40px rgba(0,0,0,.2);
+    }
+    .clear-modal-icon { font-size: 36px; margin-bottom: 12px; }
+    .clear-modal-title { font-size: 17px; font-weight: 700; color: #dc2626; margin-bottom: 8px; }
+    [data-theme="dark"] .clear-modal-title { color: #f87171; }
+    .clear-modal-desc { font-size: 13px; color: #64748b; line-height: 1.6; margin-bottom: 20px; }
+    .clear-modal-countdown {
+      font-size: 28px; font-weight: 800; color: #dc2626;
+      margin-bottom: 16px; min-height: 40px;
+    }
+    [data-theme="dark"] .clear-modal-countdown { color: #f87171; }
+    .clear-modal-progress {
+      height: 6px; background: #fecdd3; border-radius: 3px;
+      margin-bottom: 20px; overflow: hidden;
+    }
+    .clear-modal-progress-bar {
+      height: 100%; background: #dc2626; border-radius: 3px;
+      width: 100%; transition: width 1s linear;
+    }
+    .clear-modal-btns { display: flex; gap: 10px; justify-content: center; }
+    .clear-modal-cancel {
+      flex: 1; padding: 10px; border: 1px solid var(--progress-bg);
+      background: transparent; color: var(--text-color); border-radius: 8px;
+      font-size: 14px; font-weight: 600; cursor: pointer; transition: background .2s;
+    }
+    .clear-modal-cancel:hover { background: var(--progress-bg); }
+    .clear-modal-confirm {
+      flex: 1; padding: 10px; border: none;
+      background: #dc2626; color: white; border-radius: 8px;
+      font-size: 14px; font-weight: 600; cursor: pointer; transition: background .2s;
+      opacity: 0.5; pointer-events: none;
+    }
+    .clear-modal-confirm.ready { opacity: 1; pointer-events: all; }
+    .clear-modal-confirm.ready:hover { background: #b91c1c; }
+    .setting-card-desc {
+      font-size: 12px;
+      color: #999;
+      line-height: 1.4;
+      margin-top: 3px;
+    }
+    [data-theme="dark"] .setting-card-desc { color: #777; }
+    .setting-card-left { flex: 1; margin-right: 12px; }
+    /* Breadcrumb responsive width matching container */
+    #bcWrapper {
+      width: 90%;
+      min-width: 320px;
+      margin: 18px auto 0;
+    }
+    @media (min-width: 768px) { #bcWrapper { width: 70%; } }
+    @media (min-width: 992px) { #bcWrapper { width: 50%; } }
   </style>
 </head>
 <body>
 <canvas id="fireworksCanvas"></canvas>
-<div class="container">
-  <div class="theme-toggle-container">
-    <label class="toggle-switch">
-      <input type="checkbox" id="themeToggle" />
-      <span class="toggle-slider"></span>
-    </label>
-    <span class="toggle-label">Tungi rejim</span>
+<div id="toast-container"></div>
+
+<div class="clear-modal-overlay" id="clearModalOverlay">
+  <div class="clear-modal-box">
+    <div class="clear-modal-title">Ma'lumotlarni tozalash</div>
+    <div class="clear-modal-desc">Barcha saqlangan ma'lumotlar (fayl tarixi, sozlamalar, kesh) o'chiriladi. Bu amalni qaytarib bo'lmaydi.</div>
+    <div class="clear-modal-countdown" id="clearCountdown">5</div>
+    <div class="clear-modal-progress"><div class="clear-modal-progress-bar" id="clearProgressBar"></div></div>
+    <div class="clear-modal-btns">
+      <button class="clear-modal-cancel" onclick="cancelClear()">Bekor qilish</button>
+      <button class="clear-modal-confirm" id="clearConfirmBtn" onclick="confirmClear()">O'chirish</button>
+    </div>
   </div>
-  <h1 class="text-center mb-4">Smart Quiz</h1>
+</div>
+
+<div class="breadcrumb-wrapper" id="bcWrapper">
+  <div class="breadcrumb-nav-container">
+    <nav aria-label="Navigatsiya">
+      <ol class="bc-list">
+        <li class="bc-item"><a href="/"><i class="fas fa-home" style="margin-right:4px;font-size:.78rem"></i>Bosh sahifa</a></li>
+        <li class="bc-item"><a href="/testni_boshlash">Testni boshlash</a></li>
+        <li class="bc-item"><a href="/testni_boshlash/smart">Smart Quiz</a></li>
+      </ol>
+    </nav>
+  </div>
+</div>
+
+<div class="container">
+  <h1 class="text-center mb-1">Smart Quiz</h1>
+  <p class="text-center ux-description mb-3">Faylni yuklang, variantlarni tanlang — javoblar avtomatik tekshiriladi va natijangiz ko'rsatiladi.</p>
   <div class="mb-3" id="fileSection">
-    <label for="fileInput" class="form-label file-label">Fayl tanlash (.txt)</label>
-    <input type="file" class="form-control" id="fileInput" accept=".txt" />
+    <div class="upload-area" id="uploadArea">
+      <i class="fas fa-cloud-upload-alt upload-icon"></i>
+      <div class="upload-text">Test faylini yuklash uchun bosing yoki shu yerga tashlang</div>
+      <div class="upload-subtext">.txt formatda faylni tanlang</div>
+    </div>
+    <input type="file" id="fileInput" accept=".txt" style="display:none" />
     <div id="uploadStatus"></div>
-    <p>Fayl yuklangach testlarni barchasi belgilanmaguncha fayl tanlash ochilmaydi</p>
-    <div class="toggle-container">
-      <label class="toggle-switch">
-        <input type="checkbox" id="autoScrollToggle" checked>
-        <span class="toggle-slider"></span>
-      </label>
-      <span class="toggle-label">Avtomatik pastga tushish</span>
+
+    <div class="settings-acc-wrapper">
+      <button class="settings-acc-btn open" id="settingsAccBtn" onclick="toggleSettingsAcc()">
+        <span class="acc-left">
+          <i class="fas fa-sliders-h"></i> Test sozlamalari
+        </span>
+        <i class="fas fa-chevron-down acc-arrow"></i>
+      </button>
+      <div class="settings-acc-content open" id="settingsAccContent">
+        <div class="settings-acc-inner">
+
+          <div class="setting-card" onclick="toggleCard('autoScrollToggle')">
+            <div class="setting-card-left">
+              <span class="toggle-label">Avtomatik pastga tushish</span>
+              <div class="setting-card-desc">Variantni tanlagach sahifa avtomatik keyingi savolga siljiydi.</div>
+            </div>
+            <label class="toggle-switch" onclick="event.stopPropagation()">
+              <input type="checkbox" id="autoScrollToggle" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <div class="setting-card" onclick="toggleCard('themeToggle')">
+            <div class="setting-card-left">
+              <span class="toggle-label">Tungi rejim</span>
+              <div class="setting-card-desc">Qorong'uda qulay o'qish uchun qoʻngʻir fon va yumshoq ranglar yonadi.</div>
+            </div>
+            <label class="toggle-switch" onclick="event.stopPropagation()">
+              <input type="checkbox" id="themeToggle" />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <div class="setting-card" onclick="toggleCard('fireworksToggle')">
+            <div class="setting-card-left">
+              <span class="toggle-label">Salyut (to'g'ri javobda)</span>
+              <div class="setting-card-desc">To'g'ri javob berganda qisqa konfetti animatsiyasi ko'rsatiladi.</div>
+            </div>
+            <label class="toggle-switch" onclick="event.stopPropagation()">
+              <input type="checkbox" id="fireworksToggle" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <div class="setting-card" onclick="toggleCard('smartScrollToggle')">
+            <div class="setting-card-left">
+              <span class="toggle-label">Faqat to'g'ri javobda scroll</span>
+              <div class="setting-card-desc">Noto'g'ri javob belgilansa shu joyda qoladi; faqat to'g'ri javobda keyingi savolga siljiydi.</div>
+            </div>
+            <label class="toggle-switch" onclick="event.stopPropagation()">
+              <input type="checkbox" id="smartScrollToggle">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <div class="clear-data-card" onclick="openClearModal()">
+            <div class="clear-data-card-left">
+              <span class="clear-data-card-label">Ma'lumotlarni tozalash</span>
+              <div class="clear-data-card-desc">Fayl tarixi, sozlamalar va kesh ma'lumotlari o'chiriladi.</div>
+            </div>
+            <i class="fas fa-trash-alt clear-data-icon"></i>
+          </div>
+
+        </div>
+      </div>
     </div>
   </div>
   <div class="history-section" id="historySection">
-    <button class="history-toggle collapsed" id="historyToggle">Fayl tarixi</button>
-    <div class="history-list" id="historyList"></div>
+    <button class="history-acc-btn" id="historyToggle" onclick="toggleHistoryAcc()">
+      <span class="acc-left">
+        <i class="fas fa-history"></i> Fayl tarixi
+      </span>
+      <i class="fas fa-chevron-down acc-arrow"></i>
+    </button>
+    <div class="history-acc-content" id="historyAccContent">
+      <div class="history-list" id="historyList"></div>
+    </div>
   </div>
   <div id="quizList" style="display: none;">
     <p id="testCount" class="text-success fw-bold"></p>
@@ -275,7 +630,7 @@
     </div>
   </div>
 </div>
-<button id="backToTop" title="Yuqoriga qaytish">🔼</button>
+<button id="backToTop" title="Yuqoriga qaytish"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18,15 12,9 6,15"/></svg></button>
   <!-- protect java -->
   <script type="module" src="/js/protect.js"></script>
   <!-- xavsizlik kodi -->
@@ -314,9 +669,107 @@
   const percentageCorrectEl = document.getElementById("percentageCorrect");
   const themeToggle = document.getElementById("themeToggle");
 
+  function toggleCard(id) {
+    const el = document.getElementById(id);
+    el.checked = !el.checked;
+    el.dispatchEvent(new Event('change'));
+  }
+
+  function toggleSettingsAcc() {
+    const btn = document.getElementById('settingsAccBtn');
+    const content = document.getElementById('settingsAccContent');
+    btn.classList.toggle('open');
+    content.classList.toggle('open');
+  }
+
+  function toggleHistoryAcc() {
+    const btn = document.getElementById('historyToggle');
+    const content = document.getElementById('historyAccContent');
+    btn.classList.toggle('open');
+    content.classList.toggle('open');
+  }
+
+  let clearTimer = null;
+  let clearInterval = null;
+
+  function openClearModal() {
+    document.getElementById('clearModalOverlay').classList.add('active');
+    const countdown = document.getElementById('clearCountdown');
+    const bar = document.getElementById('clearProgressBar');
+    const btn = document.getElementById('clearConfirmBtn');
+    let secs = 5;
+    countdown.textContent = secs;
+    bar.style.transition = 'none';
+    bar.style.width = '100%';
+    btn.classList.remove('ready');
+    setTimeout(() => {
+      bar.style.transition = 'width 5s linear';
+      bar.style.width = '0%';
+    }, 50);
+    clearInterval = setInterval(() => {
+      secs--;
+      countdown.textContent = secs;
+      if (secs <= 0) {
+        clearInterval2();
+        btn.classList.add('ready');
+        countdown.textContent = '✓';
+      }
+    }, 1000);
+  }
+
+  function clearInterval2() {
+    if (clearInterval) { window.clearInterval(clearInterval); clearInterval = null; }
+  }
+
+  function cancelClear() {
+    clearInterval2();
+    document.getElementById('clearModalOverlay').classList.remove('active');
+  }
+
+  function confirmClear() {
+    localStorage.clear();
+    if ('caches' in window) { caches.keys().then(keys => keys.forEach(k => caches.delete(k))); }
+    document.getElementById('clearModalOverlay').classList.remove('active');
+    showToast("Tozalandi!", 'success', "Barcha ma'lumotlar o'chirildi.", 3000);
+    loadFileHistory();
+    // Reset toggles to default
+    autoScrollToggle.checked = true;
+    document.getElementById('themeToggle').checked = false;
+    document.documentElement.setAttribute('data-theme', 'light');
+    document.getElementById('fireworksToggle').checked = true;
+    document.getElementById('smartScrollToggle').checked = false;
+  }
+
+  /* ===== TOAST SYSTEM ===== */
+  function showToast(title, type, msg, duration) {
+    type = type || 'info'; duration = duration || 3200;
+    const icons = { success:'fa-check', error:'fa-times', info:'fa-info', warning:'fa-exclamation', combo:'fa-fire' };
+    const container = document.getElementById('toast-container');
+    const el = document.createElement('div');
+    el.className = `toast-item t-${type}`;
+    el.innerHTML = `
+      <div class="toast-icon"><i class="fas ${icons[type]||'fa-info'}"></i></div>
+      <div class="toast-body">
+        <div class="toast-title">${title}</div>
+        ${msg ? `<div class="toast-msg">${msg}</div>` : ''}
+      </div>
+      <button class="toast-close" onclick="this.closest('.toast-item').remove()"><i class="fas fa-times"></i></button>
+    `;
+    container.appendChild(el);
+    requestAnimationFrame(() => { requestAnimationFrame(() => { el.classList.add('show'); }); });
+    setTimeout(() => {
+      el.classList.remove('show'); el.classList.add('hide');
+      setTimeout(() => el.remove(), 380);
+    }, duration);
+  }
+
   let lottieAnimation = null;
   let tests = [];
   let stats = { correct: 0, incorrect: 0, total: 0 };
+  let comboCount = 0;
+  let loadedCount = 0;
+  const BATCH = 100;
+  const COMBO_MILESTONES = [3, 5, 10, 15, 20];
 
   const animationFiles = [
     './json/buy.json',
@@ -394,6 +847,18 @@
     localStorage.setItem("autoScrollEnabled", this.checked);
   });
 
+  const fireworksToggle = document.getElementById("fireworksToggle");
+  fireworksToggle.checked = localStorage.getItem("fireworksEnabled") !== "false";
+  fireworksToggle.addEventListener("change", function() {
+    localStorage.setItem("fireworksEnabled", this.checked);
+  });
+
+  const smartScrollToggle = document.getElementById("smartScrollToggle");
+  smartScrollToggle.checked = localStorage.getItem("smartScrollEnabled") === "true";
+  smartScrollToggle.addEventListener("change", function() {
+    localStorage.setItem("smartScrollEnabled", this.checked);
+  });
+
   window.onscroll = function() { updateBackToTopButton(); };
 
   function getRandomAnimation() {
@@ -436,23 +901,47 @@
     quizList.style.display = "none";
     questionsContainer.innerHTML = "";
     stats = { correct: 0, incorrect: 0, total: 0 };
+    comboCount = 0;
+    loadedCount = 0;
     const selectedAnimation = getRandomAnimation();
     loadLottieAnimation(selectedAnimation);
     fileInput.disabled = false;
+    document.getElementById('uploadArea').classList.remove('dragover');
     updateBackToTopButton();
+    showToast("Yangi test!", 'info', "Fayl tanlang va boshlang.", 2800);
   });
+
+  function formatHistoryDate(timestamp) {
+    const now = new Date();
+    const d = new Date(timestamp);
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const yesterdayStart = new Date(todayStart - 86400000);
+    if (d >= todayStart) {
+      return 'Bugun ' + d.toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' });
+    } else if (d >= yesterdayStart) {
+      return 'Kecha ' + d.toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' });
+    } else if (d.getFullYear() === now.getFullYear()) {
+      return d.toLocaleDateString('uz-UZ', { day: 'numeric', month: 'short' }) + ' ' + d.toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' });
+    } else {
+      return d.toLocaleDateString('uz-UZ', { year: 'numeric', day: 'numeric', month: 'short' }) + ' ' + d.toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' });
+    }
+  }
 
   function loadFileHistory() {
     const history = JSON.parse(localStorage.getItem("fileHistory")) || [];
     const historyList = document.getElementById("historyList");
     historyList.innerHTML = "";
-    history.reverse().forEach((item, index) => {
+    if (history.length === 0) {
+      historyList.innerHTML = `<div style="padding:14px 10px;text-align:center;color:#94a3b8;font-size:13px;"><i class="fas fa-folder-open" style="font-size:22px;margin-bottom:6px;display:block;opacity:.5"></i>Hali hech qanday fayl yuklanmagan</div>`;
+      return;
+    }
+    history.forEach((item, index) => {
       const historyItem = document.createElement("div");
       historyItem.className = "history-item";
       historyItem.style.animationDelay = `${index * 0.1}s`;
       historyItem.innerHTML = `
-        <span>${item.name}</span>
-        <span style="font-size: 11px; color: #777;">${new Date(item.timestamp).toLocaleString("uz-UZ")}</span>
+        <span class="history-item-name" ${index === 0 ? 'style="font-weight:bold"' : ''}>${item.name}</span>
+        <span class="history-item-date">${formatHistoryDate(item.timestamp)}</span>
       `;
       historyList.appendChild(historyItem);
     });
@@ -466,18 +955,38 @@
     loadFileHistory();
   }
 
-  fileInput.addEventListener("change", (e) => {
-    const file = e.target.files[0];
+  const uploadArea = document.getElementById('uploadArea');
+
+  ['dragenter','dragover','dragleave','drop'].forEach(ev =>
+    uploadArea.addEventListener(ev, e => { e.preventDefault(); e.stopPropagation(); })
+  );
+  uploadArea.addEventListener('dragenter', () => uploadArea.classList.add('dragover'));
+  uploadArea.addEventListener('dragover',  () => uploadArea.classList.add('dragover'));
+  uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
+  uploadArea.addEventListener('drop', e => {
+    uploadArea.classList.remove('dragover');
+    const files = e.dataTransfer.files;
+    if (files && files[0]) {
+      handleFileLoad(files[0]);
+    }
+  });
+  uploadArea.addEventListener('click', () => { if (!fileInput.disabled) fileInput.click(); });
+
+  function handleFileLoad(file) {
     if (!file) return;
     uploadStatus.textContent = "Fayl yuklanmoqda...";
     saveFileToHistory(file.name);
     const reader = new FileReader();
-    reader.onload = (ev) => {
-      parseTestFile(ev.target.result);
-    };
+    reader.onload = (ev) => { parseTestFile(ev.target.result); };
     reader.readAsText(file);
     stats = { correct: 0, incorrect: 0, total: 0 };
     quizCompletionSection.style.display = "none";
+  }
+
+  fileInput.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    handleFileLoad(file);
   });
 
   function shuffleArray(array) {
@@ -539,85 +1048,177 @@
         };
       });
       uploadStatus.textContent = "Fayl yuklandi!";
+      document.getElementById('settingsAccBtn').classList.remove('open');
+      document.getElementById('settingsAccContent').classList.remove('open');
+      document.getElementById('historyToggle').classList.remove('open');
+      document.getElementById('historyAccContent').classList.remove('open');
       fileInput.disabled = true;
       stats.total = tests.length;
+      showToast('Fayl yuklandi!', 'success', `${tests.length} ta savol topildi. Boshlang!`, 3000);
       showTests();
     } else {
       uploadStatus.textContent = "Xatolik: Test ma'lumotlari topilmadi yoki noto'g'ri format!";
     }
   }
 
+  function renderQuestionItem(test, index) {
+    const questionDiv = document.createElement("div");
+    questionDiv.className = "question-container";
+    questionDiv.id = `question-${index}`;
+    questionDiv.style.minHeight = "150px";
+    const qText = document.createElement("div");
+    qText.className = "question-text";
+    qText.textContent = (index + 1) + ". " + test.question;
+    questionDiv.appendChild(qText);
+    const optionsDiv = document.createElement("div");
+    optionsDiv.className = "options-container";
+    optionsDiv.style.position = "relative";
+    optionsDiv.style.zIndex = "2";
+
+    test.options.forEach((opt, optIndex) => {
+      const optionItem = document.createElement("div");
+      optionItem.className = "option-item";
+      optionItem.dataset.questionIndex = index;
+      optionItem.dataset.optionIndex = optIndex;
+
+      const customCheckbox = document.createElement("div");
+      customCheckbox.className = "custom-checkbox";
+      const checkmark = document.createElement("span");
+      checkmark.className = "checkmark";
+      checkmark.innerHTML = "✓";
+      customCheckbox.appendChild(checkmark);
+
+      const optionText = document.createElement("div");
+      optionText.className = "option-text";
+      const letterSpan = document.createElement("span");
+      letterSpan.className = "option-letter";
+      letterSpan.textContent = String.fromCharCode(65 + optIndex) + ".";
+      optionText.appendChild(letterSpan);
+      optionText.appendChild(document.createTextNode(" " + opt));
+
+      optionItem.appendChild(customCheckbox);
+      optionItem.appendChild(optionText);
+
+      optionItem.addEventListener("click", function() {
+        if (optionItem.classList.contains("correct") || optionItem.classList.contains("incorrect")) return;
+        customCheckbox.classList.add("checked");
+        const siblingOptions = optionsDiv.querySelectorAll(".option-item");
+        siblingOptions.forEach(sibling => {
+          if (sibling !== optionItem) {
+            sibling.querySelector(".custom-checkbox").classList.remove("checked");
+          }
+        });
+        checkAnswer(index, optIndex);
+        const isCorrect = (optIndex === (tests[index].answer.charCodeAt(0) - 65));
+        const smartScroll = document.getElementById('smartScrollToggle').checked;
+        if (autoScrollToggle.checked) {
+          const shouldScroll = !smartScroll || isCorrect;
+          if (shouldScroll) {
+            setTimeout(() => {
+              // if next question not loaded yet, load more first
+              ensureQuestionLoaded(index + 1, () => {
+                const nextQuestion = document.getElementById(`question-${index + 1}`);
+                if (nextQuestion) nextQuestion.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              });
+            }, 800);
+          }
+        }
+      });
+      optionsDiv.appendChild(optionItem);
+    });
+    questionDiv.appendChild(optionsDiv);
+    return questionDiv;
+  }
+
+  function ensureQuestionLoaded(idx, cb) {
+    if (idx < loadedCount) { if (cb) cb(); return; }
+    loadMoreQuestions(BATCH, cb);
+  }
+
+  function removeSentinel() {
+    const s = document.getElementById('load-sentinel');
+    if (s) s.remove();
+    const b = document.getElementById('load-more-banner');
+    if (b) b.remove();
+  }
+
+  function loadMoreQuestions(count, cb) {
+    removeSentinel();
+    const start = loadedCount;
+    const end = Math.min(start + count, tests.length);
+    for (let i = start; i < end; i++) {
+      questionsContainer.appendChild(renderQuestionItem(tests[i], i));
+    }
+    loadedCount = end;
+    updateBackToTopButton();
+    if (loadedCount < tests.length) addLoadMoreBanner();
+    if (cb) cb();
+  }
+
+  function addLoadMoreBanner() {
+    const remaining = tests.length - loadedCount;
+    const nextBatch = Math.min(BATCH, remaining);
+    const pct = Math.round((stats.correct / Math.max(stats.correct + stats.incorrect, 1)) * 100);
+    const banner = document.createElement('div');
+    banner.className = 'load-more-banner';
+    banner.id = 'load-more-banner';
+    banner.innerHTML = `
+      <div class="lmb-stats">
+        📊 <strong>${loadedCount}</strong> savol ko'rsatildi — shu paytgacha:
+        <strong style="color:#10b981">${stats.correct} to'g'ri</strong> /
+        <strong style="color:#ef4444">${stats.incorrect} xato</strong>
+        (${pct}% aniqlik) — yana <strong>${remaining}</strong> savol qoldi
+      </div>
+      <button class="load-more-btn" id="loadMoreBtn">
+        <i class="fas fa-chevron-down"></i> Yana ${nextBatch} ta savol yuklash
+      </button>
+    `;
+    questionsContainer.appendChild(banner);
+    document.getElementById('loadMoreBtn').addEventListener('click', () => {
+      showToast('Yuklanmoqda...', 'info', `Yana ${nextBatch} ta savol qo'shildi`, 2200);
+      loadMoreQuestions(BATCH);
+    });
+
+    // IntersectionObserver sentinel
+    const sentinel = document.createElement('div');
+    sentinel.id = 'load-sentinel';
+    sentinel.style.height = '1px';
+    questionsContainer.appendChild(sentinel);
+
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && loadedCount < tests.length) {
+        observer.disconnect();
+        loadMoreQuestions(BATCH);
+      }
+    }, { rootMargin: '400px' });
+    observer.observe(sentinel);
+  }
+
   function showTests() {
     quizList.style.display = "block";
     testCount.textContent = tests.length + " ta test yuklandi!";
     questionsContainer.innerHTML = "";
-    tests.forEach((test, index) => {
-      const questionDiv = document.createElement("div");
-      questionDiv.className = "question-container";
-      questionDiv.id = `question-${index}`;
-      questionDiv.style.minHeight = "150px";
-      const qText = document.createElement("div");
-      qText.className = "question-text";
-      qText.textContent = (index + 1) + ". " + test.question;
-      questionDiv.appendChild(qText);
-      const optionsDiv = document.createElement("div");
-      optionsDiv.className = "options-container";
-      optionsDiv.style.position = "relative";
-      optionsDiv.style.zIndex = "2";
-
-      test.options.forEach((opt, optIndex) => {
-        const optionItem = document.createElement("div");
-        optionItem.className = "option-item";
-        optionItem.dataset.questionIndex = index;
-        optionItem.dataset.optionIndex = optIndex;
-
-        const customCheckbox = document.createElement("div");
-        customCheckbox.className = "custom-checkbox";
-        const checkmark = document.createElement("span");
-        checkmark.className = "checkmark";
-        checkmark.innerHTML = "✓";
-        customCheckbox.appendChild(checkmark);
-
-        const optionText = document.createElement("div");
-        optionText.className = "option-text";
-        const letterSpan = document.createElement("span");
-        letterSpan.className = "option-letter";
-        letterSpan.textContent = String.fromCharCode(65 + optIndex) + ".";
-        optionText.appendChild(letterSpan);
-        optionText.appendChild(document.createTextNode(" " + opt));
-
-        optionItem.appendChild(customCheckbox);
-        optionItem.appendChild(optionText);
-
-        optionItem.addEventListener("click", function() {
-          if (optionItem.classList.contains("correct") || optionItem.classList.contains("incorrect")) return;
-          customCheckbox.classList.add("checked");
-          const siblingOptions = optionsDiv.querySelectorAll(".option-item");
-          siblingOptions.forEach(sibling => {
-            if (sibling !== optionItem) {
-              sibling.querySelector(".custom-checkbox").classList.remove("checked");
-            }
-          });
-          checkAnswer(index, optIndex);
-          if (autoScrollToggle.checked && index < tests.length - 1) {
-            setTimeout(() => {
-              const nextQuestion = document.getElementById(`question-${index + 1}`);
-              if (nextQuestion) {
-                nextQuestion.scrollIntoView({ 
-                  behavior: 'smooth', 
-                  block: 'start',
-                  inline: 'nearest'
-                });
-              }
-            }, 800);
-          }
-        });
-        optionsDiv.appendChild(optionItem);
-      });
-      questionDiv.appendChild(optionsDiv);
-      questionsContainer.appendChild(questionDiv);
-    });
+    loadedCount = 0;
+    loadMoreQuestions(BATCH);
     updateBackToTopButton();
+
+    // Fast scroll detection — load all remaining if user scrolls fast
+    let fastScrollTimer;
+    const fastScrollHandler = () => {
+      clearTimeout(fastScrollTimer);
+      fastScrollTimer = setTimeout(() => {
+        if (loadedCount < tests.length) {
+          const docHeight = document.documentElement.scrollHeight;
+          const scrolled = window.scrollY + window.innerHeight;
+          if (scrolled > docHeight - 800) {
+            loadMoreQuestions(tests.length - loadedCount);
+          }
+        } else {
+          window.removeEventListener('scroll', fastScrollHandler);
+        }
+      }, 80);
+    };
+    window.addEventListener('scroll', fastScrollHandler);
   }
 
   function checkAnswer(questionIndex, selectedOptIndex) {
@@ -639,22 +1240,29 @@
       selectedItem.classList.add("correct", "correct-anim");
       const checkIcon = document.createElement("span");
       checkIcon.className = "check-icon";
-      checkIcon.textContent = "✅";
+      checkIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#198754" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="9,12 11,14.2 15,10"/></svg>`;
       selectedItem.appendChild(checkIcon);
       stats.correct++;
-      launchFireworks();
+      comboCount++;
+      if (document.getElementById('fireworksToggle').checked) launchFireworks();
+      if (COMBO_MILESTONES.includes(comboCount)) {
+        const msgs = { 3:"Zo'r ketayapti! Davom eting 💪", 5:"5 ta ketma-ket! Ajoyib natija!", 10:"10 COMBO! Siz ustasiz! 🔥", 15:"15 ta to'g'ri ketma-ket! Fantastik!", 20:"20 MEGA COMBO! 🏆 Beqiyos!" };
+        showToast(`🔥 ${comboCount}x COMBO!`, 'combo', msgs[comboCount], 4000);
+      }
     } else {
       selectedItem.classList.add("incorrect", "incorrect-anim");
       const wrongIcon = document.createElement("span");
       wrongIcon.className = "check-icon";
-      wrongIcon.textContent = "❌";
+      wrongIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#dc3545" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`;
       selectedItem.appendChild(wrongIcon);
       correctItem.classList.add("correct");
       const correctIcon = document.createElement("span");
       correctIcon.className = "check-icon";
-      correctIcon.textContent = "✅";
+      correctIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#198754" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="9,12 11,14.2 15,10"/></svg>`;
       correctItem.appendChild(correctIcon);
       stats.incorrect++;
+      if (comboCount >= 3) showToast('Combo uzildi', 'warning', `${comboCount}x combo tugadi. Yana boshlang!`, 2800);
+      comboCount = 0;
     }
 
     optionItems.forEach(item => { item.style.pointerEvents = "none"; });
@@ -663,26 +1271,22 @@
   }
 
   function checkAllAnswered() {
-    const allAnswered = tests.every((test, index) => {
-      const optionItems = document.querySelectorAll(`.option-item[data-question-index="${index}"]`);
-      return Array.from(optionItems).some(item => item.classList.contains("correct") || item.classList.contains("incorrect"));
-    });
-    if (allAnswered) {
-      fileInput.disabled = false;
-      uploadStatus.textContent = "Barcha testlar belgilandi. Yangi fayl tanlash mumkin!";
-      showCompletionStats();
-    }
+    const answeredCount = stats.correct + stats.incorrect;
+    if (answeredCount < tests.length) return;
+    fileInput.disabled = false;
+    uploadStatus.textContent = "Barcha testlar belgilandi. Yangi fayl tanlash mumkin!";
+    showCompletionStats();
   }
 
   function updateBackToTopButton() {
-    const unanswered = tests.map((test, index) => {
+    const unanswered = tests.slice(0, loadedCount).filter((test, index) => {
       const optionItems = document.querySelectorAll(`.option-item[data-question-index="${index}"]`);
       return !Array.from(optionItems).some(item => item.classList.contains("correct") || item.classList.contains("incorrect"));
-    }).filter(Boolean).length;
+    }).length;
 
     if (unanswered > 0 && unanswered <= 5) {
       backToTopButton.classList.add("recommend");
-      backToTopButton.innerHTML = `🔼 <span class="count">${unanswered}</span> <span class="text">ta qoldi</span>`;
+      backToTopButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18,15 12,9 6,15"/></svg> <span class="count">${unanswered}</span> <span class="text">ta qoldi</span>`;
       backToTopButton.title = `${unanswered} ta javob berilmagan savol bor`;
       backToTopButton.onclick = function() {
         const firstUnansweredIndex = tests.findIndex((test, index) => {
@@ -695,7 +1299,7 @@
       };
     } else {
       backToTopButton.classList.remove("recommend");
-      backToTopButton.innerHTML = "🔼";
+      backToTopButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18,15 12,9 6,15"/></svg>`;
       backToTopButton.title = "Yuqoriga qaytish";
       backToTopButton.onclick = function() { window.scrollTo({ top: 0, behavior: "smooth" }); };
     }
@@ -721,29 +1325,9 @@
       correctBarEl.style.width = correctWidth + "%";
       incorrectBarEl.style.width = incorrectWidth + "%";
     }, 200);
-    setTimeout(() => { quizCompletionSection.scrollIntoView({ behavior: 'smooth' }); }, 300);
+    setTimeout(() => { quizCompletionSection.scrollIntoView({ behavior: 'smooth' }); }, 900);
     updateBackToTopButton();
   }
-
-  const historyToggle = document.getElementById("historyToggle");
-  const historyList = document.getElementById("historyList");
-
-  historyToggle.addEventListener("click", function() {
-    const isCollapsed = !historyList.classList.contains("visible");
-    if (isCollapsed) {
-      historyList.classList.add("visible");
-      historyToggle.classList.remove("collapsed");
-      historyList.style.maxHeight = historyList.scrollHeight + "px";
-      setTimeout(() => { historyList.style.maxHeight = "150px"; }, 300);
-    } else {
-      historyList.style.maxHeight = historyList.scrollHeight + "px";
-      setTimeout(() => {
-        historyList.style.maxHeight = "0";
-        historyList.classList.remove("visible");
-        historyToggle.classList.add("collapsed");
-      }, 10);
-    }
-  });
 
   document.addEventListener("DOMContentLoaded", function() {
     const initialAnimation = getRandomAnimation();
