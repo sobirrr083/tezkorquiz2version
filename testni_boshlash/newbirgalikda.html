@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Birgalikda Quiz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.10.0/lottie.min.js"></script>
+  <style>
+    /* ===================================================
+       SUPABASE SQL — bir marta SQL Editor'da ishlatiladi
+    =====================================================
+    create table public.quiz_users (
+      id varchar(5) primary key,
+      name text not null,
+      photo text,
+      is_admin boolean default false,
+      created_at timestamptz default now()
+    );
+    create table public.quiz_sessions (
+      id uuid primary key default gen_random_uuid(),
+      admin_id varchar(5) references public.quiz_users(id),
+      session_code varchar(6) not null unique,
+      questions jsonb default '[]',
+      status text default 'waiting',
+      created_at timestamptz default now(),
+      started_at timestamptz
+    );
+    create table public.session_participants (
+      id uuid primary key default gen_random_uuid(),
+      session_id uuid references public.quiz_sessions(id) on delete cascade,
+      user_id varchar(5) references public.quiz_users(id),
+      user_name text, user_photo text,
+      answers jsonb default '{}',
+      score int default 0,
+      finished boolean default false,
+      finish_time int,
+      joined_at timestamptz default now(),
+      unique(session_id, user_id)
+    );
+    alter table public.quiz_users enable row level security;
+    alter table public.quiz_sessions enable row level security;
+    alter table public.session_participants enable row level security;
+    create policy "allow_all" on public.quiz_users for all to anon using (true) with check (true);
+    create policy "allow_all" on public.quiz_sessions for all to anon using (true) with check (true);
+    create policy "allow_all" on public.session_participants for all to anon using (true) with check (true);
+    alter publication supabase_realtime add table public.quiz_sessions;
+    alter publication supabase_realtime add table public.session_participants;
+    =================================================== */
+
+    :root {
+      --p:     #4361EE;
+      --pd:    #2d4fd6;
+      --ps:    rgba(67,97,238,.08);
+      --pm:    rgba(67,97,238,.18);
+      --ok:    #10b981;
+      --bad:   #ef4444;
+      --warn:  #f59e0b;
+      --bg:    #eef1fb;
+      --surf:  #ffffff;
+      --surf2: #f6f8ff;
+      --tx:    #17192b;
+      --tx2:   #505669;
+      --tx3:   #9da5be;
+      --sh:    0 1px 3px rgba(67,97,238,.06), 0 6px 24px rgba(67,97,238,.07), 0 1px 2px rgba(0,0,0,.04);
+      --sh-sm: 0 1px 2px rgba(67,97,238,.04), 0 3px 12px rgba(67,97,238,.06);
+      --r:     20px;
+      --rsm:   13px;
+      --rxs:   9px;
+      /* unified icon bg */
+      --ico-bg: rgba(67,97,238,.09);
+      --ico-c:  var(--p);
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;-webkit-font-smoothing:antialiased;}
+    .app{max-width:520px;margin:0 auto;padding:10px 12px 44px;}
+
+    /* ── LOGO ── */
+    .logo{display:flex;align-items:center;justify-content:center;gap:10px;padding:22px 0 18px;font-size:20px;font-weight:800;letter-spacing:-.5px;color:var(--p);}
+    .logo-mark{width:34px;height:34px;border-radius:11px;background:var(--p);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(67,97,238,.35);}
+    .logo-mark i{color:#fff;font-size:14px;}
+
+    /* ── SECTION TRANSITIONS ── */
+    .sec{display:none;}
+    .sec.active{display:block;animation:su .28s cubic-bezier(.22,.68,0,1.2);}
+    @keyframes su{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+    /* ── PAGE CARD ──
+       Header (.ph), body (.ps), footer (.pf) — NO divider lines.
+       Sections visually separated only by spacing + bg tint.
+    */
+    .page-card{background:var(--surf);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;margin-bottom:10px;}
+
+    /* Header — no bottom border, slightly tinted */
+    .ph{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 22px 14px;background:var(--surf);}
+    .ph-left{flex:1;min-width:0;}
+    .ph-title{font-size:15px;font-weight:800;color:var(--tx);line-height:1.25;}
+    .ph-sub{font-size:12px;color:var(--tx3);margin-top:3px;font-weight:500;}
+
+    /* Back button */
+    .btn-back{flex-shrink:0;background:var(--ico-bg);border:none;color:var(--p);padding:6px 15px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .16s;white-space:nowrap;}
+    .btn-back:hover{background:var(--pm);color:var(--pd);}
+
+    /* Body */
+    .ps{padding:6px 22px 22px;}
+
+    /* Footer — no top border, very subtle tint */
+    .pf{padding:16px 22px 22px;background:var(--surf2);border-radius:0 0 var(--r) var(--r);}
+    .pf-open{padding:8px 22px 14px;min-height:10px;}
+
+    /* ── LANDING HERO ── */
+    .land-hero{text-align:center;padding:32px 20px 20px;}
+    .hero-icon{
+      width:72px;height:72px;border-radius:22px;margin:0 auto 18px;
+      background:var(--ico-bg);
+      display:flex;align-items:center;justify-content:center;
+      box-shadow:0 0 0 8px rgba(67,97,238,.05);
+    }
+    .hero-icon i{color:var(--p);font-size:30px;}
+    .land-title{font-size:24px;font-weight:800;color:var(--tx);margin-bottom:6px;letter-spacing:-.6px;}
+    .land-sub{font-size:13px;color:var(--tx3);font-weight:500;}
+
+    /* Role rows — no border between them, gap via margin */
+    .roles-wrap{padding:0 12px 16px;display:flex;flex-direction:column;gap:8px;}
+    .role-row{
+      display:flex;align-items:center;gap:14px;
+      padding:14px 16px;cursor:pointer;
+      border-radius:var(--rsm);
+      background:var(--surf2);
+      transition:background .15s, transform .15s, box-shadow .15s;
+    }
+    .role-row:hover{background:rgba(67,97,238,.07);transform:translateY(-1px);box-shadow:0 4px 16px rgba(67,97,238,.1);}
+    .role-row:active{transform:translateY(0);}
+    /* unified icon — both admin and user same size/shape, different accent shade */
+    .ri{width:44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;background:var(--ico-bg);color:var(--p);}
+    .ri.adm{background:rgba(67,97,238,.12);color:var(--p);}
+    .ri.usr{background:rgba(16,185,129,.1);color:var(--ok);}
+    .rc{flex:1;min-width:0;}
+    .rc-title{font-size:14px;font-weight:800;color:var(--tx);}
+    .rc-sub{font-size:12px;color:var(--tx3);margin-top:2px;font-weight:500;}
+    .rc-arr{color:var(--tx3);font-size:11px;transition:transform .15s;}
+    .role-row:hover .rc-arr{transform:translateX(3px);color:var(--p);}
+
+    /* ── FORM ── */
+    .field{margin-bottom:18px;}
+    .field:last-of-type{margin-bottom:0;}
+    .lbl{display:block;font-size:11px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.7px;margin-bottom:7px;}
+    .inp{width:100%;padding:12px 15px;border:1.5px solid rgba(67,97,238,.12);border-radius:var(--rsm);font-size:14px;font-family:inherit;font-weight:600;color:var(--tx);background:var(--surf2);transition:all .18s;outline:none;}
+    .inp::placeholder{color:#c4c9da;font-weight:500;}
+    .inp:focus{border-color:var(--p);background:var(--surf);box-shadow:0 0 0 3.5px rgba(67,97,238,.09);}
+
+    .inp-code{letter-spacing:6px;font-size:22px;font-weight:800;text-align:center;}
+    .inp-code::placeholder{letter-spacing:2px;font-size:13px;font-weight:500;color:#cdd0df;}
+
+    .file-lbl{display:flex;align-items:center;justify-content:center;gap:9px;padding:14px;border:2px dashed rgba(67,97,238,.2);border-radius:var(--rsm);cursor:pointer;color:var(--p);font-size:13px;font-weight:700;background:var(--ico-bg);transition:all .16s;}
+    .file-lbl:hover{border-color:var(--p);background:rgba(67,97,238,.12);}
+    .file-hint{text-align:center;font-size:12px;color:var(--tx3);margin-top:7px;font-weight:500;}
+
+    /* ── AVATAR ── */
+    .av-center{text-align:center;margin-bottom:20px;}
+    .av-wrap{position:relative;width:82px;height:82px;margin:0 auto 10px;}
+    .av-img{width:100%;height:100%;border-radius:50%;object-fit:cover;border:3px solid rgba(67,97,238,.25);background:var(--ico-bg);}
+    .av-edit{position:absolute;bottom:0;right:0;width:28px;height:28px;border-radius:50%;background:var(--p);color:#fff;border:2.5px solid #fff;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:11px;box-shadow:0 2px 8px rgba(67,97,238,.3);}
+    .av-grid{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+    .av-opt{width:50px;height:50px;border-radius:50%;border:2.5px solid transparent;cursor:pointer;overflow:hidden;background:var(--ico-bg);transition:all .18s;flex-shrink:0;}
+    .av-opt:hover{transform:scale(1.08);}
+    .av-opt.on{border-color:var(--p);transform:scale(1.1);box-shadow:0 0 0 3px rgba(67,97,238,.15);}
+    .av-opt img{width:100%;height:100%;object-fit:cover;display:block;}
+
+    /* ── BUTTONS ── */
+    .btn{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;padding:14px;border-radius:var(--rsm);border:none;cursor:pointer;font-size:14px;font-weight:800;font-family:inherit;transition:all .18s;letter-spacing:-.1px;}
+    .btn-p{background:var(--p);color:#fff;}
+    .btn-p:hover{background:var(--pd);transform:translateY(-1px);box-shadow:0 8px 22px rgba(67,97,238,.3);}
+    .btn-p:active{transform:translateY(0);}
+    .btn-p:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none;}
+    .btn-g{background:var(--ok);color:#fff;}
+    .btn-g:hover{background:#0da373;transform:translateY(-1px);box-shadow:0 8px 22px rgba(16,185,129,.28);}
+    .btn-g:active{transform:translateY(0);}
+
+    /* ── CODE HERO ── */
+    .code-hero{
+      background:var(--p);
+      border-radius:var(--r);padding:24px;text-align:center;color:#fff;margin-bottom:10px;
+      box-shadow:0 8px 28px rgba(67,97,238,.3);
+    }
+    .code-eye{font-size:11px;font-weight:700;opacity:.7;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:9px;}
+    .code-num{font-size:42px;font-weight:800;letter-spacing:12px;margin-bottom:4px;}
+    .code-hint{font-size:12px;opacity:.6;font-weight:500;}
+
+    /* ── COPY ROW ── */
+    .copy-row{display:flex;align-items:center;gap:9px;background:var(--surf2);border:1.5px solid rgba(67,97,238,.1);border-radius:var(--rsm);padding:10px 13px;}
+    .copy-val{flex:1;font-size:12px;color:var(--tx2);word-break:break-all;font-weight:600;}
+    .copy-btn{flex-shrink:0;width:32px;height:32px;border-radius:var(--rxs);background:var(--ico-bg);color:var(--p);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;transition:.15s;}
+    .copy-btn:hover{background:var(--pm);}
+
+    /* ── ADMIN ID BOX ── */
+    .aid-box{background:rgba(245,158,11,.06);border:1.5px solid rgba(245,158,11,.2);border-radius:var(--rsm);padding:15px 17px;}
+    .aid-eye{font-size:11px;font-weight:700;color:#b45309;text-transform:uppercase;letter-spacing:.7px;margin-bottom:6px;}
+    .aid-val{font-size:28px;font-weight:800;color:var(--tx);letter-spacing:8px;line-height:1;}
+    .aid-note{font-size:12px;color:var(--tx3);margin-top:6px;font-weight:500;}
+
+    /* ── FMT BOX ── */
+    .fmt-box{background:var(--surf2);border:1.5px solid rgba(67,97,238,.1);border-radius:var(--rsm);padding:13px 15px;font-family:'Courier New',monospace;font-size:12px;color:var(--tx2);line-height:2.1;}
+    .fmt-box strong{color:var(--p);}
+
+    /* ── PILL / LABEL ── */
+    .row-between{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+    .sec-lbl{font-size:13px;font-weight:800;color:var(--tx);}
+    .pill{background:var(--ico-bg);color:var(--p);padding:4px 13px;border-radius:20px;font-size:12px;font-weight:700;}
+
+    /* ── PARTICIPANTS ── */
+    .p-list{display:flex;flex-direction:column;gap:2px;}
+    .p-item{display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:var(--rxs);transition:background .13s;}
+    .p-item:hover{background:var(--surf2);}
+    .p-pic{width:38px;height:38px;border-radius:50%;object-fit:cover;background:var(--ico-bg);flex-shrink:0;}
+    .p-name{flex:1;font-size:13px;font-weight:700;}
+    .badge{font-size:10px;font-weight:800;padding:2px 9px;border-radius:20px;margin-left:6px;}
+    .bme{background:var(--p);color:#fff;}
+    .badm{background:rgba(245,158,11,.15);color:#b45309;border:1px solid rgba(245,158,11,.25);}
+    .dot-on{width:8px;height:8px;border-radius:50%;background:var(--ok);flex-shrink:0;box-shadow:0 0 0 2px rgba(16,185,129,.2);}
+
+    .empty{text-align:center;padding:24px 16px;color:var(--tx3);font-size:13px;font-weight:500;}
+    .empty i{font-size:28px;display:block;margin-bottom:9px;opacity:.3;}
+
+    /* ── JOIN ACCORDION ── */
+    .jblock{background:var(--surf2);border:1.5px solid rgba(67,97,238,.08);border-radius:var(--rsm);overflow:hidden;margin-bottom:8px;}
+    .jblock:last-child{margin-bottom:0;}
+    .jhead{display:flex;align-items:center;gap:12px;padding:13px 15px;cursor:pointer;background:transparent;transition:background .13s;}
+    .jhead:hover{background:rgba(67,97,238,.05);}
+    /* ALL jico icons: same shape, same subtle bg, different tint */
+    .jico{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;background:var(--ico-bg);color:var(--p);}
+    .jico.green{background:rgba(16,185,129,.1);color:var(--ok);}
+    .jtxt{flex:1;}
+    .jtitle{font-size:13px;font-weight:800;color:var(--tx);}
+    .jsub{font-size:12px;color:var(--tx3);font-weight:500;margin-top:1px;}
+    .jchev{color:var(--tx3);font-size:10px;transition:transform .2s;}
+    .jchev.on{transform:rotate(90deg);color:var(--p);}
+    .jbody{padding:14px 15px 15px;display:none;background:rgba(255,255,255,.6);}
+    .jbody.on{display:block;}
+
+    /* ── 6-DIGIT INPUT ── */
+    .digits-row{display:flex;gap:8px;justify-content:center;margin-bottom:13px;}
+    .cd{width:44px;height:52px;text-align:center;font-size:22px;font-weight:800;font-family:inherit;border:1.5px solid rgba(67,97,238,.15);border-radius:10px;background:var(--surf);color:var(--tx);outline:none;transition:.18s;-moz-appearance:textfield;}
+    .cd::placeholder{color:var(--tx3);font-size:16px;}
+    .cd:focus{border-color:var(--p);background:var(--surf);box-shadow:0 0 0 3px rgba(67,97,238,.1);}
+    .cd::-webkit-inner-spin-button,.cd::-webkit-outer-spin-button{-webkit-appearance:none;}
+
+    /* ── ACTIVE SESSIONS ── */
+    .sess-item{display:flex;align-items:center;gap:11px;padding:11px 12px;background:var(--surf);border:1.5px solid rgba(67,97,238,.09);border-radius:var(--rsm);margin-bottom:7px;transition:all .16s;cursor:default;}
+    .sess-item:last-child{margin-bottom:0;}
+    .sess-item:hover{border-color:rgba(67,97,238,.22);box-shadow:0 3px 12px rgba(67,97,238,.08);}
+    .spic{width:40px;height:40px;border-radius:50%;object-fit:cover;background:var(--ico-bg);flex-shrink:0;}
+    .sinfo{flex:1;min-width:0;}
+    .sadmin{font-size:13px;font-weight:800;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .smeta{font-size:11px;color:var(--tx3);font-weight:500;margin-top:2px;}
+    .sbtn{flex-shrink:0;background:var(--ico-bg);color:var(--p);border:none;padding:7px 14px;border-radius:var(--rxs);font-weight:700;font-size:12px;cursor:pointer;font-family:inherit;transition:.15s;}
+    .sbtn:hover{background:var(--pm);}
+
+    /* ── WAIT SCREEN ── */
+    .wait-hero{text-align:center;padding:28px 16px 20px;}
+    .spin-ring{width:54px;height:54px;margin:0 auto 15px;border:4px solid rgba(67,97,238,.15);border-top-color:var(--p);border-radius:50%;animation:spin .85s linear infinite;}
+    @keyframes spin{to{transform:rotate(360deg);}}
+    .wait-title{font-size:17px;font-weight:800;margin-bottom:5px;}
+    .wait-sub{font-size:13px;color:var(--tx3);font-weight:500;}
+    .code-pill{display:inline-flex;align-items:center;gap:7px;background:var(--ico-bg);color:var(--p);padding:6px 16px;border-radius:20px;font-size:13px;font-weight:800;margin-top:13px;letter-spacing:3px;}
+
+    /* ── TIMER BAR ── */
+    .timer-bar{display:flex;align-items:center;gap:10px;background:var(--surf);padding:12px 18px;border-radius:var(--rsm);box-shadow:var(--sh-sm);margin-bottom:10px;font-size:13px;font-weight:700;}
+    .timer-ico{width:32px;height:32px;border-radius:9px;background:var(--ico-bg);color:var(--p);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+    .tval{color:var(--p);font-size:17px;font-weight:800;}
+    .onl-pill{margin-left:auto;background:rgba(16,185,129,.1);color:var(--ok);padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;}
+
+    /* ── QUIZ CARDS ── */
+    .q-card{background:var(--surf);border-radius:var(--r);box-shadow:var(--sh-sm);overflow:hidden;margin-bottom:10px;}
+    .q-top{padding:16px 18px 0;display:flex;align-items:center;justify-content:space-between;}
+    .q-num{font-size:11px;font-weight:800;color:var(--p);text-transform:uppercase;letter-spacing:1px;background:var(--ico-bg);padding:3px 10px;border-radius:20px;}
+    .q-txt{padding:10px 18px 16px;font-size:15px;font-weight:700;line-height:1.6;color:var(--tx);}
+    .opts{padding:0 14px 14px;display:flex;flex-direction:column;gap:8px;}
+    .obt{display:flex;align-items:center;gap:12px;padding:11px 13px;border:1.5px solid rgba(67,97,238,.1);border-radius:10px;cursor:pointer;transition:all .16s;background:var(--surf2);width:100%;text-align:left;font-family:inherit;}
+    .obt:hover:not(:disabled){border-color:var(--p);background:rgba(67,97,238,.05);}
+    .obt:disabled{cursor:default;}
+    .obt.correct{border-color:var(--ok);background:rgba(16,185,129,.07);}
+    .obt.wrong{border-color:var(--bad);background:rgba(239,68,68,.07);}
+    .olet{width:28px;height:28px;border-radius:8px;background:var(--ico-bg);color:var(--p);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;flex-shrink:0;transition:.16s;}
+    .obt.correct .olet{background:var(--ok);color:#fff;}
+    .obt.wrong .olet{background:var(--bad);color:#fff;}
+    .otxt{flex:1;font-size:13px;font-weight:600;color:var(--tx);}
+
+    /* ── RESULTS ── */
+    .score-ring{
+      width:118px;height:118px;border-radius:50%;
+      background:var(--ico-bg);
+      border:5px solid var(--p);
+      margin:0 auto 18px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+      box-shadow:0 0 0 8px rgba(67,97,238,.05);
+    }
+    .s-big{font-size:38px;font-weight:800;color:var(--p);line-height:1;}
+    .s-of{font-size:12px;color:var(--tx3);font-weight:600;}
+    .stat-row{display:flex;gap:8px;margin-bottom:16px;}
+    .stat-box{flex:1;text-align:center;padding:13px 7px;background:var(--surf2);border-radius:var(--rsm);}
+    .sn{font-size:22px;font-weight:800;}
+    .sl{font-size:11px;color:var(--tx3);font-weight:600;margin-top:3px;}
+    .sn.ok{color:var(--ok);} .sn.bad{color:var(--bad);} .sn.pp{color:var(--p);}
+    .prog-w{background:rgba(67,97,238,.1);border-radius:8px;height:8px;overflow:hidden;margin-bottom:16px;}
+    .prog-b{height:100%;border-radius:8px;background:linear-gradient(90deg,var(--p),#7c9ef9);transition:width 1s cubic-bezier(.4,0,.2,1);}
+    .lb-item{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;margin-bottom:4px;transition:background .13s;}
+    .lb-item:hover{background:var(--surf2);}
+    .lb-item.me{background:var(--ico-bg);}
+    .lb-rank{width:26px;text-align:center;font-weight:800;font-size:15px;flex-shrink:0;}
+    .lb-pic{width:36px;height:36px;border-radius:50%;object-fit:cover;background:var(--ico-bg);flex-shrink:0;}
+    .lb-name{flex:1;font-size:13px;font-weight:700;}
+    .lb-sc{font-weight:800;color:var(--p);font-size:13px;white-space:nowrap;}
+
+    /* ── LOADING OVERLAY ── */
+    #loading{position:fixed;inset:0;background:rgba(238,241,251,.85);display:none;align-items:center;justify-content:center;flex-direction:column;gap:13px;z-index:9999;backdrop-filter:blur(6px);}
+    .ls{width:40px;height:40px;border:4px solid rgba(67,97,238,.15);border-top-color:var(--p);border-radius:50%;animation:spin .75s linear infinite;}
+    .lt{font-size:13px;font-weight:700;color:var(--tx3);}
+
+    /* ── TOAST NOTIFICATION ── */
+    #toast{
+      position:fixed;top:16px;left:50%;transform:translateX(-50%) translateY(-6px);
+      background:#17192b;color:#fff;
+      padding:12px 14px 12px 12px;
+      border-radius:16px;
+      font-size:13px;font-weight:600;
+      z-index:99999;display:none;
+      min-width:260px;max-width:min(92vw,380px);
+      box-shadow:0 12px 36px rgba(0,0,0,.28),0 2px 8px rgba(0,0,0,.18);
+      flex-direction:row;align-items:flex-start;gap:10px;
+      animation:toastIn .22s cubic-bezier(.22,.68,0,1.2) forwards;
+    }
+    #toast.visible{display:flex;}
+    @keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(-14px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
+    .toast-ico-wrap{
+      width:34px;height:34px;border-radius:10px;
+      display:flex;align-items:center;justify-content:center;
+      font-size:15px;flex-shrink:0;margin-top:1px;
+    }
+    .toast-body{flex:1;min-width:0;}
+    #toast-msg{font-size:13px;font-weight:700;color:#fff;line-height:1.4;}
+    .toast-code{font-size:10px;font-weight:700;margin-top:3px;opacity:.5;letter-spacing:.4px;font-family:'Courier New',monospace;}
+    #toast-close{
+      flex-shrink:0;width:22px;height:22px;border-radius:6px;
+      display:flex;align-items:center;justify-content:center;
+      font-size:11px;cursor:pointer;color:rgba(255,255,255,.4);
+      transition:color .15s,background .15s;margin-top:1px;
+    }
+    #toast-close:hover{color:#fff;background:rgba(255,255,255,.1);}
+    /* type colors */
+    #toast.t-error .toast-ico-wrap{background:rgba(239,68,68,.2);color:#f87171;}
+    #toast.t-warn  .toast-ico-wrap{background:rgba(245,158,11,.2);color:#fbbf24;}
+    #toast.t-ok    .toast-ico-wrap{background:rgba(16,185,129,.2);color:#34d399;}
+    #toast.t-info  .toast-ico-wrap{background:rgba(99,179,237,.2);color:#93c5fd;}
+
+    .err{color:var(--bad);font-size:12px;font-weight:700;margin-top:7px;display:none;padding:8px 10px;background:rgba(239,68,68,.06);border-radius:8px;}
+    .dvd{border:none;border-top:1.5px solid rgba(67,97,238,.08);margin:14px 0;}
+    .tc{text-align:center;}
+
+    @media(max-width:420px){
+      .code-num{font-size:34px;letter-spacing:8px;}
+      .cd{width:39px;height:48px;font-size:19px;}
+      .aid-val{font-size:24px;}
+      .ph{padding:16px 16px 12px;}
+      .ps{padding:4px 16px 18px;}
+      .pf{padding:14px 16px 20px;}
+    }
+  </style>
+</head>
+<body>
+
+<div id="loading"><div class="ls"></div><div class="lt">Yuklanmoqda...</div></div>
+<div id="toast">
+  <div class="toast-ico-wrap"><i id="toast-ico" class="fas fa-triangle-exclamation"></i></div>
+  <div class="toast-body">
+    <div id="toast-msg"></div>
+    <div id="toast-code" class="toast-code"></div>
+  </div>
+  <div id="toast-close" onclick="this.parentElement.style.display='none'"><i class="fas fa-xmark"></i></div>
+</div>
+
+<div class="app">
+
+  <!-- LOGO -->
+  <div class="logo">
+    Birgalikda Quiz
+  </div>
+
+  <!-- ═══════════ LANDING ═══════════ -->
+  <div id="sec-landing" class="sec active">
+    <div class="page-card">
+      <div class="land-hero">
+        <div class="land-title">Birgalikda Quiz!</div>
+        <div class="land-sub">Real vaqtda do'stlar bilan o'ynang</div>
+      </div>
+      <div class="roles-wrap">
+        <div class="role-row" onclick="goAdmin()">
+          <div class="ri adm"><i class="fas fa-crown"></i></div>
+          <div class="rc">
+            <div class="rc-title">Admin bo'lish</div>
+            <div class="rc-sub">Savollar yuklang, sessiyani boshqaring</div>
+          </div>
+          <i class="fas fa-chevron-right rc-arr"></i>
+        </div>
+        <div class="role-row" onclick="goUser()">
+          <div class="ri usr"><i class="fas fa-user-friends"></i></div>
+          <div class="rc">
+            <div class="rc-title">Foydalanuvchi</div>
+            <div class="rc-sub">Testga qo'shiling va qatnashing</div>
+          </div>
+          <i class="fas fa-chevron-right rc-arr"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ ADMIN SETUP ═══════════ -->
+  <div id="sec-admin-setup" class="sec">
+    <div class="page-card">
+      <div class="ph" style="align-items:flex-start;">
+        <div class="ph-left">
+          <div class="ph-title">Admin sozlamalari</div>
+          <div class="ph-sub">Profil va savollar faylini kiriting</div>
+        </div>
+        <button class="btn-back" onclick="show('landing')">Orqaga</button>
+      </div>
+      <div class="ps">
+        <!-- avatar -->
+        <div class="av-center">
+          <div class="av-wrap">
+            <img id="admin-av" class="av-img" src="" alt="">
+            <div class="av-edit" onclick="$('adm-pic').click()"><i class="fas fa-camera"></i></div>
+          </div>
+          <input type="file" id="adm-pic" accept="image/*" style="display:none" onchange="onAdminPic(this)">
+          <div id="adm-id-badge" style="display:none;justify-content:center">
+            <span style="background:var(--ps);color:var(--p);padding:4px 14px;border-radius:20px;font-size:12px;font-weight:800">
+              <i class="fas fa-id-badge" style="margin-right:4px"></i>Mening ID: <span id="adm-id-txt"></span>
+            </span>
+          </div>
+        </div>
+        <div class="field">
+          <label class="lbl">Ismingiz *</label>
+          <input type="text" id="admin-name" class="inp" placeholder="Ismingiz..." maxlength="30">
+        </div>
+        <div class="field">
+          <label class="lbl">Savollar fayli (.txt) *</label>
+          <label for="adm-file" class="file-lbl"><i class="fas fa-file-upload"></i>Fayl tanlash</label>
+          <input type="file" id="adm-file" accept=".txt" style="display:none" onchange="onAdminFile(this)">
+          <div class="file-hint" id="adm-file-st">Hech qanday fayl tanlanmagan</div>
+        </div>
+        <div class="field">
+          <label class="lbl">Fayl formati</label>
+          <div class="fmt-box">
+            <strong>Savol matni</strong><br>
+            A. Variant A<br>B. Variant B<br>C. Variant C<br>D. Variant D<br>
+            <strong>ANSWER: A</strong>
+          </div>
+        </div>
+      </div>
+      <div class="pf">
+        <button class="btn btn-p" onclick="adminReady()"><i class="fas fa-check"></i>Tayyor — Sessiya yaratish</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ ADMIN WAIT ═══════════ -->
+  <div id="sec-admin-wait" class="sec">
+
+    <div class="code-hero">
+      <div class="code-eye"><i class="fas fa-hashtag" style="margin-right:4px"></i>Qo'shilish kodi</div>
+      <div class="code-num" id="aw-code">— — — — — —</div>
+      <div class="code-hint">Bu kodni ishtirokchilarga yuboring</div>
+    </div>
+
+    <div class="page-card">
+      <div class="ph">
+        <div class="ph-left">
+          <div class="ph-title">Ulashish ma'lumotlari</div>
+          <div class="ph-sub">Havola yoki Admin ID ulashing</div>
+        </div>
+      </div>
+      <div class="ps">
+        <div class="field">
+          <label class="lbl"><i class="fas fa-link" style="margin-right:4px"></i>Havola</label>
+          <div class="copy-row">
+            <div class="copy-val" id="aw-link">—</div>
+            <button class="copy-btn" onclick="copyEl('aw-link','Havola nusxalandi ✓')"><i class="fas fa-copy"></i></button>
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:0">
+          <label class="lbl"><i class="fas fa-fingerprint" style="margin-right:4px"></i>Doimiy Admin ID</label>
+          <div class="aid-box">
+            <div class="aid-eye">Admin ID</div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <div class="aid-val" id="aw-aid">——</div>
+              <button class="copy-btn" onclick="copyEl('aw-aid','Admin ID nusxalandi ✓')"><i class="fas fa-copy"></i></button>
+            </div>
+            <div class="aid-note">Foydalanuvchilar shu ID ni saqlashsa, testlaringizni ko'risholadi</div>
+          </div>
+        </div>
+      </div>
+      <div class="pf-open"></div>
+    </div>
+
+    <div class="page-card">
+      <div class="ph">
+        <div class="ph-left">
+          <div class="ph-title">Ishtirokchilar</div>
+          <div class="ph-sub">Qo'shilayotganlar real vaqtda ko'rinadi</div>
+        </div>
+        <div class="pill" id="aw-count">0 ta</div>
+      </div>
+      <div class="ps">
+        <div id="aw-parts" class="p-list">
+          <div class="empty"><i class="fas fa-user-clock"></i>Hali hech kim qo'shilmagan...</div>
+        </div>
+      </div>
+      <div class="pf">
+        <div class="tc" style="font-size:12px;color:var(--tx3);margin-bottom:10px">
+          Savollar: <strong style="color:var(--p)" id="aw-qcount">0</strong> ta
+        </div>
+        <button class="btn btn-g" onclick="adminStart()"><i class="fas fa-play"></i>Testni boshlash</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══════════ USER SETUP ═══════════ -->
+  <div id="sec-user-setup" class="sec">
+
+    <div class="page-card">
+      <div class="ph" style="align-items:flex-start;">
+        <div class="ph-left">
+          <div class="ph-title">Mening profilim</div>
+          <div class="ph-sub">Ismingiz va avatar tanlang</div>
+        </div>
+        <button class="btn-back" onclick="show('landing')">Orqaga</button>
+      </div>
+      <div class="ps">
+        <div class="av-center">
+          <div class="av-wrap">
+            <img id="user-av" class="av-img" src="" alt="">
+            <div class="av-edit" onclick="$('usr-pic').click()"><i class="fas fa-camera"></i></div>
+          </div>
+          <input type="file" id="usr-pic" accept="image/*" style="display:none" onchange="onUserPic(this)">
+        </div>
+        <div class="field">
+          <label class="lbl">Avatar tanlang</label>
+          <div class="av-grid" id="av-grid"></div>
+        </div>
+        <div class="field" style="margin-bottom:0">
+          <label class="lbl">Ismingiz *</label>
+          <input type="text" id="user-name" class="inp" placeholder="Ismingizni kiriting..." maxlength="30">
+        </div>
+      </div>
+      <div class="pf-open"></div>
+    </div>
+
+    <div class="page-card">
+      <div class="ph">
+        <div class="ph-left">
+          <div class="ph-title">Testga qo'shilish</div>
+          <div class="ph-sub">Usulni tanlang</div>
+        </div>
+      </div>
+      <div class="ps">
+
+        <!-- 6-digit code -->
+        <div class="jblock">
+          <div class="jhead" onclick="toggleJ('code')">
+            <div class="jico" style="background:var(--ps);color:var(--p)"><i class="fas fa-hashtag"></i></div>
+            <div class="jtxt">
+              <div class="jtitle">6 xonali kod</div>
+              <div class="jsub">Admin tomonidan berilgan kod</div>
+            </div>
+            <i class="fas fa-chevron-right jchev" id="jc-code"></i>
+          </div>
+          <div class="jbody" id="jb-code">
+            <div class="digits-row" id="cd-wrap"></div>
+            <div class="err" id="code-err">Xato kod! Qaytadan kiriting.</div>
+            <button class="btn btn-p" onclick="joinByCode()">Qo'shilish</button>
+          </div>
+        </div>
+
+        <!-- Active sessions — ALWAYS visible content inside accordion -->
+        <div class="jblock">
+          <div class="jhead" onclick="toggleJ('active')">
+            <div class="jico green"><i class="fas fa-list-check"></i></div>
+            <div class="jtxt">
+              <div class="jtitle">Faol testlar</div>
+              <div class="jsub">Saqlangan adminlar testlari</div>
+            </div>
+            <i class="fas fa-chevron-right jchev" id="jc-active"></i>
+          </div>
+          <div class="jbody" id="jb-active">
+            <!-- sessions always shown here -->
+            <div id="active-list" style="margin-bottom:10px">
+              <div class="empty" style="padding:10px"><i class="fas fa-spinner fa-spin" style="display:inline;opacity:.5;font-size:13px;margin-right:4px"></i>Yuklanmoqda...</div>
+            </div>
+            <div class="dvd"></div>
+            <label class="lbl">Admin ID saqlash</label>
+            <div style="display:flex;gap:8px">
+              <input type="text" id="save-aid" class="inp inp-code" placeholder="· · · · ·" maxlength="5" style="flex:1">
+              <button onclick="saveAdminId()" style="background:var(--p);color:#fff;border:none;padding:0 15px;border-radius:var(--rsm);font-weight:800;cursor:pointer;font-family:inherit;font-size:13px;flex-shrink:0">Saqlash</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="pf-open"></div>
+    </div>
+
+  </div>
+
+  <!-- ═══════════ USER WAIT ═══════════ -->
+  <div id="sec-user-wait" class="sec">
+    <div class="page-card">
+      <div class="ph">
+        <div class="ph-left">
+          <div class="ph-title">Kutish xonasi</div>
+          <div class="ph-sub">Admin testni boshlagunicha kuting</div>
+        </div>
+      </div>
+      <div class="ps">
+        <div class="wait-hero">
+          <div class="spin-ring"></div>
+          <div class="wait-title">Iltimos kuting...</div>
+          <div class="wait-sub">Admin testni boshlashini kutmoqdasiz</div>
+          <div class="code-pill"><i class="fas fa-hashtag"></i><span id="uw-code">——</span></div>
+        </div>
+      </div>
+      <div class="pf-open"></div>
+    </div>
+    <div class="page-card">
+      <div class="ph">
+        <div class="ph-left">
+          <div class="ph-title">Ishtirokchilar</div>
+          <div class="ph-sub">Real vaqtda qo'shilayotganlar</div>
+        </div>
+        <div class="pill" id="uw-count">0 ta</div>
+      </div>
+      <div class="ps">
+        <div id="uw-parts" class="p-list">
+          <div class="empty"><i class="fas fa-spinner fa-spin" style="display:inline;opacity:.4;font-size:13px;margin-right:4px"></i>Yuklanmoqda...</div>
+        </div>
+      </div>
+      <div class="pf-open"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════ QUIZ ═══════════ -->
+  <div id="sec-quiz" class="sec">
+    <div class="timer-bar">
+      <div class="timer-ico"><i class="fas fa-clock"></i></div>
+      Vaqt: <span class="tval" id="quiz-timer">00:00</span>
+      <div class="onl-pill" id="quiz-onl">0 ta online</div>
+    </div>
+    <div id="quiz-qs"></div>
+    <button class="btn btn-g" style="margin-top:6px" onclick="finishQuiz()"><i class="fas fa-check-circle"></i>Yakunlash</button>
+  </div>
+
+  <!-- ═══════════ RESULTS ═══════════ -->
+  <div id="sec-results" class="sec">
+    <div class="page-card">
+      <div class="ph">
+        <div class="ph-left">
+          <div class="ph-title">Natijalar</div>
+          <div class="ph-sub">Sizning yakuniy ko'rsatkichlaringiz</div>
+        </div>
+      </div>
+      <div class="ps tc">
+        <div id="lottie-box" style="width:130px;height:130px;margin:0 auto 12px"></div>
+        <div class="score-ring">
+          <div class="s-big" id="r-score">0</div>
+          <div class="s-of" id="r-denom">/ 0 ta</div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-box"><div class="sn ok" id="r-ok">0</div><div class="sl">✅ To'g'ri</div></div>
+          <div class="stat-box"><div class="sn bad" id="r-bad">0</div><div class="sl">❌ Noto'g'ri</div></div>
+          <div class="stat-box"><div class="sn pp" id="r-pct">0%</div><div class="sl">📊 Foiz</div></div>
+        </div>
+        <div class="prog-w"><div id="r-bar" class="prog-b" style="width:0%"></div></div>
+      </div>
+      <div class="pf-open"></div>
+    </div>
+    <div class="page-card">
+      <div class="ph">
+        <div class="ph-left">
+          <div class="ph-title">🏆 Peshqadamlar</div>
+          <div class="ph-sub">Barcha ishtirokchilar reytingi</div>
+        </div>
+      </div>
+      <div class="ps">
+        <div id="leaderboard"></div>
+      </div>
+      <div class="pf">
+        <button class="btn btn-p" onclick="restartApp()"><i class="fas fa-home"></i>Bosh sahifaga</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /app -->
+
+<script>
+// ════════════════════════════════════════════
+//  ⚙️  O'zingizning Supabase ma'lumotlarini kiriting
+// ════════════════════════════════════════════
+const SUPABASE_URL = 'sb_publishable_AnOy6OPjKbCXtZypQbdpjQ_XGfKv-qz';
+const SUPABASE_KEY = 'sb_secret_7MPGD1OLQ4xKrsqadoFD8w_WWRx9Okr';
+// ════════════════════════════════════════════
+
+const { createClient } = window.supabase;
+const DB = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// Universal gender-neutral geometric avatars (DiceBear "shapes" style)
+const AVATARS = [
+  'https://api.dicebear.com/7.x/shapes/svg?seed=alpha&backgroundColor=b6e3f4,d1d4f9',
+  'https://api.dicebear.com/7.x/shapes/svg?seed=beta&backgroundColor=fde68a,fecaca',
+  'https://api.dicebear.com/7.x/shapes/svg?seed=gamma&backgroundColor=a7f3d0,6ee7b7',
+  'https://api.dicebear.com/7.x/shapes/svg?seed=delta&backgroundColor=ddd6fe,c4b5fd',
+  'https://api.dicebear.com/7.x/shapes/svg?seed=omega&backgroundColor=fca5a5,fdba74',
+];
+
+let S = {
+  userId:null, userName:null, userPhoto:null,
+  isAdmin:false, avatarIdx:0, customPhoto:null,
+  sessionId:null, sessionCode:null,
+  questions:[], answers:{}, adminQuestions:[],
+  timerSec:0, timerInt:null, channel:null,
+  openJ:null
+};
+
+const $ = id => document.getElementById(id);
+const show = name => {
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
+  $(`sec-${name}`)?.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+};
+const loading = v => { $('loading').style.display=v?'flex':'none'; };
+const toast = (msg, ms=2800, type='ok', icon='fa-circle-check', code='') => {
+  const t=$('toast');
+  t.className = `visible t-${type}`;
+  $('toast-ico').className = `fas ${icon}`;
+  $('toast-msg').textContent = msg;
+  $('toast-code').textContent = code;
+  t.style.display='flex';
+  clearTimeout(t._t);
+  t._t = setTimeout(()=>{t.style.display='none';t.className='';}, ms);
+};
+const genId = len => {
+  let id=String(1+Math.floor(Math.random()*8));
+  while(id.length<len) id+=Math.floor(Math.random()*10);
+  return id;
+};
+const fmtTime = s => `${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+
+// ── ERROR SYSTEM ──
+const ERRS = {
+  'TQ-1001': "Faylni o'qishda xato yuz berdi. Qaytadan urinib ko'ring.",
+  'TQ-1002': "Noto'g'ri fayl turi. Faqat .txt fayl qabul qilinadi.",
+  'TQ-1003': "Faylda savollar topilmadi. Fayl formatini tekshiring.",
+  'TQ-1004': "Fayl hajmi juda katta. 5 MB dan kichik fayl yuklang.",
+  'TQ-1005': "Rasm yuklashda xato yuz berdi. Boshqa rasm tanlang.",
+  'TQ-1006': "Rasm formati qo'llab-quvvatlanmaydi. JPG yoki PNG tanlang.",
+  'TQ-2001': "Iltimos, ismingizni kiriting.",
+  'TQ-2002': "Ism juda qisqa. Kamida 2 ta harf kiriting.",
+  'TQ-2003': "Ism juda uzun. 30 ta belgidan oshmasin.",
+  'TQ-2005': "Bu Admin ID topilmadi. ID to'g'ri kiritilganini tekshiring.",
+  'TQ-2006': "Admin ID 5 ta raqamdan iborat bo'lishi kerak.",
+  'TQ-3001': "Sessiya yaratishda xato yuz berdi. Biroz kutib qaytadan urinib ko'ring.",
+  'TQ-3002': "Sessiya kodi yaratib bo'lmadi. Iltimos, qaytadan urinib ko'ring.",
+  'TQ-3003': "Sessiyaga qo'shilishda xato yuz berdi. Qaytadan urinib ko'ring.",
+  'TQ-3004': "Bu sessiya kodi topilmadi. Kodni to'g'ri kiritdingizmi?",
+  'TQ-3005': "Bu sessiya allaqachon tugagan. Yangi sessiyaga qo'shiling.",
+  'TQ-3006': "Testni boshlashda xato yuz berdi. Qaytadan urinib ko'ring.",
+  'TQ-3007': "Testni yakunlashda xato yuz berdi. Natijalaringiz saqlanishi mumkin.",
+  'TQ-3008': "Sessiyaga kirishda xato yuz berdi. Qaytadan urinib ko'ring.",
+  'TQ-4001': "Internet aloqasi yo'q. Ulanishingizni tekshiring.",
+  'TQ-4002': "Server javob bermayapti. Biroz kutib qaytadan urinib ko'ring.",
+  'TQ-4003': "Hozir server band. Biroz kutib qaytadan urinib ko'ring.",
+  'TQ-4004': "Serverda ichki xato yuz berdi. Biroz kutib qaytadan urinib ko'ring.",
+  'TQ-4005': "Ruxsat yo'q. Sahifani yangilab qaytadan urinib ko'ring.",
+  'TQ-5001': "Ma'lumotlar saqlanmadi. Internet aloqasini tekshiring.",
+  'TQ-5002': "Ma'lumotlarni yuklashda xato yuz berdi. Qaytadan urinib ko'ring.",
+  'TQ-5003': "Serverga ulanish uzildi. Sahifani yangilang.",
+  'TQ-7001': "So'rovlar soni limitdan oshdi. Biroz kutib qaytadan urinib ko'ring.",
+  'TQ-7002': "Xizmat limiti oshdi. Keyinroq qaytadan urinib ko'ring.",
+  'TQ-8001': "So'rov vaqti tugadi. Internet aloqangiz sekin yoki server band.",
+  'TQ-8002': "Sessiya vaqti tugadi. Sahifani yangilab qaytadan kiring.",
+  'TQ-9999': "Noma'lum xato yuz berdi. Sahifani yangilab qaytadan urinib ko'ring.",
+};
+const ERR_ICONS = {
+  'TQ-1': 'fa-file-circle-exclamation',
+  'TQ-2': 'fa-circle-user',
+  'TQ-3': 'fa-plug-circle-xmark',
+  'TQ-4': 'fa-wifi',
+  'TQ-5': 'fa-database',
+  'TQ-6': 'fa-bolt-lightning',
+  'TQ-7': 'fa-gauge-high',
+  'TQ-8': 'fa-clock-rotate-left',
+  'TQ-9': 'fa-triangle-exclamation',
+};
+function showErr(code, extra){
+  const msg = ERRS[code] || ERRS['TQ-9999'];
+  const cat = Object.keys(ERR_ICONS).find(k => code.startsWith(k)) || 'TQ-9';
+  toast(msg, 5000, 'error', ERR_ICONS[cat], code);
+  console.error(`[${code}]`, extra || '');
+}
+function getErrCode(e){
+  if(e?.tqCode) return e.tqCode;
+  if(!navigator.onLine) return 'TQ-4001';
+  const st = e?.status || e?.statusCode;
+  if(st===429) return 'TQ-7001';
+  if(st===503) return 'TQ-4003';
+  if(st>=500) return 'TQ-4004';
+  if(st===401||st===403) return 'TQ-4005';
+  const msg = (e?.message||'').toLowerCase();
+  if(msg.includes('timeout')||msg.includes('network')||msg.includes('fetch')) return 'TQ-4002';
+  if(msg.includes('rate')||msg.includes('limit')) return 'TQ-7001';
+  return 'TQ-9999';
+}
+async function dbCall(fn, timeoutMs=13000){
+  return Promise.race([
+    fn(),
+    new Promise((_,rej)=>setTimeout(()=>rej({tqCode:'TQ-8001'}),timeoutMs))
+  ]);
+}
+window.addEventListener('offline',()=>showErr('TQ-4001'));
+
+async function compress(file,sz=88){
+  if(file.size>8*1024*1024){ showErr('TQ-1004'); return null; }
+  if(!file.type.startsWith('image/')){ showErr('TQ-1006'); return null; }
+  return new Promise((res,rej)=>{
+    const r=new FileReader();
+    r.onerror=()=>rej({tqCode:'TQ-1005'});
+    r.onload=e=>{
+      const img=new Image();
+      img.onerror=()=>rej({tqCode:'TQ-1005'});
+      img.onload=()=>{
+        try{
+          const c=document.createElement('canvas'); c.width=c.height=sz;
+          const x=c.getContext('2d');
+          const sc=Math.max(sz/img.width,sz/img.height);
+          x.drawImage(img,(sz-img.width*sc)/2,(sz-img.height*sc)/2,img.width*sc,img.height*sc);
+          res(c.toDataURL('image/jpeg',.72));
+        }catch(err){ rej({tqCode:'TQ-1005'}); }
+      };
+      img.src=e.target.result;
+    };
+    r.readAsDataURL(file);
+  });
+}
+function parseQs(txt){
+  const lines=txt.split('\n'); const qs=[]; let cur=null;
+  lines.forEach(raw=>{
+    const ln=raw.trim(); if(!ln) return;
+    if(ln.startsWith('ANSWER:')){
+      if(cur){ const a=ln.split('ANSWER:')[1].trim().toUpperCase(); cur.correctOptionId={A:1,B:2,C:3,D:4}[a]||1; }
+    } else if(/^[A-D]\./.test(ln)){
+      if(cur) cur.options.push({id:cur.options.length+1,text:ln.substring(2).trim()});
+    } else {
+      if(cur) qs.push(cur);
+      cur={id:qs.length+1,text:ln,options:[],correctOptionId:null};
+    }
+  });
+  if(cur) qs.push(cur);
+  return qs.filter(q=>q.options.length>=2);
+}
+function copyEl(id,msg){
+  navigator.clipboard.writeText($(id).textContent.trim()).catch(()=>{});
+  toast(msg||'Nusxalandi ✓');
+}
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded',()=>{
+  buildAvatarGrid();
+  buildCodeDigits();
+  prefillSaved();
+  const code=new URLSearchParams(location.search).get('session');
+  if(code){ show('user-setup'); setTimeout(()=>{ openJBlock('code'); fillDigits(code); },250); }
+  else show('landing');
+});
+
+function prefillSaved(){
+  const ai=JSON.parse(localStorage.getItem('tq_admin')||'null');
+  const ui=JSON.parse(localStorage.getItem('tq_user')||'null');
+  $('admin-av').src=ai?.photo||AVATARS[0];
+  if(ai){ $('admin-name').value=ai.name||''; $('adm-id-txt').textContent=ai.id; $('adm-id-badge').style.display='flex'; }
+  if(ui){ $('user-av').src=ui.photo||AVATARS[ui.avatarIdx||0]; $('user-name').value=ui.name||''; setAv(ui.avatarIdx||0,false); S.userId=ui.id; S.userName=ui.name; S.userPhoto=ui.photo||AVATARS[ui.avatarIdx||0]; S.avatarIdx=ui.avatarIdx||0; }
+  else { $('user-av').src=AVATARS[0]; }
+}
+function buildAvatarGrid(){
+  const g=$('av-grid');
+  AVATARS.forEach((url,i)=>{
+    const d=document.createElement('div'); d.className='av-opt'+(i===0?' on':'');
+    d.innerHTML=`<img src="${url}" alt="av${i}" loading="lazy">`;
+    d.onclick=()=>setAv(i,true); g.appendChild(d);
+  });
+}
+function setAv(idx,upd){
+  S.avatarIdx=idx;
+  document.querySelectorAll('.av-opt').forEach((el,i)=>el.classList.toggle('on',i===idx));
+  if(upd&&!S.customPhoto){ $('user-av').src=AVATARS[idx]; S.userPhoto=null; }
+}
+function buildCodeDigits(){
+  const w=$('cd-wrap');
+  for(let i=0;i<6;i++){
+    const inp=document.createElement('input');
+    inp.type='text'; inp.maxLength=1; inp.className='cd'; inp.inputMode='numeric'; inp.placeholder='·';
+    inp.addEventListener('input',e=>{ e.target.value=e.target.value.replace(/\D/,''); if(e.target.value) e.target.nextElementSibling?.focus(); });
+    inp.addEventListener('keydown',e=>{ if(e.key==='Backspace'&&!e.target.value) e.target.previousElementSibling?.focus(); });
+    w.appendChild(inp);
+  }
+}
+function fillDigits(code){ document.querySelectorAll('.cd').forEach((d,i)=>d.value=code[i]||''); }
+function getDigits(){ return Array.from(document.querySelectorAll('.cd')).map(d=>d.value).join(''); }
+
+function goAdmin(){ S.isAdmin=true; show('admin-setup'); }
+function goUser()  { S.isAdmin=false; show('user-setup'); }
+
+// ── JOIN TOGGLE ──
+function toggleJ(type){
+  const was=S.openJ===type;
+  closeAllJ();
+  if(!was) openJBlock(type);
+}
+function closeAllJ(){
+  ['code','active'].forEach(t=>{ $(`jb-${t}`)?.classList.remove('on'); $(`jc-${t}`)?.classList.remove('on'); });
+  S.openJ=null;
+}
+function openJBlock(type){
+  S.openJ=type;
+  $(`jb-${type}`)?.classList.add('on');
+  $(`jc-${type}`)?.classList.add('on');
+  if(type==='active') loadActiveSessions();
+}
+
+// ── ADMIN SETUP ──
+async function onAdminPic(inp){
+  if(!inp.files[0]) return;
+  try{ const b64=await compress(inp.files[0]); if(b64){ $('admin-av').src=b64; S.customPhoto=b64; } }
+  catch(e){ showErr(getErrCode(e),e); }
+}
+function onAdminFile(inp){
+  if(!inp.files[0]) return;
+  const f=inp.files[0];
+  if(!f.name.toLowerCase().endsWith('.txt')){ showErr('TQ-1002'); inp.value=''; return; }
+  if(f.size>5*1024*1024){ showErr('TQ-1004'); inp.value=''; return; }
+  $('adm-file-st').textContent='Yuklanmoqda...';
+  const r=new FileReader();
+  r.onerror=()=>{ showErr('TQ-1001'); $('adm-file-st').textContent='Fayl o\'qilmadi.'; };
+  r.onload=e=>{
+    S.adminQuestions=parseQs(e.target.result);
+    const n=S.adminQuestions.length;
+    if(!n){ showErr('TQ-1003'); $('adm-file-st').innerHTML=`<span style="color:var(--bad)">Savollar topilmadi. Formatni tekshiring.  [TQ-1003]</span>`; return; }
+    $('adm-file-st').innerHTML=`<span style="color:var(--ok);font-weight:800">✓ ${n} ta savol — ${f.name}</span>`;
+  };
+  r.readAsText(f);
+}
+
+async function adminReady(){
+  const name=$('admin-name').value.trim();
+  if(!name){ showErr('TQ-2001'); return; }
+  if(name.length<2){ showErr('TQ-2002'); return; }
+  if(!S.adminQuestions.length){ showErr('TQ-1003'); return; }
+  if(!navigator.onLine){ showErr('TQ-4001'); return; }
+  loading(true);
+  try{
+    const saved=JSON.parse(localStorage.getItem('tq_admin')||'null');
+    const adminId=saved?.id||genId(5);
+    const photo=S.customPhoto||$('admin-av').src||AVATARS[0];
+    const {error:ue}=await dbCall(()=>DB.from('quiz_users').upsert({id:adminId,name,photo,is_admin:true},{onConflict:'id'}));
+    if(ue) throw Object.assign(ue,{_tqCtx:'TQ-5001'});
+    let code,tries=0;
+    while(true){
+      code=genId(6);
+      const {data:ex}=await dbCall(()=>DB.from('quiz_sessions').select('id').eq('session_code',code).maybeSingle());
+      if(!ex) break;
+      if(++tries>15) throw {tqCode:'TQ-3002'};
+    }
+    const {data:sess,error:se}=await dbCall(()=>DB.from('quiz_sessions').insert({admin_id:adminId,session_code:code,questions:S.adminQuestions,status:'waiting'}).select().single());
+    if(se) throw Object.assign(se,{_tqCtx:'TQ-3001'});
+    const {error:pe}=await dbCall(()=>DB.from('session_participants').insert({session_id:sess.id,user_id:adminId,user_name:name,user_photo:photo,answers:{},score:0}));
+    if(pe) throw Object.assign(pe,{_tqCtx:'TQ-3003'});
+    S.userId=adminId; S.userName=name; S.userPhoto=photo; S.sessionId=sess.id; S.sessionCode=code; S.questions=S.adminQuestions;
+    localStorage.setItem('tq_admin',JSON.stringify({id:adminId,name,photo}));
+    showAdminWait();
+  }catch(e){ showErr(e?.tqCode||e?._tqCtx||getErrCode(e),e); }
+  loading(false);
+}
+function showAdminWait(){
+  const base=location.origin+location.pathname;
+  $('aw-code').textContent=S.sessionCode;
+  $('aw-link').textContent=`${base}?session=${S.sessionCode}`;
+  $('aw-aid').textContent=S.userId;
+  $('aw-qcount').textContent=S.questions.length;
+  show('admin-wait'); loadParticipants('admin'); subscribeSession(S.sessionId);
+}
+async function adminStart(){
+  if(!confirm('Testni boshlashni tasdiqlaysizmi?')) return;
+  if(!navigator.onLine){ showErr('TQ-4001'); return; }
+  loading(true);
+  const {error}=await dbCall(()=>DB.from('quiz_sessions').update({status:'active',started_at:new Date().toISOString()}).eq('id',S.sessionId)).catch(e=>({error:e}));
+  loading(false);
+  if(error){ showErr(error?.tqCode||getErrCode(error),error); return; }
+  goToQuiz();
+}
+
+// ── USER SETUP ──
+async function onUserPic(inp){
+  if(!inp.files[0]) return;
+  try{ const b64=await compress(inp.files[0]); if(b64){ $('user-av').src=b64; S.customPhoto=b64; } }
+  catch(e){ showErr(getErrCode(e),e); }
+}
+function checkName(){
+  const v=$('user-name').value.trim();
+  if(!v){ showErr('TQ-2001'); return false; }
+  if(v.length<2){ showErr('TQ-2002'); return false; }
+  return true;
+}
+
+async function joinByCode(){
+  if(!checkName()) return;
+  const code=getDigits(); const e=$('code-err'); e.style.display='none';
+  if(code.length!==6){ e.textContent='6 xonali kod kiriting!'; e.style.display='block'; return; }
+  if(!navigator.onLine){ showErr('TQ-4001'); return; }
+  loading(true);
+  let sess, fetchErr;
+  try{
+    const res=await dbCall(()=>DB.from('quiz_sessions').select('*').eq('session_code',code).maybeSingle());
+    sess=res.data; fetchErr=res.error;
+  }catch(ex){ fetchErr=ex; }
+  loading(false);
+  if(fetchErr){ showErr(fetchErr?.tqCode||getErrCode(fetchErr),fetchErr); return; }
+  if(!sess){ e.textContent=`Bu kod topilmadi  [TQ-3004]`; e.style.display='block'; return; }
+  if(sess.status==='completed'){ e.textContent=`Bu test allaqachon tugagan  [TQ-3005]`; e.style.display='block'; return; }
+  await joinSession(sess);
+}
+
+async function loadActiveSessions(){
+  const el=$('active-list');
+  const saved=JSON.parse(localStorage.getItem('tq_saved_admins')||'[]');
+  if(!saved.length){
+    el.innerHTML=`<div class="empty" style="padding:10px"><i class="fas fa-inbox"></i>Saqlangan admin ID yo'q</div>`;
+    return;
+  }
+  el.innerHTML=`<div class="empty" style="padding:8px"><i class="fas fa-spinner fa-spin" style="display:inline;opacity:.4;font-size:13px;margin-right:4px"></i>Yuklanmoqda...</div>`;
+  try{
+    const {data:sessions}=await DB.from('quiz_sessions').select('*').in('admin_id',saved).in('status',['waiting','active']).order('created_at',{ascending:false});
+    if(!sessions?.length){
+      el.innerHTML=`<div class="empty" style="padding:10px"><i class="fas fa-search"></i>Hozircha faol testlar mavjud emas</div>`;
+      return;
+    }
+    const adminIds=[...new Set(sessions.map(s=>s.admin_id))];
+    const {data:admins}=await DB.from('quiz_users').select('id,name,photo').in('id',adminIds);
+    const am=Object.fromEntries((admins||[]).map(a=>[a.id,a]));
+    el.innerHTML='';
+    sessions.forEach(sess=>{
+      const adm=am[sess.admin_id]||{}; const photo=adm.photo||AVATARS[0];
+      const d=document.createElement('div'); d.className='sess-item';
+      const sessStr=JSON.stringify(sess).replace(/"/g,'&quot;');
+      d.innerHTML=`
+        <img class="spic" src="${photo}" alt="" onerror="this.src='${AVATARS[0]}'">
+        <div class="sinfo">
+          <div class="sadmin">${adm.name||'Noma\'lum'} ning testi</div>
+          <div class="smeta">${sess.questions?.length||0} ta savol &middot; ${sess.status==='waiting'?'⏳ Kutmoqda':'🟢 Faol'}</div>
+        </div>
+        <button class="sbtn" onclick="joinSessObj(this)" data-sess="${sessStr}">Kirish</button>
+      `;
+      el.appendChild(d);
+    });
+  }catch(e){
+    el.innerHTML=`<div class="empty" style="padding:10px;color:var(--bad)">Yuklashda xato  [${e?.tqCode||getErrCode(e)}]</div>`;
+    console.error('[loadActiveSessions]',e);
+  }
+}
+function joinSessObj(btn){
+  if(!checkName()) return;
+  try{ const sess=JSON.parse(btn.dataset.sess.replace(/&quot;/g,'"')); joinSession(sess); }catch(e){ showErr('TQ-3004',e); }
+}
+
+async function saveAdminId(){
+  const id=$('save-aid').value.trim();
+  if(!id||id.length!==5){ showErr('TQ-2006'); return; }
+  if(!navigator.onLine){ showErr('TQ-4001'); return; }
+  loading(true);
+  let data, err;
+  try{
+    const res=await dbCall(()=>DB.from('quiz_users').select('id,name').eq('id',id).eq('is_admin',true).maybeSingle());
+    data=res.data; err=res.error;
+  }catch(e){ err=e; }
+  loading(false);
+  if(err){ showErr(err?.tqCode||getErrCode(err),err); return; }
+  if(!data){ showErr('TQ-2005'); return; }
+  const saved=JSON.parse(localStorage.getItem('tq_saved_admins')||'[]');
+  if(!saved.includes(id)){ saved.push(id); localStorage.setItem('tq_saved_admins',JSON.stringify(saved)); }
+  $('save-aid').value=''; toast(`✅ ${data.name} saqlandi!`); loadActiveSessions();
+}
+
+async function joinSession(sess){
+  const name=$('user-name').value.trim();
+  if(!navigator.onLine){ showErr('TQ-4001'); return; }
+  loading(true);
+  try{
+    const saved=JSON.parse(localStorage.getItem('tq_user')||'null');
+    const userId=(saved?.id&&!saved?.isAdmin)?saved.id:genId(5);
+    const photo=S.customPhoto||saved?.photo||AVATARS[S.avatarIdx];
+    const {error:ue}=await dbCall(()=>DB.from('quiz_users').upsert({id:userId,name,photo,is_admin:false},{onConflict:'id'}));
+    if(ue) throw Object.assign(ue,{_tqCtx:'TQ-5001'});
+    const {data:ex,error:xe}=await dbCall(()=>DB.from('session_participants').select('id').eq('session_id',sess.id).eq('user_id',userId).maybeSingle());
+    if(xe) throw Object.assign(xe,{_tqCtx:'TQ-5002'});
+    if(!ex){
+      const {error:ie}=await dbCall(()=>DB.from('session_participants').insert({session_id:sess.id,user_id:userId,user_name:name,user_photo:photo,answers:{},score:0}));
+      if(ie) throw Object.assign(ie,{_tqCtx:'TQ-3003'});
+    }
+    S.userId=userId; S.userName=name; S.userPhoto=photo; S.sessionId=sess.id; S.sessionCode=sess.session_code; S.questions=sess.questions||[]; S.isAdmin=false;
+    localStorage.setItem('tq_user',JSON.stringify({id:userId,name,photo,avatarIdx:S.avatarIdx}));
+    if(sess.status==='active'){ goToQuiz(); }
+    else { $('uw-code').textContent=sess.session_code; show('user-wait'); loadParticipants('user'); subscribeSession(sess.id); }
+  }catch(e){ showErr(e?.tqCode||e?._tqCtx||getErrCode(e),e); }
+  loading(false);
+}
+
+// ── REALTIME ──
+function subscribeSession(sessionId){
+  if(S.channel) DB.removeChannel(S.channel);
+  S.channel=DB.channel(`q_${sessionId}`)
+    .on('postgres_changes',{event:'UPDATE',schema:'public',table:'quiz_sessions',filter:`id=eq.${sessionId}`},handleSessUp)
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'session_participants',filter:`session_id=eq.${sessionId}`},()=>loadParticipants(S.isAdmin?'admin':'user'))
+    .on('postgres_changes',{event:'UPDATE',schema:'public',table:'session_participants',filter:`session_id=eq.${sessionId}`},onPartUp)
+    .subscribe((status,err)=>{
+      if(status==='CHANNEL_ERROR'){ showErr('TQ-6001',err); }
+      if(status==='TIMED_OUT'){ showErr('TQ-8002',err); }
+    });
+}
+function handleSessUp(payload){
+  const s=payload.new;
+  if(s.status==='active'&&getCur()!=='quiz'){ if(s.questions?.length) S.questions=s.questions; goToQuiz(); }
+  else if(s.status==='completed'&&getCur()!=='results') showResults();
+}
+function onPartUp(){
+  const c=getCur();
+  if(['admin-wait','user-wait'].includes(c)) loadParticipants(S.isAdmin?'admin':'user');
+  else if(c==='quiz') loadParticipants('quiz');
+  else if(c==='results') refreshLB();
+}
+function getCur(){ return ['landing','admin-setup','admin-wait','user-setup','user-wait','quiz','results'].find(s=>$(`sec-${s}`)?.classList.contains('active')); }
+
+// ── PARTICIPANTS ──
+async function loadParticipants(role){
+  try{
+    const {data,error}=await dbCall(()=>DB.from('session_participants').select('*').eq('session_id',S.sessionId).order('joined_at',{ascending:true}));
+    if(error) throw Object.assign(error,{_tqCtx:'TQ-5002'});
+    if(data) renderParts(data,role);
+  }catch(e){ console.error('[loadParticipants]',e?.tqCode||e?._tqCtx||getErrCode(e),e); }
+}
+function renderParts(list,role){
+  const isAdm=role==='admin';
+  const cid=isAdm?'aw-parts':role==='user'?'uw-parts':null;
+  const cntId=isAdm?'aw-count':'uw-count';
+  const cntEl=$(cntId);
+  if(cntEl) cntEl.textContent=`${list.length} ta`;
+  if($('quiz-onl')) $('quiz-onl').textContent=`${list.length} ta online`;
+  if(!cid) return;
+  const el=$(cid); if(!el) return;
+  if(!list.length){ el.innerHTML=`<div class="empty"><i class="fas fa-user-clock"></i>Hali hech kim qo'shilmagan...</div>`; return; }
+  el.innerHTML='';
+  list.forEach(p=>{
+    const isMe=p.user_id===S.userId;
+    const isAdmin=S.isAdmin&&isMe;
+    const d=document.createElement('div'); d.className='p-item';
+    d.innerHTML=`
+      <img class="p-pic" src="${p.user_photo||AVATARS[0]}" alt="" onerror="this.src='${AVATARS[0]}'">
+      <div class="p-name">${p.user_name}${isMe?'<span class="badge bme">Siz</span>':''}${isAdmin?'<span class="badge badm">Admin</span>':''}</div>
+      <div class="dot-on"></div>
+    `;
+    el.appendChild(d);
+  });
+}
+
+// ── QUIZ ──
+function goToQuiz(){
+  show('quiz'); renderQuestions(); startTimer(); loadParticipants('quiz');
+  if(!S.channel) subscribeSession(S.sessionId);
+}
+function renderQuestions(){
+  const c=$('quiz-qs'); c.innerHTML='';
+  const LT=['A','B','C','D'];
+  S.questions.forEach((q,qi)=>{
+    const prev=S.answers[q.id];
+    const card=document.createElement('div'); card.className='q-card';
+    card.innerHTML=`
+      <div class="q-top"><div class="q-num">Savol ${qi+1} / ${S.questions.length}</div></div>
+      <div class="q-txt">${q.text}</div>
+      <div class="opts">
+        ${q.options.map((opt,i)=>{
+          let cls=''; if(prev){ if(opt.id===prev) cls=prev===q.correctOptionId?'correct':'wrong'; else if(opt.id===q.correctOptionId&&prev!==q.correctOptionId) cls='correct'; }
+          return `<button class="obt ${cls}" data-qid="${q.id}" data-oid="${opt.id}" onclick="pickOpt(${q.id},${opt.id},this)" ${prev?'disabled':''}><span class="olet">${LT[i]}</span><span class="otxt">${opt.text}</span></button>`;
+        }).join('')}
+      </div>
+    `;
+    c.appendChild(card);
+  });
+}
+async function pickOpt(qid,oid,btn){
+  const q=S.questions.find(q=>q.id===qid); if(!q) return;
+  S.answers[qid]=oid;
+  document.querySelectorAll(`[data-qid="${qid}"]`).forEach(b=>{ b.classList.remove('correct','wrong'); b.disabled=true; });
+  btn.classList.add(q.correctOptionId===oid?'correct':'wrong');
+  if(q.correctOptionId!==oid){ const cb=document.querySelector(`[data-qid="${qid}"][data-oid="${q.correctOptionId}"]`); if(cb) cb.classList.add('correct'); }
+  try{
+    const {error}=await dbCall(()=>DB.from('session_participants').update({answers:S.answers}).eq('session_id',S.sessionId).eq('user_id',S.userId));
+    if(error) throw Object.assign(error,{_tqCtx:'TQ-5001'});
+  }catch(e){ showErr(e?.tqCode||e?._tqCtx||getErrCode(e),e); }
+}
+function startTimer(){ clearInterval(S.timerInt); S.timerSec=0; S.timerInt=setInterval(()=>{ S.timerSec++; $('quiz-timer').textContent=fmtTime(S.timerSec); },1000); }
+async function finishQuiz(){
+  if(!confirm('Testni yakunlashni tasdiqlaysizmi?')) return;
+  clearInterval(S.timerInt);
+  let score=0; S.questions.forEach(q=>{ if(S.answers[q.id]===q.correctOptionId) score++; });
+  try{
+    const {error:ue}=await dbCall(()=>DB.from('session_participants').update({answers:S.answers,score,finished:true,finish_time:S.timerSec}).eq('session_id',S.sessionId).eq('user_id',S.userId));
+    if(ue) throw Object.assign(ue,{_tqCtx:'TQ-3007'});
+    if(S.isAdmin){
+      const {data:all,error:ae}=await dbCall(()=>DB.from('session_participants').select('finished').eq('session_id',S.sessionId));
+      if(ae) throw Object.assign(ae,{_tqCtx:'TQ-5002'});
+      if(all?.every(p=>p.finished)){
+        const {error:se}=await dbCall(()=>DB.from('quiz_sessions').update({status:'completed'}).eq('id',S.sessionId));
+        if(se) throw Object.assign(se,{_tqCtx:'TQ-3007'});
+      }
+    }
+    showResults();
+  }catch(e){ showErr(e?.tqCode||e?._tqCtx||getErrCode(e),e); showResults(); }
+}
+
+// ── RESULTS ──
+async function showResults(){
+  show('results');
+  try{
+    const {data:me,error:me_e}=await dbCall(()=>DB.from('session_participants').select('*').eq('session_id',S.sessionId).eq('user_id',S.userId).single());
+    if(me_e) throw Object.assign(me_e,{_tqCtx:'TQ-5002'});
+    const sc=me?.score||0; const tot=S.questions.length||1; const pct=Math.round(sc/tot*100);
+    $('r-score').textContent=sc; $('r-denom').textContent=`/ ${tot} ta`;
+    $('r-ok').textContent=sc; $('r-bad').textContent=tot-sc; $('r-pct').textContent=pct+'%';
+    setTimeout(()=>$('r-bar').style.width=pct+'%',120);
+    await refreshLB();
+    const path=pct>=80?'https://assets6.lottiefiles.com/packages/lf20_touohxv0.json':pct>=50?'https://assets7.lottiefiles.com/private_files/lf30_poez9ped.json':'https://assets9.lottiefiles.com/private_files/lf30_ulp9xqqw.json';
+    $('lottie-box').innerHTML=''; lottie.loadAnimation({container:$('lottie-box'),renderer:'svg',loop:true,autoplay:true,path});
+    const {data:all}=await dbCall(()=>DB.from('session_participants').select('user_id').eq('session_id',S.sessionId).order('score',{ascending:false}));
+    if((all||[]).findIndex(p=>p.user_id===S.userId)<3) confetti();
+  }catch(e){ showErr(e?.tqCode||e?._tqCtx||getErrCode(e),e); }
+  if(!S.channel) subscribeSession(S.sessionId);
+}
+async function refreshLB(){
+  try{
+    const {data,error}=await dbCall(()=>DB.from('session_participants').select('*').eq('session_id',S.sessionId).order('score',{ascending:false}));
+    if(error) throw Object.assign(error,{_tqCtx:'TQ-5002'});
+    if(data) renderLB(data);
+  }catch(e){ console.error('[refreshLB]',e?.tqCode||e?._tqCtx||getErrCode(e),e); }
+}
+function renderLB(list){
+  const medals=['🥇','🥈','🥉']; const c=$('leaderboard'); c.innerHTML='';
+  list.forEach((p,i)=>{
+    const isMe=p.user_id===S.userId; const pct=S.questions.length?Math.round(p.score/S.questions.length*100):0;
+    const d=document.createElement('div'); d.className='lb-item'+(isMe?' me':'');
+    d.innerHTML=`<div class="lb-rank">${i<3?medals[i]:i+1}</div><img class="lb-pic" src="${p.user_photo||AVATARS[0]}" alt="" onerror="this.src='${AVATARS[0]}'"><div class="lb-name">${p.user_name}${isMe?' <span style="font-size:10px;color:var(--p);font-weight:800">(Siz)</span>':''}</div><div class="lb-sc">${p.score}/${S.questions.length} <span style="font-size:11px;color:var(--tx3)">(${pct}%)</span></div>`;
+    c.appendChild(d);
+  });
+}
+
+// ── CONFETTI ──
+function confetti(){
+  const cols=['#4361EE','#f59e0b','#10b981','#ef4444','#a78bfa','#fbbf24'];
+  for(let i=0;i<80;i++){
+    const el=document.createElement('div'); const col=cols[Math.floor(Math.random()*cols.length)]; const sz=Math.random()*9+5;
+    el.style.cssText=`position:fixed;pointer-events:none;z-index:99999;top:-15px;left:${Math.random()*100}%;width:${sz}px;height:${sz}px;background:${col};border-radius:${Math.random()>.5?'50%':'3px'};animation:_cf ${Math.random()*2.5+2}s linear ${Math.random()*1.5}s forwards;`;
+    document.body.appendChild(el);
+  }
+  setTimeout(()=>document.querySelectorAll('[style*="_cf"]').forEach(e=>e.remove()),7000);
+}
+const _s=document.createElement('style');
+_s.textContent='@keyframes _cf{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}';
+document.head.appendChild(_s);
+
+// ── RESTART ──
+function restartApp(){
+  if(S.channel){ DB.removeChannel(S.channel); S.channel=null; }
+  clearInterval(S.timerInt);
+  Object.assign(S,{sessionId:null,sessionCode:null,questions:[],answers:{},adminQuestions:[],customPhoto:null,timerSec:0,openJ:null});
+  $('lottie-box').innerHTML=''; closeAllJ(); show('landing');
+}
+</script>
+</body>
+</html>
