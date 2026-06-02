@@ -543,7 +543,12 @@ function updateGreeting() {
   });
 }
 
-document.addEventListener('DOMContentLoaded', updateGreeting);
+document.addEventListener('DOMContentLoaded', () => {
+  if (!sessionStorage.getItem('greetingShown')) {
+    sessionStorage.setItem('greetingShown', '1');
+    updateGreeting();
+  }
+});
 
 document.addEventListener('keydown',e=>{if(e.key==='F12'||(e.ctrlKey&&e.shiftKey&&['I','J','C'].includes(e.key))||(e.ctrlKey&&e.key==='u')){e.preventDefault();return false}});
 document.addEventListener('contextmenu',e=>e.preventDefault());
@@ -569,7 +574,6 @@ window.showPage=id=>{
   document.getElementById(id).classList.add('active');
   document.querySelectorAll('.alert').forEach(a=>{a.classList.remove('show');a.innerHTML=''});
   updateHistory(id);
-  if(id==='welcomePage') updateGreeting();
   clearInterval(countdownInterval);
   document.getElementById('resetSuccess').style.display='none';
   document.getElementById('resetForm').style.display='block';
