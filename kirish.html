@@ -157,6 +157,11 @@
     .signup-extra-fields{overflow:hidden;max-height:0;opacity:0;transition:max-height .45s ease, opacity .4s ease;pointer-events:none}
     .signup-extra-fields.visible{max-height:600px;opacity:1;pointer-events:auto}
 
+    /* Greeting → Tizimga kirish transition */
+    #welcomePage h2{transition:opacity .3s ease}
+    #welcomePage h2.greeting-fade-out{opacity:0;transition:opacity .3s ease}
+    #welcomePage h2.greeting-fade-in{opacity:1;transition:opacity .3s ease}
+
     /* Terms checkbox shake animation */
     @keyframes shakeCb {
       0%,100%{transform:translateX(0)}
@@ -500,8 +505,45 @@ function getDynamicGreeting(){
   const all=[...match,...g.random];
   return all[Math.floor(Math.random()*all.length)];
 }
-function updateGreeting(){document.querySelector('#welcomePage h2').textContent=getDynamicGreeting()}
-document.addEventListener('DOMContentLoaded',updateGreeting);
+let greetingTimer = null;
+
+function cancelGreetingAnimation() {
+  if (greetingTimer !== null) {
+    clearTimeout(greetingTimer);
+    greetingTimer = null;
+    const h2 = document.querySelector('#welcomePage h2');
+    h2.classList.remove('greeting-fade-out');
+    h2.classList.add('greeting-fade-in');
+    h2.textContent = 'Tizimga kirish';
+  }
+}
+
+function updateGreeting() {
+  const h2 = document.querySelector('#welcomePage h2');
+  h2.textContent = getDynamicGreeting();
+  h2.classList.remove('greeting-fade-out', 'greeting-fade-in');
+
+  // 1.8s: salomlashish matnini yashir (fade-out 300ms)
+  greetingTimer = setTimeout(() => {
+    h2.classList.add('greeting-fade-out');
+
+    // 2.1s: matn o'zgartir va paydo qil (fade-in 300ms)
+    greetingTimer = setTimeout(() => {
+      h2.textContent = 'Tizimga kirish';
+      h2.classList.remove('greeting-fade-out');
+      h2.classList.add('greeting-fade-in');
+      greetingTimer = null;
+    }, 300);
+  }, 1800);
+
+  // UX Lifehack: tugma bosilsa animatsiyani to'xtat
+  const actionBtns = document.querySelectorAll('#welcomePage .btn, #welcomePage a');
+  actionBtns.forEach(btn => {
+    btn.addEventListener('pointerdown', cancelGreetingAnimation, { once: true });
+  });
+}
+
+document.addEventListener('DOMContentLoaded', updateGreeting);
 
 document.addEventListener('keydown',e=>{if(e.key==='F12'||(e.ctrlKey&&e.shiftKey&&['I','J','C'].includes(e.key))||(e.ctrlKey&&e.key==='u')){e.preventDefault();return false}});
 document.addEventListener('contextmenu',e=>e.preventDefault());
@@ -516,6 +558,13 @@ window.showModal=id=>{document.getElementById(id).classList.add('show');modalOpe
 window.closeModal=id=>{document.getElementById(id).classList.remove('show');modalOpen=false;history.back()};
 document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)closeModal(m.id)}));
 window.showPage=id=>{
+  // welcomePage'dan chiqilsa, animatsiyani to'xtat
+  if (greetingTimer !== null) {
+    clearTimeout(greetingTimer);
+    greetingTimer = null;
+    const h2 = document.querySelector('#welcomePage h2');
+    h2.classList.remove('greeting-fade-out');
+  }
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   document.querySelectorAll('.alert').forEach(a=>{a.classList.remove('show');a.innerHTML=''});
