@@ -24,6 +24,7 @@
     <meta name="twitter:image" content="https://tezkorquiz.uz/aga/bosh_sahifa.webp">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
     <link rel="manifest" href="/manifest.json" />
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -633,15 +634,16 @@
         }
         .section-two .mobile-menu-bottom {
             display: none;
-            padding: 20px;
+            padding: 0;
             border-top: 2px solid rgba(102, 126, 234, 0.1);
             margin-top: auto;
-            padding-bottom: 80px;
+            padding-top: 12px;
+            padding-bottom: 20px;
             display: flex;
             flex-direction: row;
-            align-items: center;
+            align-items: stretch;
             justify-content: center;
-            gap: 25px;
+            gap: 8px;
         }
         .section-two .social-links {
             display: flex;
@@ -677,11 +679,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 14px 8px;
-            border-radius: 14px;
-            font-family: 'Nunito','Roboto',sans-serif;
-            font-size: 15px;
-            font-weight: 700;
+            padding: 13px 10px;
+            border-radius: 12px;
+            font-family: 'Roboto','Nunito',sans-serif;
+            font-size: 16px;
+            font-weight: 600;
             text-decoration: none;
             white-space: nowrap;
             overflow: hidden;
@@ -834,6 +836,18 @@
                 z-index: 1;
                 flex-shrink: 0;
             }
+            .section-two .dropdown-icon-font {
+                width: 24px;
+                height: 24px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 20px;
+                color: var(--dark-color);
+            }
+            .section-two .dropdown-item:hover .dropdown-icon-font {
+                color: var(--primary-color);
+            }
             .section-two .dropdown-item:hover .dropdown-icon {
                 fill: var(--primary-color);
                 transform: scale(1.15);
@@ -883,6 +897,7 @@
             }
             .section-two .mobile-menu-bottom {
                 display: flex;
+                flex-direction: row;
                 flex-wrap: nowrap;
                 gap: 10px;
                 margin-top: auto;
@@ -957,6 +972,11 @@
             .section-two .dropdown-icon {
                 width: 22px;
                 height: 22px;
+            }
+            .section-two .dropdown-icon-font {
+                width: 22px;
+                height: 22px;
+                font-size: 18px;
             }
             .section-two .dropdown-item {
                 padding: 16px 18px;
@@ -2303,7 +2323,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="index">
                                 <svg class="nav-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                                    <path d="M11.47 3.84a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 0 1-1.06 1.06l-.69-.69V19.5a1.5 1.5 0 0 1-1.5 1.5h-3a.75.75 0 0 1-.75-.75V16.5a1.75 1.75 0 0 0-3.5 0v3.75a.75.75 0 0 1-.75.75h-3a1.5 1.5 0 0 1-1.5-1.5v-6.6l-.69.69a.75.75 0 0 1-1.06-1.06l8.69-8.69z"/>
                                 </svg>
                                 <span>Bosh sahifa</span>
                             </a>
@@ -2326,14 +2346,8 @@
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="quizDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <svg class="nav-icon dropdown-toggle-icon" viewBox="0 0 24 24" width="24" height="24" fill="none"
-                                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="6" cy="7"  r="1.5"/>
-                                    <circle cx="6" cy="12" r="1.5"/>
-                                    <circle cx="6" cy="17" r="1.5"/>
-                                    <line x1="10" y1="7"  x2="19" y2="7"/>
-                                    <line x1="10" y1="12" x2="19" y2="12"/>
-                                    <line x1="10" y1="17" x2="19" y2="17"/>
+                                <svg class="nav-icon dropdown-toggle-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M8 5v14l11-7z"/>
                                 </svg>
                                 <span>Testni boshlash</span>
                             </a>
@@ -2364,7 +2378,7 @@
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="testni_boshlash/imtihon">
-                                        <svg class="dropdown-icon" viewBox="0 0 24 24"><path d="M4,3H18A2,2 0 0,1 20,5V12.5L18.5,11H4V19H12.5L14,20.5V21A2,2 0 0,1 12,23H4A2,2 0 0,1 2,21V5A2,2 0 0,1 4,3M4,7H18V9H4V7M4,11H18V13H4V11M4,15H13V17H4V15M23.7,16.3L17,23L13,19L14.4,17.6L17,20.2L22.3,14.9L23.7,16.3Z"/></svg>
+                                        <i class="bi bi-alarm-fill dropdown-icon dropdown-icon-font"></i>
                                         <span>Imtihon Quiz</span>
                                     </a>
                                 </li>
@@ -2379,8 +2393,8 @@
 
                     
                     <div class="mobile-menu-bottom" id="mobileMenuBottom">
-                        <a href="kirish" class="mob-action-btn mob-action-btn--primary" id="mobLoginBtn">Tizimga kirish</a>
                         <a href="aloqa"  class="mob-action-btn mob-action-btn--secondary" id="mobHelpBtn">Yordam</a>
+                        <a href="kirish" class="mob-action-btn mob-action-btn--primary" id="mobLoginBtn">Tizimga kirish</a>
                     </div>
                 </div>
 
