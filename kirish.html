@@ -158,9 +158,9 @@
     .signup-extra-fields.visible{max-height:600px;opacity:1;pointer-events:auto}
 
     /* Greeting → Tizimga kirish transition */
-    #welcomePage h2{transition:opacity .3s ease}
-    #welcomePage h2.greeting-fade-out{opacity:0;transition:opacity .3s ease}
-    #welcomePage h2.greeting-fade-in{opacity:1;transition:opacity .3s ease}
+    #welcomePage h2{opacity:0;transition:opacity .35s ease;min-height:1.4em}
+    #welcomePage h2.greeting-fade-out{opacity:0;transition:opacity .35s ease}
+    #welcomePage h2.greeting-fade-in{opacity:1;transition:opacity .35s ease}
 
     /* Terms checkbox shake animation */
     @keyframes shakeCb {
@@ -191,7 +191,7 @@
       <!-- Welcome Page -->
       <div id="welcomePage" class="page active">
         <div class="logo"><div class="logo-icon"><img src="aga/milliylogo.webp" alt="Logo" id="mainLogo"></div></div>
-        <h2>Xush kelibsiz!</h2>
+        <h2></h2>
         <p class="subtitle">Davom etish uchun kirish usulini tanlang</p>
         <div id="welcomeAlert" class="alert"></div>
 
@@ -523,18 +523,26 @@ function updateGreeting() {
   h2.textContent = getDynamicGreeting();
   h2.classList.remove('greeting-fade-out', 'greeting-fade-in');
 
-  // 1.8s: salomlashish matnini yashir (fade-out 300ms)
+  // Double rAF: opacity:0 dan opacity:1 ga CSS transition ishga tushsin
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      h2.classList.add('greeting-fade-in');
+    });
+  });
+
+  // 2s: salomlashish matnini yashir (fade-out 350ms)
   greetingTimer = setTimeout(() => {
+    h2.classList.remove('greeting-fade-in');
     h2.classList.add('greeting-fade-out');
 
-    // 2.1s: matn o'zgartir va paydo qil (fade-in 300ms)
+    // 350ms: matn o'zgartir va paydo qil (fade-in 350ms)
     greetingTimer = setTimeout(() => {
       h2.textContent = 'Tizimga kirish';
       h2.classList.remove('greeting-fade-out');
       h2.classList.add('greeting-fade-in');
       greetingTimer = null;
-    }, 300);
-  }, 1800);
+    }, 350);
+  }, 2000);
 
   // UX Lifehack: tugma bosilsa animatsiyani to'xtat
   const actionBtns = document.querySelectorAll('#welcomePage .btn, #welcomePage a');
@@ -544,10 +552,8 @@ function updateGreeting() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  if (!sessionStorage.getItem('greetingShown')) {
-    sessionStorage.setItem('greetingShown', '1');
-    updateGreeting();
-  }
+  // Har sahifa yuklashda (refresh ham) animatsiya ishlaydi
+  updateGreeting();
 });
 
 document.addEventListener('keydown',e=>{if(e.key==='F12'||(e.ctrlKey&&e.shiftKey&&['I','J','C'].includes(e.key))||(e.ctrlKey&&e.key==='u')){e.preventDefault();return false}});
@@ -569,6 +575,7 @@ window.showPage=id=>{
     greetingTimer = null;
     const h2 = document.querySelector('#welcomePage h2');
     h2.classList.remove('greeting-fade-out');
+    h2.classList.add('greeting-fade-in'); // h2 ko'rinib qolsin
   }
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
