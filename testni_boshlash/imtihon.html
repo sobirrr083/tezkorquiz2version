@@ -631,9 +631,9 @@
       gap: 6px;
       padding: 14px 10px;
       border-radius: 12px;
-      border: 2px solid #c5ccf5;
-      background: #e8ebff;
-      color: var(--primary-color);
+      border: 2px solid #d1d5db;
+      background: #f3f4f6;
+      color: #6b7280;
       font-size: 0.9rem;
       font-weight: 600;
       cursor: pointer;
@@ -655,7 +655,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at center, rgba(67,97,238,0.18) 0%, transparent 70%);
+      background: radial-gradient(circle at center, rgba(107,114,128,0.15) 0%, transparent 70%);
       opacity: 0;
       transform: scale(0);
       transition: opacity 0.3s, transform 0.35s cubic-bezier(.4,0,.2,1);
@@ -667,17 +667,17 @@
       transform: scale(2.5);
     }
     .filter-chip:hover:not(.active) {
-      border-color: var(--primary-color);
-      background: #d4daff;
-      color: var(--primary-color);
-      box-shadow: 0 3px 10px rgba(67,97,238,0.15);
+      border-color: #9ca3af;
+      background: #e5e7eb;
+      color: #374151;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
     }
     .filter-chip.active {
-      background: var(--primary-color);
-      border-color: var(--primary-color);
-      color: white;
+      background: #dbeafe;
+      border-color: #3b82f6;
+      color: #1d4ed8;
       font-weight: 700;
-      box-shadow: 0 4px 14px rgba(67,97,238,0.32);
+      box-shadow: 0 4px 14px rgba(59,130,246,0.2);
     }
     .filter-chip:active:not(.active) {
       transform: scale(0.96);
@@ -702,7 +702,7 @@
       line-height: 1;
     }
     .filter-chip.active .chip-check {
-      color: rgba(255,255,255,0.95);
+      color: #1d4ed8;
       transform: scale(1);
     }
     .chip-label {
@@ -719,11 +719,18 @@
         font-size: 0.82rem;
         min-height: 48px;
         border-radius: 10px;
+        justify-content: center;
+        align-items: center;
       }
       .chip-check {
-        width: 14px;
-        height: 14px;
-        font-size: 0.68rem;
+        display: none !important;
+      }
+      .chip-label {
+        text-align: center;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
     }
 
@@ -1274,19 +1281,19 @@
       display: none !important;
     }
 
-    /* ── File status card (success=green, error=red) ── */
+    /* ── File status card (neutral, error=red) ── */
     .file-name-badge {
       display: none;
       align-items: center;
       gap: 10px;
       margin-top: 10px;
       padding: 10px 14px;
-      background: #f0fdf4;
-      border: 1.5px solid #22c55e;
+      background: #f8f9fa;
+      border: 1.5px solid #d1d5db;
       border-radius: 10px;
       font-size: 0.87rem;
       font-weight: 600;
-      color: #15803d;
+      color: #111827;
       animation: fadeSlideIn 0.3s ease;
     }
     .file-name-badge.visible { display: flex; }
@@ -1299,12 +1306,12 @@
       width: 28px;
       height: 28px;
       border-radius: 50%;
-      background: #dcfce7;
+      background: #e5e7eb;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 0.8rem;
-      color: #16a34a;
+      color: #374151;
       flex-shrink: 0;
     }
     .file-name-badge.error-state .badge-icon {
@@ -1324,7 +1331,7 @@
       font-weight: 400;
       margin-top: 2px;
       display: block;
-      color: #166534;
+      color: #6b7280;
     }
     .file-name-badge.error-state .badge-msg { color: #991b1b; }
 
@@ -2631,9 +2638,6 @@ ANSWER: A</div>
       
       setTimeout(() => {
         successMessage.classList.add("show");
-        setTimeout(() => {
-          if (startExamWrap) startExamWrap.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 300);
       }, 50);
       
     } else {
