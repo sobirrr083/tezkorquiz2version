@@ -156,7 +156,13 @@
         }
 
         .dropdown-toggle-icon {
-            display: none !important;
+            display: none;
+        }
+
+        @media (min-width: 992px) {
+            .dropdown-toggle-icon {
+                display: none !important;
+            }
         }
 
         .dropdown-toggle::after {
@@ -265,10 +271,11 @@
         /* ---------- KIRISH HOLATI – SKELETDAN SMOOTH CHIQISH ---------- */
         .profile-btn.login-mode {
             min-width: 82px;
+            max-width: 96px;
             width: auto;
             height: 38px;
             border-radius: 12px;
-            background: #4361ee;
+            background: #4460ef;
             padding: 0 18px;
             font-family: 'Roboto', sans-serif;
             font-size: 14px;
@@ -280,6 +287,7 @@
             position: relative;
             overflow: hidden;
             cursor: pointer;
+            flex-shrink: 0;
             animation: skeletonMorph 0.40s cubic-bezier(0.34, 1.25, 0.64, 1) forwards;
         }
         @keyframes skeletonMorph {
@@ -343,6 +351,8 @@
             display: flex;
             align-items: center;
             position: relative;
+            flex-shrink: 0;
+            overflow: hidden;
         }
 
         .mobile-profile {
@@ -380,46 +390,29 @@
         .profile-user {
             padding: 16px;
             border-bottom: 1px solid #eee;
-            display: flex;
-            gap: 12px;
-        }
-        
-        .profile-user-avatar {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: var(--gradient-1);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
         }
 
-        .profile-user-avatar svg {
-            width: 24px;
-            height: 24px;
-            fill: white;
+        .profile-user-avatar {
+            display: none;
         }
-        
-        .profile-user-avatar img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 2px solid var(--primary-color);
-            object-fit: cover;
-        }
-        
+
         .profile-user h4 {
             font-size: 15px;
-            font-weight: 600;
-            margin: 0;
+            font-weight: 700;
+            margin: 0 0 3px;
             color: var(--dark-color);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
-        
+
         .profile-user p {
-            font-size: 13px;
-            color: #666;
-            margin: 4px 0 0;
+            font-size: 12px;
+            color: #94a3b8;
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         /* Tahrirlash va Donat tugmalari */
@@ -1692,15 +1685,8 @@
 
                 <div class="profile-dropdown" id="profileDropdown">
                 <div class="profile-user">
-                    <div class="profile-user-avatar" id="dropdownAvatar">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <h4 id="userDisplayName">Foydalanuvchi</h4>
-                        <p id="userEmail">yuklanmoqda...</p>
-                    </div>
+                    <h4 id="userDisplayName">Foydalanuvchi</h4>
+                    <p id="userEmail">yuklanmoqda...</p>
                 </div>
                 <div class="profile-action" onclick="window.location.href='profile_edit'">
                     <i class="fas fa-user-edit"></i>
@@ -2185,6 +2171,7 @@
             
             try {
                 await signOut(auth);
+                modal.classList.remove('show');
                 window.location.href = 'kirish';
             } catch (err) {
                 alert("Xatolik: " + err.message);
