@@ -270,13 +270,13 @@
         }
         /* ---------- KIRISH HOLATI – SKELETDAN SMOOTH CHIQISH ---------- */
         .profile-btn.login-mode {
+            width: 82px;
             min-width: 82px;
-            max-width: 96px;
-            width: auto;
+            max-width: 82px;
             height: 38px;
             border-radius: 12px;
             background: #4460ef;
-            padding: 0 18px;
+            padding: 0;
             font-family: 'Roboto', sans-serif;
             font-size: 14px;
             font-weight: 600;
@@ -288,12 +288,15 @@
             overflow: hidden;
             cursor: pointer;
             flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             animation: skeletonMorph 0.40s cubic-bezier(0.34, 1.25, 0.64, 1) forwards;
         }
         @keyframes skeletonMorph {
-            0%   { min-width: 40px; width: 40px; border-radius: 50%; background: #c8d0e8; opacity: 0.6; }
+            0%   { width: 40px; min-width: 40px; border-radius: 50%; background: #c8d0e8; opacity: 0.6; }
             40%  { border-radius: 18px; background: #3a56e0; opacity: 0.88; }
-            100% { min-width: 82px; border-radius: 12px; background: #4361ee; opacity: 1; }
+            100% { width: 82px; min-width: 82px; border-radius: 12px; background: #4361ee; opacity: 1; }
         }
         .profile-btn.login-mode .btn-label {
             opacity: 0;
@@ -317,13 +320,24 @@
             transform: none !important;
         }
         .profile-btn.login-mode .btn-spinner {
-            width: 15px; height: 15px;
+            width: 16px;
+            height: 16px;
             border: 2px solid rgba(255,255,255,0.35);
             border-top-color: #fff;
             border-radius: 50%;
             animation: spin 0.7s linear infinite;
             display: none;
             flex-shrink: 0;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        /* Loading holati: label yashir, spinner ko'rsat, o'lcham o'zgarmasin */
+        .profile-btn.login-mode.btn-loading .btn-label {
+            display: none;
+        }
+        .profile-btn.login-mode.btn-loading .btn-spinner {
+            display: block;
         }
         /* ---------- PROFIL RASMI CHIQISH ANIMATSIYASI ---------- */
         @keyframes profileReveal {
@@ -352,7 +366,6 @@
             align-items: center;
             position: relative;
             flex-shrink: 0;
-            overflow: hidden;
         }
 
         .mobile-profile {
