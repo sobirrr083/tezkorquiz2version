@@ -300,24 +300,15 @@
         }
         .profile-btn.login-mode .btn-label {
             opacity: 0;
-            display: inline-block;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
             white-space: nowrap;
             animation: labelReveal 0.20s ease 0.30s forwards;
         }
         @keyframes labelReveal {
-            from { opacity: 0; transform: translateX(-4px); }
-            to   { opacity: 1; transform: translateX(0); }
-        }
-        .profile-btn.login-mode:hover {
-            background: #3453d6;
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.20);
-            transform: none !important;
-            animation: none;
-        }
-        .profile-btn.login-mode:active {
-            background: #2d48c4;
-            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.25);
-            transform: none !important;
+            from { opacity: 0; }
+            to   { opacity: 1; }
         }
         .profile-btn.login-mode .btn-spinner {
             width: 16px;
@@ -326,11 +317,15 @@
             border-top-color: #fff;
             border-radius: 50%;
             animation: spin 0.7s linear infinite;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
             display: none;
             flex-shrink: 0;
         }
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
         }
         /* Loading holati: label yashir, spinner ko'rsat, o'lcham o'zgarmasin */
         .profile-btn.login-mode.btn-loading .btn-label {
