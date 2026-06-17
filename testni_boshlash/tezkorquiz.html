@@ -51,7 +51,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
 .breadcrumb-item.active{background:#e7f0ff;color:#4460ef;padding:.38rem .7rem;border-radius:6px;font-size:.875rem;font-weight:600;line-height:1.4}
 .breadcrumb-item+.breadcrumb-item::before{content:"/";color:#cbd5e0;padding:0 .45rem;font-size:.875rem}
 .quiz-container{max-width:900px;margin:0 auto;padding:20px;min-height:100vh;display:flex;flex-direction:column;justify-content:center}
-.quiz-card{background:rgba(255,255,255,.97);border-radius:20px;box-shadow:0 20px 48px rgba(0,0,0,.11);overflow:hidden;position:relative}
+.quiz-card{background:rgba(255,255,255,.97);border-radius:20px;box-shadow:0 20px 48px rgba(0,0,0,.11);overflow:hidden}
 .quiz-header{background:linear-gradient(135deg,#4460ef 0%,#2d44c7 100%);color:white;padding:30px;text-align:center}
 .quiz-title{font-size:2rem;font-weight:700;margin-bottom:10px;text-shadow:0 2px 4px rgba(0,0,0,.25)}
 .quiz-subtitle{opacity:.9;font-size:1.1rem}
@@ -302,54 +302,6 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
 .reveal-chip-group{padding:10px 13px 12px;background:#f3f6fc;border-radius:10px}
 .reveal-chip-label{font-size:.82rem;font-weight:700;color:#334155;display:flex;align-items:center;gap:6px;margin-bottom:8px}
 .reveal-chip-label i{color:#4460ef;font-size:.78rem}
-/* ── Qulay UX section heads ── */
-.qulay-ux-section-head{display:flex;align-items:center;gap:7px;font-size:.8rem;font-weight:700;color:var(--ux-clr,#4460ef);letter-spacing:.03em;padding:6px 10px;background:var(--ux-bg,#e8eeff);border-radius:8px;margin:4px 0 2px}
-.qulay-ux-section-head svg{flex-shrink:0;opacity:.9}
-/* ── Responsive soz-row ── */
-.soz-row{display:flex;align-items:flex-start;justify-content:space-between;padding:11px 14px;background:#f3f6fc;border-radius:10px;gap:12px}
-.soz-row-left{flex:1;min-width:0}
-.soz-row-label{font-size:.88rem;font-weight:600;color:#1e293b;display:flex;align-items:center;gap:7px;line-height:1.3}
-.soz-row-label i{color:#4460ef;width:14px;font-size:.82rem;flex-shrink:0}
-.soz-row-desc{font-size:.76rem;color:#94a3b8;line-height:1.4;margin-top:2px}
-/* Wrap layout: toggle stays inline with label, desc goes full-width below */
-.soz-row.soz-wrap{flex-wrap:wrap;align-items:stretch}
-.soz-row.soz-wrap .soz-row-left{display:flex;align-items:center;justify-content:space-between;width:100%;flex:unset;gap:8px;margin:0}
-.soz-row.soz-wrap .soz-row-label-text{flex:1;font-size:.88rem;font-weight:600;color:#1e293b;line-height:1.3}
-.soz-row.soz-wrap .soz-row-right-ctrl{flex-shrink:0}
-.soz-row.soz-wrap .soz-row-desc-full{font-size:.76rem;color:#94a3b8;line-height:1.4;margin-top:0;width:100%;padding-top:5px}
-@media(max-width:500px){
-  .soz-row:not(.soz-wrap){flex-wrap:wrap}
-  .soz-row:not(.soz-wrap) .soz-row-left{min-width:100%;order:0}
-  .soz-row:not(.soz-wrap) .soz-row-desc{width:100%}
-}
-/* ── Section transition loader (absolute overlay, card bilan teng) ── */
-#sectionLoader{display:none;position:absolute;inset:0;z-index:20;background:#fff;border-radius:20px;flex-direction:column;align-items:center;justify-content:center;gap:16px}
-#sectionLoader.show{display:flex}
-.sl-ring{width:48px;height:48px;position:relative;flex-shrink:0}
-.sl-ring::before,.sl-ring::after{content:'';position:absolute;inset:0;border-radius:50%}
-.sl-ring::before{border:4px solid #e0e7ff}
-.sl-ring::after{border:4px solid transparent;border-top-color:#4460ef;animation:sloSpin .72s linear infinite}
-.sl-text{font-size:.88rem;font-weight:600;color:#94a3b8;letter-spacing:.01em}
-#startLoadingOverlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,.52);backdrop-filter:blur(6px);z-index:99997;align-items:center;justify-content:center;flex-direction:column;gap:16px}
-#startLoadingOverlay.show{display:flex;animation:fadeIn .22s ease}
-.slo-spinner{width:52px;height:52px;border:4px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:sloSpin .7s linear infinite}
-@keyframes sloSpin{to{transform:rotate(360deg)}}
-.slo-text{color:rgba(255,255,255,.9);font-size:.95rem;font-weight:600;letter-spacing:.02em}
-/* ── Fullscreen suggestion modal (mobile/tablet only) ── */
-#fsModal{display:none;position:fixed;bottom:0;left:0;right:0;z-index:99996;padding:0 12px 16px;pointer-events:none}
-#fsModal.show{display:block;pointer-events:all;animation:fsSlideUp .38s cubic-bezier(.4,0,.2,1)}
-@keyframes fsSlideUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
-.fs-modal-inner{background:#fff;border-radius:16px;padding:16px 18px 14px;box-shadow:0 8px 32px rgba(0,0,0,.18);display:flex;align-items:center;gap:14px}
-.fs-modal-icon{width:42px;height:42px;background:linear-gradient(135deg,#4460ef,#2d44c7);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff;font-size:1.1rem}
-.fs-modal-body{flex:1;min-width:0}
-.fs-modal-title{font-size:.88rem;font-weight:700;color:#1e293b;margin-bottom:3px}
-.fs-modal-desc{font-size:.78rem;color:#64748b;line-height:1.4}
-.fs-modal-btns{display:flex;gap:7px;margin-top:10px}
-.fs-btn-yes{padding:7px 16px;background:#4460ef;color:#fff;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;transition:background .2s}
-.fs-btn-yes:hover{background:#2d44c7}
-.fs-btn-no{padding:7px 12px;background:#f1f5fc;color:#64748b;border:none;border-radius:8px;font-size:.82rem;font-weight:600;cursor:pointer;transition:background .2s}
-.fs-btn-no:hover{background:#e2e8f4}
-@media(min-width:992px){#fsModal{display:none!important}}
 .reveal-chips{display:flex;flex-wrap:wrap;gap:6px}
 .reveal-chip{padding:6px 13px;border-radius:20px;border:2px solid #dde3ef;background:#fff;font-size:.8rem;font-weight:700;color:#64748b;cursor:pointer;transition:all .18s;white-space:nowrap}
 .reveal-chip:hover{border-color:#9db3f5;color:#4460ef;background:#eef2ff}
@@ -417,25 +369,6 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
 
 <div id="toast-container"></div>
 <div id="confettiWrap" class="confetti-wrap"></div>
-<!-- 1 soniyalik start loading overlay -->
-<div id="startLoadingOverlay">
-  <div class="slo-spinner"></div>
-  <div class="slo-text">Test tayyorlanmoqda…</div>
-</div>
-<!-- Fullscreen tavsiya modal (faqat mobile/tablet) -->
-<div id="fsModal">
-  <div class="fs-modal-inner">
-    <div class="fs-modal-icon"><i class="fas fa-expand"></i></div>
-    <div class="fs-modal-body">
-      <div class="fs-modal-title">To'liq ekranda yaxshiroq!</div>
-      <div class="fs-modal-desc">Test paytida to'liq ekranga o'tish tavsiya etiladi — diqqatingiz to'liq testga qaratiladi.</div>
-      <div class="fs-modal-btns">
-        <button class="fs-btn-yes" onclick="activateFsFromModal()"><i class="fas fa-expand" style="font-size:.75rem"></i> To'liq ekran</button>
-        <button class="fs-btn-no" onclick="closeFsModal()">Keyin</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 <div class="quiz-container">
   <div id="breadcrumbWrapper" class="breadcrumb-wrapper">
@@ -461,7 +394,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
           <i class="fas fa-cloud-upload-alt upload-icon"></i>
           <div class="upload-text">Faylni shu yerga tashlang</div>
           <div class="upload-subtext">yoki quyidagi tugma orqali tanlang</div>
-          <div style="margin-top:4px"><button class="upload-file-btn" onclick="event.stopPropagation();try{fileInput.value='';fileInput.click();}catch(e){}"><i class="fas fa-folder-open"></i> Fayl tanlash</button></div><div style="margin-top:10px;font-size:.78rem;color:#64748b"><strong>Qollab-quvvatlanadi: .txt</strong></div>
+          <div style="margin-top:4px"><button class="upload-file-btn" onclick="event.stopPropagation();try{fileInput.value='';fileInput.click();}catch(e){}"><i class="fas fa-folder-open"></i> Fayl tanlash</button></div><div style="margin-top:10px;font-size:.78rem;color:#b0bac9">Qollab-quvvatlanadi: <strong style="color:#64748b">.txt</strong></div>
         </div>
         <input type="file" id="fileInput" accept=".txt,text/plain,text/*" style="display:none">
 
@@ -514,23 +447,23 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
                   <div class="soz-row-left"><div class="soz-row-label"><span id="stayToggleLabel">Javob tanlanganda shu joyda qolish</span></div><div class="soz-row-desc">O'chirilsa javob tanlanishi bilan keyingi savolga avtomatik o'tiladi</div></div>
                   <div class="form-check form-switch" style="margin:0;flex-shrink:0"><input class="form-check-input" type="checkbox" id="stayToggle"></div>
                 </div>
-                <div class="soz-row soz-wrap" style="align-items:flex-start">
-                  <div class="soz-row-left"><div class="soz-row-label-text soz-row-label">Savollar animatsiyasi</div><div class="soz-row-right-ctrl" style="display:flex;gap:6px">
+                <div class="soz-row" style="align-items:flex-start">
+                  <div class="soz-row-left"><div class="soz-row-label">Savoldan savolga</div><div class="soz-row-desc">Savollar o'rtasidagi o'tish animatsiyasi uslubi</div></div>
+                  <div style="display:flex;gap:6px;flex-shrink:0">
                     <button class="anim-pick-btn" id="animBtnSlide" onclick="setQuizAnim('slide')" title="Slayd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><polygon points="10,9 16,12 10,15" fill="currentColor" stroke="none"/></svg></button>
                     <button class="anim-pick-btn" id="animBtnFade" onclick="setQuizAnim('fade')" title="Yo'qolish"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="7" width="14" height="10" rx="2"/><path d="M3 12h2M19 12h2"/></svg></button>
                     <button class="anim-pick-btn" id="animBtnZoom" onclick="setQuizAnim('zoom')" title="Zoom"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M12 4v4M12 16v4M4 12h4M16 12h4"/></svg></button>
                     <button class="anim-pick-btn active" id="animBtnShrink" onclick="setQuizAnim('shrink')" title="Kichiklashib o'tish"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="5" width="14" height="14" rx="2"/><path d="M12 5v14"/></svg></button>
-                  </div></div>
-                  <div class="soz-row-desc-full">Savollar o'rtasidagi o'tish animatsiyasi uslubi</div>
+                  </div>
                 </div>
-                <div class="soz-row soz-wrap" style="align-items:flex-start">
-                  <div class="soz-row-left"><div class="soz-row-label-text soz-row-label">Variantlar animatsiyasi</div><div class="soz-row-right-ctrl" style="display:flex;gap:6px">
+                <div class="soz-row" style="align-items:flex-start">
+                  <div class="soz-row-left"><div class="soz-row-label">Variantlar animatsiyasi</div><div class="soz-row-desc">Yangi savolda variantlar qanday chiqib keladi</div></div>
+                  <div style="display:flex;gap:6px;flex-shrink:0">
                     <button class="anim-pick-btn active" id="uploadOptAnimBtnOff" onclick="setOptAnim('off')" title="O'chirilgan"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 12h12"/></svg></button>
                     <button class="anim-pick-btn" id="uploadOptAnimBtnBounce" onclick="setOptAnim('bounce')" title="Yuqoriga sakrash"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="13" width="3" height="6" rx="1"/><rect x="10" y="9" width="3" height="10" rx="1"/><rect x="15" y="5" width="3" height="14" rx="1"/></svg></button>
                     <button class="anim-pick-btn" id="uploadOptAnimBtnPop" onclick="setOptAnim('pop')" title="Kattarishib chiqish"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/></svg></button>
                     <button class="anim-pick-btn" id="uploadOptAnimBtnWave" onclick="setOptAnim('wave')" title="Chapdan siljib kelish"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h10"/><path d="M11 6l6 6-6 6"/></svg></button>
-                  </div></div>
-                  <div class="soz-row-desc-full">Yangi savolda variantlar qanday chiqib keladi</div>
+                  </div>
                 </div>
                 <div class="reveal-chip-group" id="uploadRevealGroup">
                   <div class="reveal-chip-label">Belgilashdan keyin kechikish</div>
@@ -548,15 +481,11 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
         </div>
         <div class="sample-section">
           <button class="sample-toggle" id="sampleToggle">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="11" x2="12" y2="17"/><polyline points="9 14 12 17 15 14"/></svg> Namuna testni yuklab olish
+            <i class="fas fa-download"></i> Namuna testni yuklab olish
           </button>
-          <p style="margin-top:10px;color:#94a3b8;font-size:.84rem">Quyidagi qiziqarli testni sinab ko'ring</p>
+          <p style="margin-top:10px;color:#94a3b8;font-size:.84rem">Kichik namuna test faylini yuklab oling.</p>
         </div>
       </div>
-    </div>
-    <div id="sectionLoader">
-      <div class="sl-ring"></div>
-      <div class="sl-text">Yuklanmoqda…</div>
     </div>
     <div id="infoSection" style="display:none">
       <div class="quiz-header">
@@ -572,10 +501,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
           </div>
           <div class="qulay-acc-body" id="qulayAccBody">
             <div class="qulay-acc-inner" style="gap:8px">
-              <div class="qulay-ux-section-head">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M8 20h8M12 16v4"/><rect x="5" y="8" width="3" height="3" rx=".5" fill="currentColor" stroke="none"/><rect x="10.5" y="8" width="3" height="3" rx=".5" fill="currentColor" stroke="none"/><rect x="16" y="8" width="3" height="3" rx=".5" fill="currentColor" stroke="none"/><rect x="5" y="12.5" width="3" height="3" rx=".5" fill="currentColor" stroke="none"/><rect x="10.5" y="12.5" width="3" height="3" rx=".5" fill="currentColor" stroke="none"/><rect x="16" y="12.5" width="3" height="3" rx=".5" fill="currentColor" stroke="none"/></svg>
-                Kompyuterda klaviaturadan foydalanish
-              </div>
+              <div style="font-size:.76rem;font-weight:700;color:#6b84e8;letter-spacing:.05em;text-transform:uppercase;padding:0 2px 2px">Klaviatura</div>
               <div class="info-items" style="gap:8px">
                 <div class="info-item">
                   <div class="info-text">Variantlarni tanlash uchun <strong>1, 2, 3, 4</strong> raqamlarini bosing</div>
@@ -587,10 +513,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
                   <div class="info-text"><strong>Enter</strong> tugmasi variantni tasdiqlaydi va davom etadi</div>
                 </div>
               </div>
-              <div class="qulay-ux-section-head" style="--ux-clr:#059669;--ux-bg:#d1fae5">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2v6l-2 2v6a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-6l-2-2V2"/><path d="M6 8h8"/><circle cx="17" cy="16" r="4"/><path d="M17 14v4M15 16h4" stroke-width="1.8"/></svg>
-                Sichqoncha yoki sensor qurilmasida foydalanish
-              </div>
+              <div style="font-size:.76rem;font-weight:700;color:#059669;letter-spacing:.05em;text-transform:uppercase;padding:8px 2px 2px">Sichqoncha / Sensor</div>
               <div class="info-items" style="gap:8px">
                 <div class="info-item">
                   <div class="info-text">Variantni <strong>bosing</strong> va "Keyingi savol" tugmasini bosing</div>
@@ -627,23 +550,23 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
                 <div class="soz-row-left"><div class="soz-row-label"><span id="infoStayLabel">Javob tanlanganda shu joyda qolish</span></div><div class="soz-row-desc">O'chirilsa javob tanlanishi bilan keyingi savolga avtomatik o'tiladi</div></div>
                 <div class="form-check form-switch" style="margin:0;flex-shrink:0"><input class="form-check-input" type="checkbox" id="infoStayToggle"></div>
               </div>
-              <div class="soz-row soz-wrap" style="align-items:flex-start">
-                <div class="soz-row-left"><div class="soz-row-label-text soz-row-label">Savollar animatsiyasi</div><div class="soz-row-right-ctrl" style="display:flex;gap:6px">
+              <div class="soz-row" style="align-items:flex-start">
+                <div class="soz-row-left"><div class="soz-row-label">Savol animatsiyasi</div><div class="soz-row-desc">Savollar o'rtasidagi o'tish animatsiyasi uslubi</div></div>
+                <div style="display:flex;gap:6px;flex-shrink:0">
                   <button class="anim-pick-btn" id="infoAnimBtnSlide" onclick="setQuizAnim('slide')" title="Slayd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><polygon points="10,9 16,12 10,15" fill="currentColor" stroke="none"/></svg></button>
                   <button class="anim-pick-btn" id="infoAnimBtnFade" onclick="setQuizAnim('fade')" title="Yo'qolish"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="7" width="14" height="10" rx="2"/><path d="M3 12h2M19 12h2"/></svg></button>
                   <button class="anim-pick-btn" id="infoAnimBtnZoom" onclick="setQuizAnim('zoom')" title="Zoom"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M12 4v4M12 16v4M4 12h4M16 12h4"/></svg></button>
                   <button class="anim-pick-btn active" id="infoAnimBtnShrink" onclick="setQuizAnim('shrink')" title="Kichiklashib o'tish"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="5" width="14" height="14" rx="2"/><path d="M12 5v14"/></svg></button>
-                </div></div>
-                <div class="soz-row-desc-full">Savollar o'rtasidagi o'tish animatsiyasi uslubi</div>
+                </div>
               </div>
-              <div class="soz-row soz-wrap" style="align-items:flex-start">
-                <div class="soz-row-left"><div class="soz-row-label-text soz-row-label">Variantlar animatsiyasi</div><div class="soz-row-right-ctrl" style="display:flex;gap:6px">
+              <div class="soz-row" style="align-items:flex-start">
+                <div class="soz-row-left"><div class="soz-row-label">Variantlar animatsiyasi</div><div class="soz-row-desc">Yangi savolda variantlar qanday chiqib keladi</div></div>
+                <div style="display:flex;gap:6px;flex-shrink:0">
                   <button class="anim-pick-btn active" id="infoOptAnimBtnOff" onclick="setOptAnim('off')" title="O'chirilgan"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 12h12"/></svg></button>
                   <button class="anim-pick-btn" id="infoOptAnimBtnBounce" onclick="setOptAnim('bounce')" title="Yuqoriga sakrash"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="13" width="3" height="6" rx="1"/><rect x="10" y="9" width="3" height="10" rx="1"/><rect x="15" y="5" width="3" height="14" rx="1"/></svg></button>
                   <button class="anim-pick-btn" id="infoOptAnimBtnPop" onclick="setOptAnim('pop')" title="Kattarishib chiqish"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/></svg></button>
                   <button class="anim-pick-btn" id="infoOptAnimBtnWave" onclick="setOptAnim('wave')" title="Chapdan siljib kelish"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h10"/><path d="M11 6l6 6-6 6"/></svg></button>
-                </div></div>
-                <div class="soz-row-desc-full">Yangi savolda variantlar qanday chiqib keladi</div>
+                </div>
               </div>
               <div class="soz-row" id="randomToggleRow" style="cursor:pointer;align-items:flex-start" onclick="if(event.target!==document.getElementById('randomToggle')){const el=document.getElementById('randomToggle');el.checked=!el.checked;el.dispatchEvent(new Event('change'))}">
                 <div class="soz-row-left"><div class="soz-row-label">Savollarni aralashtirib yuborish</div><div class="soz-row-desc">Yoqilsa test boshlanishida savollar tartibsiz aralashtiriladi</div></div>
@@ -835,23 +758,23 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
             <div class="soz-row-left"><div class="soz-row-label"><span id="pauseStayLabel">Javob tanlanganda shu joyda qolish</span></div><div class="soz-row-desc">Yoqilsa javob tanlanishi bilan keyingi savolga avtomatik o'tiladi</div></div>
             <div class="form-check form-switch" style="margin:0;flex-shrink:0"><input class="form-check-input" type="checkbox" id="pauseStayToggle"></div>
           </div>
-          <div class="soz-row soz-wrap" style="align-items:flex-start">
-            <div class="soz-row-left"><div class="soz-row-label-text soz-row-label">Savollar animatsiyasi</div><div class="soz-row-right-ctrl" style="display:flex;gap:6px">
+          <div class="soz-row" style="align-items:flex-start">
+            <div class="soz-row-left"><div class="soz-row-label">Savol animatsiyasi</div><div class="soz-row-desc">Savollar o'rtasidagi o'tish uslubi</div></div>
+            <div style="display:flex;gap:6px;flex-shrink:0">
               <button class="anim-pick-btn" id="pauseAnimBtnSlide" onclick="setQuizAnim('slide')" title="Slayd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><polygon points="10,9 16,12 10,15" fill="currentColor" stroke="none"/></svg></button>
               <button class="anim-pick-btn" id="pauseAnimBtnFade" onclick="setQuizAnim('fade')" title="Yo'qolish"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="7" width="14" height="10" rx="2"/><path d="M3 12h2M19 12h2"/></svg></button>
               <button class="anim-pick-btn" id="pauseAnimBtnZoom" onclick="setQuizAnim('zoom')" title="Zoom"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M12 4v4M12 16v4M4 12h4M16 12h4"/></svg></button>
               <button class="anim-pick-btn active" id="pauseAnimBtnShrink" onclick="setQuizAnim('shrink')" title="Kichiklashib o'tish"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="5" width="14" height="14" rx="2"/><path d="M12 5v14"/></svg></button>
-            </div></div>
-            <div class="soz-row-desc-full">Savollar o'rtasidagi o'tish uslubi</div>
+            </div>
           </div>
-          <div class="soz-row soz-wrap" style="align-items:flex-start">
-            <div class="soz-row-left"><div class="soz-row-label-text soz-row-label">Variantlar animatsiyasi</div><div class="soz-row-right-ctrl" style="display:flex;gap:6px">
+          <div class="soz-row" style="align-items:flex-start">
+            <div class="soz-row-left"><div class="soz-row-label">Variantlar animatsiyasi</div><div class="soz-row-desc">Yangi savolda variantlar qanday chiqib keladi</div></div>
+            <div style="display:flex;gap:6px;flex-shrink:0">
               <button class="anim-pick-btn active" id="pauseOptAnimBtnOff" onclick="setOptAnim('off')" title="O'chirilgan"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 12h12"/></svg></button>
               <button class="anim-pick-btn" id="pauseOptAnimBtnBounce" onclick="setOptAnim('bounce')" title="Yuqoriga sakrash"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="13" width="3" height="6" rx="1"/><rect x="10" y="9" width="3" height="10" rx="1"/><rect x="15" y="5" width="3" height="14" rx="1"/></svg></button>
               <button class="anim-pick-btn" id="pauseOptAnimBtnPop" onclick="setOptAnim('pop')" title="Kattarishib chiqish"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/></svg></button>
               <button class="anim-pick-btn" id="pauseOptAnimBtnWave" onclick="setOptAnim('wave')" title="Chapdan siljib kelish"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h10"/><path d="M11 6l6 6-6 6"/></svg></button>
-            </div></div>
-            <div class="soz-row-desc-full">Yangi savolda variantlar qanday chiqib keladi</div>
+            </div>
           </div>
           <div class="soz-row" style="align-items:flex-start">
             <div class="soz-row-left"><div class="soz-row-label">Vaqt cheklovi</div><div class="soz-row-desc" id="pauseTimerDesc">Faol emas</div></div>
@@ -997,8 +920,8 @@ let randomEnabled=true,timerEnabled=false,timerMode='total',timerUnit='min',time
 let revealMode = '1'; // default = 1 soniya
 let revealCustomSec = 0.75;
 const REVEAL_CHIPS_DEF = [
+  {key:'default', label:'0.75'},
   {key:'instant', label:'Darhol'},
-  {key:'default', label:'0.75s'},
   {key:'1',       label:'1 soniya'},
   {key:'2',       label:'2 soniya'},
   {key:'3',       label:'3 soniya'},
@@ -1206,13 +1129,6 @@ function _syncFsIcon(){
   } else {
     icon.classList.remove('fa-compress');icon.classList.add('fa-expand');
   }
-}
-function closeFsModal(){const fm=document.getElementById('fsModal');if(fm)fm.classList.remove('show');}
-function activateFsFromModal(){
-  closeFsModal();
-  const el=document.documentElement;
-  if(el.requestFullscreen) el.requestFullscreen();
-  else if(el.webkitRequestFullscreen) el.webkitRequestFullscreen();
 }
 
 // ── Persistent combo toast ────────────────────────────────────────────────────
@@ -1684,44 +1600,16 @@ function parseQuestions(text){
 function showBreadcrumb(v){document.getElementById('breadcrumbWrapper').style.display=v?'':'none'}
 function showInfoSection(){
   showBreadcrumb(false);
+  // info accordion togglelarni upload sozlamalaridan sync qilish
   const syncChk=(fromId,toId)=>{const a=document.getElementById(fromId),b=document.getElementById(toId);if(a&&b)b.checked=a.checked};
   syncChk('alignToggle','infoAlignToggle');
   syncChk('showNextToggle','infoNextToggle');
   syncChk('stayToggle','infoStayToggle');
   _applyInfoToggleLabels();
-  document.getElementById('infoQuestionCount').textContent=questions.length;
-
-  const uploadEl=document.getElementById('uploadSection');
-  const infoEl=document.getElementById('infoSection');
-  const loader=document.getElementById('sectionLoader');
-
-  // 1) Upload section ni yo'qot (opacity 0, lekin joy saqlash uchun display:block)
-  uploadEl.style.transition='opacity 0.2s ease';
-  uploadEl.style.opacity='0';
-
-  // 2) Info section ni yashirin holda ko'rsat (visibility:hidden = joy egallaydi, ko'rinmaydi)
-  infoEl.style.visibility='hidden';
-  infoEl.style.opacity='0';
-  infoEl.style.display='block';
-
-  // 3) Loader ni ko'rsat (absolute overlay — card balandligi = info section balandligi)
-  setTimeout(()=>{
-    uploadEl.style.display='none';
-    uploadEl.style.opacity='';
-    uploadEl.style.transition='';
-    if(loader) loader.classList.add('show');
-
-    // 4) 700ms loading, so'ng info ni fade in qilamiz
-    setTimeout(()=>{
-      if(loader) loader.classList.remove('show');
-      infoEl.style.visibility='';
-      infoEl.style.transition='opacity 0.28s ease';
-      requestAnimationFrame(()=>requestAnimationFrame(()=>{
-        infoEl.style.opacity='1';
-        setTimeout(()=>{infoEl.style.transition='';},300);
-      }));
-    },700);
-  },220);
+  fadeSection('uploadSection',false,()=>{
+    fadeSection('infoSection',true);
+    document.getElementById('infoQuestionCount').textContent=questions.length;
+  });
 }
 function _applyInfoToggleLabels(){
   const av=document.getElementById('infoAlignToggle')?.checked;
@@ -1734,11 +1622,7 @@ function _applyInfoToggleLabels(){
 }
 function resetPhase(){phase='idle';selectedAnswer=null;lastKeyPressed=null}
 function startQuizFromInfo(){
-  const loader=document.getElementById('sectionLoader');
-  const infoEl=document.getElementById('infoSection');
-  const quizEl=document.getElementById('quizSection');
-
-  // Sozlamalarni qo'llamiz
+  // info accordion togglelardan asosiy o'zgaruvchilarga uzatish
   const infoAlign=document.getElementById('infoAlignToggle');
   if(infoAlign) applyAlignUI(infoAlign.checked);
   const infoNext=document.getElementById('infoNextToggle');
@@ -1752,43 +1636,10 @@ function startQuizFromInfo(){
   startTime=new Date();
   hardStopTimer();
   if(timerEnabled)startTimer();
-
-  // 1) Quiz section yashirin holda joy egallaydi (card balandligi = quiz balandligi)
-  quizEl.style.visibility='hidden';
-  quizEl.style.opacity='0';
-  quizEl.style.display='block';
-
-  // 2) Info section opacity 0 ga tushadi
-  infoEl.style.transition='opacity 0.2s ease';
-  infoEl.style.opacity='0';
-
-  setTimeout(()=>{
-    infoEl.style.display='none';
-    infoEl.style.opacity='';
-    infoEl.style.transition='';
-
-    // 3) Loader ko'rinadi (absolute overlay, card teng)
-    if(loader) loader.classList.add('show');
-
-    // 4) Savol loading paytida tayyorlanadi
+  fadeSection('infoSection',false,()=>{
+    fadeSection('quizSection',true);
     showQuestion();
-
-    // 5) 700ms o'tgach loader ketadi, quiz fade in
-    setTimeout(()=>{
-      if(loader) loader.classList.remove('show');
-      quizEl.style.visibility='';
-      quizEl.style.transition='opacity 0.28s ease';
-      requestAnimationFrame(()=>requestAnimationFrame(()=>{
-        quizEl.style.opacity='1';
-        setTimeout(()=>{quizEl.style.transition='';},300);
-        // Mobile/tablet uchun fullscreen tavsiya
-        const mob=window.innerWidth<992||('ontouchstart' in window&&window.innerWidth<1200);
-        if(mob&&!document.fullscreenElement&&!document.webkitFullscreenElement){
-          setTimeout(()=>{const fm=document.getElementById('fsModal');if(fm)fm.classList.add('show');},600);
-        }
-      }));
-    },700);
-  },220);
+  });
 }
 function showQuestion(){
   const q=questions[curIdx],slide=document.getElementById('questionSlide');
