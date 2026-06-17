@@ -1,141 +1,174 @@
-TezkorQuiz.uz’da test yechish uchun birinchi qadam nima?
+Tezkor Quiz saytida test yechish uchun birinchi qadam nima?
 A. Kompyuter sotib olish
 B. Saytga kirib ro'yxatdan o'tish
 C. Google’dan rasm qidirish
 D. Telefonni o'chirish
 ANSWER: B
 
-TezkorQuiz.uz testlarining asosiy qulayligi nima?
+Tezkor Quiz sayti testlarining asosiy qulayligi nima?
 A. Juda qiyin bo‘lishi
 B. Tizim doimo o‘chib turadi
 C. Tez va avtomatik natija chiqarish
 D. Faqat iPhone’da ishlashi
 ANSWER: C
 
-TezkorQuiz.uz’da AI yordamidan nima maqsadda foydalaniladi?
+Tezkor Quiz saytida AI yordamidan nima maqsadda foydalaniladi?
 A. Reklama chiqarish
 B. Testlarni avtomatik tahlil qilish va yaratish
 C. Kompyuterni o‘chirib qo‘yish
 D. Rasmga filtr qo‘yish
 ANSWER: B
 
-TezkorQuiz.uz kimlar uchun qulay?
-A. Faqat o‘qituvchilar
-B. Faqat dasturchilar
-C. Talabalar, o‘qituvchilar va abituriyentlar uchun
-D. Hech kim uchun emas
-ANSWER: C
-
-Saytda test ishlaganda natija qanday olinadi?
-A. O‘qituvchini kutish kerak
-B. 1 hafta ichida chiqadi
-C. Avtomatik tarzda bir zumda ko‘rsatiladi
-D. FAQ bo‘limidan izlanadi
-ANSWER: C
-
-AI orqali test yaratib uni saytda boshlash mumkinmi?
-A. Ha mumkin agar .txt orqali standart formatga mos bo'lsa
-B. Yo'q
-C. Ha mumkin .doc orqali
-D. Ha mumkin .pdf orqali
+AI orqali test yaratib, uni Tezkor Quiz saytida boshlash mumkinmi?
+A. Ha, agar .txt orqali standart formatga mos bo‘lsa
+B. Yo‘q
+C. Ha, .doc orqali mumkin
+D. Ha, .pdf orqali mumkin
 ANSWER: A
 
-TezkorQuiz.uz mobil qurilmalarda ishlaydimi?
-A. Ha, to‘liq moslashgan
-B. Yo‘q, faqat kompyuterda
-C. Faqat planshetda
-D. Faqat Android’da
-ANSWER: A
-
-Saytda test formatining asosiy talablaridan biri?
+Tezkor Quiz saytida test formatining asosiy talablaridan biri nima?
 A. PDF bo‘lishi
 B. Rasm bo‘lishi shart
 C. .txt formatda aniq tuzilma
 D. Excelda bo‘lishi shart
 ANSWER: C
 
-TezkorQuiz.uz’da testlar qanday tartibda ko‘rsatiladi?
-A. AI avtomatik tasodifiy qiladi
-B. To'g'ri javob yo'q
-C. Har safar tasodifiy aralashtiriladi
-D. Telefon modeliga qarab
+Dunyodagi eng chuqur ko'l qaysi?
+A. Viktoriya
+B. Kaspiy
+C. Baykal
+D. Orol
 ANSWER: C
 
-TezkorQuiz.uz tez ishlashining sababi nima?
-A. Og‘ir kodlardan foydalanish
-B. Optimallashtirilgan kod va yengil tuzilma
-C. Bir nechta reklama yuklanishi
-D. Faqat kechasi ishlashi
-ANSWER: B
-
-Test o‘tkazishdan oldin foydalanuvchi nima qilishi kerak?
-A. Sahifani 10 marta yangilash
-B. Hisobga kirish
-C. WiFi’ni o‘chirish
-D. Telefonni tikka tutish
-ANSWER: B
-
-Saytda testlarni yangilash qanchalik oson?
-A. Umuman oson emas
-B. Har qanday AI yordamida juda oson
-C. Haftada bir marta bo‘ladi
-D. Faqat administrator uchun
-ANSWER: B
-
-TezkorQuiz.uz’ning asosiy maqsadi nima?
-A. Reklama ko‘rsatish
-B. Talabalarga tez va samarali tayyorgarlik imkoniyatini berish
-C. Serial ko‘rsatish
-D. O‘yin o‘ynatish
-ANSWER: B
-
-TezkorQuiz.uz xavfsizmi?
-A. Ha, ma’lumotlar himoyalangan
-B. Yo‘q, ochiq turadi
-C. Faqat rasm saqlaydi
-D. Faqat email talab qiladi
+Dunyoda eng ko'p mamlakat bilan chegaradosh davlat qaysi?
+A. Rossiya va Xitoy
+B. Braziliya va AQSh
+C. Kanada va Hindiston
+D. Avstraliya va Germaniya
 ANSWER: A
 
-Saytdan kimlar test yaratishi mumkin?
-A. Faqat admin
-B. Faqat dasturchi
-C. Istalgan ro‘yxatdan o‘tgan foydalanuvchi
-D. Faqat o‘quv markazlari
+O'zbekistondagi eng baland nuqta qaysi?
+A. Katta Chimyon
+B. Hazrat Sulton cho'qqisi
+C. Boysuntog'
+D. Adelunga
+ANSWER: B
+
+Inson tanasidagi eng kuchli muskul qaysi?
+A. Qo'l muskuli
+B. Chaynash muskuli (bosh qismida)
+C. Yurak muskuli
+D. Oyoq muskuli
+ANSWER: B
+
+Dunyo okeanidagi eng chuqur botiq qaysi?
+A. Mariana botiqligi
+B. Yava botiqligi
+C. Puerto-Riko botiqligi
+D. Grenlandiya botiqligi
+ANSWER: A
+
+Qaysi daraxt dunyodagi eng baland o'suvchi daraxt hisoblanadi?
+A. Baobab
+B. Sekvoya
+C. Ekvalipt
+D. Eman
+ANSWER: B
+
+O'zbekiston hududida joylashgan dunyodagi eng qadimgi shaharlardan biri qaysi?
+A. Toshkent
+B. Samarqand
+C. Farg'ona
+D. Namangan
+ANSWER: B
+
+Sog'lom inson yuragi bir daqiqada o'rtacha necha marta uradi?
+A. 40-50 marta
+B. 70-80 marta
+C. 100-110 marta
+D. 120-130 marta
+ANSWER: B
+
+Yer yuzidagi jami suv zaxirasining necha foizini chuchuk suv tashkil etadi?
+A. Taxminan 3%
+B. Taxminan 50%
+C. Taxminan 75%
+D. Taxminan 97%
+ANSWER: A
+
+Qaysi jonivor umri davomida umuman suv ichmaydi?
+A. Tuya
+B. Kenguru kalamushi
+C. Sahara tustvug'ayi
+D. Timsoh
+ANSWER: B
+
+O'zbekiston hududining qariyb qancha qismini sahro va yarim sahrolar tashkil qiladi?
+A. 10%
+B. 30%
+C. 50%
+D. 80%
+ANSWER: D
+
+Suv molekulasi qaysi elementlardan tashkil topgan?
+A. Vodorod va Uglerod
+B. Azot va Kislorod
+C. Vodorod va Kislorod
+D. Natriy va Xlor
 ANSWER: C
 
-Saytning asosiy ustunligi nimada?
-A. Sekin ishlashi
-B. Murakkab interfeys
-C. Qulay dizayn, tez ishlash va bepul tayyorlanishimkoniyati va yordam (support) xizmati
-D. Faqat bir xil testlar
+Quyosh tizimidagi eng issiq sayyora qaysi?
+A. Merkuriy
+B. Venera
+C. Mars
+D. Yupiter
+ANSWER: B
+
+Dunyodagi eng katta sutemizuvchi hayvon qaysi?
+A. Afrika fili
+B. Ko'k kit
+C. Jirafa
+D. Katta oq akula
+ANSWER: B
+
+Markaziy Osiyodagi eng uzun daryo qaysi?
+A. Sirdaryo
+B. Amudaryo
+C. Zarafshon
+D. Chirchiq
+ANSWER: A
+
+Inson ko'zi o'rtacha nechta rang va uning jilolarini ajrata oladi?
+A. 10 mingta
+B. 100 mingta
+C. 1 millionta
+D. 10 millionga yaqin
+ANSWER: D
+
+Dunyodagi eng baland tog' tizmasi qaysi?
+A. And tog'lari
+B. Himoloy tog'lari
+C. Kordiler tog'lari
+D. Alp tog'lari
+ANSWER: B
+
+Dunyodagi eng tez o'sadigan o'simlik qaysi?
+A. Bambuk
+B. Qamish
+C. Kungaboqar
+D. Liana
+ANSWER: A
+
+Samarqanddagi mashhur Registon maydonida nechta madrasa bor?
+A. 2 ta
+B. 3 ta
+C. 4 ta
+D. 5 ta
+ANSWER: B
+
+Dunyoda eng ko'p vulqonlar qaysi okean hududida joylashgan?
+A. Atlantika okeani
+B. Hind okeani
+C. Tinch okeani
+D. Shimoliy muz okeani
 ANSWER: C
-
-TezkorQuiz.uz testlar natijasini qanday saqlab beradi?
-A. Ekran rasmini chiqaradi
-B. Avtomatik tarixga yozadi
-C. Telefon kontaktlariga saqlaydi
-D. Musiqa qo‘shib yuboradi
-ANSWER: B
-
-TezkorQuiz.uz’da testlarning muhim afzalligi?
-A. Javoblar yashirilgan bo‘ladi
-B. Hamma narsa to‘liq avtomatlashtirilgan
-C. Faqat offline ishlaydi
-D. Faqat qiyin testlar bor
-ANSWER: B
-
-TezkorQuiz.uz foydalanuvchiga nima beradi?
-A. Faqat sahifa rangini o‘zgartirish
-B. Tez, aniq va qulay test yechish imkoniyatini
-C. Boshqa saytga o‘tish
-D. Telefonni yangilash
-ANSWER: B
-
-TezkorQuiz.uz’da test yechayotganda savol o‘zgarishi qanchalik tez amalga oshadi?
-A. Har bir savoldan keyin sahifa qayta yuklanadi
-B. Savollar bir zumda yuklanadi va siliq o'tish
-C. Savol o‘tishi uchun 30 soniya kutish kerak
-D. Faqat internet o‘chirilganda ishlaydi
-ANSWER: B
-
-
