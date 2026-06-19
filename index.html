@@ -68,6 +68,48 @@
             min-height: 100vh;
             padding-top: 80px;
         }
+
+        /* ============================================================
+           INTERNET HOLATI BILDIRISHNOMASI
+           Navbar pastidan smooth tushib-chiqadigan, header kabi blur/shaffof banner
+        ============================================================ */
+        #connStatusToast {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 9px 20px;
+            font-family: 'Nunito', 'Roboto', sans-serif;
+            font-size: 13.5px;
+            font-weight: 600;
+            text-align: center;
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            opacity: 0;
+            transform: translateY(-8px);
+            transition: opacity 0.35s ease, transform 0.35s ease, background 0.3s ease, color 0.3s ease;
+            pointer-events: none;
+            visibility: hidden;
+        }
+        #connStatusToast.cst-show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+            visibility: visible;
+        }
+        #connStatusToast.cst-offline {
+            color: #c0392b;
+            background: rgba(253, 236, 234, 0.75);
+        }
+        #connStatusToast.cst-online {
+            color: #1e8e4f;
+            background: rgba(228, 247, 236, 0.75);
+        }
+
         .section-two .navbar {
             padding: 10px 0;
             background: rgba(255, 255, 255, 1);
@@ -1192,8 +1234,9 @@
             padding: 50px 0 20px;
             background-color: #000000;
             color: white;
-            margin-top: 50px;
+            margin-top: 0;
             border-radius: 30px 30px 0 0;
+            overflow-anchor: none;
         }
 
         .section-one .footer-title {
@@ -1827,6 +1870,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow-anchor: none;
         }
 
         .cta-section .container-fluid {
@@ -1835,6 +1879,7 @@
             border-radius: 30px;
             padding: 60px 50px;
             text-align: center;
+            overflow-anchor: none;
         }
 
         .cta-icon {
@@ -2263,6 +2308,78 @@
             transform: translateY(0);
         }
 
+        /* ============================================================
+           HERO SKELETON LOADING
+           Hero kontent tayyor bo'lguncha ko'rinadigan shimmer placeholder
+        ============================================================ */
+        .hero-skel-shimmer {
+            background: linear-gradient(90deg,
+                rgba(255,255,255,0.10) 25%,
+                rgba(255,255,255,0.22) 50%,
+                rgba(255,255,255,0.10) 75%);
+            background-size: 200% 100%;
+            animation: heroSkelShimmer 1.3s ease-in-out infinite;
+            border-radius: 8px;
+        }
+        @keyframes heroSkelShimmer {
+            0%   { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .hero-skeleton {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            opacity: 1;
+            transition: opacity 0.45s ease;
+            pointer-events: none;
+        }
+        .hero-skeleton-inner {
+            width: 100%;
+        }
+        .hero-skel-title-line {
+            height: 22px;
+            width: 78%;
+            margin-bottom: 14px;
+        }
+        .hero-skel-title-line.short { width: 56%; }
+        .hero-skel-text-line {
+            height: 13px;
+            width: 92%;
+            margin-bottom: 10px;
+        }
+        .hero-skel-text-line.short { width: 68%; margin-bottom: 22px; }
+        .hero-skel-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .hero-skel-btn {
+            height: 50px;
+            width: 168px;
+            border-radius: 13px;
+        }
+        @media (max-width: 767px) {
+            .hero-skel-title-line { margin-left: auto; margin-right: auto; }
+            .hero-skel-title-line.short { margin-left: auto; margin-right: auto; }
+            .hero-skel-text-line { margin-left: auto; margin-right: auto; }
+            .hero-skel-text-line.short { margin-left: auto; margin-right: auto; }
+            .hero-skel-buttons { justify-content: center; }
+        }
+
+        .hero-real-content {
+            position: relative;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        .hero-section.hero-loaded .hero-skeleton {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .hero-section.hero-loaded .hero-real-content {
+            opacity: 1;
+        }
+
 
         .muammo-section { padding: 90px 20px 0; }
         .muammo-inner   { max-width: 1140px; margin: 0 auto; }
@@ -2292,9 +2409,47 @@
             font-size: 0.97rem;
         }
 
-    </style>
+</style>
 </head>
 <body>
+    
+    <div id="connStatusToast" role="status" aria-live="polite">
+        <span id="cstText"></span>
+    </div>
+    <script>
+        (function () {
+            var toast  = document.getElementById('connStatusToast');
+            var textEl = document.getElementById('cstText');
+            var hideTimer  = null;
+            var wasOffline = false;
+
+            function showOffline() {
+                clearTimeout(hideTimer);
+                wasOffline = true;
+                textEl.textContent = 'Internet mavjud emas';
+                toast.classList.remove('cst-online');
+                toast.classList.add('cst-offline', 'cst-show');
+            }
+
+            function showOnline() {
+                clearTimeout(hideTimer);
+                if (!wasOffline) return; // sahifa online holatda ochilgan bo'lsa, xabar bermaymiz
+                wasOffline = false;
+                textEl.textContent = 'Internetga ulandi';
+                toast.classList.remove('cst-offline');
+                toast.classList.add('cst-online', 'cst-show');
+                hideTimer = setTimeout(function () {
+                    toast.classList.remove('cst-show');
+                }, 2800);
+            }
+
+            window.addEventListener('offline', showOffline);
+            window.addEventListener('online',  showOnline);
+
+            if (!navigator.onLine) showOffline();
+        })();
+    </script>
+
     <div class="section-two">
         <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNavbar">
             <div class="container">
@@ -2613,9 +2768,32 @@
 
         
         <section class="container mt-5 hero-anim" id="heroAnim">
-            <div class="hero-section">
+            <div class="hero-section" id="heroSectionEl">
                 <div class="container">
-                    <div class="row align-items-center">
+
+                    
+                    <div class="hero-skeleton" id="heroSkeleton" aria-hidden="true">
+                        <div class="row align-items-center w-100">
+                            <div class="col-md-7 order-md-2">
+                                <div class="hero-skeleton-inner">
+                                    <div class="hero-skel-shimmer hero-skel-title-line"></div>
+                                    <div class="hero-skel-shimmer hero-skel-title-line short"></div>
+                                    <div class="hero-skel-shimmer hero-skel-text-line"></div>
+                                    <div class="hero-skel-shimmer hero-skel-text-line short"></div>
+                                    <div class="hero-skel-buttons">
+                                        <div class="hero-skel-shimmer hero-skel-btn"></div>
+                                        <div class="hero-skel-shimmer hero-skel-btn"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5 d-none d-md-flex justify-content-center align-items-center order-md-1">
+                                <div class="hero-skel-shimmer" style="width:100%;max-width:360px;height:260px;border-radius:20px;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                    <div class="row align-items-center hero-real-content" id="heroRealContent">
                         <div class="col-md-7 order-md-2">
                             <h1 class="hero-title" id="heroTitle">
                                 <span class="hero-static-line">Tezkor Quiz bilan</span>
@@ -2660,6 +2838,35 @@
                 </div>
             </div>
         </section>
+
+        <script>
+        (function(){
+            /* ── Hero skeleton -> real content (online/offline holatga moslashadi) ── */
+            var heroSectionEl = document.getElementById('heroSectionEl');
+
+            function revealHero() {
+                if (!heroSectionEl || heroSectionEl.classList.contains('hero-loaded')) return;
+                heroSectionEl.classList.add('hero-loaded');
+            }
+
+            if (navigator.onLine) {
+                /* Online: minimal 550ms skeleton ko'rinadi, so'ng smooth almashadi */
+                setTimeout(revealHero, 550);
+            } else {
+                /* Offline: internet qaytmaguncha skeleton davom etadi */
+                var waitOnline = function () {
+                    revealHero();
+                    window.removeEventListener('online', waitOnline);
+                };
+                window.addEventListener('online', waitOnline);
+            }
+
+            /* Sahifa to'liq yuklanganidan keyin ham albatta ko'rsatib qo'yamiz (fallback) */
+            window.addEventListener('load', function () {
+                if (navigator.onLine) revealHero();
+            });
+        })();
+        </script>
 
         <script>
         (function(){
