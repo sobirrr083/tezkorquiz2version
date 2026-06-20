@@ -75,10 +75,10 @@
         ============================================================ */
         #connStatusToast {
             position: fixed;
-            top: 60px;
+            top: 80px;
             left: 0;
             right: 0;
-            z-index: 99999;
+            z-index: 1020;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -114,16 +114,27 @@
             padding: 10px 0;
             background: rgba(255, 255, 255, 1);
             backdrop-filter: blur(0px);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
             border-bottom: 1px solid transparent;
-            transition: background 0.3s ease, backdrop-filter 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            transition: background 0.3s ease, backdrop-filter 0.3s ease, border-color 0.3s ease;
         }
         .section-two .navbar.scrolled {
             background: rgba(255, 255, 255, 0.75);
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
             border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .navbar-shadow-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1010;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: box-shadow 0.3s ease;
+            pointer-events: none;
+        }
+        .navbar-shadow-layer.scrolled {
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
         }
         .section-two .navbar-brand {
             font-family: 'Roboto';
@@ -2338,6 +2349,38 @@
         .hero-skeleton-inner {
             width: 100%;
         }
+        /* "Internet yo'q" holati uchun oddiy, rangsiz xabar va tugma */
+        .hero-offline-msg {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            width: 100%;
+            text-align: center;
+            color: rgba(255,255,255,0.85);
+        }
+        .hero-skeleton.hero-offline .hero-offline-msg { display: flex; }
+        .hero-skeleton.hero-offline #heroSkeletonBody { display: none; }
+        .hero-offline-msg p {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        .hero-offline-msg button {
+            background: transparent;
+            border: 1.5px solid rgba(255,255,255,0.55);
+            color: #fff;
+            padding: 10px 28px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            pointer-events: auto;
+        }
+        .hero-offline-msg button:hover {
+            background: rgba(255,255,255,0.12);
+        }
         .hero-skel-title-line {
             height: 22px;
             width: 78%;
@@ -2451,6 +2494,7 @@
     </script>
 
     <div class="section-two">
+        <div class="navbar-shadow-layer" id="navbarShadowLayer"></div>
         <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNavbar">
             <div class="container">
 
@@ -2773,7 +2817,11 @@
 
                     
                     <div class="hero-skeleton" id="heroSkeleton" aria-hidden="true">
-                        <div class="row align-items-center w-100">
+                        <div class="hero-offline-msg" id="heroOfflineMsg">
+                            <p>Internet yo'q</p>
+                            <button type="button" onclick="window.location.reload()">Qayta urinish</button>
+                        </div>
+                        <div class="row align-items-center w-100" id="heroSkeletonBody">
                             <div class="col-md-7 order-md-2">
                                 <div class="hero-skeleton-inner">
                                     <div class="hero-skel-shimmer hero-skel-title-line"></div>
@@ -2843,6 +2891,7 @@
         (function(){
             /* ── Hero skeleton -> real content (online/offline holatga moslashadi) ── */
             var heroSectionEl = document.getElementById('heroSectionEl');
+            var heroSkeleton  = document.getElementById('heroSkeleton');
 
             function revealHero() {
                 if (!heroSectionEl || heroSectionEl.classList.contains('hero-loaded')) return;
@@ -2853,8 +2902,10 @@
                 /* Online: minimal 550ms skeleton ko'rinadi, so'ng smooth almashadi */
                 setTimeout(revealHero, 550);
             } else {
-                /* Offline: internet qaytmaguncha skeleton davom etadi */
+                /* Offline: "Internet yo'q" xabari va qayta urinish tugmasi ko'rsatiladi */
+                if (heroSkeleton) heroSkeleton.classList.add('hero-offline');
                 var waitOnline = function () {
+                    if (heroSkeleton) heroSkeleton.classList.remove('hero-offline');
                     revealHero();
                     window.removeEventListener('online', waitOnline);
                 };
@@ -3567,6 +3618,7 @@
     <script>
     (function () {
         var navbar         = document.getElementById('mainNavbar');
+        var shadowLayer    = document.getElementById('navbarShadowLayer');
         var burgerInput    = document.querySelector('#burger');
         var navbarCollapse = document.querySelector('.section-two .navbar-collapse');
         var dropdown       = document.querySelector('.section-two .dropdown');
@@ -3578,9 +3630,20 @@
 
         /* ── SCROLL EFFEKTI ── */
         var scrollTimeout;
+
+        function syncShadowLayer() {
+            if (!shadowLayer) return;
+            var navH = navbar.offsetHeight;
+            shadowLayer.style.height = navH + 'px';
+            shadowLayer.classList.toggle('scrolled', navbar.classList.contains('scrolled'));
+            var toastEl = document.getElementById('connStatusToast');
+            if (toastEl) toastEl.style.top = navH + 'px';
+        }
+
         (function () {
             if ((window.pageYOffset || document.documentElement.scrollTop) > 30)
                 navbar.classList.add('scrolled');
+            syncShadowLayer();
         })();
         window.addEventListener('scroll', function () {
             if (scrollTimeout) window.cancelAnimationFrame(scrollTimeout);
@@ -3589,8 +3652,10 @@
                     navbar.classList.add('scrolled');
                 else
                     navbar.classList.remove('scrolled');
+                syncShadowLayer();
             });
         }, { passive: true });
+        window.addEventListener('resize', syncShadowLayer, { passive: true });
 
         /* ── BURGER MENYU ── */
         if (burgerInput) {
