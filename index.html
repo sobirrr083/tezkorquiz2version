@@ -2194,10 +2194,50 @@
         @media (max-width: 992px) {
             .avzalliklar-grid { grid-template-columns: repeat(2, 1fr); gap: 22px; }
         }
-        @media (max-width: 600px) {
-            .avzalliklar-section { padding: 60px 16px 0; }
-            .avzalliklar-grid { grid-template-columns: 1fr; gap: 18px; margin-top: 40px; }
-            .avz-card { padding: 28px 22px 24px; }
+        @media (max-width: 767px) {
+            .avzalliklar-section, .muammo-section, .story-section {
+                padding: 56px 18px 0;
+            }
+            /* Telefonda har bir card o'z qatorida, bittadan ketma-ket chiqadi */
+            .avzalliklar-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+                margin-top: 32px;
+            }
+            .avzalliklar-title {
+                font-size: 1.65rem;
+                margin-bottom: 10px;
+                line-height: 1.25;
+            }
+            .avzalliklar-subtitle {
+                font-size: 0.95rem;
+                line-height: 1.6;
+                max-width: 100%;
+            }
+            .avz-card {
+                padding: 24px 20px 22px;
+                border-radius: 16px;
+            }
+            .avz-icon-wrap {
+                width: 48px;
+                height: 48px;
+                border-radius: 13px;
+                margin-bottom: 16px;
+            }
+            .avz-icon-wrap i { font-size: 1.2rem; }
+            .avz-card-title {
+                font-size: 1.05rem;
+                margin-bottom: 8px;
+            }
+            .avz-card-body {
+                font-size: 0.9rem;
+                line-height: 1.6;
+            }
+            .avz-cta-btn {
+                font-size: 0.92rem;
+                padding: 12px 20px;
+            }
+            .story-title { font-size: 1.65rem; line-height: 1.25; }
         }
 
         @media (max-width: 480px) {
@@ -2647,6 +2687,7 @@
                 align-items: flex-start;
                 gap: 0;
                 margin-bottom: 12px !important;
+                position: relative;
             }
             #heroTitle .hero-static-line {
                 line-height: 1.25;
@@ -2662,6 +2703,27 @@
             }
             #heroTitle #heroDynamic { display: inline; }
 
+            /* O'lchov uchun yashirin nusxa: keyingi matn nechta qator bo'lishini
+               oldindan aniq bilish uchun ishlatiladi, ko'rinmaydi va layoutga ta'sir qilmaydi */
+            #heroTitle .hero-dynamic-measure {
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 0;
+                visibility: hidden;
+                pointer-events: none;
+                z-index: -1;
+            }
+
+            /* Tablet va desktopda matn 2 yoki 3 qatorga o'zgarganda, joy aniq
+               o'lchab beriladi (JS orqali) va o'zgarish smooth tarzda animatsiya bilan boradi —
+               shu sababli ortiqcha bo'sh joy ham qolmaydi, card ham birdan sakramaydi */
+            @media (min-width: 768px) {
+                #heroTitle .hero-dynamic-line {
+                    transition: min-height 0.4s ease;
+                }
+            }
+
             .tw-cursor {
                 display: inline-block;
                 width: 3px;
@@ -2676,9 +2738,17 @@
                 0%, 100% { opacity: 1; }
                 50%       { opacity: 0; }
             }
+            .tw-cursor.tw-cursor-hidden {
+                opacity: 0;
+                animation: none;
+            }
             @media (max-width: 767px) {
                 #heroTitle { align-items: center; text-align: center; }
                 #heroTitle .hero-dynamic-line { text-align: center; }
+                /* Mobilda harf-baharf yozish effekti ishlatilmaydi — shu sabab
+                   cursor butunlay yashiriladi va matn faqat fade bilan almashadi */
+                #heroCursor { display: none; }
+                #heroDynamic { transition: opacity 0.45s ease; opacity: 1; }
             }
             @media (max-width: 767px) { #heroTitle { font-size: 2rem !important; } }
             @media (max-width: 380px) { #heroTitle { font-size: 1.75rem !important; } }
@@ -2845,7 +2915,8 @@
                         <div class="col-md-7 order-md-2">
                             <h1 class="hero-title" id="heroTitle">
                                 <span class="hero-static-line">Tezkor Quiz bilan</span>
-                                <span class="hero-dynamic-line"><span id="heroDynamic"></span><span class="tw-cursor"></span></span>
+                                <span class="hero-dynamic-line" id="heroDynamicLine"><span id="heroDynamic"></span><span class="tw-cursor" id="heroCursor"></span></span>
+                                <span class="hero-dynamic-line hero-dynamic-measure" id="heroDynamicMeasure" aria-hidden="true"></span>
                             </h1>
                             <p class="hero-text">Talabalarga testli sessiyaga tayyorlanish uchun moslashtirilgan mukammal sayt. 
                             O'z bilimlaringizni sinab ko'ring va yangi ma'lumotlarni o'rganing.</p>
@@ -2921,8 +2992,12 @@
 
         <script>
         (function(){
-            const dynEl  = document.getElementById('heroDynamic');
-            const phrases = [
+            const dynEl     = document.getElementById('heroDynamic');
+            const cursorEl  = document.getElementById('heroCursor');
+            const dynLineEl = document.getElementById('heroDynamicLine');
+            const measureEl = document.getElementById('heroDynamicMeasure');
+
+            const rawPhrases = [
                 "imtihonlardan oson o'ting",
                 "faylingizni yuklang va testni boshlang",
                 "bilimlaringizni sinovdan o'tkazing",
@@ -2933,21 +3008,91 @@
                 "testlar orqali bilimingizni tekshiring"
             ];
 
+            function isDesktopTablet() {
+                return window.matchMedia('(min-width: 768px)').matches;
+            }
+
+            function measureHeight(text) {
+                if (!measureEl) return 0;
+                measureEl.textContent = text;
+                return measureEl.offsetHeight;
+            }
+
+            /* Matn harf-baharf yozilayotganda (ayniqsa probelsiz uzun so'zlarda)
+               oraliq holat to'liq matndan balandroq bo'lib qolishi mumkin —
+               shuning uchun barcha oraliq holatlarning eng kattasini olamiz,
+               shunda yozish davomida hech qachon balandlik to'satdan o'sib
+               ketmaydi (jitter bo'lmaydi) */
+            function measureMaxHeight(text) {
+                if (!measureEl) return 0;
+                let max = 0;
+                for (let i = 1; i <= text.length; i++) {
+                    measureEl.textContent = text.slice(0, i);
+                    const h = measureEl.offsetHeight;
+                    if (h > max) max = h;
+                }
+                return max;
+            }
+
+            function phraseText(p) {
+                return (typeof p === 'string') ? p : p.text;
+            }
+
+            /* Har bir matn aniq nechta qator bo'lishini o'lchab chiqamiz va
+               kam qatorlilarni (2 qator) oldin, ko'p qatorlilarni (3 qator)
+               keyin ketma-ket keladigan tartibda joylaymiz */
+            function buildOrderedPhrases() {
+                if (!measureEl || !dynLineEl || !isDesktopTablet()) return rawPhrases.slice();
+                const lineHeightPx = parseFloat(getComputedStyle(dynLineEl).lineHeight) || 1;
+                const withLines = rawPhrases.map(function (text) {
+                    const h = measureHeight(text);
+                    const lines = Math.max(1, Math.round(h / lineHeightPx));
+                    return { text: text, lines: lines, height: h };
+                });
+                withLines.sort(function (a, b) { return a.lines - b.lines; });
+                return withLines;
+            }
+
+            let phrases = buildOrderedPhrases();
+
             let phraseIndex = 0;
             let charIndex   = 0;
             let isDeleting  = false;
             let _paused     = false;
+            let _generation = 0;
+            let _lastMode   = isDesktopTablet() ? 'desktop' : 'mobile';
 
-            function tick() {
-                if (_paused) return;
-                const current = phrases[phraseIndex];
+            /* Keyingi matn qancha joy egallashi oldindan aniq - shunga mos
+               joy beriladi, CSS transition orqali bu o'zgarish smooth bo'ladi */
+            function applyHeightFor(text) {
+                if (!dynLineEl) return;
+                if (isDesktopTablet()) {
+                    dynLineEl.style.minHeight = measureMaxHeight(text) + 'px';
+                } else {
+                    dynLineEl.style.minHeight = '';
+                }
+            }
+
+            /* ===== Desktop/tablet: harf-baharf yozish (typewriter) effekti =====
+               `gen` — shu sikl qaysi "avlod"ga tegishli ekanini bildiradi;
+               agar rejim almashib ketsa (masalan mobilga o'tsa), eski avlodning
+               navbatdagi setTimeout chaqiruvlari shu yerda to'xtaydi */
+            function tick(gen) {
+                if (gen !== _generation || _paused) return;
+                const current = phraseText(phrases[phraseIndex]);
                 if (!isDeleting) {
                     charIndex++;
                     dynEl.textContent = current.slice(0, charIndex);
                     if (charIndex === current.length) {
-                        setTimeout(() => { isDeleting = true; tick(); }, 8000);
+                        if (cursorEl) cursorEl.classList.add('tw-cursor-hidden');
+                        setTimeout(() => {
+                            if (gen !== _generation) return;
+                            isDeleting = true;
+                            if (cursorEl) cursorEl.classList.remove('tw-cursor-hidden');
+                            tick(gen);
+                        }, 8000);
                     } else {
-                        setTimeout(tick, 60);
+                        setTimeout(() => tick(gen), 60);
                     }
                 } else {
                     charIndex--;
@@ -2955,14 +3100,75 @@
                     if (charIndex === 0) {
                         isDeleting  = false;
                         phraseIndex = (phraseIndex + 1) % phrases.length;
-                        setTimeout(tick, 500);
+                        applyHeightFor(phraseText(phrases[phraseIndex]));
+                        setTimeout(() => tick(gen), 500);
                     } else {
-                        setTimeout(tick, 30);
+                        setTimeout(() => tick(gen), 30);
                     }
                 }
             }
 
-            setTimeout(tick, 400);
+            /* ===== Mobil: harf-baharf yozish yo'q — matn faqat fade (xira bo'lib)
+               bilan almashadi, soddaroq va tezroq his qildiradi ===== */
+            function mobileFade(gen) {
+                if (gen !== _generation || _paused) return;
+                dynEl.textContent = phraseText(phrases[phraseIndex]);
+                dynEl.style.opacity = '1';
+                setTimeout(function () {
+                    if (gen !== _generation || _paused) return;
+                    dynEl.style.opacity = '0';
+                    setTimeout(function () {
+                        if (gen !== _generation || _paused) return;
+                        phraseIndex = (phraseIndex + 1) % phrases.length;
+                        mobileFade(gen);
+                    }, 450);
+                }, 7000);
+            }
+
+            /* Joriy holatga mos rejimni (desktop typewriter / mobil fade) ishga
+               tushiradi. Har chaqirilganda yangi "avlod" boshlanadi va eski
+               rejimning navbatdagi qadamlari avtomatik to'xtaydi */
+            function start() {
+                _generation++;
+                const gen  = _generation;
+                const mode = isDesktopTablet() ? 'desktop' : 'mobile';
+                _lastMode  = mode;
+
+                phrases     = buildOrderedPhrases();
+                phraseIndex = 0;
+                charIndex   = 0;
+                isDeleting  = false;
+                if (cursorEl) cursorEl.classList.remove('tw-cursor-hidden');
+
+                if (mode === 'mobile') {
+                    if (dynLineEl) dynLineEl.style.minHeight = '';
+                    dynEl.style.opacity = '1';
+                    mobileFade(gen);
+                } else {
+                    dynEl.textContent = '';
+                    applyHeightFor(phraseText(phrases[phraseIndex]));
+                    tick(gen);
+                }
+            }
+
+            setTimeout(start, 400);
+
+            /* Oyna o'lchami o'zgarganda: agar desktop/tablet ↔ mobil chegarasi
+               kesib o'tilsa, rejim avtomatik almashadi (typewriter ⇄ fade).
+               Aks holda (faqat kenglik o'zgargan bo'lsa) joy hisob-kitobi
+               yangilanadi */
+            let _resizeTimer;
+            window.addEventListener('resize', function () {
+                clearTimeout(_resizeTimer);
+                _resizeTimer = setTimeout(function () {
+                    const mode = isDesktopTablet() ? 'desktop' : 'mobile';
+                    if (mode !== _lastMode) {
+                        start();
+                    } else if (mode === 'desktop') {
+                        applyHeightFor(phraseText(phrases[phraseIndex]));
+                    }
+                }, 150);
+            });
 
             const _heroSection = document.querySelector('.section-one .hero-section');
             if (_heroSection && 'IntersectionObserver' in window) {
@@ -2971,7 +3177,7 @@
                     _heroVisible = entries[0].isIntersecting;
                     if (_heroVisible && _paused) {
                         _paused = false;
-                        tick();
+                        start();
                     } else if (!_heroVisible) {
                         _paused = true;
                     }
@@ -3271,7 +3477,7 @@
                 </div>
                 <h3 class="avz-card-title">Ko'p vaqt ketadi</h3>
                 <p class="avz-card-body">
-                  <strong style="color:#2c3e50;">2–4 soat</strong> — bir testni qo'lda formatlash,
+                  2–4 soat — bir testni qo'lda formatlash,
                   tekshirish va tizimga kiritishga ketadigan o'rtacha vaqt.
                 </p>
               </div>
@@ -3281,7 +3487,7 @@
                 </div>
                 <h3 class="avz-card-title">Formatlar mos kelmaydi</h3>
                 <p class="avz-card-body">
-                  <strong style="color:#2c3e50;">PDF · Word · Rasm</strong> — turli formatdagi
+                  PDF · Word · Rasm — turli formatdagi
                   testlarni bir xil ko'rinishga keltirish qo'shimcha mehnat talab qiladi.
                 </p>
               </div>
@@ -3291,7 +3497,7 @@
                 </div>
                 <h3 class="avz-card-title">Xatolar ko'payadi</h3>
                 <p class="avz-card-body">
-                  <strong style="color:#2c3e50;">Qo'lda ishlov = Risk</strong> — variantlarni
+                  Qo'lda ishlov = Risk — variantlarni
                   tekshirish va natijalarni kiritishda inson omili xatolarni oshiradi.
                 </p>
               </div>
