@@ -551,10 +551,11 @@ function updateGreeting() {
   });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  // Har sahifa yuklashda (refresh ham) animatsiya ishlaydi
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => updateGreeting());
+} else {
   updateGreeting();
-});
+}
 
 document.addEventListener('keydown',e=>{if(e.key==='F12'||(e.ctrlKey&&e.shiftKey&&['I','J','C'].includes(e.key))||(e.ctrlKey&&e.key==='u')){e.preventDefault();return false}});
 document.addEventListener('contextmenu',e=>e.preventDefault());
