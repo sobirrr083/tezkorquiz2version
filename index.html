@@ -2918,8 +2918,7 @@
                                 <span class="hero-dynamic-line" id="heroDynamicLine"><span id="heroDynamic"></span><span class="tw-cursor" id="heroCursor"></span></span>
                                 <span class="hero-dynamic-line hero-dynamic-measure" id="heroDynamicMeasure" aria-hidden="true"></span>
                             </h1>
-                            <p class="hero-text">Talabalarga testli sessiyaga tayyorlanish uchun moslashtirilgan mukammal sayt. 
-                            O'z bilimlaringizni sinab ko'ring va yangi ma'lumotlarni o'rganing.</p>
+                            <p class="hero-text">Sessiyaga puxta tayyorlaning! Test fayllaringiz orqali bilimingizni sinang, natijalaringizni kuzating va imtihonga ishonch bilan kiring.</p>
                             <div class="hero-buttons-container">
                                 <a href="testni_boshlash" class="btn btn-light hero-btn">
                                     <i class="fas fa-play me-2"></i>Testni boshlash
@@ -2960,7 +2959,6 @@
 
         <script>
         (function(){
-            /* ── Hero skeleton -> real content (online/offline holatga moslashadi) ── */
             var heroSectionEl = document.getElementById('heroSectionEl');
             var heroSkeleton  = document.getElementById('heroSkeleton');
 
@@ -2970,10 +2968,8 @@
             }
 
             if (navigator.onLine) {
-                /* Online: minimal 550ms skeleton ko'rinadi, so'ng smooth almashadi */
                 setTimeout(revealHero, 550);
             } else {
-                /* Offline: "Internet yo'q" xabari va qayta urinish tugmasi ko'rsatiladi */
                 if (heroSkeleton) heroSkeleton.classList.add('hero-offline');
                 var waitOnline = function () {
                     if (heroSkeleton) heroSkeleton.classList.remove('hero-offline');
@@ -2983,7 +2979,6 @@
                 window.addEventListener('online', waitOnline);
             }
 
-            /* Sahifa to'liq yuklanganidan keyin ham albatta ko'rsatib qo'yamiz (fallback) */
             window.addEventListener('load', function () {
                 if (navigator.onLine) revealHero();
             });
@@ -3000,12 +2995,9 @@
             const rawPhrases = [
                 "imtihonlardan oson o'ting",
                 "faylingizni yuklang va testni boshlang",
-                "bilimlaringizni sinovdan o'tkazing",
-                "natijangizni hoziroq bilib oling",
-                "sessiyaga 2 barobar tezroq tayyorlaning",
-                "konspektlaringizni testlarga aylantiring",
                 "natijangizni soniyalarda biling",
-                "testlar orqali bilimingizni tekshiring"
+                "bilimlaringizni sinovdan o'tkazing",
+                "sessiyaga 2 barobar tezroq tayyorlaning"
             ];
 
             function isDesktopTablet() {
@@ -3018,11 +3010,7 @@
                 return measureEl.offsetHeight;
             }
 
-            /* Matn harf-baharf yozilayotganda (ayniqsa probelsiz uzun so'zlarda)
-               oraliq holat to'liq matndan balandroq bo'lib qolishi mumkin —
-               shuning uchun barcha oraliq holatlarning eng kattasini olamiz,
-               shunda yozish davomida hech qachon balandlik to'satdan o'sib
-               ketmaydi (jitter bo'lmaydi) */
+            
             function measureMaxHeight(text) {
                 if (!measureEl) return 0;
                 let max = 0;
@@ -3038,9 +3026,7 @@
                 return (typeof p === 'string') ? p : p.text;
             }
 
-            /* Har bir matn aniq nechta qator bo'lishini o'lchab chiqamiz va
-               kam qatorlilarni (2 qator) oldin, ko'p qatorlilarni (3 qator)
-               keyin ketma-ket keladigan tartibda joylaymiz */
+            
             function buildOrderedPhrases() {
                 if (!measureEl || !dynLineEl || !isDesktopTablet()) return rawPhrases.slice();
                 const lineHeightPx = parseFloat(getComputedStyle(dynLineEl).lineHeight) || 1;
@@ -3062,8 +3048,7 @@
             let _generation = 0;
             let _lastMode   = isDesktopTablet() ? 'desktop' : 'mobile';
 
-            /* Keyingi matn qancha joy egallashi oldindan aniq - shunga mos
-               joy beriladi, CSS transition orqali bu o'zgarish smooth bo'ladi */
+            
             function applyHeightFor(text) {
                 if (!dynLineEl) return;
                 if (isDesktopTablet()) {
@@ -3073,10 +3058,6 @@
                 }
             }
 
-            /* ===== Desktop/tablet: harf-baharf yozish (typewriter) effekti =====
-               `gen` — shu sikl qaysi "avlod"ga tegishli ekanini bildiradi;
-               agar rejim almashib ketsa (masalan mobilga o'tsa), eski avlodning
-               navbatdagi setTimeout chaqiruvlari shu yerda to'xtaydi */
             function tick(gen) {
                 if (gen !== _generation || _paused) return;
                 const current = phraseText(phrases[phraseIndex]);
@@ -3108,8 +3089,6 @@
                 }
             }
 
-            /* ===== Mobil: harf-baharf yozish yo'q — matn faqat fade (xira bo'lib)
-               bilan almashadi, soddaroq va tezroq his qildiradi ===== */
             function mobileFade(gen) {
                 if (gen !== _generation || _paused) return;
                 dynEl.textContent = phraseText(phrases[phraseIndex]);
@@ -3125,9 +3104,6 @@
                 }, 7000);
             }
 
-            /* Joriy holatga mos rejimni (desktop typewriter / mobil fade) ishga
-               tushiradi. Har chaqirilganda yangi "avlod" boshlanadi va eski
-               rejimning navbatdagi qadamlari avtomatik to'xtaydi */
             function start() {
                 _generation++;
                 const gen  = _generation;
@@ -3153,10 +3129,6 @@
 
             setTimeout(start, 400);
 
-            /* Oyna o'lchami o'zgarganda: agar desktop/tablet ↔ mobil chegarasi
-               kesib o'tilsa, rejim avtomatik almashadi (typewriter ⇄ fade).
-               Aks holda (faqat kenglik o'zgargan bo'lsa) joy hisob-kitobi
-               yangilanadi */
             let _resizeTimer;
             window.addEventListener('resize', function () {
                 clearTimeout(_resizeTimer);
@@ -3465,10 +3437,8 @@
               <h2 class="avzalliklar-title">
                 Test tayyorlash <span>muammolari</span>
               </h2>
-              <p class="avzalliklar-subtitle mx-auto">
-                PDF, Word yoki test fayllarini qo'lda formatlash, variantlarni tekshirish
-                va tizimga kiritish soatlab vaqt oladi.
-              </p>
+              <p class="avzalliklar-subtitle mx-auto"> PDF, Word yoki boshqa test fayllarini qo‘lda formatlash ko‘p vaqt talab qiladi
+                </p>
             </div>
             <div class="avzalliklar-grid">
               <div class="avz-card" data-aos="fade-up" data-aos-delay="0">
@@ -3477,8 +3447,7 @@
                 </div>
                 <h3 class="avz-card-title">Ko'p vaqt ketadi</h3>
                 <p class="avz-card-body">
-                  2–4 soat — bir testni qo'lda formatlash,
-                  tekshirish va tizimga kiritishga ketadigan o'rtacha vaqt.
+                  Quiz botlarga savol, A,B,C,D varinatlarni alohida kiritish va toʻgʻri javobni tanlash
                 </p>
               </div>
               <div class="avz-card" data-aos="fade-up" data-aos-delay="100">
@@ -3487,8 +3456,7 @@
                 </div>
                 <h3 class="avz-card-title">Formatlar mos kelmaydi</h3>
                 <p class="avz-card-body">
-                  PDF · Word · Rasm — turli formatdagi
-                  testlarni bir xil ko'rinishga keltirish qo'shimcha mehnat talab qiladi.
+                  Agar test savolingiz yoki varinatlar matini koʻp boʻlsa bot qabul qilmasligi. 
                 </p>
               </div>
               <div class="avz-card" data-aos="fade-up" data-aos-delay="200">
@@ -3497,8 +3465,7 @@
                 </div>
                 <h3 class="avz-card-title">Xatolar ko'payadi</h3>
                 <p class="avz-card-body">
-                  Qo'lda ishlov = Risk — variantlarni
-                  tekshirish va natijalarni kiritishda inson omili xatolarni oshiradi.
+                  Soatlar davomida testlar bilan ishlash ko‘zning charchashi, tana toliqishi hamda diqqatning pasayishiga olib keladi.
                 </p>
               </div>
             </div>
