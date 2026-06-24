@@ -2359,10 +2359,6 @@
             transform: translateY(0);
         }
 
-        /* ============================================================
-           HERO SKELETON LOADING
-           Hero kontent tayyor bo'lguncha ko'rinadigan shimmer placeholder
-        ============================================================ */
         .hero-skel-shimmer {
             background: linear-gradient(90deg,
                 rgba(255,255,255,0.10) 25%,
@@ -2703,8 +2699,7 @@
             }
             #heroTitle #heroDynamic { display: inline; }
 
-            /* O'lchov uchun yashirin nusxa: keyingi matn nechta qator bo'lishini
-               oldindan aniq bilish uchun ishlatiladi, ko'rinmaydi va layoutga ta'sir qilmaydi */
+
             #heroTitle .hero-dynamic-measure {
                 position: absolute;
                 left: 0;
@@ -2715,9 +2710,7 @@
                 z-index: -1;
             }
 
-            /* Tablet va desktopda matn 2 yoki 3 qatorga o'zgarganda, joy aniq
-               o'lchab beriladi (JS orqali) va o'zgarish smooth tarzda animatsiya bilan boradi —
-               shu sababli ortiqcha bo'sh joy ham qolmaydi, card ham birdan sakramaydi */
+
             @media (min-width: 768px) {
                 #heroTitle .hero-dynamic-line {
                     transition: min-height 0.4s ease;
@@ -3437,7 +3430,7 @@
               <h2 class="avzalliklar-title">
                 Test tayyorlash <span>muammolari</span>
               </h2>
-              <p class="avzalliklar-subtitle mx-auto"> PDF, Word yoki boshqa test fayllarini qo‘lda formatlash ko‘p vaqt talab qiladi
+              <p class="avzalliklar-subtitle mx-auto"> Quyidagi muammolar sizni ham qiynayaptimi?
                 </p>
             </div>
             <div class="avzalliklar-grid">
