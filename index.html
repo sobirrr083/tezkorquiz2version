@@ -2670,6 +2670,28 @@
             </div>
         </div>
     </div>
+<!-- So'rovnoma modal -->
+<div id="surveyModal" style="display:none; position:fixed; inset:0; background:rgba(15,20,40,0.48); z-index:9999; align-items:center; justify-content:center; padding:20px;">
+  <div style="background:#fff; border-radius:16px; width:100%; max-width:380px; font-family:'Nunito','Roboto',sans-serif; box-shadow:0 20px 48px rgba(0,0,0,0.18);">
+    <div style="padding:24px 24px 0;">
+      <div style="width:44px;height:44px;border-radius:50%;background:#eff2ff;display:flex;align-items:center;justify-content:center;margin-bottom:14px;">
+        <i class="fas fa-pen" style="color:#4361ee;font-size:18px;"></i>
+      </div>
+      <h3 style="font-size:17px;font-weight:600;color:#1a1a2e;margin:0 0 8px;">So'rovnomada ishtirok eting</h3>
+      <p style="font-size:13.5px;color:#64748b;margin:0 0 20px;line-height:1.6;">Tezkor Quiz'ni yanada yaxshilashimizga yordam bering, atigi 2 daqiqa vaqt oladi.</p>
+    </div>
+    <div style="padding:0 24px 24px;display:flex;gap:10px;">
+      <button onclick="document.getElementById('surveyModal').style.display='none'" style="flex:1;padding:10px;border-radius:8px;border:1px solid #e2e8f0;background:#f8fafc;color:#64748b;font-size:13.5px;font-family:inherit;cursor:pointer;font-weight:500;">Bekor qilish</button>
+      <button onclick="window.open('https://forms.gle/NjC3iS9FJszxgX1YA','_blank');document.getElementById('surveyModal').style.display='none'" style="flex:2;padding:10px;border-radius:8px;border:none;background:#4361ee;color:#fff;font-size:13.5px;font-family:inherit;cursor:pointer;font-weight:600;">Davom etish</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  setTimeout(function() {
+    document.getElementById('surveyModal').style.display = 'flex';
+  }, 5000);
+</script>
 
     <div class="section-one">
         <style>
