@@ -445,20 +445,35 @@ const S = {
 };
 
 // ── Parser ─────────────────────────────────────────────────────────────────────
+// tezkorquiz / imtihon / pro sahifalaridagi parser bilan bir xil holat-mashinasi
+// usulida ishlaydi: bo'sh qatorlarga bog'liq emas, \r\n ham qo'llab-quvvatlanadi,
+// "A." va "A)" formatlarining ikkalasi ham tan olinadi.
 function parseTxt(text){
-  const blocks=text.trim().split(/\n\s*\n/), cards=[];
-  blocks.forEach((block,idx)=>{
-    const lines=block.trim().split('\n').map(l=>l.trim()).filter(Boolean);
-    const ai=lines.findIndex(l=>/^ANSWER\s*:/i.test(l));
-    if(ai===-1)return;
-    const letter=lines[ai].replace(/^ANSWER\s*:\s*/i,'').trim().toUpperCase();
-    const opts=lines.filter(l=>/^[A-D][\.\)]\s/.test(l));
-    const qs=lines.filter(l=>!/^[A-D][\.\)]\s/.test(l)&&!/^ANSWER\s*:/i.test(l));
-    if(!qs.length||!opts.length)return;
-    const correct=opts.find(l=>l[0].toUpperCase()===letter);
-    const ans=(correct||`To'g'ri javob: ${letter}`).replace(/^[A-D][\.\)]\s*/i,'').trim();
-    cards.push({id:idx+1,question:qs.join(' '),answer:ans});
+  const lines=text.replace(/\r\n/g,'\n').replace(/\r/g,'\n').split('\n').map(l=>l.trim()).filter(Boolean);
+  const cards=[];
+  let current=null;
+
+  lines.forEach(line=>{
+    if(/^ANSWER\s*:/i.test(line)){
+      if(current && current.question){
+        const letter=line.replace(/^ANSWER\s*:/i,'').trim().toUpperCase().charAt(0);
+        const opt=current.options.find(o=>o.letter===letter);
+        const ans=opt?opt.text:`To'g'ri javob: ${letter}`;
+        cards.push({id:cards.length+1,question:current.question,answer:ans});
+      }
+      current=null;
+    } else if(/^[A-D][\.\)]\s*/i.test(line)){
+      if(current){
+        current.options.push({
+          letter:line.charAt(0).toUpperCase(),
+          text:line.replace(/^[A-D][\.\)]\s*/i,'').trim()
+        });
+      }
+    } else if(line){
+      current={question:line,options:[]};
+    }
   });
+
   return cards;
 }
 
