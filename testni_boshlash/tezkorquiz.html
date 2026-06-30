@@ -1667,24 +1667,30 @@ function showParseErrors(errors,validCount){
     d.innerHTML=`<div class="fec-err-meta">${qPart}<span class="fec-err-line-badge">${err.lineNum}-qator</span><button class="fec-copy-btn" type="button" title="Nusxalash" data-err-idx="${idx}"><i class="fas fa-copy"></i></button></div><div class="fec-err-msg">${err.msg}</div>${qt}`;
     list.appendChild(d);
   });
-  // Event delegation for copy buttons
-  list.addEventListener('click',(e)=>{
-    const btn=e.target.closest('.fec-copy-btn');
-    if(btn){
-      e.preventDefault();
-      e.stopPropagation();
-      const idx=parseInt(btn.dataset.errIdx);
-      copyErrText(idx,btn);
-    }
-  });
+  // Event delegation for copy buttons — faqat bir marta qo'shiladi (qayta yuklashda dublikat bo'lmasin)
+  if(!list._copyListenerAdded){
+    list.addEventListener('click',(e)=>{
+      const btn=e.target.closest('.fec-copy-btn');
+      if(btn){
+        e.preventDefault();
+        e.stopPropagation();
+        if(btn.dataset.busy==='1')return;
+        const idx=parseInt(btn.dataset.errIdx);
+        copyErrText(idx,btn);
+      }
+    });
+    list._copyListenerAdded=true;
+  }
   card.classList.add('show');
   card.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 function copyErrText(idx,btn){
   const err=_curParseErrors[idx];
   if(!err)return;
+  btn.dataset.busy='1';
   const txt=`${err.lineNum}-qator: ${err.msg}`+(err.qText?` (${err.qText})`:'');
   const onDone=()=>{
+    btn.dataset.busy='0';
     btn.classList.add('copied');
     btn.innerHTML='<i class="fas fa-check"></i>';
     showToast('Nusxalandi!','success',1500);
@@ -1698,11 +1704,14 @@ function copyErrText(idx,btn){
 }
 function copyAllErrors(){
   if(!_curParseErrors||_curParseErrors.length===0)return;
+  const btn=document.getElementById('fecCopyAllBtn');
+  if(btn&&btn.dataset.busy==='1')return;
+  if(btn)btn.dataset.busy='1';
   const lines=_curParseErrors.map(err=>`${err.lineNum}-qator: ${err.msg}`+(err.qText?` (${err.qText})`:''));
   const txt=lines.join('\n');
-  const btn=document.getElementById('fecCopyAllBtn');
   const onDone=()=>{
     if(btn){
+      btn.dataset.busy='0';
       btn.classList.add('copied');
       btn.innerHTML='<i class="fas fa-check"></i>';
       setTimeout(()=>{btn.classList.remove('copied');btn.innerHTML='<i class="fas fa-copy"></i>';},1300);
@@ -1718,8 +1727,18 @@ function copyAllErrors(){
 function _fallbackCopy(txt,cb){
   try{
     const ta=document.createElement('textarea');
-    ta.value=txt;ta.style.position='fixed';ta.style.opacity='0';
-    document.body.appendChild(ta);ta.focus();ta.select();
+    ta.value=txt;
+    ta.setAttribute('readonly','');
+    ta.setAttribute('virtualkeyboardpolicy','manual');
+    ta.style.position='fixed';
+    ta.style.top='-1000px';
+    ta.style.left='-1000px';
+    ta.style.opacity='0';
+    ta.style.fontSize='16px';
+    document.body.appendChild(ta);
+    ta.focus({preventScroll:true});
+    ta.select();
+    ta.setSelectionRange(0,txt.length);
     document.execCommand('copy');
     document.body.removeChild(ta);
     cb&&cb();
