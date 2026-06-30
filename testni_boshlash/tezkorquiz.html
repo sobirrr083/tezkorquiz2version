@@ -7,7 +7,7 @@
     <meta name="language" content="uz">
     <meta name="theme-color" content="#4460ef">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Tezkor Quiz — Tezkor testlar va klaviatura bilan ishlash</title>
     <meta name="description" content="Tezkor Quiz — testlarni tez va oqimli yeching. Klaviatura, sichqoncha yoki mobil orqali boshqarish, random savollar va aniq natija.">
     <meta property="og:type" content="website">
@@ -30,8 +30,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;min-height:100vh;overflow-x:hidden}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;min-height:100vh;min-height:var(--tg-vh,100dvh);overflow-x:hidden;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch}
 #toast-container{position:fixed;top:20px;right:20px;z-index:99999;display:flex;flex-direction:column;gap:10px;pointer-events:none;max-width:320px;width:calc(100vw - 40px)}
 .toast-item{display:flex;align-items:center;gap:12px;background:#fff;border-radius:14px;padding:13px 16px;box-shadow:0 8px 28px rgba(0,0,0,.13);border-left:4px solid #4460ef;pointer-events:all;transform:translateX(110%);opacity:0;transition:transform .35s cubic-bezier(.4,0,.2,1),opacity .35s ease}
 .toast-item.show{transform:translateX(0);opacity:1}.toast-item.hide{transform:translateX(110%);opacity:0}
@@ -50,7 +50,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
 .breadcrumb-item a:hover{background:#e7f0ff;color:#4460ef}
 .breadcrumb-item.active{background:#e7f0ff;color:#4460ef;padding:.38rem .7rem;border-radius:6px;font-size:.875rem;font-weight:600;line-height:1.4}
 .breadcrumb-item+.breadcrumb-item::before{content:"/";color:#cbd5e0;padding:0 .45rem;font-size:.875rem}
-.quiz-container{max-width:900px;margin:0 auto;padding:20px;min-height:100vh;display:flex;flex-direction:column;justify-content:center}
+.quiz-container{max-width:900px;margin:0 auto;padding:20px;padding-bottom:max(20px, env(safe-area-inset-bottom));min-height:100vh;min-height:var(--tg-vh,100dvh);display:flex;flex-direction:column;justify-content:center}
 .quiz-card{background:rgba(255,255,255,.97);border-radius:20px;box-shadow:0 20px 48px rgba(0,0,0,.11);overflow:hidden}
 .quiz-header{background:linear-gradient(135deg,#4460ef 0%,#2d44c7 100%);color:white;padding:30px;text-align:center}
 .quiz-title{font-size:2rem;font-weight:700;margin-bottom:10px;text-shadow:0 2px 4px rgba(0,0,0,.25)}
@@ -60,7 +60,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
 .upload-area:hover{border-color:#4460ef;background:rgba(68,96,239,.05)}.upload-area.dragover{border-color:#4460ef;background:rgba(68,96,239,.10)}
 .upload-icon{font-size:3.6rem;color:#94a3b8;margin-bottom:16px;display:block}
 .upload-text{font-size:1.2rem;font-weight:600;color:#475569;margin-bottom:8px}.upload-subtext{color:#94a3b8;font-size:.95rem}
-.upload-file-btn{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:11px 26px;background:#4460ef;color:white;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:background .2s,box-shadow .25s;box-shadow:0 3px 10px rgba(68,96,239,.3)}
+.upload-file-btn{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:11px 26px;background:#4460ef;color:white;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:background .2s,box-shadow .25s;box-shadow:0 3px 10px rgba(68,96,239,.3);touch-action:manipulation}
 .upload-file-btn:hover{background:#2d44c7;box-shadow:0 6px 18px rgba(68,96,239,.40)}
 .upload-file-btn i{font-size:.9rem}
 /* toggle-container removed — using accordion */
@@ -92,6 +92,16 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
 .format-error-card{display:none;margin-top:18px;background:#fff1f1;border:1.5px solid #fca5a5;border-radius:16px;padding:20px 22px;animation:errorCardIn .35s cubic-bezier(.4,0,.2,1)}
 @keyframes errorCardIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
 .format-error-card.show{display:block}
+.fec-parse-list{display:flex;flex-direction:column;gap:5px;margin-top:8px;max-height:280px;overflow-y:auto}
+.fec-parse-item{background:#fff;border:1px solid #fca5a5;border-left:3px solid #ef4444;border-radius:8px;padding:8px 12px;font-size:.79rem}
+.fec-err-meta{display:flex;align-items:center;gap:5px;margin-bottom:3px;flex-wrap:wrap}
+.fec-err-line-badge{background:#ef4444;color:#fff;font-size:.7rem;font-weight:700;padding:1px 7px;border-radius:4px;flex-shrink:0;white-space:nowrap}
+.fec-err-qnum{color:#94a3b8;font-size:.72rem;font-weight:600}
+.fec-err-msg{color:#b91c1c;font-weight:500;line-height:1.4}
+.fec-err-qtext{color:#64748b;font-size:.75rem;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fec-copy-btn{margin-left:auto;flex-shrink:0;width:24px;height:24px;border-radius:6px;border:none;background:transparent;color:#b91c1c;opacity:.5;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.74rem;transition:opacity .15s,background .15s,color .15s}
+.fec-copy-btn:hover{opacity:1;background:#fee2e2}
+.fec-copy-btn.copied{opacity:1;color:#059669}
 .fec-header{display:flex;align-items:center;gap:12px;margin-bottom:14px}
 .fec-icon{width:42px;height:42px;border-radius:50%;background:#fee2e2;display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:#dc2626;flex-shrink:0}
 .fec-title{font-size:1rem;font-weight:700;color:#b91c1c}
@@ -108,7 +118,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
 .sample-toggle{background:#4460ef;color:white;border:none;padding:12px 28px;border-radius:50px;font-size:.97rem;font-weight:600;cursor:pointer;transition:background .25s,box-shadow .25s;display:inline-flex;align-items:center;gap:8px;min-width:200px;justify-content:center}
 .sample-toggle:hover{background:#2d44c7;box-shadow:0 6px 20px rgba(68,96,239,.3)}
 .sample-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.38);justify-content:center;align-items:center;z-index:10000}
-.sample-modal-content{background:rgba(255,255,255,.97);backdrop-filter:blur(10px);padding:28px;border-radius:18px;width:90%;max-width:400px;box-shadow:0 20px 48px rgba(0,0,0,.12);text-align:center}
+.sample-modal-content{background:rgba(255,255,255,.98);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:28px;border-radius:18px;width:90%;max-width:400px;box-shadow:0 20px 48px rgba(0,0,0,.12);text-align:center}
 .sample-modal-content h3{margin-bottom:14px;color:#1e293b;font-size:20px;font-weight:700}
 .sample-modal-content p{color:#64748b;font-size:15px;margin-bottom:20px}
 .sample-modal-close{background:#4460ef;color:white;border:none;padding:11px 28px;border-radius:50px;font-size:15px;font-weight:600;cursor:pointer;transition:background .25s}
@@ -158,10 +168,10 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
 /* Fallback default */
 .question-slide{opacity:0;transform:translateX(50px);transition:all .4s cubic-bezier(.4,0,.2,1)}
 .question-slide.active{opacity:1;transform:translateX(0)}.question-slide.exit{opacity:0;transform:translateX(-50px)}
-.question-text{font-size:1.35rem;font-weight:600;color:#1e293b;margin-bottom:26px;line-height:1.6}
+.question-text{font-size:calc(1.35rem * var(--quiz-font-scale));font-weight:600;color:#1e293b;margin-bottom:26px;line-height:1.6}
 .question-text.align-center{text-align:center}.question-text.align-left{text-align:left}
 .options-container{display:grid;gap:11px}
-.option-btn{width:100%;padding:17px 22px;border:2px solid #dde3ef;border-radius:13px;background:#f1f5fc;text-align:left;font-size:1.03rem;font-weight:500;color:#475569;cursor:pointer;transition:border-color .2s,background .2s,box-shadow .2s;user-select:none}
+.option-btn{width:100%;padding:17px 22px;border:2px solid #dde3ef;border-radius:13px;background:#f1f5fc;text-align:left;font-size:calc(1.03rem * var(--quiz-font-scale));font-weight:500;color:#475569;cursor:pointer;transition:border-color .2s,background .2s,box-shadow .2s;user-select:none}
 .option-btn:hover{border-color:#9db3f5;background:#eaefff;box-shadow:0 4px 14px rgba(68,96,239,.10)}
 .option-btn.selected{border-color:#94a3b8;background:#94a3b8;color:white;box-shadow:0 4px 14px rgba(100,116,139,.22)}
 .option-btn.correct{border-color:#10b981;background:linear-gradient(135deg,#10b981,#059669);color:white}
@@ -260,7 +270,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
 .opt-anim-wave{animation:optWave .34s cubic-bezier(.4,0,.2,1) both}
 /* settings-card removed */
 /* Timer mode selector */
-.timer-mode-wrap{margin-top:10px;animation:fadeIn .3s ease}
+.timer-mode-wrap{margin-top:0;padding:12px 16px;animation:fadeIn .3s ease}
 .timer-mode-tabs{display:flex;background:#e0e7ff;border-radius:10px;padding:3px;gap:3px;margin-bottom:10px}
 .timer-mode-tab{flex:1;padding:7px 10px;border:none;border-radius:8px;font-size:.82rem;font-weight:600;cursor:pointer;transition:all .2s;color:#6b7280;background:transparent}
 .timer-mode-tab.active{background:white;color:#4460ef;box-shadow:0 2px 6px rgba(68,96,239,.18)}
@@ -291,15 +301,17 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
 .soz-acc-head-left i{font-size:.88rem;width:16px;text-align:center}
 .soz-acc-arrow{font-size:.75rem;color:#6b84e8;transition:transform .28s cubic-bezier(.4,0,.2,1)}
 .soz-acc-arrow.open{transform:rotate(180deg)}
-.soz-acc-body{max-height:0;overflow:hidden;transition:max-height .35s cubic-bezier(.4,0,.2,1);background:#fff}
-.soz-acc-body.open{max-height:900px}
-.soz-acc-inner{padding:14px 16px;display:flex;flex-direction:column;gap:10px}
-.soz-row{display:flex;align-items:flex-start;justify-content:space-between;padding:11px 14px;background:#f3f6fc;border-radius:10px;gap:12px}
+.soz-acc-body{max-height:0;overflow:hidden;transition:max-height .38s cubic-bezier(.4,0,.2,1);background:#fff}
+.soz-acc-body.open{max-height:1300px}
+.soz-acc-inner{padding:0;display:flex;flex-direction:column;gap:0}
+.soz-acc-inner>*+*{border-top:1px solid #e8edf7}
+.soz-row{display:flex;align-items:flex-start;justify-content:space-between;padding:12px 16px;background:#fff;border-radius:0;gap:14px}
+.soz-row:hover{background:#f7f9ff}
 .soz-row-left{flex:1;min-width:0}
 .soz-row-label{font-size:.88rem;font-weight:600;color:#1e293b;display:flex;align-items:center;gap:7px;line-height:1.3}
 .soz-row-label i{color:#4460ef;width:14px;font-size:.82rem;flex-shrink:0}
 .soz-row-desc{font-size:.76rem;color:#94a3b8;line-height:1.4;margin-top:2px}
-.reveal-chip-group{padding:10px 13px 12px;background:#f3f6fc;border-radius:10px}
+.reveal-chip-group{padding:12px 16px 14px;background:#fff;border-radius:0}
 .reveal-chip-label{font-size:.82rem;font-weight:700;color:#334155;display:flex;align-items:center;gap:6px;margin-bottom:8px}
 .reveal-chip-label i{color:#4460ef;font-size:.78rem}
 .reveal-chips{display:flex;flex-wrap:wrap;gap:6px}
@@ -312,7 +324,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
 .reveal-custom-inp:focus{border-color:#4460ef}
 .reveal-custom-unit{font-size:.8rem;font-weight:600;color:#4460ef}
 /* Pause modal */
-.pause-modal{display:none;position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(4px);justify-content:center;align-items:center;z-index:99999;overflow-y:auto;padding:16px 0}
+.pause-modal{display:none;position:fixed;inset:0;background:rgba(15,23,42,.6);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);justify-content:center;align-items:center;z-index:99999;overflow-y:auto;padding:16px 0;-webkit-overflow-scrolling:touch}
 .pause-modal-box{background:#fff;border-radius:22px;padding:28px 24px 24px;width:90%;max-width:440px;box-shadow:0 24px 60px rgba(0,0,0,.18);text-align:center;animation:fadeIn .3s ease;margin:auto}
 .pause-icon-wrap{width:64px;height:64px;background:linear-gradient(135deg,#4460ef,#2d44c7);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:1.8rem;color:white}
 .pause-modal-title{font-size:1.25rem;font-weight:800;color:#1e293b;margin-bottom:5px}
@@ -363,6 +375,32 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
   .rstat.time-card{grid-column:auto}
   .btn-result{min-width:140px;padding:12px 22px;font-size:.93rem}
 }
+/* ── Quiz font scale root ── */
+:root{--quiz-font-scale:1}
+/* ── Telegram / mobile touch optimizations ── */
+button,a,.soz-acc-head,.qulay-acc-head,.soz-row,.reveal-chip,.anim-pick-btn,.option-btn,.upload-file-btn,.font-size-btn,.soz-reset-btn,.form-check-input{touch-action:manipulation}
+/* Prevent iOS auto-zoom on input focus (font-size must be ≥16px) */
+@media(max-width:768px){
+  input[type=number],input[type=text],input[type=email],select,textarea{font-size:16px!important}
+}
+/* Safe area for devices with notch/home indicator */
+.quiz-card,.file-upload-container,.pause-modal-card{padding-bottom:max(16px,env(safe-area-inset-bottom))}
+/* ── Accordion keyboard focus ── */
+.soz-acc-head:focus-visible,.qulay-acc-head:focus-visible{outline:2px solid #4460ef;outline-offset:-2px;border-radius:0}
+.soz-acc-head:focus-visible{border-radius:14px 14px 0 0}
+.anim-pick-btn:focus-visible,.reveal-chip:focus-visible{outline:2px solid #4460ef;outline-offset:2px;border-radius:9px}
+.form-check-input:focus-visible{outline:2px solid #4460ef;outline-offset:2px;box-shadow:none}
+/* ── Font size control ── */
+.font-size-ctrl{display:flex;align-items:center;gap:5px;flex-shrink:0}
+.font-size-btn{width:32px;height:32px;border-radius:8px;border:2px solid #dde3ef;background:#f3f6fc;color:#1e293b;cursor:pointer;font-size:.88rem;font-weight:800;display:inline-flex;align-items:center;justify-content:center;transition:border-color .18s,background .18s;flex-shrink:0;line-height:1;user-select:none}
+.font-size-btn:hover:not(:disabled){border-color:#1e293b;background:#e8edf7}
+.font-size-btn:disabled{opacity:.35;cursor:not-allowed}
+.font-size-display{font-size:.82rem;font-weight:700;color:#4460ef;min-width:38px;text-align:center;letter-spacing:.01em}
+/* ── Reset button row ── */
+.soz-reset-row{padding:10px 16px 13px;background:#fff}
+.soz-reset-btn{width:100%;padding:12px 14px;border-radius:9px;border:1.5px solid #e2e8f0;background:#f8fafc;color:#475569;font-size:.85rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;transition:background .18s,border-color .18s,color .18s;touch-action:manipulation}
+.soz-reset-btn:hover{background:#eef2f7;border-color:#cbd5e1;color:#334155}
+.soz-reset-btn:focus-visible{outline:2px solid #94a3b8;outline-offset:2px;border-radius:9px}
 </style>
 </head>
 <body>
@@ -404,32 +442,47 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
           <div class="fec-header">
             <div class="fec-icon"><i class="fas fa-triangle-exclamation"></i></div>
             <div>
-              <div class="fec-title">Noto'g'ri fayl formati!</div>
+              <div class="fec-title" id="fecTitle">Noto'g'ri fayl formati!</div>
               <div class="fec-sub" id="fecFileName"></div>
             </div>
           </div>
-          <div class="fec-body">
-            Tezkor Quiz faqat <strong>.txt</strong> formatidagi fayllarni qabul qiladi va fayl quyidagi <strong>standart formatda</strong> bo'lishi kerak:
+          <div id="fecFormatSection">
+            <div class="fec-body">
+              Tezkor Quiz faqat <strong>.txt</strong> formatidagi fayllarni qabul qiladi va fayl quyidagi <strong>standart formatda</strong> bo'lishi kerak:
+            </div>
+            <div class="fec-format-box">
+              Savol matni shu yerda yoziladi<br>
+              A. Birinchi variant<br>
+              B. Ikkinchi variant<br>
+              C. Uchinchi variant<br>
+              D. To'rtinchi variant<br>
+              ANSWER: A
+            </div>
+            <div class="fec-body" style="margin-bottom:14px">
+              Faylingizni moslashtirish uchun adminga yozing 👇
+            </div>
+            <a class="fec-telegram-btn" href="https://t.me/sobirweb?text=menga%20tezkor%20quiz%20uchun%20faylni%20moslab%20bera%20olasizmi%3F%20Hozir%20faylni%20yuboraman." target="_blank" rel="noopener">
+              <i class="fab fa-telegram"></i> Adminga yozish
+            </a>
           </div>
-          <div class="fec-format-box">
-            Savol matni shu yerda yoziladi<br>
-            A. Birinchi variant<br>
-            B. Ikkinchi variant<br>
-            C. Uchinchi variant<br>
-            D. To'rtinchi variant<br>
-            ANSWER: A
+          <div id="fecParseSection" style="display:none">
+            <div style="margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:8px">
+              <div style="font-size:.82rem;color:#64748b">Barcha xatoliklarni nusxalash:</div>
+              <button id="fecCopyAllBtn" type="button" title="Barcha xatoliklarni nusxalash" style="width:28px;height:28px;border-radius:6px;border:1px solid #cbd5e1;background:#f8fafc;color:#475569;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.8rem;transition:background .15s,border-color .15s,color .15s;flex-shrink:0"><i class="fas fa-copy"></i></button>
+            </div>
+            <div id="fecParseList" class="fec-parse-list"></div>
+            <div class="fec-body" style="margin-top:14px;margin-bottom:10px">
+              Faylni moslashtirish uchun adminga yozing 👇
+            </div>
+            <a class="fec-telegram-btn" href="https://t.me/sobirweb?text=menga%20tezkor%20quiz%20uchun%20faylni%20moslab%20bera%20olasizmi%3F%20Hozir%20faylni%20yuboraman." target="_blank" rel="noopener">
+              <i class="fab fa-telegram"></i> Adminga yozish
+            </a>
           </div>
-          <div class="fec-body" style="margin-bottom:14px">
-            Faylingizni moslashtirish uchun adminga yozing 👇
-          </div>
-          <a class="fec-telegram-btn" href="https://t.me/sobirweb?text=menga%20tezkor%20quiz%20uchun%20faylni%20moslab%20bera%20olasizmi%3F%20Hozir%20faylni%20yuboraman." target="_blank" rel="noopener">
-            <i class="fab fa-telegram"></i> Adminga yozish
-          </a>
         </div>
 
         <div style="margin-top:22px">
           <div class="soz-accordion" id="uploadAccordion">
-            <div class="soz-acc-head" onclick="toggleAcc('uploadAcc')">
+            <div class="soz-acc-head" onclick="toggleAcc('uploadAcc')" tabindex="0" role="button" aria-expanded="false" id="uploadAccHead">
               <div class="soz-acc-head-left"><i class="fas fa-sliders-h"></i> Test sozlamalari</div>
               <i class="fas fa-chevron-down soz-acc-arrow" id="uploadAccArrow"></i>
             </div>
@@ -475,6 +528,17 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
                     <span class="reveal-custom-unit">soniya</span>
                   </div>
                 </div>
+                <div class="soz-row" style="align-items:center">
+                  <div class="soz-row-left"><div class="soz-row-label">Matn o'lchami</div><div class="soz-row-desc">Savol va variantlar matn kattaligi</div></div>
+                  <div class="font-size-ctrl">
+                    <button class="font-size-btn font-size-dec" onclick="changeFontSize(-1)" title="Kichiklashtirish">A−</button>
+                    <span class="font-size-display">100%</span>
+                    <button class="font-size-btn font-size-inc" onclick="changeFontSize(1)" title="Kattalashtirish">A+</button>
+                  </div>
+                </div>
+                <div class="soz-reset-row">
+                  <button class="soz-reset-btn" onclick="resetAllSettings()"><i class="fas fa-rotate-left"></i> Sozlamalarni asl holatga qaytarish</button>
+                </div>
               </div>
             </div>
           </div>
@@ -495,7 +559,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
       <div class="info-container">
         <!-- Qulayliklar accordion (default yopiq) -->
         <div class="qulay-accordion" style="margin-bottom:18px">
-          <div class="qulay-acc-head" onclick="toggleQulayAcc()">
+          <div class="qulay-acc-head" onclick="toggleQulayAcc()" tabindex="0" role="button" aria-expanded="false" id="qulayAccHead">
             <div class="qulay-acc-head-left"><i class="fas fa-lightbulb"></i> Qulayliklar bilan tanishing</div>
             <i class="fas fa-chevron-down qulay-acc-arrow" id="qulayAccArrow"></i>
           </div>
@@ -532,7 +596,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
           <div class="info-stat"><i class="fas fa-clock"></i><span id="infoTimeLabel">Cheksiz</span><p>Vaqt</p></div>
         </div>
         <div class="soz-accordion" id="infoAccordion" style="margin-top:18px">
-          <div class="soz-acc-head" onclick="toggleAcc('infoAcc')">
+          <div class="soz-acc-head" onclick="toggleAcc('infoAcc')" tabindex="0" role="button" aria-expanded="false" id="infoAccHead">
             <div class="soz-acc-head-left"><i class="fas fa-sliders-h"></i> Test sozlamalari</div>
             <i class="fas fa-chevron-down soz-acc-arrow" id="infoAccArrow"></i>
           </div>
@@ -599,6 +663,17 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
                   <input type="number" class="reveal-custom-inp" id="infoCustomInp" min="0.1" max="30" step="0.1" value="0.75">
                   <span class="reveal-custom-unit">soniya</span>
                 </div>
+              </div>
+              <div class="soz-row" style="align-items:center">
+                <div class="soz-row-left"><div class="soz-row-label">Matn o'lchami</div><div class="soz-row-desc">Savol va variantlar matn kattaligi</div></div>
+                <div class="font-size-ctrl">
+                  <button class="font-size-btn font-size-dec" onclick="changeFontSize(-1)" title="Kichiklashtirish">A−</button>
+                  <span class="font-size-display">100%</span>
+                  <button class="font-size-btn font-size-inc" onclick="changeFontSize(1)" title="Kattalashtirish">A+</button>
+                </div>
+              </div>
+              <div class="soz-reset-row">
+                <button class="soz-reset-btn" onclick="resetAllSettings()"><i class="fas fa-rotate-left"></i> Sozlamalarni asl holatga qaytarish</button>
               </div>
             </div>
           </div>
@@ -712,7 +787,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
   </div>
 </div>
 <!-- Finish confirm modal -->
-<div id="finishConfirmModal" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(4px);z-index:9000;align-items:center;justify-content:center;padding:20px;opacity:0;transition:opacity .22s ease">
+<div id="finishConfirmModal" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);z-index:9000;align-items:center;justify-content:center;padding:20px;opacity:0;transition:opacity .22s ease">
   <div style="background:#fff;border-radius:20px;padding:32px 28px 24px;max-width:340px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.18);text-align:center;transform:scale(.94);transition:transform .22s cubic-bezier(.34,1.56,.64,1)" id="finishConfirmBox">
     <div style="width:56px;height:56px;background:linear-gradient(135deg,#4460ef,#2d44c7);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.5rem;color:#fff"><i class="fas fa-flag-checkered"></i></div>
     <div style="font-size:1.1rem;font-weight:700;color:#1e293b;margin-bottom:8px">Testni yakunlaysizmi?</div>
@@ -736,7 +811,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
     <div class="pause-modal-title">Test muzlatildi</div>
     <div class="pause-modal-sub" id="pauseModalSub">Tayyor bo'lganingizda davom eting — vaqt to'xtatilgan.</div>
     <div class="soz-accordion" id="pauseAccordion" style="text-align:left;margin-bottom:14px">
-      <div class="soz-acc-head" onclick="toggleAcc('pauseAcc')">
+      <div class="soz-acc-head" onclick="toggleAcc('pauseAcc')" tabindex="0" role="button" aria-expanded="false" id="pauseAccHead">
         <div class="soz-acc-head-left"><i class="fas fa-sliders-h"></i> Test sozlamalari</div>
         <i class="fas fa-chevron-down soz-acc-arrow" id="pauseAccArrow"></i>
       </div>
@@ -788,11 +863,22 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e2e8f4;
               <span class="reveal-custom-unit">soniya</span>
             </div>
           </div>
+          <div class="soz-row" style="align-items:center">
+            <div class="soz-row-left"><div class="soz-row-label">Matn o'lchami</div><div class="soz-row-desc">Savol va variantlar matn kattaligi</div></div>
+            <div class="font-size-ctrl">
+              <button class="font-size-btn font-size-dec" onclick="changeFontSize(-1)" title="Kichiklashtirish">A−</button>
+              <span class="font-size-display">100%</span>
+              <button class="font-size-btn font-size-inc" onclick="changeFontSize(1)" title="Kattalashtirish">A+</button>
+            </div>
+          </div>
+          <div class="soz-reset-row">
+            <button class="soz-reset-btn" onclick="resetAllSettings()"><i class="fas fa-rotate-left"></i> Sozlamalarni asl holatga qaytarish</button>
+          </div>
         </div>
       </div>
     </div>
     <div class="pause-btn-row">
-      <button class="pause-finish-btn" id="pauseFinishBtn" onclick="finishQuizFromPause()"><i class="fas fa-flag-checkered"></i> Yakunlash</button>
+      <button class="pause-finish-btn" id="pauseFinishBtn" onclick="finishQuizFromPause()"><i class="fas fa-chart-simple"></i> Yakunlash</button>
       <button class="pause-resume-btn" onclick="resumeQuiz()"><i class="fas fa-play"></i> Davom etish</button>
     </div>
   </div>
@@ -1063,6 +1149,15 @@ function setQuizAnim(type){
 document.addEventListener('DOMContentLoaded',()=>{
   setQuizAnim('shrink');
   setOptAnim('off');
+  // Barcha xatoliklar nusxa tugmasining event listener
+  const fecCopyAllBtn=document.getElementById('fecCopyAllBtn');
+  if(fecCopyAllBtn){
+    fecCopyAllBtn.addEventListener('click',(e)=>{
+      e.preventDefault();
+      e.stopPropagation();
+      copyAllErrors();
+    });
+  }
 });
 
 // ── Variant animatsiyasi ──────────────────────────────────────────────────────
@@ -1102,22 +1197,28 @@ function toggleAcc(bodyId){
 function toggleQulayAcc(){
   const body=document.getElementById('qulayAccBody');
   const arrow=document.getElementById('qulayAccArrow');
+  const head=document.getElementById('qulayAccHead');
   const isOpen=body.classList.contains('open');
   body.classList.toggle('open',!isOpen);
   if(arrow) arrow.classList.toggle('open',!isOpen);
+  if(head) head.setAttribute('aria-expanded',(!isOpen)?'true':'false');
 }
 function toggleFullscreen(){
   const icon=document.getElementById('fullscreenIcon');
-  if(!document.fullscreenElement&&!document.webkitFullscreenElement){
-    const el=document.documentElement;
-    if(el.requestFullscreen) el.requestFullscreen();
-    else if(el.webkitRequestFullscreen) el.webkitRequestFullscreen();
-    if(icon){icon.classList.remove('fa-expand');icon.classList.add('fa-compress')}
-  } else {
-    if(document.exitFullscreen) document.exitFullscreen();
-    else if(document.webkitExitFullscreen) document.webkitExitFullscreen();
-    if(icon){icon.classList.remove('fa-compress');icon.classList.add('fa-expand')}
-  }
+  const btn=document.getElementById('fullscreenBtn');
+  try{
+    if(!document.fullscreenElement&&!document.webkitFullscreenElement){
+      const el=document.documentElement;
+      const p=el.requestFullscreen?el.requestFullscreen():el.webkitRequestFullscreen?el.webkitRequestFullscreen():null;
+      if(p) p.catch(()=>{if(btn) btn.style.display='none'});
+      else if(btn) btn.style.display='none';
+      if(icon){icon.classList.remove('fa-expand');icon.classList.add('fa-compress')}
+    } else {
+      if(document.exitFullscreen) document.exitFullscreen();
+      else if(document.webkitExitFullscreen) document.webkitExitFullscreen();
+      if(icon){icon.classList.remove('fa-compress');icon.classList.add('fa-expand')}
+    }
+  } catch(e){if(btn) btn.style.display='none';}
 }
 document.addEventListener('fullscreenchange',_syncFsIcon);
 document.addEventListener('webkitfullscreenchange',_syncFsIcon);
@@ -1433,7 +1534,7 @@ function pauseQuiz(msg){
   syncPauseToggles();
   // Finish tugmasi holatini reset qilish
   const fb=document.getElementById('pauseFinishBtn');
-  if(fb){clearTimeout(fb._resetTimer);fb._confirmed=false;fb.style.background='';fb.innerHTML='<i class="fas fa-flag-checkered"></i> Yakunlash';}
+  if(fb){clearTimeout(fb._resetTimer);fb._confirmed=false;fb.style.background='';fb.innerHTML='<i class="fas fa-chart-simple"></i> Yakunlash';}
   if(timerEnabled){
     if(timerMode==='total'){
       _totalRemainingMsOnPause=Math.max(0,_totalTotalMs-(Date.now()-_totalStartMs));
@@ -1484,7 +1585,7 @@ function finishQuizFromPause(){
     btn._resetTimer=setTimeout(()=>{
       btn._confirmed=false;
       btn.style.background='';
-      btn.innerHTML='<i class="fas fa-flag-checkered"></i> Yakunlash';
+      btn.innerHTML='<i class="fas fa-chart-simple"></i> Yakunlash';
     },3000);
     return;
   }
@@ -1537,11 +1638,92 @@ fileInput.addEventListener('change',_onFileEvent);
 fileInput.addEventListener('input',_onFileEvent);
 function showFormatError(originalName){
   const card=document.getElementById('formatErrorCard');
+  // Reset to format-error mode
+  document.getElementById('fecTitle').textContent="Noto'g'ri fayl formati!";
   const nameEl=document.getElementById('fecFileName');
   if(nameEl&&originalName) nameEl.textContent='"'+originalName+'" — .txt formatida emas';
-  else if(nameEl) nameEl.textContent='Fayl .txt formatida bo\'lishi kerak';
+  else if(nameEl) nameEl.textContent="Fayl .txt formatida bo'lishi kerak";
+  document.getElementById('fecFormatSection').style.display='';
+  document.getElementById('fecParseSection').style.display='none';
   card.classList.add('show');
   card.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+let _curParseErrors=[];
+function showParseErrors(errors,validCount){
+  const card=document.getElementById('formatErrorCard');
+  document.getElementById('fecTitle').textContent=`Faylda ${errors.length} ta xatolik topildi`;
+  const nameEl=document.getElementById('fecFileName');
+  if(nameEl) nameEl.textContent=validCount?`${validCount} ta to'g'ri savol bor — xatoliklarni tuzatib qayta yuklang`:'Xatoliklarni tuzatib qayta yuklang';
+  document.getElementById('fecFormatSection').style.display='none';
+  document.getElementById('fecParseSection').style.display='';
+  const list=document.getElementById('fecParseList');
+  list.innerHTML='';
+  _curParseErrors=errors;
+  errors.forEach((err,idx)=>{
+    const d=document.createElement('div');
+    d.className='fec-parse-item';
+    const qPart=err.qLabel?`<span class="fec-err-qnum">${err.qLabel} ·</span> `:'';
+    const qt=err.qText?`<div class="fec-err-qtext">↳ ${err.qText.substring(0,90)}${err.qText.length>90?'…':''}</div>`:'';
+    d.innerHTML=`<div class="fec-err-meta">${qPart}<span class="fec-err-line-badge">${err.lineNum}-qator</span><button class="fec-copy-btn" type="button" title="Nusxalash" data-err-idx="${idx}"><i class="fas fa-copy"></i></button></div><div class="fec-err-msg">${err.msg}</div>${qt}`;
+    list.appendChild(d);
+  });
+  // Event delegation for copy buttons
+  list.addEventListener('click',(e)=>{
+    const btn=e.target.closest('.fec-copy-btn');
+    if(btn){
+      e.preventDefault();
+      e.stopPropagation();
+      const idx=parseInt(btn.dataset.errIdx);
+      copyErrText(idx,btn);
+    }
+  });
+  card.classList.add('show');
+  card.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function copyErrText(idx,btn){
+  const err=_curParseErrors[idx];
+  if(!err)return;
+  const txt=`${err.lineNum}-qator: ${err.msg}`+(err.qText?` (${err.qText})`:'');
+  const onDone=()=>{
+    btn.classList.add('copied');
+    btn.innerHTML='<i class="fas fa-check"></i>';
+    showToast('Nusxalandi!','success',1500);
+    setTimeout(()=>{btn.classList.remove('copied');btn.innerHTML='<i class="fas fa-copy"></i>';},1300);
+  };
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(onDone).catch(()=>_fallbackCopy(txt,onDone));
+  } else {
+    _fallbackCopy(txt,onDone);
+  }
+}
+function copyAllErrors(){
+  if(!_curParseErrors||_curParseErrors.length===0)return;
+  const lines=_curParseErrors.map(err=>`${err.lineNum}-qator: ${err.msg}`+(err.qText?` (${err.qText})`:''));
+  const txt=lines.join('\n');
+  const btn=document.getElementById('fecCopyAllBtn');
+  const onDone=()=>{
+    if(btn){
+      btn.classList.add('copied');
+      btn.innerHTML='<i class="fas fa-check"></i>';
+      setTimeout(()=>{btn.classList.remove('copied');btn.innerHTML='<i class="fas fa-copy"></i>';},1300);
+    }
+    showToast('Barcha xatoliklar nusxalandi!','success',1500);
+  };
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(onDone).catch(()=>_fallbackCopy(txt,onDone));
+  } else {
+    _fallbackCopy(txt,onDone);
+  }
+}
+function _fallbackCopy(txt,cb){
+  try{
+    const ta=document.createElement('textarea');
+    ta.value=txt;ta.style.position='fixed';ta.style.opacity='0';
+    document.body.appendChild(ta);ta.focus();ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    cb&&cb();
+  }catch(e){showToast('Nusxalashda xatolik','error');}
 }
 function closeFormatError(){
   document.getElementById('formatErrorCard').classList.remove('show');
@@ -1549,9 +1731,7 @@ function closeFormatError(){
 function handleFiles(files){
   const f=files[0];
   if(!f){showToast('Fayl tanlanmadi!','error');return}
-  // Har yangi yuklashda error cardni yashiramiz
   closeFormatError();
-  // iOS da MIME type noto'g'ri kelishi mumkin — faqat kengaytmani tekshiramiz
   const fname=(f.name||'').toLowerCase().trim();
   const originalName=f.name||'';
   const mimeOk=!f.type||f.type===''||f.type==='text/plain'||f.type==='application/octet-stream'||f.type.startsWith('text/');
@@ -1561,13 +1741,11 @@ function handleFiles(files){
   if(!extOk){showFormatError(originalName);return}
   if(f.size===0){showToast('Fayl bo\'sh!','error');return}
   function tryParse(text){
-    // BOM belgisini olib tashlaymiz
     if(text.charCodeAt(0)===0xFEFF) text=text.slice(1);
-    parseQuestions(text);
+    parseQuestions(text,originalName);
   }
   const r=new FileReader();
   r.onload=e=>{try{tryParse(e.target.result)}catch(err){
-    // UTF-8 ishlamasa latin1 bilan urinib ko'ramiz
     const r2=new FileReader();
     r2.onload=e2=>{try{tryParse(e2.target.result)}catch(err2){showToast('Xatolik: '+err2.message,'error',4500)}};
     r2.onerror=()=>showToast("Faylni o'qishda xatolik. Qayta urinib ko'ring.",'error');
@@ -1581,19 +1759,97 @@ function handleFiles(files){
   };
   r.readAsText(f,'UTF-8');
 }
-function parseQuestions(text){
-  const lines=text.split('\n').map(l=>l.trim()).filter(l=>l!=='');
-  questions=[];let curQ=null,opts=[];
-  for(let i=0;i<lines.length;i++){
-    const ln=lines[i];
-    if(ln.startsWith('ANSWER:')){
-      if(curQ&&opts.length>=2){const ans=ln.split(':')[1]?.trim(),idx='ABCD'.indexOf(ans);if(idx===-1)throw new Error(`Noto'g'ri javob (${i+1}-qator)`);questions.push({question:curQ,options:[...opts],answer:idx})}
-      curQ=null;opts=[];
-    }else if(/^[A-D]\./.test(ln)){opts.push(ln.substring(2).trim())}
-    else{curQ=ln;opts=[]}
+function parseQuestions(text,fileName){
+  // ── Helpers ──────────────────────────────────────────────────────────────────
+  // Normalize curly/modifier apostrophes → straight apostrophe for keyword matching
+  const _norm=s=>s.replace(/[''`ʻʼ]/g,"'").toLowerCase().trimStart();
+  // Answer line: ANSWER: | to'g'ri javob: | javob: (case+apostrophe insensitive)
+  const _isAnswer=ln=>{
+    const n=_norm(ln);
+    return n.startsWith('answer:')||n.startsWith("to'g'ri javob:")||n.startsWith("to'gri javob:")||
+           n.startsWith("tog'ri javob:")||n.startsWith('togri javob:')||n.startsWith('javob:');
+  };
+  const _getAnswerLetter=ln=>{
+    const colon=ln.indexOf(':');
+    if(colon===-1) return null;
+    const rest=ln.substring(colon+1).trim();
+    return rest.length>0?rest.charAt(0).toUpperCase():null;
+  };
+  // Option line: A. or A) (with optional space after)
+  const _optRe=/^([A-D])[.)]\s*([\s\S]+)/i;
+  const _isOpt=ln=>_optRe.test(ln);
+  const _getOpt=ln=>{const m=ln.match(_optRe);return m?m[2].trim():ln;};
+  // ── Parse ────────────────────────────────────────────────────────────────────
+  const rawLines=text.split('\n');           // 1-indexed by position+1 → matches text editors
+  const errors=[];
+  questions=[];
+  let curQ=null,curQLine=0,opts=[],qSeq=0;
+  for(let i=0;i<rawLines.length;i++){
+    const ln=rawLines[i].trim();
+    if(!ln) continue;
+    const lineNum=i+1;
+    if(_isAnswer(ln)){
+      const letter=_getAnswerLetter(ln);
+      if(!curQ){
+        errors.push({lineNum,msg:"ANSWER topildi, lekin oldin savol matni yo'q"});
+        continue;
+      }
+      if(opts.length<2){
+        errors.push({lineNum:curQLine,qLabel:`${qSeq+errors.length+1}-savol`,qText:curQ,
+          msg:`Variantlar yetarli emas — ${opts.length} ta topildi (kamida 2 ta kerak)`});
+        curQ=null;opts=[];continue;
+      }
+      if(!letter){
+        errors.push({lineNum,qLabel:`${qSeq+errors.length+1}-savol`,qText:curQ,
+          msg:'ANSWER yozilgan, lekin harf belgilanmagan (bo\'sh)'});
+        curQ=null;opts=[];continue;
+      }
+      const idx='ABCD'.indexOf(letter);
+      if(idx===-1){
+        errors.push({lineNum,qLabel:`${qSeq+errors.length+1}-savol`,qText:curQ,
+          msg:`ANSWER: "${letter}" — noto'g'ri (A, B, C yoki D bo'lishi kerak)`});
+        curQ=null;opts=[];continue;
+      }
+      if(idx>=opts.length){
+        errors.push({lineNum,qLabel:`${qSeq+errors.length+1}-savol`,qText:curQ,
+          msg:`ANSWER: ${letter} — lekin faqat ${opts.length} ta variant bor`});
+        curQ=null;opts=[];continue;
+      }
+      questions.push({question:curQ,options:[...opts],answer:idx,srcLine:curQLine});
+      qSeq++;curQ=null;opts=[];
+    } else if(_isOpt(ln)){
+      if(!curQ){
+        errors.push({lineNum,msg:"Variant topildi, lekin oldin savol matni yo'q"});
+        continue;
+      }
+      opts.push(_getOpt(ln));
+    } else {
+      // New question text
+      if(curQ!==null){
+        errors.push({lineNum:curQLine,qLabel:`${qSeq+errors.length+1}-savol`,qText:curQ,
+          msg:"Bu savolda ANSWER yo'q"});
+        opts=[];
+      }
+      curQ=ln;curQLine=lineNum;opts=[];
+    }
   }
-  if(!questions.length){showFormatError('');showToast("Standart formatda savollar topilmadi!",'error',5000);return;}
-  // Don't shuffle here — respect randomEnabled setting at start
+  // Last question without ANSWER
+  if(curQ!==null){
+    errors.push({lineNum:curQLine,qLabel:`${qSeq+errors.length+1}-savol`,qText:curQ,
+      msg:"Oxirgi savolda ANSWER yo'q"});
+  }
+  // ── Result ───────────────────────────────────────────────────────────────────
+  if(errors.length>0){
+    showParseErrors(errors,questions.length);
+    questions=[];  // don't allow starting with broken questions
+    return;
+  }
+  if(!questions.length){
+    showFormatError(fileName||'');
+    showToast("Standart formatda savollar topilmadi!",'error',5000);
+    return;
+  }
+  // Shuffle happens in startQuizFromInfo() — here we just confirm success
   showToast(`Test yuklandi! ${questions.length} ta savol tayyor.`,'success');
   showInfoSection();
 }
@@ -1646,7 +1902,7 @@ function showQuestion(){
   slide.classList.add('exit');
   setTimeout(()=>{
     const qEl=document.getElementById('questionText');
-    qEl.textContent=q.question;
+    qEl.textContent=q.question.replace(/^\d{1,4}[.)]\s*/,'');
     qEl.className='question-text '+(questionAlign==='center'?'align-center':'align-left');
     document.getElementById('currentQuestion').textContent=curIdx+1;
     const cont=document.getElementById('optionsContainer');
@@ -1920,22 +2176,143 @@ document.addEventListener('keydown',function(e){
     else if(phase==='revealed'&&stayOnQuestion)confirmOrAdvance();
   }
 });
-let txStart=0;
-document.addEventListener('touchstart',e=>{txStart=e.changedTouches[0].screenX});
+let txStart=0,tyStart=0;
+document.addEventListener('touchstart',e=>{txStart=e.changedTouches[0].screenX;tyStart=e.changedTouches[0].screenY},{passive:true});
 document.addEventListener('touchend',e=>{
-  const diff=txStart-e.changedTouches[0].screenX;
-  if(Math.abs(diff)>50&&diff>0){
+  const dx=txStart-e.changedTouches[0].screenX;
+  const dy=tyStart-e.changedTouches[0].screenY;
+  // Only fire on clear horizontal swipe (not vertical scroll)
+  if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)*2&&dx>0){
     if(phase==='revealed'&&stayOnQuestion)advance();
     else if(phase==='selecting'&&selectedAnswer!==null&&showNextButton)confirmOrAdvance();
   }
-});
+},{passive:true});
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=~~(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 document.getElementById('sampleToggle').addEventListener('click',()=>{
-  const a=document.createElement('a');a.href='https://tezkorquiz.uz/namuna_test.txt';a.download='namuna_test.txt';
-  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  const isTg=/Telegram|TelegramBot/i.test(navigator.userAgent)||!!window.TelegramWebviewProxy||!!window.Telegram?.WebApp;
+  const url='https://tezkorquiz.uz/namuna_test.txt';
+  if(isTg){
+    // Telegram ichida <a download> ishlamaydi — tashqi brauzer orqali ochiladi
+    if(window.Telegram?.WebApp?.openLink){window.Telegram.WebApp.openLink(url);}
+    else{window.open(url,'_blank');}
+  } else {
+    try{
+      const a=document.createElement('a');a.href=url;a.download='namuna_test.txt';
+      document.body.appendChild(a);a.click();document.body.removeChild(a);
+    } catch(e){window.open(url,'_blank');}
+  }
   document.getElementById('sampleModal').style.display='flex';
 });
 document.getElementById('sampleModalClose').addEventListener('click',()=>{document.getElementById('sampleModal').style.display='none'});
+
+// ── Font size control ─────────────────────────────────────────────────────────
+let quizFontSize=100;
+const FONT_STEPS=[80,90,100,110,120,130];
+function changeFontSize(dir){
+  const idx=FONT_STEPS.indexOf(quizFontSize);
+  const cur=idx===-1?2:idx;
+  const newIdx=Math.max(0,Math.min(FONT_STEPS.length-1,cur+dir));
+  quizFontSize=FONT_STEPS[newIdx];
+  applyFontSize();
+}
+function applyFontSize(){
+  document.documentElement.style.setProperty('--quiz-font-scale',quizFontSize/100);
+  document.querySelectorAll('.font-size-display').forEach(el=>{el.textContent=quizFontSize+'%'});
+  const minReached=FONT_STEPS.indexOf(quizFontSize)<=0;
+  const maxReached=FONT_STEPS.indexOf(quizFontSize)>=FONT_STEPS.length-1;
+  document.querySelectorAll('.font-size-dec').forEach(b=>{b.disabled=minReached});
+  document.querySelectorAll('.font-size-inc').forEach(b=>{b.disabled=maxReached});
+}
+
+// ── Reset all settings to defaults ────────────────────────────────────────────
+function resetAllSettings(){
+  // Align → left (false)
+  ['alignToggle','infoAlignToggle','pauseAlignToggle'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.checked=false;
+  });
+  applyAlignUI(false);
+  // Next button → show (true)
+  ['showNextToggle','infoNextToggle','pauseNextToggle'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.checked=true;
+  });
+  applyNextUI(true);
+  // Stay on question → off (false)
+  ['stayToggle','infoStayToggle','pauseStayToggle'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.checked=false;
+  });
+  applyStayUI(false);
+  // Random → on (true)
+  ['randomToggle','pauseRandomToggle'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.checked=true;
+  });
+  applyRandomUI(true);
+  // Timer → off
+  const te=document.getElementById('timerToggle');
+  if(te){te.checked=false;applyTimerToggleUI(false);}
+  const tv=document.getElementById('timerValue');if(tv)tv.value=30;
+  setTimerMode('total');setTimerUnit('min');
+  // Animations
+  setQuizAnim('shrink');
+  setOptAnim('off');
+  // Reveal delay
+  revealMode='1';revealCustomSec=0.75;
+  refreshChips();
+  // Font size
+  quizFontSize=100;applyFontSize();
+  // Sync info section labels
+  _applyInfoToggleLabels();
+  showToast('Sozlamalar asl holatga qaytarildi!','success');
+}
+
+// ── Accordion keyboard navigation (Tab + Enter/Space) ─────────────────────────
+document.addEventListener('DOMContentLoaded',()=>{
+  // Keyboard support for accordion headers
+  document.querySelectorAll('.soz-acc-head,.qulay-acc-head').forEach(head=>{
+    head.addEventListener('keydown',e=>{
+      if(e.key==='Enter'||e.key===' '){
+        e.preventDefault();head.click();
+      }
+    });
+  });
+  // Update aria-expanded when accordion state changes
+  const origToggleAcc=window.toggleAcc;
+  window.toggleAcc=function(bodyId){
+    origToggleAcc(bodyId);
+    const headId=bodyId.replace('Acc','AccHead');
+    const headEl=document.getElementById(headId);
+    const bodyEl=document.getElementById(bodyId);
+    if(headEl&&bodyEl){
+      headEl.setAttribute('aria-expanded',bodyEl.classList.contains('open')?'true':'false');
+    }
+  };
+  // Init font size state
+  applyFontSize();
+
+  // ── Fullscreen: hide button if not supported (Telegram, iOS WebView) ─────
+  const fsSupported=!!(document.documentElement.requestFullscreen||document.documentElement.webkitRequestFullscreen);
+  if(!fsSupported){
+    const btn=document.getElementById('fullscreenBtn');
+    if(btn) btn.style.display='none';
+  }
+
+  // ── Telegram WebApp (Mini App) integration ─────────────────────────────
+  try{
+    const tg=window.Telegram?.WebApp;
+    if(tg){
+      tg.ready();
+      tg.expand();
+      // Use Telegram's stable viewport height for 100dvh equivalent
+      const setTgVh=()=>{
+        const h=(tg.viewportStableHeight||tg.viewportHeight||window.innerHeight)+'px';
+        document.documentElement.style.setProperty('--tg-vh',h);
+      };
+      setTgVh();
+      tg.onEvent('viewportChanged',setTgVh);
+      // Disable pull-to-close gesture
+      document.body.style.overscrollBehaviorY='contain';
+    }
+  } catch(e){}
+});
 </script>
 </body>
 </html>
